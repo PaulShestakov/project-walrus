@@ -1,16 +1,17 @@
 FROM node:boron
 
 # Create app directory
-RUN mkdir -p /Users/paul/Projects/wp
-WORKDIR /Users/paul/Projects/wp
+RUN mkdir -p /project
+WORKDIR /project
 
 # Install app dependencies
-COPY package.json /Users/paul/Projects/wp
+COPY package.json /project
 RUN npm install
 
 # Bundle app source
-COPY . /Users/paul/Projects/wp
+COPY . /project
 
 EXPOSE 8080
 
-CMD [ "npm", "start" ]
+ENTRYPOINT npm run build \
+	npm run server
