@@ -8,6 +8,10 @@ const store = configureStore();
 
 import App from './app/app.jsx';
 
+// Fonts
+require('font-awesome/css/font-awesome.css');
+require('./assets/fonts/fontBebasNeueRegular/fontBebasNeueRegular.scss');
+
 
 class Root extends React.Component {
   render() {

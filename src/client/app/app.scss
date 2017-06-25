@@ -1,0 +1,21 @@
+$footerHeight: 5rem;
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body, body > div {
+  height: 100%;
+}
+
+.appWrapper {
+  margin-bottom: $footerHeight;
+}
+
+.appFooter {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: $footerHeight;
+}
