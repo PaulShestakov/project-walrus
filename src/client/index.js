@@ -12,7 +12,6 @@ import App from './app/app.jsx';
 require('font-awesome/css/font-awesome.css');
 require('./assets/fonts/fontBebasNeueRegular/fontBebasNeueRegular.scss');
 
-
 class Root extends React.Component {
   render() {
     return (
@@ -24,6 +23,5 @@ class Root extends React.Component {
     );
   }
 };
-
 
 ReactDOM.render(<Root/>, document.getElementById('root'));
