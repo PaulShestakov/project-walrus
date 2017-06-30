@@ -6,7 +6,8 @@ const path = require('path');
 const app = express();
 const PORT = 8080;
 
-app.use(express.static(path.join(__dirname, './../../dist')));
+// App sources
+app.use('/', express.static(path.join(__dirname, './../../dist')));
 
 app.get('*', function(request, response) {
     response.sendFile(path.join(__dirname, './../../dist', 'index.html'));

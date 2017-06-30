@@ -1,13 +1,17 @@
 import React from 'react';
+import { translate, Interpolate, Trans } from 'react-i18next';
 import FontAwesome from 'react-fontawesome';
 import { Link } from 'react-router-dom';
-import { Grid, Row, Col, Image, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Image } from 'react-bootstrap';
 
 import logo from './img/Logo.svg';
 import './styles/style.scss';
 
-export default class Header extends React.Component {
+@translate(['header'], { wait: true })
+class Header extends React.Component {
 	render() {
+		const t = this.props.t;
+
 		return (
 			<header className={ ['headerWrapper', this.props.className || '' ].join(' ') }
 				itemType="http://schema.org/Header" itemScope>
@@ -17,30 +21,30 @@ export default class Header extends React.Component {
 							<Image src={logo} alt="Logo" itemProp="logo" responsive />
 						</Col>
 						<Col md={2}>
-							Search
+							{t('SEARCH')}
 						</Col>
 						<Col md={2}>
-							<Link to="/">
+							<Link to="/promoCreation">
 								<FontAwesome name="bullhorn" className='headerIcon' />
-								Объявления
+								{t('PROMOS')}
 							</Link>
 						</Col>
 						<Col md={2}>
 							<Link to="/">
 								<FontAwesome name="comments" className='headerIcon' />
-								Блог
+								{t('BLOG')}
 							</Link>
 						</Col>
 						<Col md={2}>
 							<Link to="/">
 								<FontAwesome name="paw" className='headerIcon' />
-								Афиша
+								{t('AFFICHE')}
 							</Link>
 						</Col>
 						<Col md={2}>
 							<Link to="/">
 								<FontAwesome name="sign-in" className='headerIcon' />
-								Войти
+								{t('ENTER')}
 							</Link>
 						</Col>
 					</Row>
@@ -49,32 +53,32 @@ export default class Header extends React.Component {
 						<Col md={2}>
 							<Link to="/">
 								<FontAwesome name="bars" className='headerIcon' />
-								Все разделы
+								{t('ALL_SECTIONS')}
 							</Link>
 						</Col>
 						<Col md={2}>
 							<Link to='/'>
-								Гид по видам и породам
+								{t('GUIDE')}
 							</Link>
 						</Col>
 						<Col md={2}>
 							<Link to='/'>
-								Зоокаталоги
+								{t('ZOOCALLS')}
 							</Link>
 						</Col>
 						<Col md={2}>
 							<Link to='/'>
-								Жизнь с питомцем
+								{t('LIFE_WITH_PET')}
 							</Link>
 						</Col>
 						<Col md={2}>
 							<Link to='/'>
-								Говорят специалисты
+								{t('SPECIALISTS')}
 							</Link>
 						</Col>
 						<Col md={2}>
 							<Link to='/'>
-								Позитив
+								{t('POSITIVE')}
 							</Link>
 						</Col>
 					</Row>
@@ -82,4 +86,6 @@ export default class Header extends React.Component {
 			</header>
 		);
 	}
-};
+}
+
+export default Header;
