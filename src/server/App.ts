@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 
-import Promo from './routes/promo/Promo';
+import Promo from './api/promo/Promo';
 
 class App {
 

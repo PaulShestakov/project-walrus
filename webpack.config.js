@@ -63,7 +63,7 @@ module.exports = [
         resolve: {
             extensions: ['.js', '.ts'],
             modules: [
-                "./src/server/*",
+                './src/server',
                 'node_modules',
             ]
         },

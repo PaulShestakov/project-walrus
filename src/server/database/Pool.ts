@@ -2,11 +2,11 @@ import * as mysql from 'mysql';
 
 const pool = mysql.createPool({
     connectionLimit : 100, //important
-    host     : 'cp.karal.neolocation.net/PhPmYaDmIn/',
-    port     : '443',
+    host     :  process.env.DATABASE_HOST || '127.0.0.1',
+    port     :  process.env.PORT || 3306,
     user     : 'wikipetsdev',
     password : 'RBxKVaMJDjbYCSvf',
-    database : 'wikipetsdev',
+    database : 'wikipet',
     debug    :  false
 });
 
