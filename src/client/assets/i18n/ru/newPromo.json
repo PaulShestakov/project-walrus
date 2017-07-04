@@ -1,0 +1,33 @@
+{
+  "PROMO_TYPE": "Тип объявления",
+
+
+  "WILL_SELL": "Продам",
+  "WILL_BUY": "Куплю",
+  "WILL_GIVE_GIFT": "Подарю",
+  "WILL_ACCEPT_GIFT": "Приму в дар",
+  "LOST": "Потерялся",
+  "FOUND": "Нашёлся",
+
+
+  "PROMO_NAME": "Название объявления",
+  "ENTER_PROMO_NAME": "Введите название объявления",
+
+  "CITY": "Город",
+  "FOUND_ADDRESS": "Найден на улице/в районе",
+  "FOUND_TIME": "Найден в",
+  "GENDER": "Пол",
+  "SELECT_GENDER": "Выберите пол",
+  "BOY": "Мальчик",
+  "GIRL": "Девочка",
+  "APPROXIMATE_AGE": "Примерный возраст",
+  "DESCRIPTION": "Описание",
+  "YOUR_NAME": "Ваше имя",
+  "YOUR_PHONE": "Ваш телефон",
+
+
+  "PUBLISH": "Опубликовать"
+
+
+
+}

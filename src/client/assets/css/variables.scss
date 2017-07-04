@@ -1,0 +1,81 @@
+@import "mixins";
+//Colors
+$white: #fff;
+$black: #000;
+$red: #9d331b;
+$grey: #e1e1e1;
+$light-grey : #f8f8f8;
+$light-blue: #2f767b;
+$light-black: #444444;
+$color-hover: #9d331b;
+$color-heading: #106178;
+$color-speedbar: #2f767b;
+$color-secondary: #8f8f8f;
+$color-header-bottom-menu: #737373;
+$color-header-top-menu: #585858;
+
+//Sizes
+$footer-height: 400px;
+$main-page-slider-height: 400px;
+
+/*
+    IF YOU ARE GOING TO ADD A NEW VARIABLE THEN PLEASE USE THE FOLLOWING PATTERNS:
+    FONT SIZES: $font-size-[specific name]-[sizes : lg,md,sm,xs] : [value];
+    FONTS : $font-[specific name] : [value];
+    SIZES FOR THE REST OF ELEMENTS : $size-[specific name]-[sizes : lg,md,sm,xs] : [value];
+*/
+
+//lg
+
+//fonts
+$text-menu-title-size-lg: 1.5rem;
+$font-size-top-bottom-menu-lg: 1.4rem;
+$font-size-top-top-menu-lg: 1rem;
+
+//rest of sizes
+$main-page-slider-height-lg : 400px;
+$size-goods-item-lg: 200px;
+
+//md
+
+//fonts
+$text-size: 1rem;
+$text-menu-title-size-md: 1.5rem;
+$text-title-size: 3rem;
+$font-size-top-bottom-menu-md : 1.1rem;
+$font-size-top-top-menu-md : 0.9rem;
+
+//rest of sizes
+$main-page-slider-height-md : 400px;
+$size-goods-item-md : 120px;
+
+//sm
+
+//fonts
+$tablet-text-size: 1rem;
+$tablet-menu-title-size: 1.1rem;
+$tablet-text-title-size: 2.5rem;
+$font-size-top-bottom-menu-sm : 0.8rem;
+$font-size-top-top-menu-sm : 0.7rem;
+
+//rest of sizes
+$main-page-slider-height-sm : 300px;
+$size-goods-item-sm : 80px;
+
+//xs
+
+$mobile-text-size: 1rem;
+$mobile-menu-title-size: 1rem;
+$mobile-text-title-size: 2rem;
+//rest of sizes
+$main-page-slider-height-xs : 150px;
+$size-goods-item-xs : 50px;
+
+
+// Fonts
+@include font-face('OpenSans', '../fonts/fontOpenSans/OpenSans', null, null, eot svg ttf woff);
+@include font-face('BebasNeueRegular', '../fonts/fontBebasNeueRegular/BebasNeueRegular', null, null, eot svg ttf woff);
+
+$font-default: 'OpenSans', sans-serif;
+$font-heading: 'BebasNeueRegular', sans-serif;
+$font-awesome: 'FontAwesome', sans-serif;

@@ -11,14 +11,14 @@ import i18n from 'i18next';
 
 import Header from './scenes/header/Header.jsx';
 import Footer from './scenes/footer/Footer.jsx';
-import PromoCreation from './scenes/promoCreation/PromoCreation.jsx';
+import PromoCreation from './scenes/newPromo/NewPromo.jsx';
 
 import './app.scss';
 import './assets/img/favicon.ico';
 
 // Fonts
 require('font-awesome/css/font-awesome.css');
-require('./assets/fonts/fontBebasNeueRegular/fontBebasNeueRegular.scss');
+require('./assets/css/variables.scss');
 
 // Config i18n, keep in mind, that using this loader we
 // load all locales, regardless of whether we need them or not
