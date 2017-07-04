@@ -16,67 +16,61 @@ class Header extends React.Component {
 			<header className={ ['headerWrapper', this.props.className || '' ].join(' ') }
 				itemType="http://schema.org/Header" itemScope>
 				<Grid className="py-4">
-					<Row className='topHeader mb-4 d-flex align-items-center justify-content-between'>
+					<Row className='topHeader mb-4'>
 						<Col md={2}>
 							<Image src={logo} alt="Logo" itemProp="logo" style={{width: '100%'}} />
 						</Col>
-						<Col>
-							{t('SEARCH')}
-						</Col>
-						<Col>
+
+						<Col md={10} className='d-flex align-items-center justify-content-between'>
+							<Link to="/">
+								<FontAwesome name="search" className='mr-1' />
+								{t('SEARCH')}
+							</Link>
+
 							<Link to="/promoCreation">
-								<FontAwesome name="bullhorn" className='headerIcon' />
+								<FontAwesome name="bullhorn" className='mr-1' />
 								{t('PROMOS')}
 							</Link>
-						</Col>
-						<Col>
+
 							<Link to="/">
-								<FontAwesome name="comments" className='headerIcon' />
+								<FontAwesome name="comments" className='mr-1' />
 								{t('BLOG')}
 							</Link>
-						</Col>
-						<Col>
+
 							<Link to="/">
-								<FontAwesome name="paw" className='headerIcon' />
+								<FontAwesome name="paw" className='mr-1' />
 								{t('AFFICHE')}
 							</Link>
-						</Col>
-						<Col>
+
 							<Link to="/">
-								<FontAwesome name="sign-in" className='headerIcon' />
+								<FontAwesome name="sign-in" className='mr-1' />
 								{t('ENTER')}
 							</Link>
 						</Col>
 					</Row>
 
-					<Row className='bottomHeader d-flex align-items-center justify-content-between'>
-						<Col>
+					<Row className='bottomHeader'>
+						<Col md={12} className='d-flex align-items-center justify-content-between'>
 							<Link to="/">
-								<FontAwesome name="bars" className='headerIcon' />
 								{t('ALL_SECTIONS')}
 							</Link>
-						</Col>
-						<Col>
+
 							<Link to='/'>
 								{t('GUIDE')}
 							</Link>
-						</Col>
-						<Col>
+
 							<Link to='/'>
 								{t('ZOOCALLS')}
 							</Link>
-						</Col>
-						<Col>
+
 							<Link to='/'>
 								{t('LIFE_WITH_PET')}
 							</Link>
-						</Col>
-						<Col>
+
 							<Link to='/'>
 								{t('SPECIALISTS')}
 							</Link>
-						</Col>
-						<Col>
+
 							<Link to='/'>
 								{t('POSITIVE')}
 							</Link>

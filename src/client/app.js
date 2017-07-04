@@ -18,7 +18,7 @@ import './assets/img/favicon.ico';
 
 // Fonts
 require('font-awesome/css/font-awesome.css');
-require('./assets/css/variables.scss');
+require('./assets/fonts/fonts.scss');
 
 // Config i18n, keep in mind, that using this loader we
 // load all locales, regardless of whether we need them or not

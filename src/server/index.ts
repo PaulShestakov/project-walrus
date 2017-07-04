@@ -3,17 +3,19 @@ import * as debug from 'debug';
 
 import App from './App';
 
-const port = 8090;
-App.set('port', port);
+const PORT = 8080;
 
-const server = http.createServer(App);
-server.listen(port);
+const express = new App().express;
+express.set('port', PORT);
+
+const server = http.createServer(express);
+server.listen(PORT);
 server.on('error', onError);
 server.on('listening', onListening);
 
 function onError(error: NodeJS.ErrnoException): void {
     if (error.syscall !== 'listen') throw error;
-    let bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
+    let bind = (typeof PORT === 'string') ? 'Pipe ' + PORT : 'Port ' + PORT;
     switch(error.code) {
         case 'EACCES':
             console.error(`${bind} requires elevated privileges`);

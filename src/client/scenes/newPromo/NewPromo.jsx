@@ -1,7 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 
-import { Checkbox, Grid, Row, FormControl, FormGroup, Radio, Form, Button } from 'react-bootstrap';
+import { Checkbox, Grid, Row, FormControl, FormGroup, Radio, Form, Button, Col } from 'react-bootstrap';
 import Title from '../../components/title/Title.jsx';
 import RadioGroup from '../../components/radioGroup/RadioGroup.jsx';
 
@@ -57,38 +57,44 @@ class NewPromo extends React.Component {
 
 		return (
 			<Grid>
-				<Row><Title tag='h4' text={t('PROMO_TYPE')} className="mediumMarginTop" /></Row>
+				<Row>
+					<Col md={12}>
+						<Title tag='h4' text={t('PROMO_TYPE')} className="mediumMarginTop" />
+					</Col>
+				</Row>
 
 				<Row>
-					<RadioGroup
-						onChange={this.handlePromoTypeSelected}
-						options={[
-							{
-								id: 'SELL',
-								labelText: t('WILL_SELL')
-							},
-							{
-								id: 'BUY',
-								labelText: t('WILL_BUY')
-							},
-							{
-								id: 'GIVE_GIFT',
-								labelText: t('WILL_GIVE_GIFT')
-							},
-							{
-								id: 'ACCEPT_GIFT',
-								labelText: t('WILL_ACCEPT_GIFT')
-							},
-							{
-								id: 'LOST',
-								labelText: t('LOST')
-							},
-							{
-								id: 'FOUND',
-								labelText: t('FOUND')
-							}
-						]}
-					/>
+					<Col md={12}>
+						<RadioGroup
+							onChange={this.handlePromoTypeSelected}
+							options={[
+								{
+									id: 'SELL',
+									labelText: t('WILL_SELL')
+								},
+								{
+									id: 'BUY',
+									labelText: t('WILL_BUY')
+								},
+								{
+									id: 'GIVE_GIFT',
+									labelText: t('WILL_GIVE_GIFT')
+								},
+								{
+									id: 'ACCEPT_GIFT',
+									labelText: t('WILL_ACCEPT_GIFT')
+								},
+								{
+									id: 'LOST',
+									labelText: t('LOST')
+								},
+								{
+									id: 'FOUND',
+									labelText: t('FOUND')
+								}
+							]}
+						/>
+					</Col>
 				</Row>
 
 				<Row>
