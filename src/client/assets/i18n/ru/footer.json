@@ -1,3 +1,22 @@
 {
-  "test": "RU TEST"
+  "ABOUT_US": "О нас",
+  "EDITORIAL_POLICY": "Редакционная политика",
+  "FOR_ADVERTISERS": "Рекламодателям",
+  "PUBLIC_OFFER_CONTRACT": "Договор публичной оферты",
+  "CONTACTS": "Контакты",
+
+  "PETS_MEINTENANCE_LEGAL_ISSUES": "Содержание домашних питомцев (правовые вопросы)",
+  "SPECIAL_PROJECTS": "Специальные проекты",
+
+  "INSTAGRAM": "Instagram",
+  "VK": "Вконтакте",
+  "FB": "Facebook",
+  "O": "Одноклассники",
+  "YOUTUBE": "YouTube",
+
+  "SUBSCRIBE_FOR_NEWSLETTER": "Подписка на рассылку",
+  "ENTER_EMAIL": "Введите email",
+  "SUBSCRIBE": "Подписаться",
+
+  "BOTTOM_INFO": "Wikipet 2017"
 }

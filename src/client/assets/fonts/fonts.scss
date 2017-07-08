@@ -1,0 +1,21 @@
+@font-face {
+  font-family: 'BebasNeueRegular';
+  src: url('./fontBebasNeueRegular/BebasNeueRegular.eot');
+  src: url('./fontBebasNeueRegular/BebasNeueRegular.eot?#iefix') format('embedded-opentype'),
+  url('./fontBebasNeueRegular/BebasNeueRegular.woff') format('woff'),
+  url('./fontBebasNeueRegular/BebasNeueRegular.ttf') format('truetype'),
+  url('./fontBebasNeueRegular/BebasNeueRegular.svg#BebasNeueRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  src: url('./fontOpenSans/OpenSans.eot');
+  src: url('./fontOpenSans/OpenSans.eot?#iefix') format('embedded-opentype'),
+  url('./fontOpenSans/OpenSans.woff') format('woff'),
+  url('./fontOpenSans/OpenSans.ttf') format('truetype'),
+  url('./fontOpenSans/OpenSans.svg#OpenSans') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

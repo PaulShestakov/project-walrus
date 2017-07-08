@@ -4,12 +4,11 @@ import * as helmet from 'helmet';
 
 import Promo from './controller/Promo';
 
-class App {
-
+export default class App {
     // ref to Express instance
     public express: express.Application;
 
-    //Run configuration methods on the Express instance.
+    // Run configuration methods on the Express instance.
     constructor() {
         this.express = express();
         this.middleware();
@@ -26,12 +25,10 @@ class App {
 
     // Configure API endpoints.
     private routes(): void {
-        this.express.use('/api/v1/promo', Promo);
-        this.express.get("/*", (req, res, next) => {
-            res.status(404).send("Incorrect endpoint");
+        //this.express.use('/api/v1/promo', Promo);
+
+        this.express.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname, './../client', 'index.html'));
         });
     }
-
 }
-
-export default new App().express;
