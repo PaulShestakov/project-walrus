@@ -3,6 +3,7 @@ const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+var nodeExternals = require('webpack-node-externals');
 
 
 module.exports = [
@@ -56,6 +57,7 @@ module.exports = [
             index: './src/server'
         },
         target: 'node',
+        externals: [nodeExternals()],
         output: {
             path: path.resolve(__dirname, 'dist', 'server'),
             filename: '[name].js'

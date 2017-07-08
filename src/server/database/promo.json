@@ -1,0 +1,11 @@
+{
+  "title" : "Test promo 1",
+  "description" : "Test promo 1 description",
+  "date" : "2017-02-28 16:44:25",
+  "city" : "Minsk",
+  "animal" : "test animal",
+  "breed" : "test breed",
+  "image" : "/path/to/image",
+  "type" : "275c5e07-63ca-11e7-8224-bc5ff40f7ff3",
+  "status" : "026f16bc-63ca-11e7-8224-bc5ff40f7ff3"
+}
