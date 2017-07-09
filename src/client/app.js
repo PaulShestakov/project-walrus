@@ -4,14 +4,14 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Provider } from 'react-redux'
 
 import configureStore from './store/configStore.js';
-const store = configureStore();
 
 import { I18nextProvider, translate } from 'react-i18next';
 import i18n from 'i18next';
 
-import Header from './scenes/header/Header.jsx';
-import Footer from './scenes/footer/Footer.jsx';
-import PromoCreation from './scenes/newPromo/NewPromo.jsx';
+import Header from './components/header/Header.jsx';
+import Footer from './components/footer/Footer.jsx';
+
+import NewPromo from './containers/NewPromo';
 
 import './app.scss';
 import './assets/img/favicon.ico';
@@ -31,6 +31,7 @@ i18n.init({
 	resources: require("i18next-resource-store-loader!./assets/i18n/index.js")
 });
 
+const store = configureStore();
 
 class App extends React.Component {
   render() {
@@ -43,7 +44,7 @@ class App extends React.Component {
 
 						<main>
 							<Switch>
-								<Route path='/promoCreation' component={PromoCreation} />
+								<Route path='/newPromo' component={NewPromo} />
 							</Switch>
 						</main>
 

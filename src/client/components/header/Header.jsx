@@ -27,7 +27,7 @@ class Header extends React.Component {
 								{t('SEARCH')}
 							</Link>
 
-							<Link to="/promoCreation">
+							<Link to="/">
 								<FontAwesome name="bullhorn" className='mr-1' />
 								{t('PROMOS')}
 							</Link>
@@ -51,10 +51,6 @@ class Header extends React.Component {
 
 					<Row className='bottomHeader'>
 						<Col md={12} className='d-flex align-items-center justify-content-between'>
-							<Link to="/">
-								{t('ALL_SECTIONS')}
-							</Link>
-
 							<Link to='/'>
 								{t('GUIDE')}
 							</Link>

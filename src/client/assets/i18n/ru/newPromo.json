@@ -1,7 +1,6 @@
 {
   "PROMO_TYPE": "Тип объявления",
 
-
   "WILL_SELL": "Продам",
   "WILL_BUY": "Куплю",
   "WILL_GIVE_GIFT": "Подарю",
@@ -9,25 +8,43 @@
   "LOST": "Потерялся",
   "FOUND": "Нашёлся",
 
-
   "PROMO_NAME": "Название объявления",
   "ENTER_PROMO_NAME": "Введите название объявления",
 
   "CITY": "Город",
-  "FOUND_ADDRESS": "Найден на улице/в районе",
-  "FOUND_TIME": "Найден в",
+  "ENTER_CITY": "Введите город",
+
   "GENDER": "Пол",
   "SELECT_GENDER": "Выберите пол",
   "BOY": "Мальчик",
   "GIRL": "Девочка",
   "APPROXIMATE_AGE": "Примерный возраст",
-  "DESCRIPTION": "Описание",
-  "YOUR_NAME": "Ваше имя",
-  "YOUR_PHONE": "Ваш телефон",
+  "ENTER_APPROXIMATE_AGE": "Введите примерный возраст",
 
+  "LOST_ADDRESS": "Потерян на улице/в районе",
+  "ENTER_LOST_ADDRESS": "Введите адрес",
+  "LOST_TIME": "Потерян в",
+  "ENTER_LOST_TIME": "Введите время",
+
+  "FOUND_ADDRESS": "Найден на улице/в районе",
+  "ENTER_FOUND_ADDRESS": "Введите адрес",
+  "FOUND_TIME": "Найден в",
+  "ENTER_FOUND_TIME": "Введите время",
+
+  "PRICE_IN_BYR": "Цена(только в белорусских рублях)",
+  "ENTER_PRICE_IN_BYR": "Введите цену в белорусских рублях",
+
+  "YOUR_NAME": "Ваше имя",
+  "ENTER_YOUR_NAME": "Введите ваше имя",
+  "YOUR_PHONE": "Ваш телефон",
+  "ENTER_YOUR_PHONE": "Введите ваш телефон",
+  "ADDRESS": "Адрес",
+  "ENTER_ADDRESS": "Введите адрес",
+  "YOUR_EMAIL": "Ваш email",
+  "ENTER_YOUR_EMAIL": "Введите ваш email",
+
+  "DESCRIPTION": "Описание",
+  "ENTER_DESCRIPTION": "Введите описание",
 
   "PUBLISH": "Опубликовать"
-
-
-
 }

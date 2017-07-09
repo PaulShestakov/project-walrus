@@ -1,0 +1,24 @@
+button.button {
+  border-radius: 0;
+  color: white;
+  font-family: BebasNeueRegular, serif;
+  text-transform: uppercase;
+  outline: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.activeButton {
+  background-color: #014c8c;
+}
+
+.passiveButton {
+  background-color: #9d331b;
+}
+
+.defaultButton {
+  background-color: #d0d5d8;
+}
+

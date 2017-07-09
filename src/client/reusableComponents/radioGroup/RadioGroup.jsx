@@ -26,13 +26,14 @@ class RadioGroup extends React.Component {
 					this.props.options.map(option => {
 						return (
 							<Row key={option.id}
-								 className="mediumMarginTopBottom">
-								<label>
-									<input
+								 className="my-3">
+								<label className="m-0">
+									<input value={option.id}
+										name={this.props.name}
 										type="radio"
 										checked={this.state.selectedOption === option.id}
 										onChange={this.handleRadioChecked.bind(this, option.id)}
-										className="mediumMarginRight"
+										className="mr-2"
 									/>
 									<Text text={option.labelText} />
 								</label>
@@ -46,6 +47,7 @@ class RadioGroup extends React.Component {
 }
 
 RadioGroup.propTypes = {
+	name: PropTypes.string,
 	options: PropTypes.arrayOf(
 		PropTypes.shape({
 			id: PropTypes.string,

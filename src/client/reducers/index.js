@@ -1,5 +1,9 @@
 import { combineReducers } from 'redux';
 
-export const rootReducer = combineReducers({
+import newPromo from './newPromo';
 
+const rootReducer = combineReducers({
+	newPromo,
 });
+
+export default rootReducer;

@@ -20,6 +20,8 @@
     "i18next": "^8.4.2",
     "i18next-resource-store-loader": "^0.1.2",
     "i18next-xhr-backend": "^1.4.2",
+    "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.17.4",
     "mysql": "^2.13.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
