@@ -4,6 +4,7 @@ const nodeExternals = require('webpack-node-externals');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = [
 	{
@@ -30,10 +31,6 @@ module.exports = [
 					loader: 'babel-loader'
 				},
 				{
-					test: /\.(svg|ico)$/,
-					use: 'file-loader?name=/images/[name].[ext]'
-				},
-				{
 					test: /\.(css|scss)$/,
 					use: ExtractTextPlugin.extract({
 						fallback: "style-loader",
@@ -41,8 +38,13 @@ module.exports = [
 					})
 				},
 				{
-					test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+					test: /\.(woff(2)?|svg|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+					exclude: [/img/],
 					loader: 'url-loader?name=/fonts/[name].[ext]&limit=10000'
+				},
+				{
+					test: /\.(svg|ico)$/,
+					use: 'file-loader?name=/images/[name].[ext]'
 				}
 			]
 		},
@@ -50,7 +52,8 @@ module.exports = [
 			new HtmlWebpackPlugin({
 				template: 'src/client/index.html'
 			}),
-			new ExtractTextPlugin('styles.css')
+			new ExtractTextPlugin('styles.css'),
+			new UglifyJSPlugin(),
 		]
 	},
 	{
