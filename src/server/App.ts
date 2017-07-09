@@ -1,8 +1,8 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import * as path from 'path';
+import * as helmet from 'helmet';
 
-import Promo from './routes/promo/Promo';
+import Promo from './controller/Promo';
 
 export default class App {
     // ref to Express instance
@@ -17,7 +17,8 @@ export default class App {
 
     // Configure Express middleware.
     private middleware(): void {
-        this.express.use('/', express.static(path.join(__dirname, '../client')));
+        //this.express.use(express.static(__dirname + '/dist'));
+        // this.express.use(helmet());
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({ extended: false }));
     }
