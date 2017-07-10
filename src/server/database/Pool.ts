@@ -1,5 +1,6 @@
 import * as mysql from 'mysql';
 import * as config from 'config';
+import log from './../logger/Logger';
 
 const pool = mysql.createPool({
     connectionLimit : 100, //important
@@ -13,36 +14,42 @@ const pool = mysql.createPool({
 //Test connection
 pool.getConnection(function(err, connection) {
     if (!err) {
-        console.log('DB is connected');
+        log.info('DB is connected');
         connection.query("SELECT COUNT(*) as count FROM PROMO", (err, rows) => {
             if (rows[0].count > 0) {
-                console.log('test data is already inserted');
+                log.info('test data is already inserted');
             } else {
                 const data = require('./../database/promo.json');
                 connection.query("INSERT INTO promo set ? ", data, (err, result) => {
                     if (err) {
-                        console.log("Error inserting : %s +", err);
+                        log.error("Error inserting : %s +", err);
                     } else {
-                        console.log(data.title + " inserted successfully");
+                        log.info(data.title + " inserted successfully");
                     }
                 });
             }
         });
     } else {
-        console.log('DB is not connected, error : ' + err);
+        log.warning('DB is not connected, error : ' + err);
     }
     connection.release();
 });
 
-const getConnection = function (callback) {
-    pool.getConnection((err,conn) => {
-        if (err) {
-            console.log('Error during to connection to database ' + err);
-        } else {
-            callback(conn);
-        }
-        conn.release();
+const executeQuery = (query, params) => {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((err,conn) => {
+            try {
+                conn.query(query, params, (err, rows) => {
+                    conn.release();
+                    return err ? reject(err) : resolve(rows);
+                });
+            } catch (e) {
+                log.error('Error ' + e);
+                conn.release();
+                reject(e);
+            }
+        });
     });
 };
 
-export default getConnection;
+export default executeQuery;

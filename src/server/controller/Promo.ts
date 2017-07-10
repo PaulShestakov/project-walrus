@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import Repo from './../repository/Promo';
+import repo from './../repository/Promo';
+import * as validator from 'validator';
 
 class Promo {
 
@@ -17,12 +18,10 @@ class Promo {
     private get(req: Request, res: Response, next: NextFunction) {
         let uuid = req.params.uuid;
         if (uuid) {
-            Repo.get(uuid, (err, result) => {
-                if (!err) {
-                    res.status(200).send(result);
-                } else {
-                    res.status(500).send();
-                }
+            repo.get(uuid).then((result) => {
+                res.status(200).send(result);
+            }).catch(() => {
+                res.status(500).send();
             });
         } else {
             console.log('Uuid is missing');
@@ -31,24 +30,20 @@ class Promo {
     }
 
     private getAll(req: Request, res: Response, next: NextFunction) {
-        Repo.getAll((err, result) => {
-            if (!err) {
-                res.status(200).send(result);
-            } else {
-                res.status(500).send();
-            }
+        repo.getAll().then((result) => {
+            res.status(200).send(result);
+        }).catch(() => {
+            res.status(500).send();
         });
     }
 
     private save(req: Request, res: Response, next: NextFunction) {
         let promo = JSON.parse(JSON.stringify(req.body));
         if (promo) {
-            Repo.save(promo, (err) => {
-                if (!err) {
-                    res.status(200).send();
-                } else {
-                    res.status(500).send();
-                }
+            repo.save(promo).then(() => {
+                res.status(200).send();
+            }).catch(() => {
+                res.status(500).send();
             });
         } else {
             res.status(400).send('Promo is missing');
@@ -57,12 +52,10 @@ class Promo {
     private update(req: Request, res: Response, next: NextFunction) {
         let promo = JSON.parse(JSON.stringify(req.body));
         if (promo) {
-            Repo.update(promo, (err) => {
-                if (!err) {
-                    res.status(200).send();
-                } else {
-                    res.status(500).send();
-                }
+            repo.update(promo).then(() => {
+                res.status(200).send();
+            }).catch(() => {
+                res.status(500).send();
             });
         } else {
             res.status(400).send('Promo is missing');
@@ -72,12 +65,10 @@ class Promo {
     private remove(req: Request, res: Response, next: NextFunction) {
         let uuid = req.params.uuid;
         if (uuid) {
-            Repo.remove(uuid, (err) => {
-                if (!err) {
-                    res.status(200).send();
-                } else {
-                    res.status(500).send();
-                }
+            repo.remove(uuid).then(() => {
+                res.status(200).send();
+            }).catch(() => {
+                res.status(500).send();
             });
         } else {
             console.log('Uuid is missing');
