@@ -9,7 +9,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = [
 	{
-		name : 'Client',
+		name : 'client',
 		devtool: 'inline-source-map',
 		entry: {
 			app: './src/client/app.js'
@@ -41,11 +41,17 @@ module.exports = [
 				{
 					test: /\.(woff(2)?|svg|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
 					exclude: [/img/],
-					loader: 'url-loader?name=/fonts/[name].[ext]&limit=10000'
+					loader: 'url-loader',
+					query: {
+						name: '/fonts/[name].[ext]&limit=10000'
+					}
 				},
 				{
 					test: /\.(svg|ico)$/,
-					use: 'file-loader?name=/images/[name].[ext]'
+					loader: 'file-loader',
+					query: {
+						name: '/images/[name].[ext]'
+					}
 				}
 			]
 		},
@@ -58,7 +64,7 @@ module.exports = [
 		]
 	},
 	{
-		name : 'Server',
+		name : 'server',
 		entry: {
 			index: './src/server'
 		},
@@ -80,6 +86,11 @@ module.exports = [
 		},
 		module: {
 			rules: [
+				{
+					test: /\.ts$/,
+					enforce: 'pre',
+					loader: 'tslint-loader'
+				},
 				{
 					test: /.ts$/,
 					exclude: /node_modules/,

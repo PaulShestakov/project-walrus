@@ -5,7 +5,7 @@
   "main": "./dist/server/index.js",
   "scripts": {
     "build": "webpack --progress --colors --watch",
-    "server" : "nodemon dist/server/index.js"
+    "server": "nodemon dist/server/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -59,6 +59,8 @@
     "nodemon": "^1.11.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
+    "tslint": "^5.5.0",
+    "tslint-loader": "^3.5.3",
     "typescript": "^2.4.1",
     "uglifyjs-webpack-plugin": "^0.4.6",
     "url-loader": "^0.5.9",
