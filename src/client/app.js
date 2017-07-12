@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import CSSModules from 'react-css-modules';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Provider } from 'react-redux'
 
@@ -8,16 +9,16 @@ import configureStore from './store/configStore.js';
 import { I18nextProvider, translate } from 'react-i18next';
 import i18n from 'i18next';
 
-import Header from './components/header/Header.jsx';
-import Footer from './components/footer/Footer.jsx';
+import Header from './scenes/header/Header.jsx';
+import Footer from './scenes/footer/Footer.jsx';
 
 import NewPromo from './containers/NewPromo';
+import Promos from './containers/Promos';
 
-import './app.scss';
+import styles from './app.scss';
 import './assets/img/favicon.ico';
 
 // Fonts
-require('font-awesome/css/font-awesome.css');
 require('./assets/fonts/fonts.scss');
 
 // Config i18n, keep in mind, that using this loader we
@@ -33,22 +34,24 @@ i18n.init({
 
 const store = configureStore();
 
+@CSSModules(styles)
 class App extends React.Component {
   render() {
     return (
 		<I18nextProvider i18n={i18n}>
 			<Provider store={store}>
 				<BrowserRouter>
-					<div className="appWrapper">
-						<Header className='appHeader' />
+					<div styleName="appWrapper">
+						<Header />
 
 						<main>
 							<Switch>
+								<Route path='/promos' component={Promos} />
 								<Route path='/newPromo' component={NewPromo} />
 							</Switch>
 						</main>
 
-						<Footer className='appFooter' />
+						<Footer styleName='appFooter' />
 					</div>
 				</BrowserRouter>
 			</Provider>

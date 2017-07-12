@@ -35,7 +35,10 @@ module.exports = [
 					test: /\.(css|scss)$/,
 					use: ExtractTextPlugin.extract({
 						fallback: "style-loader",
-						use: "css-loader!sass-loader"
+						use: [
+							'css-loader?modules,localIdentName="[name]-[local]-[hash:base64:6]"',
+							'sass-loader?sourceMap'
+						]
 					})
 				},
 				{
@@ -59,8 +62,11 @@ module.exports = [
 			new HtmlWebpackPlugin({
 				template: 'src/client/index.html'
 			}),
-			new ExtractTextPlugin('styles.css'),
-			new UglifyJSPlugin(),
+			new ExtractTextPlugin({
+				filename: 'styles.css',
+				allChunks: true
+			}),
+			//new UglifyJSPlugin(),
 		]
 	},
 	{

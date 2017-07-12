@@ -1,0 +1,22 @@
+button.button {
+  border-radius: 0;
+  color: white;
+  font-family: BebasNeueRegular, serif;
+  text-transform: uppercase;
+  outline: none;
+  box-shadow: none;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.accentBlue {
+  background-color: #014c8c;
+}
+
+.accentRed {
+  background-color: #9d331b;
+}
+

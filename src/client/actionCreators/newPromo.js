@@ -5,6 +5,9 @@ export const SAVE_PROMO_SUCCESS = 'SAVE_PROMO_SUCCESS';
 export const SAVE_PROMO_FAILURE = 'SAVE_PROMO_FAILURE';
 
 
+const baseUrl = '/api/v1';
+
+
 const savePromoStart = () => {
 	return {
 		type: SAVE_PROMO_REQUEST,
@@ -29,9 +32,9 @@ export const savePromo = (formData) => {
 	return dispatch => {
 		dispatch(savePromoStart());
 
-		return fetch('/kek', {
+		return fetch(baseUrl + '/promo', {
 			method: 'POST',
-			body: formData
+			body: JSON.stringify(formData)
 		}).then(
 			response => {
 				if (response.ok) {
@@ -39,6 +42,7 @@ export const savePromo = (formData) => {
 				}
 				else {
 					throw new Error('Network response was not ok.');
+					console.log(response)
 				}
 			},
 			error => {
