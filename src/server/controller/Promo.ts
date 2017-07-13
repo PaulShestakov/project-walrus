@@ -1,6 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import repo from './../repository/Promo';
-import * as validator from 'validator';
 
 class Promo {
 
@@ -20,48 +19,36 @@ class Promo {
 		if (uuid) {
 			repo.get(uuid).then((result) => {
 				res.status(200).send(result);
-			}).catch(() => {
-				res.status(500).send();
-			});
+			}).catch(() => this.error(res, 500, err));
 		} else {
-			console.log('Uuid is missing');
-			res.status(400).send('Uuid is missing');
+			this.error(res, 400, '', 'Uuid is missing');
 		}
 	}
 
 	private getAll(req: Request, res: Response, next: NextFunction) {
 		repo.getAll().then((result) => {
 			res.status(200).send(result);
-		}).catch(() => {
-			res.status(500).send();
-		});
+		}).catch(() => this.error(res, 500, err));
 	}
 
 	private save(req: Request, res: Response, next: NextFunction) {
-
-		console.log(req)
-		console.log(typeof req.body)
-		let promo = JSON.parse(JSON.stringify(req.body));
+		let promo = req.body;
 		if (promo) {
 			repo.save(promo).then(() => {
-				res.status(200).send();
-			}).catch(() => {
-				res.status(500).send();
-			});
+				res.status(200).send(promo);
+			}).catch(() => this.error(res, 500, err));
 		} else {
-			res.status(400).send('Promo is missing');
+			this.error(res, 400, err, '', 'Promo is missing');
 		}
 	}
 	private update(req: Request, res: Response, next: NextFunction) {
-		let promo = JSON.parse(JSON.stringify(req.body));
+		let promo = req.body;
 		if (promo) {
 			repo.update(promo).then(() => {
-				res.status(200).send();
-			}).catch(() => {
-				res.status(500).send();
-			});
+				res.status(200).send(promo);
+			}).catch(() => this.error(res, 500, err));
 		} else {
-			res.status(400).send('Promo is missing');
+			this.error(res, 400, '', 'Promo is missing');
 		}
 	}
 
@@ -70,13 +57,15 @@ class Promo {
 		if (uuid) {
 			repo.remove(uuid).then(() => {
 				res.status(200).send();
-			}).catch(() => {
-				res.status(500).send();
-			});
+			}).catch((err) => this.error(res, 500, err));
 		} else {
-			console.log('Uuid is missing');
-			res.status(400).send('Uuid is missing');
+			this.error(res, 400, '', 'Uuid is missing');
 		}
+	}
+
+	private error(res : Response, code : number, err, message : string) : void {
+		console.log('Error ${message} ${err}');
+		res.status(code).send(message ? message : 'Error');
 	}
 }
 

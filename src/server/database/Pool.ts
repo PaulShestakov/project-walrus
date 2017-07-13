@@ -1,6 +1,6 @@
 import * as mysql from 'mysql';
 import * as config from 'config';
-import log from './../logger/Logger';
+import log from '../util/Logger';
 
 const pool = mysql.createPool({
 	connectionLimit : 100, //important
@@ -15,20 +15,6 @@ const pool = mysql.createPool({
 pool.getConnection(function(err, connection) {
 	if (!err) {
 		log.info('DB is connected');
-		connection.query("SELECT COUNT(*) as count FROM PROMO", (err, rows) => {
-			if (rows[0].count > 0) {
-				log.info('test data is already inserted');
-			} else {
-				const data = require('./../database/promo.json');
-				connection.query("INSERT INTO promo set ? ", data, (err, result) => {
-					if (err) {
-						log.error("Error inserting : %s +", err);
-					} else {
-						log.info(data.title + " inserted successfully");
-					}
-				});
-			}
-		});
 	} else {
 		log.warning('DB is not connected, error : ' + err);
 	}
