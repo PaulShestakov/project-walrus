@@ -21,7 +21,8 @@ module.exports = [
 		resolve: {
 			extensions: ['.js', '.jsx'],
 			modules: [
-				"node_modules"
+				path.resolve('./node_modules'),
+				path.resolve('./src/client/components'),
 			]
 		},
 		module: {
@@ -31,8 +32,9 @@ module.exports = [
 					exclude: /node_modules/,
 					loader: 'babel-loader'
 				},
+				// This rule is for css modules files
 				{
-					test: /\.(css|scss)$/,
+					test: /\.module\.(css|scss)$/,
 					use: ExtractTextPlugin.extract({
 						fallback: "style-loader",
 						use: [
@@ -40,6 +42,18 @@ module.exports = [
 							'sass-loader?sourceMap'
 						]
 					})
+				},
+				// This rule is for global css files
+				{
+					test: /\.global\.(css|scss)$/,
+					use: ExtractTextPlugin.extract({
+						fallback: "style-loader",
+						use: [
+							"css-loader",
+							"sass-loader"
+						]
+					})
+
 				},
 				{
 					test: /\.(woff(2)?|svg|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,

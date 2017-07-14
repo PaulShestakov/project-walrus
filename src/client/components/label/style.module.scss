@@ -1,0 +1,16 @@
+@import './../../app.module.scss';
+
+.label {
+  line-height: 1.25rem;
+  font-family: BebasNeueRegular, serif;
+  text-transform: uppercase;
+  color: white;
+}
+
+.accentBlue {
+  background-color: $accent-blue;
+}
+
+.accentRed {
+  background-color: $accent-red;
+}

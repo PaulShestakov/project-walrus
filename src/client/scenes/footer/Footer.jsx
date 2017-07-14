@@ -6,11 +6,11 @@ import { translate, Interpolate, Trans } from 'react-i18next';
 
 import Separator from '../../components/separator/Separator';
 
-import './style.scss';
+import './style.module.scss';
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 
-import styles from './style.scss';
+import styles from './style.module.scss';
 
 @translate(['footer'])
 @CSSModules(styles)
@@ -70,9 +70,10 @@ class Footer extends React.Component {
 								{t('SUBSCRIBE_FOR_NEWSLETTER')}
 							</Link>
 							<Input placeholder={t('ENTER_EMAIL')} className="my-2" />
-							<Button text={t('SUBSCRIBE')}
-								accent="red"
-								className="my-2" />
+							<Button accent="red"
+								className="my-2">
+								text={t('SUBSCRIBE')}
+							</Button>
 						</Col>
 					</Row>
 

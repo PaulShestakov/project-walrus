@@ -1,0 +1,13 @@
+{
+  "FIND": "Найти",
+  "CREATE_PROMO": "Создать объявление",
+  "ENTER_REQUEST": "Введите запрос",
+
+  "FILTERS": "Фильтры",
+  "SELECT_PROMO_TYPE": "Выберите тип объявления",
+  "SELECT_PET": "Выберите питомца",
+  "SELECT_BREED": "Выберите породу",
+  "PRICE_FROM": "Цена от",
+  "PRICE_TO": "Цена до",
+  "LOCATION": "Местоположение"
+}

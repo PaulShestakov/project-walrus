@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { FormControl } from 'react-bootstrap';
 
-import './style.scss';
+import './style.module.scss';
 
 export default class SearchInput extends React.Component {
 	render() {

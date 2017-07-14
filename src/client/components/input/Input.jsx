@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import { FormControl } from 'react-bootstrap';
 
-import styles from './style.scss';
+import styles from './style.module.scss';
 
 @CSSModules(styles)
 class Input extends React.Component {

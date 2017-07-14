@@ -1,3 +1,5 @@
+@import './../../app.module.scss';
+
 button.button {
   border-radius: 0;
   color: white;
@@ -13,10 +15,10 @@ button.button {
 }
 
 .accentBlue {
-  background-color: #014c8c;
+  background-color: $accent-blue;
 }
 
 .accentRed {
-  background-color: #9d331b;
+  background-color: $accent-red;
 }
 

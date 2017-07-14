@@ -4,10 +4,14 @@ import CSSModules from 'react-css-modules';
 import styles from './style.module.scss';
 
 @CSSModules(styles)
-export default class Separator extends React.Component {
+class Card extends React.Component {
 	render() {
 		return (
-			<div {...this.props} styleName="separator"></div>
+			<div styleName="card" {...this.props}>
+				{this.props.children}
+			</div>
 		);
 	}
 }
+
+export default Card;

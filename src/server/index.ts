@@ -16,7 +16,7 @@ server.on('listening', onListening);
 function onError(error: NodeJS.ErrnoException): void {
 	if (error.syscall !== 'listen') throw error;
 	let bind = (typeof PORT === 'string') ? 'Pipe ' + PORT : 'Port ' + PORT;
-	switch(error.code) {
+	switch (error.code) {
 		case 'EACCES':
 			console.error(`${bind} requires elevated privileges`);
 			process.exit(1);

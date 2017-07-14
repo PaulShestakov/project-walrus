@@ -2,7 +2,7 @@ import React from 'react';
 import CSSModules from 'react-css-modules';
 import PropTypes from 'prop-types';
 
-import styles from './style.scss';
+import styles from './style.module.scss';
 
 @CSSModules(styles)
 export default class Text extends React.Component {

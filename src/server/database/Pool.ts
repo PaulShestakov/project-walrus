@@ -11,7 +11,7 @@ const pool = mysql.createPool({
 	database :  config.get('mysql.db')
 });
 
-//Test connection
+// Test connection
 pool.getConnection(function(err, connection) {
 	if (!err) {
 		log.info('DB is connected');

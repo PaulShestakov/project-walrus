@@ -1,12 +1,11 @@
 import React from 'react';
 import CSSModules from 'react-css-modules';
 import PropTypes from 'prop-types';
-import { Button as BootstrapButton } from 'react-bootstrap';
 
 import styles from './style.module.scss';
 
 @CSSModules(styles)
-class Button extends React.Component {
+export default class Label extends React.Component {
 	render() {
 		let accentStyleClass = '';
 
@@ -18,17 +17,29 @@ class Button extends React.Component {
 				accentStyleClass = 'accentRed';
 				break;
 		}
+
+		const className = [
+			this.props.styles.label,
+			this.props.styles[accentStyleClass],
+			this.props.className
+		].join(' ');
+
+		const style = {
+			fontSize: this.props.fontSize
+		};
+
 		return (
-			<BootstrapButton {...this.props}
-				className={[this.props.styles.button, this.props.styles[accentStyleClass], this.props.className].join(' ')}>
+			<span style={style} className={className}>
 				{this.props.children}
-			</BootstrapButton>
+			</span>
 		);
 	}
-}
-
-Button.propTypes = {
-	accent: PropTypes.oneOf(['blue', 'red'])
 };
 
-export default Button;
+Label.defaultProps = {
+	fontSize: '1rem',
+};
+
+Label.propTypes = {
+	fontSize: PropTypes.string,
+};

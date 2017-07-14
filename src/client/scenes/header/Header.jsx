@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Row, Col, Image } from 'react-bootstrap';
 
 import logo from './img/Logo.svg';
-import styles from './style.scss';
+import styles from './style.module.scss';
 
 @translate(['header'])
 @CSSModules(styles)
@@ -17,7 +17,7 @@ class Header extends React.Component {
 		return (
 			<header className={this.props.className} styleName="headerWrapper"
 				itemType="http://schema.org/Header" itemScope>
-				<Grid className="py-4">
+				<Grid className="py-3">
 					<Row styleName="topHeader" className='mb-4'>
 						<Col md={2}>
 							<Image src={logo} alt="Logo" itemProp="logo" style={{width: '100%'}} />

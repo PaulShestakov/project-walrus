@@ -88,10 +88,11 @@ class NewPromo extends React.Component {
 								(this.state.promoTypeId &&
 								<div className="d-flex justify-content-around">
 									<Button type="submit"
-										text={t('PUBLISH')}
 										className="my-5"
 										bsSize="large"
-										accent="blue"/>
+										accent="blue">
+										{t('PUBLISH')}
+									</Button>
 								</div>)
 							}
 						</Form>

@@ -1,12 +1,4 @@
-
-:global {
-  @import 'font-awesome/css/font-awesome.css';
-  //@import './assets/fonts/fonts.scss';
-}
-
-
-
-//Colors
+// Colors
 $white: #fff;
 $black: #000;
 $red: #9d331b;
@@ -21,9 +13,14 @@ $color-secondary: #8f8f8f;
 $color-header-bottom-menu: #737373;
 $color-header-top-menu: #585858;
 
-//Sizes
+// Sizes
 $footer-height: 15rem;
 $main-page-slider-height: 400px;
+
+// Colors
+$accent-red: #9d331b;
+$accent-blue: #014c8c;
+
 
 html {
   position: relative;
