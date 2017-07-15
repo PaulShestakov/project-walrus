@@ -1,31 +1,45 @@
-class Mapper {
+export default class Mapper {
 
-    public static PROMO : Map<string, string> = {
-        'uuid'          :   'pr_uuid',
-        'title'         :   'pr_title',
-        'description'   :   'pr_description',
-        'city'          :   'pr_city',
-        'animal'        :   'pr_animal',
-        'breed'         :   'pr_breed',
-        'image'         :   'pr_image',
-        'type'          :   'pr_type',
-        'status'        :   'pr_status',
-        'user_id'       :   'user_id'
-    };
+    PROMO : Map<string, string> = new Map([
+        ['uuid'          ,   'pr_uuid'],
+        ['title'         ,   'pr_title'],
+        ['description'   ,   'pr_description'],
+        ['city'          ,   'pr_city'],
+        ['animal'        ,   'pr_animal'],
+        ['breed'         ,   'pr_breed'],
+        ['image'         ,   'pr_image'],
+        ['type'          ,   'ty_uuid'],
+        ['status'        ,   'st_uuid'],
+        ['user_id'       ,   'user_id'],
+        ['promo_info_id' ,   'pi_uuid']
+    ]);
 
-    public static PROMO_INFO : Map<string, string> = {
+    PROMO_INFO : Map<string, string> = new Map([
+        ['uuid'          ,   'pi_uuid'],
+        ['address'       ,   'pi_address'],
+        ['date'          ,   'pi_date'],
+        ['gender'        ,   'pi_gender'],
+        ['age'           ,   'pi_age'],
+        ['cost'          ,   'pi_cost']
+    ]);
 
-    };
-
-    public map(json : JSON, map : Map<string, string>) {
+    mapToEntity(json : JSON, map : Map<string, string>) : JSON {
         let result = {};
         for (let key in json) {
             if (map.has(key)) {
-                result[map.get(key)] = json.key;
+                result[map.get(key)] = json[key];
+            }
+        }
+        return result;
+    }
+
+    mapToDTO(json : JSON, map : Map<string, string>) : JSON {
+        let result = {};
+        for (let [k,v] of map.entries()) {
+            if (json[v]) {
+                result[k] = json[v];
             }
         }
         return result;
     }
 }
-
-export default new Mapper();

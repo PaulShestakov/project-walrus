@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import repo from './../repository/Promo';
+import repo from 'repository/Promo';
 
 class Promo {
 
@@ -19,7 +19,7 @@ class Promo {
 		if (uuid) {
 			repo.get(uuid).then((result) => {
 				res.status(200).send(result);
-			}).catch(() => this.error(res, 500, err));
+			}).catch((err) => this.error(res, 500, err));
 		} else {
 			this.error(res, 400, '', 'Uuid is missing');
 		}
@@ -28,19 +28,23 @@ class Promo {
 	private getAll(req: Request, res: Response, next: NextFunction) {
 		repo.getAll().then((result) => {
 			res.status(200).send(result);
-		}).catch(() => this.error(res, 500, err));
+		}).catch((err) => {
+			console.log('Error ' + err);
+			res.status(500).send(message ? message : 'Error');
+		});
 	}
 
 	private save(req: Request, res: Response, next: NextFunction) {
 		let promo = req.body;
 		if (promo) {
-			repo.save(promo).then(() => {
-				res.status(200).send(promo);
-			}).catch(() => this.error(res, 500, err));
+			repo.save(promo).then((data) => {
+				res.status(200).send(data);
+			}).catch((err) => this.error(res, 500, err));
 		} else {
 			this.error(res, 400, err, '', 'Promo is missing');
 		}
 	}
+
 	private update(req: Request, res: Response, next: NextFunction) {
 		let promo = req.body;
 		if (promo) {
@@ -63,7 +67,7 @@ class Promo {
 		}
 	}
 
-	private error(res : Response, code : number, err, message : string) : void {
+	private static error(res : Response, code : number, err, message : string) : void {
 		console.log('Error ${message} ${err}');
 		res.status(code).send(message ? message : 'Error');
 	}

@@ -27,8 +27,8 @@ export default class App {
 	// Configure API endpoints.
 	private routes(): void {
 		this.express.use('/api/v1/promo', Promo);
-		this.express.get('*', (req, res) => {
-			res.sendFile(path.join(__dirname, './../client', 'index.html'));
-		});
+		// this.express.get('*', (req, res) => {
+		// 	res.sendFile(path.join(__dirname, './../client', 'index.html'));
+		// });
 	}
 }

@@ -1,6 +1,6 @@
 import * as mysql from 'mysql';
 import * as config from 'config';
-import log from '../util/Logger';
+import log from "../util/Logger";
 
 const pool = mysql.createPool({
 	connectionLimit : 100, //important
@@ -21,21 +21,32 @@ pool.getConnection(function(err, connection) {
 	connection.release();
 });
 
-const executeQuery = (query, params) => {
+const executeQuery = (query, params, connection) => {
 	return new Promise((resolve, reject) => {
-		pool.getConnection((err,conn) => {
+		let f = (connection) => {
 			try {
-				conn.query(query, params, (err, rows) => {
-					conn.release();
+				connection.query(query, params, (err, rows) => {
 					return err ? reject(err) : resolve(rows);
 				});
 			} catch (e) {
 				log.error('Error ' + e);
-				conn.release();
+				connection.release();
 				reject(e);
 			}
-		});
+		};
+
+		if (connection) {
+			f(connection);
+		} else {
+			pool.getConnection((err,conn) => {
+				if (err) {
+					conn.release();
+					throw err;
+				}
+				f(conn);
+			});
+		}
 	});
 };
 
-export default executeQuery;
+export {executeQuery, pool};

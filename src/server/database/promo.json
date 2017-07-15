@@ -1,15 +1,19 @@
 {
-  "type" : "275c5e07-63ca-11e7-8224-bc5ff40f7ff3",
   "title" : "Test promo 1",
-
-
+  "description" : "Test promo 1 description",
   "city" : "Minsk",
   "animal" : "test animal",
   "breed" : "test breed",
   "image" : "/path/to/image",
+  "type" : "sell",
+  "status" : "active",
+  "user_id" : "20",
 
-  "status" : "026f16bc-63ca-11e7-8224-bc5ff40f7ff3",
+  "address" : "Address1111",
+  "date" : "2017-02-28 16:44:25",
+  "gender" : "m",
+  "cost" : 20,
+  "age" : 10
 
-  "description" : "Test promo 1 description",
-  "date" : "2017-02-28 16:44:25"
+
 }
