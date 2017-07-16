@@ -1,4 +1,4 @@
-import executeQuery from 'database/Pool';
+import executeQuery from '../database/Pool';
 
 export default class BaseCRUD {
 

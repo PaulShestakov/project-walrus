@@ -1,7 +1,7 @@
 import * as uuid from 'uuid/v4'
 import Mapper from '../util/Mapper';
 import Util from '../util/Util';
-import {executeQuery, pool } from 'database/Pool';
+import {executeQuery, pool } from '../database/Pool';
 import StatusRepo from './Status';
 import TypeRepo from "./Type";
 

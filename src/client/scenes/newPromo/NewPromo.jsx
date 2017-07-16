@@ -5,6 +5,7 @@ import { Grid, Row, Col, Form } from 'react-bootstrap';
 import Title from '../../components/title/Title.jsx';
 import RadioGroup from '../../components/radioGroup/RadioGroup.jsx';
 import Button from '../../components/button/Button';
+import Tabs from '../../components/tabs/Tabs';
 
 import LostPromo from './components/LostPromo.jsx';
 import FoundPromo from './components/FoundPromo.jsx';
@@ -20,7 +21,7 @@ class NewPromo extends React.Component {
 	}
 
 	handlePromoTypeSelected = (promoTypeId) => {
-		this.setState({promoTypeId: promoTypeId});
+		this.setState({promoTypeId});
 	};
 
 	handleSubmit = (e) => {
@@ -38,68 +39,60 @@ class NewPromo extends React.Component {
 				<Row>
 					<Col md={12}>
 						<Form onSubmit={this.handleSubmit}>
-							<Title tag='h4' text={t('PROMO_TYPE')} className="mt-4"/>
-							<RadioGroup
-								name="promoType"
-								onChange={this.handlePromoTypeSelected}
+
+							<Tabs defaultActiveKey="LOST"
+								onSelect={this.handlePromoTypeSelected}
+								className="mt-5"
 								options={[
 									{
-										id: 'SELL',
-										labelText: t('WILL_SELL')
+										key: "LOST",
+										tabTitle: t('LOST'),
+										component: <LostPromo />
 									},
 									{
-										id: 'BUY',
-										labelText: t('WILL_BUY')
+										key: "FOUND",
+										tabTitle: t('FOUND'),
+										component: <FoundPromo />
 									},
 									{
-										id: 'GIVE_GIFT',
-										labelText: t('WILL_GIVE_GIFT')
+										key: "BUY",
+										tabTitle: t('WILL_BUY'),
+										component: <BuyOrSellPromo />
 									},
 									{
-										id: 'ACCEPT_GIFT',
-										labelText: t('WILL_ACCEPT_GIFT')
+										key: "SELL",
+										tabTitle: t('WILL_SELL'),
+										component: <BuyOrSellPromo />
 									},
 									{
-										id: 'LOST',
-										labelText: t('LOST')
+										key: "GIVE_GIFT",
+										tabTitle: t('WILL_GIVE_GIFT'),
+										component: <GiveOrAcceptGiftPromo />
 									},
 									{
-										id: 'FOUND',
-										labelText: t('FOUND')
+										key: "ACCEPT_GIFT",
+										tabTitle: t('WILL_ACCEPT_GIFT'),
+										component: <GiveOrAcceptGiftPromo />
 									}
 								]}
 							/>
 
-							{
-								(this.state.promoTypeId === 'LOST'
-								&& <LostPromo />)
-								||
-								(this.state.promoTypeId === 'FOUND'
-								&& <FoundPromo />)
-								||
-								((this.state.promoTypeId === 'BUY' || this.state.promoTypeId === 'SELL')
-								&& <BuyOrSellPromo />)
-								||
-								((this.state.promoTypeId === 'GIVE_GIFT' || this.state.promoTypeId === 'ACCEPT_GIFT')
-								&& <GiveOrAcceptGiftPromo />)
-							}
+							<div className="d-flex justify-content-around">
+								<Button type="submit"
+									className="my-5"
+									bsSize="large"
+									accent="blue">
+									{t('PUBLISH')}
+								</Button>
+							</div>
 
-							{
-								(this.state.promoTypeId &&
-								<div className="d-flex justify-content-around">
-									<Button type="submit"
-										className="my-5"
-										bsSize="large"
-										accent="blue">
-										{t('PUBLISH')}
-									</Button>
-								</div>)
-							}
+
 						</Form>
+
+
 					</Col>
 				</Row>
 			</Grid>
-
 		);
 	}
 }

@@ -13,8 +13,6 @@ class BuyPromo extends React.Component {
 
 		return (
 			<div>
-				<Separator className="my-3"/>
-
 				<Title text={t('PROMO_NAME')} className="mt-5"/>
 				<Input name="promoName" placeholder={t('ENTER_PROMO_NAME')} />
 

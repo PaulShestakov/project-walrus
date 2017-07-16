@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import repo from 'repository/Promo';
+import repo from '../repository/Promo';
 
 class Promo {
 

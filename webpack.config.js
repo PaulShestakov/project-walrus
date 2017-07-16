@@ -85,11 +85,13 @@ module.exports = [
 	},
 	{
 		name : 'server',
-        devtool: 'inline-source-map',
 		entry: {
 			index: './src/server'
 		},
 		target: 'node',
+		node: {
+			__dirname: false
+		},
 		output: {
 			path: path.resolve(__dirname, 'dist', 'server'),
 			filename: '[name].js'
@@ -97,22 +99,22 @@ module.exports = [
 		externals: [nodeExternals()],
 		resolve: {
 			extensions: ['.js', '.ts'],
-            modules: [
-                path.resolve(__dirname, 'src', 'server'),
-                path.resolve('./node_modules')
-            ]
+			modules: [
+				"./src/server/*",
+				'node_modules',
+			]
 		},
 		module: {
 			rules: [
-				// {
-				// 	test: /\.ts$/,
-				// 	enforce: 'pre',
-				// 	loader: 'tslint-loader'
-				// },
 				{
-                    test: /\.tsx?$/,
+					test: /\.ts$/,
+					enforce: 'pre',
+					loader: 'tslint-loader'
+				},
+				{
+					test: /.ts$/,
 					exclude: /node_modules/,
-					loader: 'ts-loader'
+					loader: 'awesome-typescript-loader'
 				}
 			]
 		}

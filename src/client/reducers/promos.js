@@ -28,13 +28,13 @@ const filters = {
 const promos = (state = mockData, action) => {
 	switch (action.type) {
 
-		case REQUEST_PROMOS:
+		case REQUEST_PROMOS: {
 			return {
 				...state,
 				isFetching: true
 			};
-
-		case ADD_FILTER:
+		}
+		case ADD_FILTER: {
 			const filterGroupId = action.payload.filterGroupId;
 			const filterValueId = action.payload.filterValueId;
 
@@ -48,7 +48,8 @@ const promos = (state = mockData, action) => {
 					]
 				}
 			};
-		case REMOVE_FILTER:
+		}
+		case REMOVE_FILTER: {
 			const filterGroupId = action.payload.filterGroupId;
 			const filterValueId = action.payload.filterValueId;
 
@@ -61,8 +62,10 @@ const promos = (state = mockData, action) => {
 					})
 				}
 			};
-		default:
+		}
+		default: {
 			return state;
+		}
 	}
 };
 

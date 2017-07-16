@@ -70,7 +70,6 @@ class Promos extends React.Component {
 
 						<Separator />
 
-						<Text text=""
 
 
 					</Col>
