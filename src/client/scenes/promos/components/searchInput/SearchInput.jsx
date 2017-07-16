@@ -11,7 +11,7 @@ export default class SearchInput extends React.Component {
 			<FormControl type='text'
 				 placeholder={this.props.placeholder}
 				 onChange={this.props.handleInputChange}
-				 className="searchInput" />
+				 styleName="searchInput" />
 		);
 	}
 }

@@ -34,6 +34,9 @@ export const savePromo = (formData) => {
 
 		return fetch(baseUrl + '/promo', {
 			method: 'POST',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			}),
 			body: JSON.stringify(formData)
 		}).then(
 			response => {

@@ -85,6 +85,7 @@ module.exports = [
 	},
 	{
 		name : 'server',
+		devtool: 'inline-source-map',
 		entry: {
 			index: './src/server'
 		},
@@ -106,11 +107,11 @@ module.exports = [
 		},
 		module: {
 			rules: [
-				{
-					test: /\.ts$/,
-					enforce: 'pre',
-					loader: 'tslint-loader'
-				},
+				// {
+				// 	test: /\.ts$/,
+				// 	enforce: 'pre',
+				// 	loader: 'tslint-loader'
+				// },
 				{
 					test: /.ts$/,
 					exclude: /node_modules/,

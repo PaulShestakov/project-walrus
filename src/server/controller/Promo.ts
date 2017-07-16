@@ -1,5 +1,6 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response } from 'express';
 import repo from '../repository/Promo';
+
 
 class Promo {
 
@@ -14,62 +15,66 @@ class Promo {
 		this.router.delete('/:uuid', this.remove);
 	}
 
-	private get(req: Request, res: Response, next: NextFunction) {
+	private get(req: Request, res: Response) {
 		let uuid = req.params.uuid;
 		if (uuid) {
 			repo.get(uuid).then((result) => {
 				res.status(200).send(result);
-			}).catch((err) => this.error(res, 500, err));
+			}).catch((err) => Promo.error(res, 500, err));
 		} else {
-			this.error(res, 400, '', 'Uuid is missing');
+			Promo.error(res, 400, 'Query parameter uuid is missing');
 		}
 	}
 
-	private getAll(req: Request, res: Response, next: NextFunction) {
+	private getAll(req: Request, res: Response) {
 		repo.getAll().then((result) => {
 			res.status(200).send(result);
-		}).catch((err) => {
-			console.log('Error ' + err);
-			res.status(500).send(message ? message : 'Error');
+		}).catch((error) => {
+			Promo.error(res, 500, error);
 		});
 	}
 
-	private save(req: Request, res: Response, next: NextFunction) {
+	private save(req: Request, res: Response) {
 		let promo = req.body;
 		if (promo) {
 			repo.save(promo).then((data) => {
 				res.status(200).send(data);
-			}).catch((err) => this.error(res, 500, err));
+			}).catch((error) => {
+				Promo.error(res, 500, error);
+			});
 		} else {
-			this.error(res, 400, err, '', 'Promo is missing');
+			Promo.error(res, 400, 'Promo is missing');
 		}
 	}
 
-	private update(req: Request, res: Response, next: NextFunction) {
+	private update(req: Request, res: Response) {
 		let promo = req.body;
 		if (promo) {
 			repo.update(promo).then(() => {
 				res.status(200).send(promo);
-			}).catch(() => this.error(res, 500, err));
+			}).catch((err) =>{
+				Promo.error(res, 500, err);
+			});
 		} else {
-			this.error(res, 400, '', 'Promo is missing');
+			Promo.error(res, 400, 'Promo is missing');
 		}
 	}
 
-	private remove(req: Request, res: Response, next: NextFunction) {
+	private remove(req: Request, res: Response) {
 		let uuid = req.params.uuid;
 		if (uuid) {
 			repo.remove(uuid).then(() => {
 				res.status(200).send();
-			}).catch((err) => this.error(res, 500, err));
+			}).catch((error) => {
+				Promo.error(res, 500, error);
+			});
 		} else {
-			this.error(res, 400, '', 'Uuid is missing');
+			Promo.error(res, 400, 'Query parameter uuid is missing');
 		}
 	}
 
-	private static error(res : Response, code : number, err, message : string) : void {
-		console.log('Error ${message} ${err}');
-		res.status(code).send(message ? message : 'Error');
+	private static error(res: Response, code: number, error: string|Object): void {
+		res.status(code).send({error});
 	}
 }
 
