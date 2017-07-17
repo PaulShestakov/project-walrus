@@ -16,11 +16,46 @@ const mockData = {
 
 const filters = {
 	promoTypes: [
-		'PETS',
-		'GOODS_FOR_PETS'
+		{
+			id: 'PETS',
+			text: 'Питомцы'
+		},
+		{
+			id: 'GOODS_FOR_PETS',
+			text: 'Товары для питомцев'
+		}
 	],
-	breeds: [
-
+	animals: [
+		{
+			id: 'DOG',
+			text: "Собака"
+		},
+		{
+			id: 'CAT',
+			text: "Собака"
+		},
+		{
+			id: 'BIRD',
+			text: "Птица"
+		},
+		{
+			id: 'FISH',
+			text: "Рыбка"
+		}
+	],
+	cities: [
+		{
+			id: "MINSK",
+			text: "Минск"
+		},
+		{
+			id: "GRODNO",
+			text: "Гродно"
+		},
+		{
+			id: "GOMEL",
+			text: "Гомель"
+		}
 	]
 };
 

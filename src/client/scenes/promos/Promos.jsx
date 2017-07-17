@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import FontAwesome from 'react-fontawesome';
 
-import { Grid, Row, Col, Form } from 'react-bootstrap';
+import { Grid, Row, Col, Form, OverlayTrigger, Popover, Button as BootstrapButton, FormGroup, Checkbox, Overlay } from 'react-bootstrap';
 import Title from '../../components/title/Title.jsx';
 import RadioGroup from '../../components/radioGroup/RadioGroup.jsx';
 import Button from 'button/Button';
@@ -23,8 +23,30 @@ class Promos extends React.Component {
 		this.state = {};
 	}
 
+	handleClick = e => {
+		this.setState({ target: e.target, show: !this.state.show });
+	};
+
 	render() {
 		const t = this.props.t;
+
+		const petTypesPopover = (
+			<Popover id="petType" title="Select pet">
+				<FormGroup>
+					<Checkbox inline>
+						1
+					</Checkbox>
+					{' '}
+					<Checkbox inline>
+						2
+					</Checkbox>
+					{' '}
+					<Checkbox inline>
+						3
+					</Checkbox>
+				</FormGroup>
+			</Popover>
+		);
 
 		return (
 			<Grid className="my-3">
@@ -66,12 +88,29 @@ class Promos extends React.Component {
 
 						<Card className="mt-2">
 							<Label accent="blue" className="py-2 px-3">{t('FILTERS')}</Label>
+
+
+							<OverlayTrigger trigger="click" placement="left" overlay={petTypesPopover} container={this}>
+								<BootstrapButton>Select pet type</BootstrapButton>
+							</OverlayTrigger>
+
+
+							<Button onClick={this.handleClick}>
+								Holy guacamole!
+							</Button>
+
+							<Overlay
+								show={this.state.show}
+								target={this.state.target}
+								placement="bottom"
+								container={this}
+								containerPadding={20}
+							>
+								<Popover id="popover-contained" title="Popover bottom">
+									<strong>Holy guacamole!</strong> Check this info.
+								</Popover>
+							</Overlay>
 						</Card>
-
-						<Separator />
-
-
-
 					</Col>
 				</Row>
 			</Grid>

@@ -1,4 +1,5 @@
 import * as mysql from 'mysql';
+import async from 'async';
 import * as config from 'config';
 import log from "../util/Logger";
 
@@ -49,4 +50,53 @@ const executeQuery = (query, params, connection) => {
 	});
 };
 
-export {executeQuery, pool};
+const performTransaction = function (functions, callback) {
+	pool.getConnection(function (err, connection) {
+		if (err) {
+			callback(err);
+			return;
+		}
+
+		connection.beginTransaction(function (err) {
+			if (err) {
+				connection.rollback(function (err) {
+					connection.release();
+					callback(err); // WError
+				});
+
+				return;
+			}
+
+			functions = functions.map((func) => func.bind(connection));
+
+			async.series(functions, function (err, result) {
+				if (err) {
+					connection.rollback(function (err) {
+						connection.release();
+						callback(err); // WError
+					});
+
+					return;
+				}
+
+				connection.commit(function (err) {
+					if (err) {
+						connection.rollback(function (err) {
+							connection.release();
+							callback(err); // WError
+						});
+
+						return;
+					}
+
+					connection.release();
+
+					callback(null);
+				});
+			});
+		});
+	});
+};
+
+
+export {executeQuery, pool, performTransaction};
