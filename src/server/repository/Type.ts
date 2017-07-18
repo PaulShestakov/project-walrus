@@ -7,7 +7,7 @@ export default class Type extends BaseCRUD {
 
     private GET_BY_NAME = 'SELECT * FROM ' + this.TABLE_NAME + ' WHERE TY_NAME = ?';
 
-    public async getByName(name) {
-        return await executeQuery(this.GET_BY_NAME, [name]);
+    public getByName(name, callback) {
+        executeQuery(this.GET_BY_NAME, [name], callback);
     }
 }

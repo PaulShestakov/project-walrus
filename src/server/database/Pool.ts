@@ -22,29 +22,34 @@ pool.getConnection(function(err, connection) {
 	connection.release();
 });
 
-const executeQuery = (query, params) => {
-	return new Promise((resolve, reject) => {
-        pool.getConnection((err,connection) => {
-            if (err) {
-                connection.release();
-                throw err;
-            }
-            try {
-                connection.query(query, params, (err, rows) => {
-                    return err ? reject(err) : resolve(rows);
-                });
-            } catch (e) {
-                log.error('Error ' + e);
-                connection.release();
-                reject(e);
-            }
-        });
+const executeQuery = (query, params, callback) => {
+	pool.getConnection((err,connection) => {
+		if (err) {
+			connection.release();
+			console.log(err);
+			callback(err);
+		}
+		try {
+			connection.query(query, params, (err, rows) => {
+				if (err) {
+					console.log(err);
+					callback(err);
+					return;
+				}
+				callback(null, rows);
+			});
+		} catch (e) {
+			console.log(e);
+			connection.release();
+			callback(e);
+		}
 	});
 };
 
 const performTransaction = function (functions, callback) {
 	pool.getConnection(function (err, connection) {
 		if (err) {
+			console.log(err);
 			callback(err);
 			return;
 		}
@@ -60,7 +65,6 @@ const performTransaction = function (functions, callback) {
 			}
 
 			functions = functions.map((func) => func.bind(null, connection));
-			console.log(functions);
 
 			async.series(functions, function (err, result) {
 				if (err) {

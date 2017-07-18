@@ -8,8 +8,8 @@ export default class Mapper {
         ['animal'        ,   'pr_animal'],
         ['breed'         ,   'pr_breed'],
         ['image'         ,   'pr_image'],
-        ['type'          ,   'ty_uuid'],
-        ['status'        ,   'st_uuid'],
+        ['type'          ,   'ty_id'],
+        ['status'        ,   'st_id'],
         ['user_id'       ,   'user_id'],
         ['promo_info_id' ,   'pi_uuid']
     ]);
@@ -35,11 +35,11 @@ export default class Mapper {
 
     mapToDTO(json : JSON, map : Map<string, string>) : JSON {
         let result = {};
-        for (let [k,v] of map.entries()) {
-            if (json[v]) {
-                result[k] = json[v];
+        map.forEach(function (value , key) {
+            if (json[value]) {
+                result[key] = json[value];
             }
-        }
+        });
         return result;
     }
 }

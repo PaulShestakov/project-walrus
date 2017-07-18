@@ -1,7 +1,6 @@
 import * as uuid from 'uuid/v4'
 import Mapper from '../util/Mapper';
 import Util from '../util/Util';
-import async from 'async';
 import {executeQuery, performTransaction } from '../database/Pool';
 import StatusRepo from './Status';
 import TypeRepo from "./Type";
@@ -55,8 +54,20 @@ class Promo {
 	 * Get all promos
 	 * @returns {Promise<T>}
 	 */
-	public async getAll() : Promise<object> {
-		return await executeQuery(this.PR_GET_ALL, []);
+	public getAll() : Promise<object> {
+		return new Promise((resolve, reject) => {
+			const selectPromos = (connection, done) => {
+				connection.query(this.PR_GET_ALL, [], (error, rows) => {
+					Util.handleError(error, done);
+					done(null, rows);
+				});
+			};
+
+			performTransaction([selectPromos], (error, result) => {
+				Util.handleError(error, reject);
+				resolve(result[0]);
+			});
+		});
 	}
 
 	/**
@@ -68,39 +79,28 @@ class Promo {
 		return new Promise((resolve, reject) => {
             let promoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO);
             let promoInfoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO);
-            Promise.all([
-                this.statusRepo.getByName(promoEntity.st_uuid),
-                this.typeRepo.getByName(promoEntity.ty_uuid)
-            ]).then((data) => {
-                const savePromoInfo = (connection, done) => {
-                    promoInfoEntity.pi_uuid = uuid();
-                    connection.query(this.PI_SAVE, [promoInfoEntity], (error, rows) => {
-                        if (error) {
-                            console.log(error);
-                        }
-                        done(null, rows);
-                    });
-                };
-                const savePromo = (connection, done) => {
-                    promoEntity.pr_uuid = uuid();
-                    console.log(data);
-                    promoEntity.st_uuid = data[0].ST_UUID;
-                    promoEntity.ty_uuid = data[1].TY_UUID;
-                    promoEntity.pi_uuid = promoInfoEntity.pi_uuid;
-                    connection.query(this.PR_SAVE, [promoEntity], (error, rows) => {
-                        if (error) {
-                            console.log(error);
-                        }
-                        done(null, rows);
-                    });
-                };
-                performTransaction([savePromoInfo, savePromo], (error, result) => {
-                    if (error) {
-                        console.log(error);
-                    }
-                    resolve(this.mapper.mapToDTO(promoEntity, this.mapper.PROMO));
-                });
-            });
+
+			const savePromoInfo = (connection, done) => {
+				promoInfoEntity.pi_uuid = uuid();
+				connection.query(this.PI_SAVE, [promoInfoEntity], (error, rows) => {
+					Util.handleError(error, done);
+					done(null, rows);
+				});
+			};
+			const savePromo = (connection, done) => {
+				promoEntity.pr_uuid = uuid();
+				promoEntity.pi_uuid = promoInfoEntity.pi_uuid;
+				connection.query(this.PR_SAVE, [promoEntity], (error, rows) => {
+					Util.handleError(error, done);
+					done(null, rows);
+				});
+			};
+
+			performTransaction([savePromoInfo, savePromo], (error, result) => {
+				Util.handleError(error, reject);
+				promoEntity.pi_uuid = promoInfoEntity;
+				resolve(this.mapper.mapToDTO(promoEntity, this.mapper.PROMO));
+			});
 		});
 	}
 
