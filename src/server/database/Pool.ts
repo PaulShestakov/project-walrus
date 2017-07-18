@@ -22,31 +22,23 @@ pool.getConnection(function(err, connection) {
 	connection.release();
 });
 
-const executeQuery = (query, params, connection) => {
+const executeQuery = (query, params) => {
 	return new Promise((resolve, reject) => {
-		let f = (connection) => {
-			try {
-				connection.query(query, params, (err, rows) => {
-					return err ? reject(err) : resolve(rows);
-				});
-			} catch (e) {
-				log.error('Error ' + e);
-				connection.release();
-				reject(e);
-			}
-		};
-
-		if (connection) {
-			f(connection);
-		} else {
-			pool.getConnection((err,conn) => {
-				if (err) {
-					conn.release();
-					throw err;
-				}
-				f(conn);
-			});
-		}
+        pool.getConnection((err,connection) => {
+            if (err) {
+                connection.release();
+                throw err;
+            }
+            try {
+                connection.query(query, params, (err, rows) => {
+                    return err ? reject(err) : resolve(rows);
+                });
+            } catch (e) {
+                log.error('Error ' + e);
+                connection.release();
+                reject(e);
+            }
+        });
 	});
 };
 
@@ -67,10 +59,12 @@ const performTransaction = function (functions, callback) {
 				return;
 			}
 
-			functions = functions.map((func) => func.bind(connection));
+			functions = functions.map((func) => func.bind(null, connection));
+			console.log(functions);
 
 			async.series(functions, function (err, result) {
 				if (err) {
+					console.log(err);
 					connection.rollback(function (err) {
 						connection.release();
 						callback(err); // WError
@@ -91,7 +85,7 @@ const performTransaction = function (functions, callback) {
 
 					connection.release();
 
-					callback(null);
+					callback(null, result);
 				});
 			});
 		});

@@ -2,7 +2,7 @@
 	"mysql" : {
 		"db" : "wikipet",
 		"user" : "root",
-		"password" : "2623314q",
+		"password" : "root",
 		"host" : "127.0.0.1",
 		"port" : "3306"
 	}

@@ -1,7 +1,8 @@
 import * as uuid from 'uuid/v4'
 import Mapper from '../util/Mapper';
 import Util from '../util/Util';
-import {executeQuery, pool } from '../database/Pool';
+import async from 'async';
+import {executeQuery, performTransaction } from '../database/Pool';
 import StatusRepo from './Status';
 import TypeRepo from "./Type";
 
@@ -63,56 +64,43 @@ class Promo {
 	 * @param promo
 	 * @returns {Promise<T>}
 	 */
-	public async save(promo) : Promise<object> {
-		return pool.getConnection((err, connection) => {
-			return new Promise((resolve, reject) => {
-				connection.beginTransaction(async (err) => {
-					if (err) { throw err; }
-
-					let promoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO);
-					let promoInfoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO);
-
-					if (!this._.isEmpty(promoEntity) && !this._.isEmpty(promoInfoEntity)) {
-						promoInfoEntity.pi_uuid = uuid();
-						await executeQuery(this.PI_SAVE, [promoInfoEntity], connection);
-
-						promoEntity.pr_uuid = uuid();
-						promoEntity.pi_uuid = promoInfoEntity.pi_uuid;
-
-						await Promise.all([
-							this.statusRepo.getByName(promoEntity.st_uuid, connection),
-							this.typeRepo.getByName(promoEntity.ty_uuid, connection)
-						]).then(async (data) => {
-							//data[0].ST_UUID = UNDEFINED????
-							console.log(data[0].ST_UUID);
-
-							promoEntity.st_uuid = data[0].ST_UUID;
-							promoEntity.ty_uuid = data[1].ty_uuid;
-
-							await executeQuery(this.PR_SAVE, [promoEntity], connection);
-
-							promoEntity.pi_uuid = promoInfoEntity;
-							promoEntity.st_uuid = data[0].st_name;
-							promoEntity.ty_uuid = data[1].ty_name;
-
-							connection.commit(function(err) {
-								if (err) {
-									return connection.rollback(function() {
-										connection.release();
-										throw err;
-									});
-								}
-								connection.release();
-								resolve(this.mapper.mapToDTO(promoEntity, this.mapper.PROMO));
-							}.bind(this));
-						}).catch((err) => {
-							console.log('Error ' + err);
-						});
-					} else {
-						reject();
-					}
-				});
-			});
+	public save(promo) {
+		return new Promise((resolve, reject) => {
+            let promoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO);
+            let promoInfoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO);
+            Promise.all([
+                this.statusRepo.getByName(promoEntity.st_uuid),
+                this.typeRepo.getByName(promoEntity.ty_uuid)
+            ]).then((data) => {
+                const savePromoInfo = (connection, done) => {
+                    promoInfoEntity.pi_uuid = uuid();
+                    connection.query(this.PI_SAVE, [promoInfoEntity], (error, rows) => {
+                        if (error) {
+                            console.log(error);
+                        }
+                        done(null, rows);
+                    });
+                };
+                const savePromo = (connection, done) => {
+                    promoEntity.pr_uuid = uuid();
+                    console.log(data);
+                    promoEntity.st_uuid = data[0].ST_UUID;
+                    promoEntity.ty_uuid = data[1].TY_UUID;
+                    promoEntity.pi_uuid = promoInfoEntity.pi_uuid;
+                    connection.query(this.PR_SAVE, [promoEntity], (error, rows) => {
+                        if (error) {
+                            console.log(error);
+                        }
+                        done(null, rows);
+                    });
+                };
+                performTransaction([savePromoInfo, savePromo], (error, result) => {
+                    if (error) {
+                        console.log(error);
+                    }
+                    resolve(this.mapper.mapToDTO(promoEntity, this.mapper.PROMO));
+                });
+            });
 		});
 	}
 
