@@ -3,7 +3,8 @@ import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import * as helmet from 'helmet';
 
-import Promo from './controller/Promo';
+import Promo from './controller/promo/Promo';
+import CodeValue from './controller/CodeValue';
 
 export default class App {
 	// ref to Express instance
@@ -27,6 +28,7 @@ export default class App {
 	// Configure API endpoints.
 	private routes(): void {
 		this.express.use('/api/v1/promo', Promo);
+		this.express.use('/api/v1/codevalue', CodeValue);
 		this.express.get('*', (req, res) => {
 			res.sendFile(path.join(__dirname, './../client', 'index.html'));
 		});

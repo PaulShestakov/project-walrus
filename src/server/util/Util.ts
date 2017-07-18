@@ -7,7 +7,9 @@ export default class Util {
     public static handleError(error, callback) {
         if (error) {
             console.log(error);
-            callback(error);
+            if (callback) {
+                callback(error);
+            }
         }
     }
 
