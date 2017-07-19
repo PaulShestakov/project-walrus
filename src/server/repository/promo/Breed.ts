@@ -2,6 +2,14 @@ import BaseCRUD from "../BaseCRUD";
 
 export default class Breed extends BaseCRUD {
 
-    protected TABLE_NAME : string = 'WIKIPET.BREED';
-    GET_ALL :       string = 'SELECT * FROM ' + this.TABLE_NAME;
+    GET_BREEDS_BY_ANIMAL : string;
+
+    constructor() {
+        super('WIKIPET.BREED');
+        this.GET_BREEDS_BY_ANIMAL = 'SELECT * FROM ' + this.TABLE_NAME + ' WHERE ANIMAL_ID = ?';
+    }
+
+    getByAnimal(animal : string) : Promise {
+        return this.wrapSingleQuery(this.GET_BREEDS_BY_ANIMAL, [animal]);
+    }
 }

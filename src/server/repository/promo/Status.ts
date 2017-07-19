@@ -3,9 +3,12 @@ import {executeQuery} from "../../database/DBHelper";
 
 export default class Status extends BaseCRUD {
 
-    protected TABLE_NAME : string = 'WIKIPET.PROMO_STATUS';
+    private GET_BY_NAME : string;
 
-    private GET_BY_NAME = 'SELECT * FROM ' + this.TABLE_NAME + ' WHERE ST_NAME = ?';
+    constructor() {
+        super('WIKIPET.PROMO_STATUS');
+        this.GET_BY_NAME = 'SELECT * FROM ' + this.TABLE_NAME + ' WHERE ST_NAME = ?';
+    }
 
     public getByName(name, callback) {
         executeQuery(this.GET_BY_NAME, [name], callback);

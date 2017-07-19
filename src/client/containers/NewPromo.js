@@ -10,9 +10,9 @@ import { savePromo } from './../actionCreators/newPromo';
 const getFormData = (formElements) => {
 	return {
 		// type:		'275c5e07-63ca-11e7-8224-bc5ff40f7ff3',
-		// //type:		_.get(formElements.promoType, 'value', null),
-		// title:		_.get(formElements.promoName, 'value', null),
-		// city:			_.get(formElements.city, 'value', null),
+		// //type:		util.get(formElements.promoType, 'value', null),
+		// title:		util.get(formElements.promoName, 'value', null),
+		// city:			util.get(formElements.city, 'value', null),
 		//
 		// animal: 'animal',
 		// breed: 'breed',

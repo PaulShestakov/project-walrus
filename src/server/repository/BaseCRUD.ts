@@ -3,16 +3,22 @@ import Util from "../util/Util";
 
 export default class BaseCRUD {
 
-    TABLE_NAME : string;
+    TABLE_NAME  : string ;
 
-    protected GET_ALL :       string = 'SELECT * FROM ' + this.TABLE_NAME;
-    GET_BY_UUID :   string = 'SELECT * FROM ' + this.TABLE_NAME + ' WHERE UUID = ?';
-    SAVE :          string = 'INSERT INTO   ' + this.TABLE_NAME + ' set ?';
-    UPDATE :        string = 'UPDATE        ' + this.TABLE_NAME + ' set ? WHERE UUID = ?';
-    DELETE :        string = 'DELETE FROM   ' + this.TABLE_NAME + ' WHERE UUID = ?';
+    GET_ALL     : string ;
+    GET_BY_UUID : string ;
+    SAVE        : string ;
+    UPDATE      : string ;
+    DELETE      : string ;
 
-    constructor() {
+    constructor(tableName : string) {
+        this.TABLE_NAME = tableName;
 
+        this.GET_ALL        = 'SELECT * FROM ' + this.TABLE_NAME;
+        this.GET_BY_UUID    = 'SELECT * FROM ' + this.TABLE_NAME + ' WHERE UUID = ?';
+        this.SAVE           = 'INSERT INTO   ' + this.TABLE_NAME + ' set ?';
+        this.UPDATE         = 'UPDATE '        + this.TABLE_NAME + ' set ? WHERE UUID = ?';
+        this.DELETE         = 'DELETE FROM   ' + this.TABLE_NAME + ' WHERE UUID = ?';
     }
 
     /**
@@ -20,40 +26,73 @@ export default class BaseCRUD {
      * @param uuid
      * @returns {Promise<T>}
      */
-    protected get(uuid : string) : Promise<object> {
-        return this.wrapQuery(this.GET_BY_UUID, [uuid]);
+    get(uuid : string) : Promise<object> {
+        return this.wrapSingleQuery(this.GET_BY_UUID, [uuid]);
     }
 
     /**
      * Get all
      * @returns {Promise<T>}
      */
-    protected getAll() : Promise<object> {
-        return this.wrapQuery(this.GET_ALL, []);
+    getAll(query : string) : Promise<object> {
+        return this.wrapSingleQuery(query ? query : this.GET_ALL, []);
+    }
+
+    /**
+     * Saves entity
+     * @param entity
+     * @returns {Promise<Object>}
+     */
+    save(entity : any) : Promise<object> {
+        const saveEntity = (connection, done) => {
+            connection.query(this.SAVE, [entity], (error, result) => {
+                Util.handleError(error, done);
+                done(null, result);
+            });
+        };
+        return this.wrapWithTransaction(saveEntity);
     }
 
     /**
      * Delete by uuid
      * @returns {Promise<T>}
      */
-    public delete(uuid : string) : Promise<object> {
+    delete(uuid : string) : Promise<object> {
         const deleteEntity = (connection, done) => {
             connection.query(this.DELETE, [uuid], (error, result) => {
                 Util.handleError(error, done);
                 done(null, result);
             });
         };
+        return this.wrapWithTransaction(deleteEntity);
+    }
+
+    /**
+     * Updates entity
+     * @returns {Promise<T>}
+     */
+    update(entity : any) : Promise<object> {
+        const updateEntity = (connection, done) => {
+            connection.query(this.UPDATE, [entity], (error, result) => {
+                Util.handleError(error, done);
+                done(null, result);
+            });
+        };
+        return this.wrapWithTransaction(updateEntity);
+    }
+
+    protected wrapSingleQuery(query : string, params) {
         return new Promise((resolve, reject) => {
-            performTransaction([deleteEntity], (error, result) => {
+            executeQuery(query, params, (error, result) => {
                 Util.handleError(error, reject);
                 resolve(result);
             });
         });
     }
 
-    wrapQuery(query : string, params) {
+    protected wrapWithTransaction(queries) {
         return new Promise((resolve, reject) => {
-            executeQuery(query, params, (error, result) => {
+            performTransaction(queries, (error, result) => {
                 Util.handleError(error, reject);
                 resolve(result);
             });

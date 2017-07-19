@@ -18,7 +18,7 @@ pool.getConnection(function(err, connection) {
 	if (!err) {
 		log.info('DB is connected');
 	} else {
-		log.warning('DB is not connected, error : ' + err);
+		console.log('DB is not connected, error : ' + err);
 	}
 	connection.release();
 });
