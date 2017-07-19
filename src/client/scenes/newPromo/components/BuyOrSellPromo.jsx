@@ -5,6 +5,7 @@ import { FormControl } from 'react-bootstrap';
 import Separator from '../../../components/separator/Separator';
 import Title from '../../../components/title/Title.jsx';
 import Input from '../../../components/input/Input';
+import ImageUploader from 'imageUploader/ImageUploader';
 
 @translate(['newPromo'])
 class BuyOrSellPromo extends React.Component {
@@ -13,6 +14,8 @@ class BuyOrSellPromo extends React.Component {
 
 		return (
 			<div>
+				<ImageUploader ref="imageUploader" name="images" className="mt-5"/>
+
 				<Title text={t('PROMO_NAME')} className="mt-5"/>
 				<Input name="promoName" placeholder={t('ENTER_PROMO_NAME')} />
 

@@ -1,0 +1,22 @@
+version: '3'
+services:
+  db:
+    build:
+      context: ./
+      dockerfile: Dockerfile.db
+    ports:
+        ports:
+          target: 3306
+          published: 3306
+          protocol: tcp
+          mode: host
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile.node
+    ports:
+      - "8090:8090"
+    volumes:
+      - .:/code
+    links:
+    - db:db
