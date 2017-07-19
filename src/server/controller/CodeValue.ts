@@ -1,9 +1,9 @@
-import {Router} from 'express';
 import PromoCV from "./cv/PromoCV";
+import {Router} from "express";
 
 class CodeValue {
 
-    router: Router;
+    router : Router;
 
     constructor() {
         this.router = Router();

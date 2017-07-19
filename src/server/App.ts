@@ -2,9 +2,8 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import * as helmet from 'helmet';
-
-import Promo from './controller/promo/Promo';
-import CodeValue from './controller/CodeValue';
+import Promo from "./controller/promo/Promo";
+import CodeValue from "./controller/CodeValue";
 
 export default class App {
 	// ref to Express instance

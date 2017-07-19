@@ -32,8 +32,7 @@ const executeQuery = (query, params, callback) => {
 		try {
 			connection.query(query, params, (err, rows) => {
 				if (err) {
-					console.log(err);
-					callback(err);
+					Util.handleError(err, callback);
 					return;
 				}
 				callback(null, rows);

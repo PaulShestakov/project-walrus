@@ -37,16 +37,16 @@ class Promo extends BaseCRUD {
 		this.typeRepo 	 = new TypeRepo();
 	}
 
-	getAll() : Promise<object> {
-		return super.getAll(this.PR_GET_ALL);
+	getAll(callback) : void {
+		super.getAll(this.PR_GET_ALL, callback);
 	}
 
 	/**
-	 * Save promo + promo info
+	 *
 	 * @param promo
-	 * @returns {Promise<T>}
+	 * @param callback
 	 */
-	save(promo : JSON) {
+	save(promo : JSON, callback) : void {
 		let promoEntity : PromoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO);
 		let promoInfoEntity : PromoInfoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO);
 
@@ -66,24 +66,21 @@ class Promo extends BaseCRUD {
 			});
 		};
 
-		return new Promise((resolve, reject) => {
-            this.wrapWithTransaction([savePromoInfo, savePromo]).then((result) => {
-                promoEntity.pi_uuid = promoInfoEntity;
-                resolve(this.mapper.mapToDTO(promoEntity, this.mapper.PROMO));
-            }).catch((error) => {
-            	Util.handleError(error, reject);
-			});
+		this.wrapWithTransaction([savePromoInfo, savePromo], (error, result) => {
+			Util.handleError(error, callback);
+			promoEntity.pi_uuid = promoInfoEntity;
+			callback(null, this.mapper.mapToDTO(promoEntity, this.mapper.PROMO));
 		});
 	}
 
 	/**
-	 * Update promo
+	 *
 	 * @param promo
-	 * @returns {Promise<T>}
+	 * @param callback
 	 */
-	public update(promo : any) : Promise<object> {
+	public update(promo : any, callback) : void {
 		promo.uuid = uuid();
-        return super.update(promo);
+        super.update(promo, callback);
 	}
 }
 

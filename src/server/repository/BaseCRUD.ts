@@ -22,80 +22,78 @@ export default class BaseCRUD {
     }
 
     /**
-     * Get by uuid
+     *
      * @param uuid
-     * @returns {Promise<T>}
+     * @param callback
      */
-    get(uuid : string) : Promise<object> {
-        return this.wrapSingleQuery(this.GET_BY_UUID, [uuid]);
+    get(uuid : string, callback : Function) : void {
+        this.wrapSingleQuery(this.GET_BY_UUID, [uuid], callback);
     }
 
     /**
-     * Get all
-     * @returns {Promise<T>}
+     *
+     * @param query
+     * @param callback
      */
-    getAll(query : string) : Promise<object> {
-        return this.wrapSingleQuery(query ? query : this.GET_ALL, []);
+    getAll(query : string, callback : Function) : void {
+        this.wrapSingleQuery(query ? query : this.GET_ALL, [], callback);
     }
 
     /**
      * Saves entity
+     *
      * @param entity
-     * @returns {Promise<Object>}
+     * @param callback
      */
-    save(entity : any) : Promise<object> {
+    save(entity : any, callback : Function) : void {
         const saveEntity = (connection, done) => {
             connection.query(this.SAVE, [entity], (error, result) => {
                 Util.handleError(error, done);
                 done(null, result);
             });
         };
-        return this.wrapWithTransaction(saveEntity);
+        this.wrapWithTransaction(saveEntity, callback);
     }
 
     /**
      * Delete by uuid
      * @returns {Promise<T>}
      */
-    delete(uuid : string) : Promise<object> {
+    delete(uuid : string, callback : Function) : void {
         const deleteEntity = (connection, done) => {
             connection.query(this.DELETE, [uuid], (error, result) => {
                 Util.handleError(error, done);
                 done(null, result);
             });
         };
-        return this.wrapWithTransaction(deleteEntity);
+        this.wrapWithTransaction(deleteEntity, callback);
     }
 
     /**
      * Updates entity
      * @returns {Promise<T>}
      */
-    update(entity : any) : Promise<object> {
+    update(entity : any, callback : Function) : void {
         const updateEntity = (connection, done) => {
             connection.query(this.UPDATE, [entity], (error, result) => {
                 Util.handleError(error, done);
                 done(null, result);
             });
         };
-        return this.wrapWithTransaction(updateEntity);
+        this.wrapWithTransaction([updateEntity], callback);
     }
 
-    protected wrapSingleQuery(query : string, params) {
-        return new Promise((resolve, reject) => {
-            executeQuery(query, params, (error, result) => {
-                Util.handleError(error, reject);
-                resolve(result);
-            });
+    protected wrapSingleQuery(query : string, params, callback : Function) : void {
+        executeQuery(query, params, function executeQueryCallback(error, result) {
+            Util.handleError(error, callback);
+            callback(null, result);
         });
     }
 
-    protected wrapWithTransaction(queries) {
-        return new Promise((resolve, reject) => {
-            performTransaction(queries, (error, result) => {
-                Util.handleError(error, reject);
-                resolve(result);
-            });
+    protected wrapWithTransaction(queries, callback : Function) : void {
+        performTransaction(queries, (error, result) => {
+            Util.handleError(error, callback);
+            callback(null, result);
         });
     }
 }

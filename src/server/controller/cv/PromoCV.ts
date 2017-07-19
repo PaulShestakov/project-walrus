@@ -4,9 +4,10 @@ import Util from "../../util/Util";
 import AnimalRepo from "../../repository/promo/Animal";
 import CityRepo from "../../repository/promo/City";
 import BreedRepo from "../../repository/promo/Breed";
+import BaseController from "../BaseController";
 
 
-class PromoCV {
+class PromoCV extends BaseController {
 
     router: Router;
     animalRepo : AnimalRepo;
@@ -20,14 +21,16 @@ class PromoCV {
         this.breedRepo = new BreedRepo();
 
         this.router.get('/', this.getAll.bind(this));
-        this.router.get('/breed/:animal', this.getBreeds.bind(this));
+        this.router.get('/breed', this.getBreeds.bind(this));
     }
 
     getAll(req : Request, res : Response) {
         let that = this;
         async.parallel([
             function (callback) {
-                that.animalRepo.getAll().then((result) => {
+                that.animalRepo.getAll(null, (error, result) => {
+
+                    Util.handleError(error, callback);
 
                     result = {
                         "animals" : result.map((entity) => {return entity.ANIMAL_ID})
@@ -35,12 +38,12 @@ class PromoCV {
 
                     callback(null, result);
 
-                }).catch((error) => {
-                    Util.handleError(error, callback);
                 });
             },
             function (callback) {
-                that.cityRepo.getAll().then((result : Array<>) => {
+                that.cityRepo.getAll(null, (error, result) => {
+
+                    Util.handleError(error, callback);
 
                     result = {
                       "cities"  : result.map((entity) => {return entity.CITY_ID})
@@ -48,30 +51,30 @@ class PromoCV {
 
                     callback(null, result);
 
-                }).catch((error) => {
-                    Util.handleError(error, callback);
                 });
             }
         ], function (error, result) {
             if (error) {
-                res.status(500).send(error);
+                that.error(res, 500, error);
+                return;
             }
-            res.status(200).send(result);
+            that.okResponse(res, result);
         });
     }
 
     getBreeds(req : Request, res : Response) {
-        let animal = req.params.animal;
-        this.breedRepo.getByAnimal(animal).then((result) => {
+        let animal = req.query.animal;
+        this.breedRepo.getByAnimal(animal, (error, result) => {
 
-            result = result.map((entity) => {
-                return entity.BREED_ID;
-            });
+            if (error) {
+                this.error(res, 500, error);
+                return;
+            }
 
-            res.status(200).send(result);
+            result = result.map((entity) => {return entity.BREED_ID;});
 
-        }).catch((error) => {
-            res.status(500).send(error);
+            this.okResponse(res, result);
+
         });
     }
 }
