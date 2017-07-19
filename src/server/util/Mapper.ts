@@ -4,12 +4,12 @@ export default class Mapper {
         ['uuid'          ,   'pr_uuid'],
         ['title'         ,   'pr_title'],
         ['description'   ,   'pr_description'],
-        ['city'          ,   'pr_city'],
-        ['animal'        ,   'pr_animal'],
-        ['breed'         ,   'pr_breed'],
+        ['city'          ,   'city_id'],
+        ['animal'        ,   'animal_id'],
+        ['breed'         ,   'breed_id'],
         ['image'         ,   'pr_image'],
-        ['type'          ,   'ty_uuid'],
-        ['status'        ,   'st_uuid'],
+        ['type'          ,   'ty_id'],
+        ['status'        ,   'st_id'],
         ['user_id'       ,   'user_id'],
         ['promo_info_id' ,   'pi_uuid']
     ]);
@@ -35,11 +35,11 @@ export default class Mapper {
 
     mapToDTO(json : JSON, map : Map<string, string>) : JSON {
         let result = {};
-        for (let [k,v] of map.entries()) {
-            if (json[v]) {
-                result[k] = json[v];
+        map.forEach(function (value , key) {
+            if (json[value]) {
+                result[key] = json[value];
             }
-        }
+        });
         return result;
     }
 }
