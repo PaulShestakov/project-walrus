@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CSSModules from 'react-css-modules';
 import { translate, Interpolate, Trans } from 'react-i18next';
 import ImagePreview from "./components/ImagePreview";
@@ -28,28 +29,16 @@ export default class ImageUploader extends React.Component {
 				imageUrl: reader.result,
 				file: file
 			};
-
-			this.setState({
-				imageObjects: [...this.state.imageObjects, newImageObject]
-			});
+			this.props.onImageAdd(newImageObject);
 		};
 
 		reader.readAsDataURL(file);
 	};
 
-	handleDeleteImage = (itemIndex, event) => {
+	handleDeleteImage = (imageIndex, event) => {
 		event.preventDefault();
-		this.setState({
-			imageObjects: [
-				...this.state.imageObjects.slice(0, itemIndex),
-				...this.state.imageObjects.slice(itemIndex + 1)
-			]
-		});
+		this.props.onImageDelete(imageIndex);
 	};
-
-	getFiles() {
-		return this.state.imageObjects;
-	}
 
 	render() {
 		const t = this.props.t;
@@ -63,7 +52,7 @@ export default class ImageUploader extends React.Component {
 					<span>{t('ADD_PHOTO')}</span>
 				</label>
 				{
-					this.state.imageObjects.map((imageObject, index) => {
+					this.props.imageObjects.map((imageObject, index) => {
 						return (
 							<ImagePreview imageUrl={imageObject.imageUrl} onDelete={this.handleDeleteImage.bind(null, index)} className="ml-3"/>
 						);
@@ -73,3 +62,10 @@ export default class ImageUploader extends React.Component {
 		);
 	}
 }
+
+ImageUploader.propTypes = {
+	imageObjects: PropTypes.any,
+	onImageAdde: PropTypes.func,
+	onImageDelete: PropTypes.func
+};
+

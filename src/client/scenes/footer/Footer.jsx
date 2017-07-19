@@ -72,7 +72,7 @@ class Footer extends React.Component {
 							<Input placeholder={t('ENTER_EMAIL')} className="my-2" />
 							<Button accent="red"
 								className="my-2">
-								text={t('SUBSCRIBE')}
+								{t('SUBSCRIBE')}
 							</Button>
 						</Col>
 					</Row>

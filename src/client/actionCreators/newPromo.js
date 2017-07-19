@@ -28,16 +28,41 @@ const savePromoSuccess = (response) => {
 	}
 };
 
-export const savePromo = (formData) => {
+export const savePromo = data => {
+
+	let form = new FormData();
+
+	form.append('lostAddress', data.lostAddress);
+	form.append('lostTime', data.lostTime);
+	form.append('foundAddress', data.foundAddress);
+	form.append('foundTime', data.foundTime);
+
+	form.append('gender', data.gender);
+	form.append('approximateAge', data.approximateAge);
+
+	form.append('price', data.price);
+
+	form.append('personName', data.personName);
+	form.append('personAddress', data.personAddress);
+	form.append('personPhone', data.personPhone);
+	form.append('personEmail', data.personEmail);
+
+	form.append('description', data.description);
+
+	data.images.forEach((file, index) => {
+		form.append('file' + index, file);
+	});
+
+
 	return dispatch => {
 		dispatch(savePromoStart());
 
 		return fetch(baseUrl + '/promo', {
 			method: 'POST',
-			headers: new Headers({
-				'Content-Type': 'application/json'
-			}),
-			body: JSON.stringify(formData)
+			// headers: new Headers({
+			// 	'Content-Type': 'application/json'
+			// }),
+			body: form
 		}).then(
 			response => {
 				if (response.ok) {
