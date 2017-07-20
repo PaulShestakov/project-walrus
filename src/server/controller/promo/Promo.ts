@@ -1,17 +1,20 @@
 import { Router, Request, Response } from 'express';
 import repo from '../../repository/promo/Promo';
 import BaseController from "../BaseController";
+import upload from '../../util/Upload';
 
+const IMAGES_UPLOAD_MAX_COUNT = 100;
 
 class Promo extends BaseController {
 
 	router : Router;
 
 	constructor() {
+		super();
 		this.router = Router();
 		this.router.get('/', this.getAll.bind(this));
 		this.router.get('/:uuid', this.get.bind(this));
-		this.router.post('/', this.save.bind(this));
+		this.router.post('/', upload.array('image', IMAGES_UPLOAD_MAX_COUNT), this.save.bind(this));
 		this.router.put('/:uuid', this.update.bind(this));
 		this.router.delete('/:uuid', this.remove.bind(this));
 	}
@@ -40,8 +43,10 @@ class Promo extends BaseController {
 		});
 	}
 
-	private save(req: Request, res: Response) {
-		let promo = req.body;
+	private save(req: any, res: Response) {
+		const promo = JSON.parse(req.body.promo);
+		const files = req.files;
+
 		if (promo) {
 			repo.save(promo, (error, data) => {
 				if (error) {

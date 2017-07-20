@@ -21,7 +21,7 @@ export default class App {
 		this.express.use('/', express.static(path.join(__dirname, '../client')));
 		this.express.use(helmet());
 		this.express.use(bodyParser.json());
-		this.express.use(bodyParser.urlencoded({ extended: false }));
+		this.express.use(bodyParser.urlencoded({ extended: true }));
 	}
 
 	// Configure API endpoints.
