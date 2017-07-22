@@ -12,14 +12,12 @@ class Promo extends BaseCRUD {
     private PR_TABLE_NAME :    string = 'WIKIPET.PROMO';
     private PI_TABLE_NAME :    string = 'WIKIPET.PROMO_INFO';
 
-    private PR_GET_ALL : string =
-										' SELECT * FROM ' + this.PR_TABLE_NAME + ' AS PR ' +
+    private PR_GET_ALL : string =		' SELECT * FROM ' + this.PR_TABLE_NAME + ' AS PR ' +
 										' LEFT JOIN ' 	  + this.PI_TABLE_NAME + ' AS PI ON PR.PI_UUID = PI.PI_UUID';
 
     private PR_SAVE :          string = 'INSERT INTO   ' + this.PR_TABLE_NAME + ' set ?';
 
     //Promo info
-
     private PI_GET_ALL :       string = 'SELECT * FROM ' + this.PI_TABLE_NAME;
     private PI_GET_BY_UUID :   string = 'SELECT * FROM ' + this.PI_TABLE_NAME + ' WHERE UUID = ?';
     private PI_SAVE :          string = 'INSERT INTO   ' + this.PI_TABLE_NAME + ' set ?';
@@ -37,8 +35,33 @@ class Promo extends BaseCRUD {
 		this.typeRepo 	 = new TypeRepo();
 	}
 
-	getAll(callback) : void {
-		super.getAll(this.PR_GET_ALL, callback);
+	private static internalizePromo(promo) {
+		const promoId = uuid();
+		const promoInfoId = uuid();
+
+		const promoEntity = {
+			pr_uuid:		promoId,
+			pi_uuid:		promoInfoId,
+			ty_id:			promo.promoType,
+			st_id:			promo.promoStatus, //???
+			pr_title:		promo.promoName,
+			city:			promo.city,
+			pr_image:		promo.promoType, //???
+			animal_id:		promo.promoType, //???
+			breed_id:		promo.promoType, //???
+			user_id:		promo.promoType, //???
+			pr_description: promo.description
+		};
+
+		const promoInfoEntity = {
+			pi_uuid:		promoInfoId,
+			pi_address:		promo.lostAddress,
+			pi_date:		promo.lostDate,
+			pi_gender:		promo.gender,
+			pi_age:			promo.approximateAge,
+			pi_cost:		promo.price,
+		};
+		return [promoEntity, promoInfoEntity];
 	}
 
 	/**
@@ -46,20 +69,16 @@ class Promo extends BaseCRUD {
 	 * @param promo
 	 * @param callback
 	 */
-	save(promo : JSON, callback) : void {
-		let promoEntity : PromoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO);
-		let promoInfoEntity : PromoInfoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO);
+	save(promo : any, callback) : void {
+		const [promoEntity, promoInfoEntity] = Promo.internalizePromo(promo);
 
 		const savePromoInfo = (connection, done) => {
-			promoInfoEntity.pi_uuid = uuid();
 			connection.query(this.PI_SAVE, [promoInfoEntity], (error, rows) => {
 				Util.handleError(error, done);
 				done(null, rows);
 			});
 		};
 		const savePromo = (connection, done) => {
-			promoEntity.pr_uuid = uuid();
-			promoEntity.pi_uuid = promoInfoEntity.pi_uuid;
 			connection.query(this.PR_SAVE, [promoEntity], (error, rows) => {
 				Util.handleError(error, done);
 				done(null, rows);
@@ -68,9 +87,13 @@ class Promo extends BaseCRUD {
 
 		this.wrapWithTransaction([savePromoInfo, savePromo], (error, result) => {
 			Util.handleError(error, callback);
-			promoEntity.pi_uuid = promoInfoEntity;
+			promoEntity.pi_uuid = promoInfoEntity; // ??? WTF?
 			callback(null, this.mapper.mapToDTO(promoEntity, this.mapper.PROMO));
 		});
+	}
+
+	getAll(callback) : void {
+		super.getAll(this.PR_GET_ALL, callback);
 	}
 
 	/**

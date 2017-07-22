@@ -14,11 +14,6 @@ class BuyOrSellPromo extends React.Component {
 
 		return (
 			<div>
-				<ImageUploader ref="imageUploader" name="images" className="mt-5"/>
-
-				<Title text={t('PROMO_NAME')} className="mt-5"/>
-				<Input name="promoName" placeholder={t('ENTER_PROMO_NAME')} />
-
 				<Title text={t('CITY')} className="mt-5" />
 				<Input name="city" placeholder={t('ENTER_CITY')} />
 

@@ -26,6 +26,7 @@ $borderRadius: 1rem;
   height: $itemHeight;
   border: 2px solid $accent-blue;
   border-radius: $borderRadius;
+  cursor: pointer;
 
   span {
     color: $accent-blue;

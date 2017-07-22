@@ -3,7 +3,6 @@ import { translate } from 'react-i18next';
 import _ from 'lodash';
 import { Grid, Row, Col, Form } from 'react-bootstrap';
 import Title from '../../components/title/Title.jsx';
-import RadioGroup from '../../components/radioGroup/RadioGroup.jsx';
 import Button from '../../components/button/Button';
 import Tabs from '../../components/tabs/Tabs';
 
@@ -11,20 +10,38 @@ import LostPromo from './components/LostPromo.jsx';
 import FoundPromo from './components/FoundPromo.jsx';
 import BuyOrSellPromo from './components/BuyOrSellPromo.jsx';
 import GiveOrAcceptGiftPromo from './components/GiveOrAcceptGiftPromo.jsx';
+import ImageUploader from 'imageUploader/ImageUploader';
+import Input from 'input/Input';
 
 
 @translate(['newPromo'])
 class NewPromo extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			promoType: 'LOST',
+			imageObjects: []
+		};
 	}
 
-	handlePromoTypeSelected = (promoTypeId) => {
-		this.setState({promoTypeId});
+	handleImageAdd = (imageObject) => {
+		this.setState({imageObjects: [...this.state.imageObjects, imageObject]});
 	};
 
-	handleImagesChange = (imageObjects) => {
+	handleImageDelete = (imageIndex) => {
+		this.setState({
+			imageObjects: [
+				...this.state.imageObjects.slice(0, imageIndex),
+				...this.state.imageObjects.slice(imageIndex + 1)
+			]
+		});
+	};
+
+	handlePromoTypeSelected = (promoType) => {
+		this.setState({promoType});
+	};
+
+	handleInputChange = (imageObjects) => {
 		this.setState({imageObjects});
 	};
 
@@ -33,17 +50,6 @@ class NewPromo extends React.Component {
 		const formElements = e.target.elements;
 
 		const formData = {
-			// type:		'275c5e07-63ca-11e7-8224-bc5ff40f7ff3',
-			// //type:		_.get(formElements.promoType, 'value', null),
-			// title:		_.get(formElements.promoName, 'value', null),
-			// city:			_.get(formElements.city, 'value', null),
-			//
-			// animal: 'animal',
-			// breed: 'breed',
-			// image: 'image',
-			//
-			// status: "026f16bc-63ca-11e7-8224-bc5ff40f7ff3",
-
 			lostAddress:	_.get(formElements.lostAddress, 'value', null),
 			lostTime:		_.get(formElements.lostTime, 'value', null),
 
@@ -61,9 +67,8 @@ class NewPromo extends React.Component {
 			personEmail:	_.get(formElements.personEmail, 'value', null),
 
 			description:	_.get(formElements.description, 'value', null),
-			date: +new Date(),
 
-			imageObjects: this.state.imageObjects
+			images:	this.state.imageObjects.map(imageObject => imageObject.file)
 		};
 
 		this.props.handleSubmit(formData);
@@ -77,43 +82,59 @@ class NewPromo extends React.Component {
 				<Row>
 					<Col md={12}>
 						<Form onSubmit={this.handleSubmit}>
-
-							<Tabs defaultActiveKey="LOST"
+							<Tabs activeKey={this.state.promoType}
 								onSelect={this.handlePromoTypeSelected}
 								className="mt-5"
 								options={[
 									{
 										key: "LOST",
-										tabTitle: t('LOST'),
-										component: <LostPromo />
+										tabTitle: t('LOST')
 									},
 									{
 										key: "FOUND",
-										tabTitle: t('FOUND'),
-										component: <FoundPromo />
+										tabTitle: t('FOUND')
 									},
 									{
 										key: "BUY",
-										tabTitle: t('WILL_BUY'),
-										component: <BuyOrSellPromo />
+										tabTitle: t('WILL_BUY')
 									},
 									{
 										key: "SELL",
-										tabTitle: t('WILL_SELL'),
-										component: <BuyOrSellPromo />
+										tabTitle: t('WILL_SELL')
 									},
 									{
 										key: "GIVE_GIFT",
-										tabTitle: t('WILL_GIVE_GIFT'),
-										component: <GiveOrAcceptGiftPromo />
+										tabTitle: t('WILL_GIVE_GIFT')
 									},
 									{
 										key: "ACCEPT_GIFT",
-										tabTitle: t('WILL_ACCEPT_GIFT'),
-										component: <GiveOrAcceptGiftPromo />
+										tabTitle: t('WILL_ACCEPT_GIFT')
 									}
 								]}
 							/>
+
+							<ImageUploader className="mt-5"
+								imageObjects={this.state.imageObjects}
+								onImageAdd={this.handleImageAdd}
+								onImageDelete={this.handleImageDelete}
+							/>
+
+							<Title text={t('PROMO_NAME')} className="mt-5"/>
+							<Input name="promoName" placeholder={t('ENTER_PROMO_NAME')} />
+
+							{
+								(this.state.promoType === 'LOST'
+									&& <LostPromo />)
+								||
+								(this.state.promoType === 'FOUND'
+									&& <FoundPromo />)
+								||
+								((this.state.promoType === 'BUY' || this.state.promoType === 'SELL')
+									&& <BuyOrSellPromo />)
+								||
+								((this.state.promoType === 'GIVE_GIFT' || this.state.promoType === 'ACCEPT_GIFT')
+									&& <GiveOrAcceptGiftPromo />)
+							}
 
 							<div className="d-flex justify-content-around">
 								<Button type="submit"

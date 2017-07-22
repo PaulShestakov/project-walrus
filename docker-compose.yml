@@ -5,11 +5,7 @@ services:
       context: ./
       dockerfile: Dockerfile.db
     ports:
-        ports:
-          target: 3306
-          published: 3306
-          protocol: tcp
-          mode: host
+      - "3306:3306"
   web:
     build:
       context: ./
@@ -17,6 +13,6 @@ services:
     ports:
       - "8090:8090"
     volumes:
-      - .:/code
+      - .:/usr/src/volume
     links:
     - db:db

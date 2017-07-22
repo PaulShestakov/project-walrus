@@ -1,17 +1,21 @@
 export default class Mapper {
 
     PROMO : Map<string, string> = new Map([
-        ['uuid'          ,   'pr_uuid'],
-        ['title'         ,   'pr_title'],
-        ['description'   ,   'pr_description'],
+        ['promoType'          ,   'pr_uuid'],
+        ['promoName'         ,   'pr_title'],
+
         ['city'          ,   'city_id'],
+
         ['animal'        ,   'animal_id'],
         ['breed'         ,   'breed_id'],
+
         ['image'         ,   'pr_image'],
         ['type'          ,   'ty_id'],
         ['status'        ,   'st_id'],
         ['user_id'       ,   'user_id'],
-        ['promo_info_id' ,   'pi_uuid']
+        ['promo_info_id' ,   'pi_uuid'],
+
+        ['description'   ,   'pr_description'],
     ]);
 
     PROMO_INFO : Map<string, string> = new Map([
