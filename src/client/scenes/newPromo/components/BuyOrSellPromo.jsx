@@ -14,26 +14,23 @@ class BuyOrSellPromo extends React.Component {
 
 		return (
 			<div>
-				<Title text={t('CITY')} className="mt-5" />
-				<Input name="city" placeholder={t('ENTER_CITY')} />
-
 				<Title text={t('PRICE_IN_BYR')} className="mt-4" />
 				<Input name="price" placeholder={t('ENTER_PRICE_IN_BYR')} />
 
-				<Title text={t('YOUR_NAME')} className="mt-4" />
-				<Input name="personName" placeholder={t('ENTER_YOUR_NAME')} />
+                {/*
+					<Title text={t('YOUR_NAME')} className="mt-4"/>
+                    < Input name="personName" placeholder={t('ENTER_YOUR_NAME')} />
 
-				<Title text={t('ADDRESS')} className="mt-5" />
-				<Input name="personAddress" placeholder={t('ENTER_ADDRESS')} />
+                    <Title text={t('ADDRESS')} className="mt-5" />
+                    <Input name="personAddress" placeholder={t('ENTER_ADDRESS')} />
 
-				<Title text={t('YOUR_EMAIL')} className="mt-4" />
-				<Input name="personEmail" placeholder={t('ENTER_YOUR_EMAIL')} />
+                    <Title text={t('YOUR_EMAIL')} className="mt-4" />
+                    <Input name="personEmail" placeholder={t('ENTER_YOUR_EMAIL')} />
 
-				<Title text={t('YOUR_PHONE')} className="mt-4" />
-				<Input name="personPhone" placeholder={t('ENTER_YOUR_PHONE')} />
+                    <Title text={t('YOUR_PHONE')} className="mt-4" />
+                    <Input name="personPhone" placeholder={t('ENTER_YOUR_PHONE')} />
+                */}
 
-				<Title text={t('DESCRIPTION')} className="mt-4" />
-				<Input name="description" placeholder={t('ENTER_DESCRIPTION')} />
 			</div>
 		);
 	}

@@ -1,8 +1,7 @@
 export default class Mapper {
 
     PROMO : Map<string, string> = new Map([
-        ['promoType'          ,   'pr_uuid'],
-        ['promoName'         ,   'pr_title'],
+        ['title'         ,   'pr_title'],
 
         ['city'          ,   'city_id'],
 
@@ -12,8 +11,7 @@ export default class Mapper {
         ['image'         ,   'pr_image'],
         ['type'          ,   'ty_id'],
         ['status'        ,   'st_id'],
-        ['user_id'       ,   'user_id'],
-        ['promo_info_id' ,   'pi_uuid'],
+        ['userId'        ,   'user_id'],
 
         ['description'   ,   'pr_description'],
     ]);
@@ -24,21 +22,21 @@ export default class Mapper {
         ['date'          ,   'pi_date'],
         ['gender'        ,   'pi_gender'],
         ['age'           ,   'pi_age'],
-        ['cost'          ,   'pi_cost']
+        ['price'         ,   'pi_cost']
     ]);
 
-    mapToEntity(json : JSON, map : Map<string, string>) : JSON {
-        let result = {};
+    mapToEntity(json : JSON, map : Map<string, string>, additionalValues : any) : JSON {
+        let result = additionalValues;
         for (let key in json) {
-            if (map.has(key)) {
+            if (map.has(key) && json[key]) {
                 result[map.get(key)] = json[key];
             }
         }
         return result;
     }
 
-    mapToDTO(json : JSON, map : Map<string, string>) : JSON {
-        let result = {};
+    mapToDTO(json : JSON, map : Map<string, string>, additionalValues : any) : JSON {
+        let result = additionalValues;
         map.forEach(function (value , key) {
             if (json[value]) {
                 result[key] = json[value];

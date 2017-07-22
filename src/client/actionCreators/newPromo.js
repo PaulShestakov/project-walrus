@@ -60,24 +60,24 @@ export const savePromo = data => {
 		return fetch(baseUrl + '/promo', {
 			method: 'POST',
 			// headers: new Headers({
-			// 	'Content-Type': 'multipart/form-data'
+			// 	'Content-Type': "multipart/form-data"
 			// }),
 			body: form
 		}).then(
 			response => {
-				if (response.ok) {
-					return response.json();
-				}
-				else {
-					throw new Error('Network response was not ok.');
-					console.log(response)
-				}
-			},
-			error => {
-				console.log('An error occured.', error);
-				dispatch(savePromoFailed(error))
-			}
-		).then(json => {
+            if (response.ok) {
+                return response.json();
+            }
+            else {
+                throw new Error('Network response was not ok.');
+                console.log(response)
+            }
+        },
+            error => {
+                console.log('An error occured.', error);
+                dispatch(savePromoFailed(error))
+            }
+        ).then(json => {
 			dispatch(savePromoSuccess(json))
 		}).catch(error => {
 			dispatch(savePromoFailed(error))

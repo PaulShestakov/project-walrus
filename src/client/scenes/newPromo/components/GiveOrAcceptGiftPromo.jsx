@@ -14,9 +14,7 @@ class BuyPromo extends React.Component {
 
 		return (
 			<div>
-				<Title text={t('CITY')} className="mt-5" />
-				<Input name="city" placeholder={t('ENTER_CITY')} />
-
+				{/*
 				<Title text={t('YOUR_NAME')} className="mt-4" />
 				<Input name="personName" placeholder={t('ENTER_YOUR_NAME')} />
 
@@ -28,9 +26,7 @@ class BuyPromo extends React.Component {
 
 				<Title text={t('YOUR_PHONE')} className="mt-4" />
 				<Input name="personPhone" placeholder={t('ENTER_YOUR_PHONE')} />
-
-				<Title text={t('DESCRIPTION')} className="mt-4" />
-				<Input name="description" placeholder={t('ENTER_DESCRIPTION')} />
+				*/}
 			</div>
 		);
 	}

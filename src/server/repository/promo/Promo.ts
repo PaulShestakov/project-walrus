@@ -12,8 +12,8 @@ class Promo extends BaseCRUD {
     private PR_TABLE_NAME :    string = 'WIKIPET.PROMO';
     private PI_TABLE_NAME :    string = 'WIKIPET.PROMO_INFO';
 
-    private PR_GET_ALL : string =		' SELECT * FROM ' + this.PR_TABLE_NAME + ' AS PR ' +
-										' LEFT JOIN ' 	  + this.PI_TABLE_NAME + ' AS PI ON PR.PI_UUID = PI.PI_UUID';
+    private PR_GET_ALL 	  :    string =	'SELECT * FROM ' + this.PR_TABLE_NAME + ' AS PR ' +
+										'LEFT JOIN ' 	 + this.PI_TABLE_NAME + ' AS PI ON PR.PI_UUID = PI.PI_UUID';
 
     private PR_SAVE :          string = 'INSERT INTO   ' + this.PR_TABLE_NAME + ' set ?';
 
@@ -24,9 +24,9 @@ class Promo extends BaseCRUD {
     private PI_UPDATE :        string = 'UPDATE        ' + this.PI_TABLE_NAME + ' set ? WHERE UUID = ?';
     private PI_DELETE :        string = 'DELETE FROM   ' + this.PI_TABLE_NAME + ' WHERE UUID = ?';
 
-	mapper 		: Mapper;
-	statusRepo 	: StatusRepo;
-	typeRepo	: TypeRepo;
+	private mapper 		: Mapper;
+	private statusRepo 	: StatusRepo;
+	private typeRepo	: TypeRepo;
 
 	constructor() {
 		super('WIKIPET.PROMO');
@@ -43,13 +43,13 @@ class Promo extends BaseCRUD {
 			pr_uuid:		promoId,
 			pi_uuid:		promoInfoId,
 			ty_id:			promo.promoType,
-			st_id:			promo.promoStatus, //???
+			st_id:			promo.status, //???
 			pr_title:		promo.promoName,
 			city:			promo.city,
 			pr_image:		promo.promoType, //???
-			animal_id:		promo.promoType, //???
-			breed_id:		promo.promoType, //???
-			user_id:		promo.promoType, //???
+			animal_id:		promo.animalId,
+			breed_id:		promo.breedId,
+			user_id:		1, //???
 			pr_description: promo.description
 		};
 
@@ -70,7 +70,9 @@ class Promo extends BaseCRUD {
 	 * @param callback
 	 */
 	save(promo : any, callback) : void {
-		const [promoEntity, promoInfoEntity] = Promo.internalizePromo(promo);
+		let promoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO, {'pr_uuid' : uuid()});
+		let promoInfoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO, {'pi_uuid' : uuid()});
+		promoEntity.pi_uuid = promoInfoEntity.pi_uuid;
 
 		const savePromoInfo = (connection, done) => {
 			connection.query(this.PI_SAVE, [promoInfoEntity], (error, rows) => {
@@ -87,8 +89,7 @@ class Promo extends BaseCRUD {
 
 		this.wrapWithTransaction([savePromoInfo, savePromo], (error, result) => {
 			Util.handleError(error, callback);
-			promoEntity.pi_uuid = promoInfoEntity; // ??? WTF?
-			callback(null, this.mapper.mapToDTO(promoEntity, this.mapper.PROMO));
+			callback(null, 'Success');
 		});
 	}
 

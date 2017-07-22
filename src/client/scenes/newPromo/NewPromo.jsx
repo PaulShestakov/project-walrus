@@ -1,7 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
-import { Grid, Row, Col, Form } from 'react-bootstrap';
+import {Grid, Row, Col, Form, FormControl} from 'react-bootstrap';
 import Title from '../../components/title/Title.jsx';
 import Button from '../../components/button/Button';
 import Tabs from '../../components/tabs/Tabs';
@@ -18,10 +18,27 @@ import Input from 'input/Input';
 class NewPromo extends React.Component {
 	constructor(props) {
 		super(props);
+		fetch('/api/v1' + '/codevalue/promo').then(
+            response => {
+                if (response.ok) {
+                    return response.json();
+                }
+            },
+			error => {
+				console.log('An error occured.', error);
+				dispatch(savePromoFailed(error))
+			}
+        ).then(json => {
+        	this.setState({
+				animals: json[0].animals,
+				cities : json[1].cities
+        	});
+        });
 		this.state = {
-			promoType: 'LOST',
-			imageObjects: []
-		};
+            promoType: 'LOST',
+            imageObjects: [],
+            cities: []
+        };
 	}
 
 	handleImageAdd = (imageObject) => {
@@ -50,23 +67,20 @@ class NewPromo extends React.Component {
 		const formElements = e.target.elements;
 
 		const formData = {
-			lostAddress:	_.get(formElements.lostAddress, 'value', null),
-			lostTime:		_.get(formElements.lostTime, 'value', null),
-
-			foundAddress:	_.get(formElements.foundAddress, 'value', null),
-			foundTime:		_.get(formElements.foundTime, 'value', null),
+			address:		_.get(formElements.address, 'value', null),
+			date:			_.get(formElements.date, 'value', null),
 
 			gender:			_.get(formElements.gender, 'value', null),
-			approximateAge:	_.get(formElements.approximateAge, 'value', null),
+			age:			parseInt(_.get(formElements.age, 'value', -1)),
 
 			price:			_.get(formElements.price, 'value', null),
 
-			personName:		_.get(formElements.personName, 'value', null),
-			personAddress:	_.get(formElements.personAddress, 'value', null),
-			personPhone:	_.get(formElements.personPhone, 'value', null),
-			personEmail:	_.get(formElements.personEmail, 'value', null),
-
 			description:	_.get(formElements.description, 'value', null),
+			title:			_.get(formElements.title, 'value', null),
+			city:			_.get(formElements.city, 'value', null),
+			type:			this.state.promoType,
+			status:			'ACTIVE',
+			userId:			1,
 
 			images:	this.state.imageObjects.map(imageObject => imageObject.file)
 		};
@@ -120,21 +134,31 @@ class NewPromo extends React.Component {
 							/>
 
 							<Title text={t('PROMO_NAME')} className="mt-5"/>
-							<Input name="promoName" placeholder={t('ENTER_PROMO_NAME')} />
+							<Input name="title" placeholder={t('ENTER_PROMO_NAME')} />
+
+							<Title text={t('CITY')} className="mt-5" />
+							<FormControl name="city" componentClass="select" placeholder={t('ENTER_CITY')}>
+                                {this.state.cities.map((item, index) => (
+									<option value={item}>{item}</option>
+                                ))}
+							</FormControl>
 
 							{
 								(this.state.promoType === 'LOST'
-									&& <LostPromo />)
+									&& <LostPromo cities={this.state.cities} />)
 								||
 								(this.state.promoType === 'FOUND'
-									&& <FoundPromo />)
+									&& <FoundPromo cities={this.state.cities} />)
 								||
 								((this.state.promoType === 'BUY' || this.state.promoType === 'SELL')
-									&& <BuyOrSellPromo />)
+									&& <BuyOrSellPromo cities={this.state.cities} />)
 								||
 								((this.state.promoType === 'GIVE_GIFT' || this.state.promoType === 'ACCEPT_GIFT')
-									&& <GiveOrAcceptGiftPromo />)
+									&& <GiveOrAcceptGiftPromo cities={this.state.cities} />)
 							}
+
+							<Title text={t('DESCRIPTION')} className="mt-4" />
+							<FormControl componentClass="textarea" name="description" placeholder={t('ENTER_DESCRIPTION')} />
 
 							<div className="d-flex justify-content-around">
 								<Button type="submit"
