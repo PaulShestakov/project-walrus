@@ -37,7 +37,7 @@ export default class Label extends React.Component {
 };
 
 Label.defaultProps = {
-	fontSize: '1rem',
+	fontSize: '1.3rem',
 };
 
 Label.propTypes = {

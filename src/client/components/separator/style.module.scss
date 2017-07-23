@@ -1,5 +1,7 @@
+@import "../../app.module";
+
 .separator {
   width: 100%;
-  height: 2px;
-  background-color: #e1e1e1;
+  margin : 20px 0;
+  border-bottom: 1px solid $color-secondary;
 }
