@@ -4,13 +4,7 @@ import { translate } from 'react-i18next';
 import FontAwesome from 'react-fontawesome';
 
 import { Grid, Row, Col, Form, OverlayTrigger, Popover, Button as BootstrapButton, FormGroup, Checkbox, Overlay } from 'react-bootstrap';
-import Title from '../../components/title/Title.jsx';
-import RadioGroup from '../../components/radioGroup/RadioGroup.jsx';
-import Button from 'button/Button';
-import Card from 'card/Card';
-import Label from 'label/Label';
-import Separator from 'separator/Separator';
-
+import { Title, Button, Card, Label, Textarea } from 'components';
 
 import PromoItem from './components/promoItem/PromoItem';
 import SearchInput from './components/searchInput/SearchInput';

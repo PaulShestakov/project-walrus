@@ -2,11 +2,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 
 import { FormControl } from 'react-bootstrap';
-import Separator from '../../../components/separator/Separator';
-import Title from '../../../components/title/Title.jsx';
-import Input from '../../../components/input/input/Input';
-import ImageUploader from 'imageUploader/ImageUploader';
-import DateTimePicker from "../../../components/input/dateTimePicker/DateTimePicker";
+import { Title, Input, DateTimePicker } from 'components';
 
 @translate(['newPromo'])
 class LostPromo extends React.Component {

@@ -2,10 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Grid, Row, Col, Form, Image } from 'react-bootstrap';
-import Title from 'title/Title.jsx';
-import RadioGroup from 'radioGroup/RadioGroup.jsx';
-import Button from 'button/Button';
-import Text from 'text/Text';
+import { Title, Text } from 'components';
 
 
 export default class PromoItem extends React.Component {

@@ -9,6 +9,7 @@ import Tabs from			'./tabs/Tabs';
 import Text from			'./text/Text';
 import Title from			'./title/Title';
 import Textarea from		'./input/textarea/Textarea';
+import DateTimePicker from	'./input/dateTimePicker/DateTimePicker';
 
 
 export {
@@ -22,5 +23,6 @@ export {
 	Tabs,
 	Text,
 	Title,
-	Textarea
+	Textarea,
+	DateTimePicker
 };
