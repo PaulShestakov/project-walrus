@@ -4,9 +4,9 @@ import { translate } from 'react-i18next';
 import { FormControl } from 'react-bootstrap';
 import Separator from '../../../components/separator/Separator';
 import Title from '../../../components/title/Title.jsx';
-import Input from '../../../components/input/Input';
+import Input from '../../../components/input/input/Input';
 import ImageUploader from 'imageUploader/ImageUploader';
-import DateTimePicker from "../../../components/input/DateTimePicker";
+import DateTimePicker from "../../../components/input/dateTimePicker/DateTimePicker";
 
 @translate(['newPromo'])
 class FoundPromo extends React.Component {

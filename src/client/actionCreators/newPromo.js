@@ -30,38 +30,6 @@ const savePromoSuccess = (response) => {
 	}
 };
 
-const loadCodeValuesSuccess = (response) => {
-    return {
-        type: CODE_VALUES_LOADED,
-        response
-    }
-};
-
-const loadCodeValuesStart = () => {
-    return {
-        type: CODE_VALUES_REQUEST
-    }
-};
-
-const loadCodeValues = () => {
-    return dispatch => {
-    	dispatch(loadCodeValuesStart());
-
-    	fetch(baseUrl + '/codevalue/promo').then(
-            response => {
-                if (response.ok) {
-                    return response.json();
-                }
-            },
-            error => {
-                console.log('An error occured.', error);
-            }
-        ).then(json => {
-            dispatch(loadCodeValuesSuccess(json));
-        });
-    }
-};
-
 const savePromo = data => {
 
 	let form = new FormData();
@@ -99,6 +67,39 @@ const savePromo = data => {
 			dispatch(savePromoFailed(error))
 		})
 	};
+};
+
+
+const loadCodeValuesSuccess = (response) => {
+	return {
+		type: CODE_VALUES_LOADED,
+		response
+	}
+};
+
+const loadCodeValuesStart = () => {
+	return {
+		type: CODE_VALUES_REQUEST
+	}
+};
+
+const loadCodeValues = () => {
+	return dispatch => {
+		dispatch(loadCodeValuesStart());
+
+		fetch(baseUrl + '/codevalue/promo').then(
+			response => {
+				if (response.ok) {
+					return response.json();
+				}
+			},
+			error => {
+				console.log('An error occured.', error);
+			}
+		).then(json => {
+			dispatch(loadCodeValuesSuccess(json));
+		});
+	}
 };
 
 export { savePromo, loadCodeValues }

@@ -7,7 +7,7 @@ import { translate, Interpolate, Trans } from 'react-i18next';
 import Separator from '../../components/separator/Separator';
 
 import './style.module.scss';
-import Input from '../../components/input/Input';
+import Input from '../../components/input/input/Input';
 import Button from '../../components/button/Button';
 
 import styles from './style.module.scss';

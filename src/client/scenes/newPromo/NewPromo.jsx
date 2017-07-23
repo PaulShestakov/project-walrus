@@ -1,17 +1,15 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
-import {Grid, Row, Col, Form, FormControl} from 'react-bootstrap';
-import Title from '../../components/title/Title.jsx';
-import Button from '../../components/button/Button';
-import Tabs from '../../components/tabs/Tabs';
+import { Grid, Row, Col, Form, FormControl } from 'react-bootstrap';
+import { Title, Button, Tabs, Input, Textarea } from 'components';
 
 import LostPromo from './components/LostPromo.jsx';
 import FoundPromo from './components/FoundPromo.jsx';
 import BuyOrSellPromo from './components/BuyOrSellPromo.jsx';
 import GiveOrAcceptGiftPromo from './components/GiveOrAcceptGiftPromo.jsx';
 import ImageUploader from 'imageUploader/ImageUploader';
-import Input from 'input/Input';
+
 
 
 @translate(['newPromo'])
@@ -119,16 +117,15 @@ class NewPromo extends React.Component {
 							<ImageUploader className="mt-5"
 								imageObjects={this.state.imageObjects}
 								onImageAdd={this.handleImageAdd}
-								onImageDelete={this.handleImageDelete}
-							/>
+								onImageDelete={this.handleImageDelete} />
 
-							<Title text={t('PROMO_NAME')} className="mt-5"/>
+							<Title text={t('PROMO_NAME')} className="mt-5" />
 							<Input name="title" placeholder={t('ENTER_PROMO_NAME')} />
 
 							<Title text={t('CITY')} className="mt-5" />
 							<FormControl name="city" componentClass="select" placeholder={t('ENTER_CITY')}>
                                 {
-                                	this.state.cities.map((item, index) => (
+                                	this.props.cities.map((item, index) => (
 										<option value={item}>{item}</option>
                                 	))
                                 }
@@ -149,7 +146,7 @@ class NewPromo extends React.Component {
 							}
 
 							<Title text={t('DESCRIPTION')} className="mt-4" />
-							<FormControl componentClass="textarea" name="description" placeholder={t('ENTER_DESCRIPTION')} />
+							<Textarea name="description" placeholder={t('ENTER_DESCRIPTION')} />
 
 							<div className="d-flex justify-content-around">
 								<Button type="submit"

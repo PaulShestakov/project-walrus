@@ -29,6 +29,7 @@ const newPromo = (state = {}, action) => {
 				error: action.error,
 				isFetching: false
 			};
+
 		case CODE_VALUES_LOADED:
             return {
 				...state,
