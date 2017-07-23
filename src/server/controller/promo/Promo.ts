@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import repo from '../../repository/promo/Promo';
 import BaseController from "../BaseController";
-import upload from '../../util/Upload';
+import upload from "../../util/Upload";
 
 const IMAGES_UPLOAD_MAX_COUNT = 100;
 
@@ -45,9 +45,10 @@ class Promo extends BaseController {
 
 	private save(req: any, res: Response) {
 		const promo = JSON.parse(req.body.promo);
-		const files = req.files;
 
 		if (promo) {
+			promo.images = req.files;
+
 			repo.save(promo, (error, data) => {
 				if (error) {
 					this.error(res, 500, error);

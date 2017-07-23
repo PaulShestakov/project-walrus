@@ -6,30 +6,18 @@ import TypeRepo from "./Type";
 import BaseCRUD from "../BaseCRUD";
 import {PromoEntity, PromoInfoEntity} from "../../entity/PromoEntity";
 
+import promoQ from '../../query/promo/Promo';
+import promoInfoQ from '../../query/promo/PromoInfo';
+import promoImagesQ from '../../query/promo/PromoImages';
+
 class Promo extends BaseCRUD {
-
-    //Promo
-    private PR_TABLE_NAME :    string = 'WIKIPET.PROMO';
-    private PI_TABLE_NAME :    string = 'WIKIPET.PROMO_INFO';
-
-    private PR_GET_ALL 	  :    string =	'SELECT * FROM ' + this.PR_TABLE_NAME + ' AS PR ' +
-										'LEFT JOIN ' 	 + this.PI_TABLE_NAME + ' AS PI ON PR.PI_UUID = PI.PI_UUID';
-
-    private PR_SAVE :          string = 'INSERT INTO   ' + this.PR_TABLE_NAME + ' set ?';
-
-    //Promo info
-    private PI_GET_ALL :       string = 'SELECT * FROM ' + this.PI_TABLE_NAME;
-    private PI_GET_BY_UUID :   string = 'SELECT * FROM ' + this.PI_TABLE_NAME + ' WHERE UUID = ?';
-    private PI_SAVE :          string = 'INSERT INTO   ' + this.PI_TABLE_NAME + ' set ?';
-    private PI_UPDATE :        string = 'UPDATE        ' + this.PI_TABLE_NAME + ' set ? WHERE UUID = ?';
-    private PI_DELETE :        string = 'DELETE FROM   ' + this.PI_TABLE_NAME + ' WHERE UUID = ?';
 
 	private mapper 		: Mapper;
 	private statusRepo 	: StatusRepo;
 	private typeRepo	: TypeRepo;
 
 	constructor() {
-		super('WIKIPET.PROMO');
+		super(promoQ.TABLE_NAME);
 		this.mapper		 = new Mapper();
 		this.statusRepo  = new StatusRepo();
 		this.typeRepo 	 = new TypeRepo();
@@ -70,31 +58,48 @@ class Promo extends BaseCRUD {
 	 * @param callback
 	 */
 	save(promo : any, callback) : void {
-		let promoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO, {'pr_uuid' : uuid()});
-		let promoInfoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO, {'pi_uuid' : uuid()});
+		let promoEntity : PromoEntity =
+			this.mapper.mapToEntity(promo, this.mapper.PROMO, {'pr_uuid' : uuid()});
+
+		let promoInfoEntity : PromoInfoEntity =
+			this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO, {'pi_uuid' : uuid()});
+
 		promoEntity.pi_uuid = promoInfoEntity.pi_uuid;
+		let images = promo.images.map(file => ([
+				uuid(),
+				promoInfoEntity.pi_uuid,
+				file.path
+			])
+		);
+		console.log(images);
 
 		const savePromoInfo = (connection, done) => {
-			connection.query(this.PI_SAVE, [promoInfoEntity], (error, rows) => {
+			connection.query(promoInfoQ.SAVE, [promoInfoEntity], (error, rows) => {
+				Util.handleError(error, done);
+				done(null, rows);
+			});
+		};
+		const saveImages = (connection, done) => {
+			connection.query(promoImagesQ.SAVE_ALL, [images], (error, rows) => {
 				Util.handleError(error, done);
 				done(null, rows);
 			});
 		};
 		const savePromo = (connection, done) => {
-			connection.query(this.PR_SAVE, [promoEntity], (error, rows) => {
+			connection.query(promoQ.SAVE, [promoEntity], (error, rows) => {
 				Util.handleError(error, done);
 				done(null, rows);
 			});
 		};
 
-		this.wrapWithTransaction([savePromoInfo, savePromo], (error, result) => {
+		this.wrapWithTransaction([savePromoInfo, saveImages, savePromo], (error, result) => {
 			Util.handleError(error, callback);
 			callback(null, 'Success');
 		});
 	}
 
 	getAll(callback) : void {
-		super.getAll(this.PR_GET_ALL, callback);
+		super.getAll(promoQ.GET_ALL, callback);
 	}
 
 	/**
