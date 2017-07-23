@@ -1,32 +1,32 @@
 export default class Mapper {
 
     PROMO : Map<string, string> = new Map([
-        ['title'         ,   'pr_title'],
+        ['title'         ,   'PR_TITLE'],
 
-        ['city'          ,   'city_id'],
+        ['city'          ,   'CITY_ID'],
 
-        ['animal'        ,   'animal_id'],
-        ['breed'         ,   'breed_id'],
+        ['animal'        ,   'ANIMAL_ID'],
+        ['breed'         ,   'BREED_ID'],
 
-        ['image'         ,   'pr_image'],
-        ['type'          ,   'ty_id'],
-        ['status'        ,   'st_id'],
-        ['userId'        ,   'user_id'],
+        ['image'         ,   'PR_IMAGE'],
+        ['type'          ,   'TY_ID'],
+        ['status'        ,   'ST_ID'],
+        ['userId'        ,   'USER_ID'],
 
-        ['description'   ,   'pr_description'],
+        ['description'   ,   'PR_DESCRIPTION'],
     ]);
 
     PROMO_INFO : Map<string, string> = new Map([
-        ['uuid'          ,   'pi_uuid'],
-        ['address'       ,   'pi_address'],
-        ['date'          ,   'pi_date'],
-        ['gender'        ,   'pi_gender'],
-        ['age'           ,   'pi_age'],
-        ['price'         ,   'pi_cost']
+        ['uuid'          ,   'PI_UUID'],
+        ['address'       ,   'PI_ADDRESS'],
+        ['date'          ,   'PI_DATE'],
+        ['gender'        ,   'PI_GENDER'],
+        ['age'           ,   'PI_AGE'],
+        ['price'         ,   'PI_COST']
     ]);
 
     mapToEntity(json : JSON, map : Map<string, string>, additionalValues : any) : JSON {
-        let result = additionalValues;
+        let result = {...additionalValues};
         for (let key in json) {
             if (map.has(key) && json[key]) {
                 result[map.get(key)] = json[key];
@@ -36,7 +36,7 @@ export default class Mapper {
     }
 
     mapToDTO(json : JSON, map : Map<string, string>, additionalValues : any) : JSON {
-        let result = additionalValues;
+        let result = {...additionalValues};
         map.forEach(function (value , key) {
             if (json[value]) {
                 result[key] = json[value];

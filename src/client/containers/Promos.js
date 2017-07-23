@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import PromosComponent from '../scenes/promos/Promos.jsx';
-// import { savePromo } from './../actionCreators/newPromo';
+import { fetchPromos } from './../actionCreators/promos';
 
 const Promos = connect(
 	state => {
@@ -12,7 +12,7 @@ const Promos = connect(
 	dispatch => {
 		return {
 			requestPromos: () => {
-
+				dispatch(fetchPromos());
 			}
 		}
 	}

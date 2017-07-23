@@ -18,27 +18,16 @@ import Input from 'input/Input';
 class NewPromo extends React.Component {
 	constructor(props) {
 		super(props);
-		fetch('/api/v1' + '/codevalue/promo').then(
-            response => {
-                if (response.ok) {
-                    return response.json();
-                }
-            },
-			error => {
-				console.log('An error occured.', error);
-				dispatch(savePromoFailed(error))
-			}
-        ).then(json => {
-        	this.setState({
-				animals: json[0].animals,
-				cities : json[1].cities
-        	});
-        });
 		this.state = {
             promoType: 'LOST',
             imageObjects: [],
+            animals: [],
             cities: []
         };
+	}
+
+	componentDidMount() {
+        this.props.loadCodeValues();
 	}
 
 	handleImageAdd = (imageObject) => {
@@ -138,23 +127,25 @@ class NewPromo extends React.Component {
 
 							<Title text={t('CITY')} className="mt-5" />
 							<FormControl name="city" componentClass="select" placeholder={t('ENTER_CITY')}>
-                                {this.state.cities.map((item, index) => (
-									<option value={item}>{item}</option>
-                                ))}
+                                {
+                                	this.state.cities.map((item, index) => (
+										<option value={item}>{item}</option>
+                                	))
+                                }
 							</FormControl>
 
 							{
 								(this.state.promoType === 'LOST'
-									&& <LostPromo cities={this.state.cities} />)
+									&& <LostPromo  />)
 								||
 								(this.state.promoType === 'FOUND'
-									&& <FoundPromo cities={this.state.cities} />)
+									&& <FoundPromo />)
 								||
 								((this.state.promoType === 'BUY' || this.state.promoType === 'SELL')
-									&& <BuyOrSellPromo cities={this.state.cities} />)
+									&& <BuyOrSellPromo />)
 								||
 								((this.state.promoType === 'GIVE_GIFT' || this.state.promoType === 'ACCEPT_GIFT')
-									&& <GiveOrAcceptGiftPromo cities={this.state.cities} />)
+									&& <GiveOrAcceptGiftPromo />)
 							}
 
 							<Title text={t('DESCRIPTION')} className="mt-4" />

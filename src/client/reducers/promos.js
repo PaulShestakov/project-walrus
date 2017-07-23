@@ -1,6 +1,8 @@
-import { REQUEST_PROMOS,
+import {
+	REQUEST_PROMOS,
 	ADD_FILTER,
-	REMOVE_FILTER } from '../actionCreators/promos';
+	REMOVE_FILTER
+} from '../actionCreators/promos';
 
 const mockData = {
 	promos:
@@ -60,12 +62,13 @@ const filters = {
 };
 
 
-const promos = (state = mockData, action) => {
+const promos = (state = {}, action) => {
 	switch (action.type) {
 
 		case REQUEST_PROMOS: {
 			return {
 				...state,
+				...mockData,
 				isFetching: true
 			};
 		}

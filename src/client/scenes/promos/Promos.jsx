@@ -23,6 +23,10 @@ class Promos extends React.Component {
 		this.state = {};
 	}
 
+	componentDidMount() {
+        this.props.requestPromos();
+	}
+
 	handleClick = e => {
 		this.setState({ target: e.target, show: !this.state.show });
 	};
@@ -60,17 +64,13 @@ class Promos extends React.Component {
 								</Button>
 							</Col>
 						</Row>
-						<Row>
+						<Row className="my-3">
 							<Col md={12}>
 								{
 									this.props.promos.map(promo => {
 										return (
-											<PromoItem title={promo.title}
-											   type={promo.type}
-											   imageSrc={promo.imageSrc}
-											   date={promo.date}
-											   description={promo.description}
-											   price={promo.price} />
+											<PromoItem item={promo}
+											   className="my-3"/>
 										);
 									})
 								}

@@ -3,6 +3,8 @@ import fetch from 'isomorphic-fetch';
 export const SAVE_PROMO_REQUEST = 'SAVE_PROMO_REQUEST';
 export const SAVE_PROMO_SUCCESS = 'SAVE_PROMO_SUCCESS';
 export const SAVE_PROMO_FAILURE = 'SAVE_PROMO_FAILURE';
+export const CODE_VALUES_LOADED = 'CODE_VALUES_LOADED';
+export const CODE_VALUES_REQUEST = 'CODE_VALUES_REQUEST';
 
 
 const baseUrl = '/api/v1';
@@ -28,26 +30,43 @@ const savePromoSuccess = (response) => {
 	}
 };
 
-export const savePromo = data => {
+const loadCodeValuesSuccess = (response) => {
+    return {
+        type: CODE_VALUES_LOADED,
+        response
+    }
+};
+
+const loadCodeValuesStart = () => {
+    return {
+        type: CODE_VALUES_REQUEST
+    }
+};
+
+const loadCodeValues = () => {
+    return dispatch => {
+    	dispatch(loadCodeValuesStart());
+
+    	fetch(baseUrl + '/codevalue/promo').then(
+            response => {
+                if (response.ok) {
+                    return response.json();
+                }
+            },
+            error => {
+                console.log('An error occured.', error);
+            }
+        ).then(json => {
+            dispatch(loadCodeValuesSuccess(json));
+        });
+    }
+};
+
+const savePromo = data => {
 
 	let form = new FormData();
 
 	form.append('promo', JSON.stringify(data));
-	// form.append('lostTime', data.lostTime);
-	// form.append('foundAddress', data.foundAddress);
-	// form.append('foundTime', data.foundTime);
-	//
-	// form.append('gender', data.gender);
-	// form.append('approximateAge', data.approximateAge);
-	//
-	// form.append('price', data.price);
-	//
-	// form.append('personName', data.personName);
-	// form.append('personAddress', data.personAddress);
-	// form.append('personPhone', data.personPhone);
-	// form.append('personEmail', data.personEmail);
-	//
-	// form.append('description', data.description);
 
 	data.images.forEach((file, index) => {
 		form.append('image', file);
@@ -59,9 +78,6 @@ export const savePromo = data => {
 
 		return fetch(baseUrl + '/promo', {
 			method: 'POST',
-			// headers: new Headers({
-			// 	'Content-Type': "multipart/form-data"
-			// }),
 			body: form
 		}).then(
 			response => {
@@ -85,3 +101,4 @@ export const savePromo = data => {
 	};
 };
 
+export { savePromo, loadCodeValues }

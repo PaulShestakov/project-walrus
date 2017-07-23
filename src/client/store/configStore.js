@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 import { loadState, saveState } from './localStorage';
 
 
-export default function configureStore(initialState) {
+export default function configureStore() {
   const logger = createLogger();
   const persistedState = loadState();
 

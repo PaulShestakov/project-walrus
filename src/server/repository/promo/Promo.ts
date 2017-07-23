@@ -23,35 +23,6 @@ class Promo extends BaseCRUD {
 		this.typeRepo 	 = new TypeRepo();
 	}
 
-	private static internalizePromo(promo) {
-		const promoId = uuid();
-		const promoInfoId = uuid();
-
-		const promoEntity = {
-			pr_uuid:		promoId,
-			pi_uuid:		promoInfoId,
-			ty_id:			promo.promoType,
-			st_id:			promo.status, //???
-			pr_title:		promo.promoName,
-			city:			promo.city,
-			pr_image:		promo.promoType, //???
-			animal_id:		promo.animalId,
-			breed_id:		promo.breedId,
-			user_id:		1, //???
-			pr_description: promo.description
-		};
-
-		const promoInfoEntity = {
-			pi_uuid:		promoInfoId,
-			pi_address:		promo.lostAddress,
-			pi_date:		promo.lostDate,
-			pi_gender:		promo.gender,
-			pi_age:			promo.approximateAge,
-			pi_cost:		promo.price,
-		};
-		return [promoEntity, promoInfoEntity];
-	}
-
 	/**
 	 *
 	 * @param promo
@@ -71,7 +42,6 @@ class Promo extends BaseCRUD {
 				file.path
 			])
 		);
-		console.log(images);
 
 		const savePromoInfo = (connection, done) => {
 			connection.query(promoInfoQ.SAVE, [promoInfoEntity], (error, rows) => {
@@ -99,7 +69,14 @@ class Promo extends BaseCRUD {
 	}
 
 	getAll(callback) : void {
-		super.getAll(promoQ.GET_ALL, callback);
+		super.getAll(promoQ.GET_ALL, (error, result) => {
+			let promos = result.map((item) => {
+				let promoInfoDTO = this.mapper.mapToDTO(item, this.mapper.PROMO_INFO);
+				return this.mapper.mapToDTO(item, this.mapper.PROMO, promoInfoDTO);
+
+			});
+			callback(null, promos);
+		});
 	}
 
 	/**

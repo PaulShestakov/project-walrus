@@ -9,21 +9,31 @@ import Text from 'text/Text';
 
 
 export default class PromoItem extends React.Component {
+	componentWillMount() {
+		this.item = this.props.item;
+	}
+
 	render() {
 		return (
 			<Grid>
 				<Row>
 					<Col md={3}>
-						<Image src={this.props.imageSrc} alt="Logo" itemProp="logo" />
+						{/*<Image src={this.item.imageSrc} alt={this.props.title} itemProp="logo" />*/}
 					</Col>
 					<Col md={9}>
-						<Title text={this.props.title} />
+						<Title text={this.item.title} />
 
-						<Button>{this.props.type}</Button>
+						<Row>
+							<Col>
+								<Text text={this.item.type} />
+								<Text text={this.item.date} />
+							</Col>
+						</Row>
 
-						<Text text={this.props.description} />
 
-						<Title text={this.props.price} />
+						<Text text={this.item.description} />
+
+						<Title text={this.item.price} />
 					</Col>
 				</Row>
 			</Grid>
