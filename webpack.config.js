@@ -12,7 +12,7 @@ module.exports = [
 		name : 'client',
 		devtool: 'inline-source-map',
 		entry: {
-			app: './src/client/app.js'
+			app: './src/client/App.js'
 		},
 		output: {
 			path: path.resolve(__dirname, 'dist', 'client'),
