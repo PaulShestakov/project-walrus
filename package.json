@@ -4,7 +4,8 @@
   "description": "wikipet",
   "main": "./dist/server/index.js",
   "scripts": {
-    "build": "webpack --progress --colors --watch",
+    "build": "rm -rf ./dist && NODE_ENV=\"development\" webpack --profile --colors --watch",
+    "build-prod": "rm -rf ./dist && NODE_ENV=\"production\" webpack --colors",
     "server": "nodemon --inspect dist/server/index.js"
   },
   "author": "",
