@@ -19,23 +19,6 @@ export default class SideBar extends React.Component {
 
     render() {
         const t = this.props.t;
-        const petTypesPopover = (
-            <Popover id="petType" title="Select pet">
-                <FormGroup>
-                    <Checkbox inline>
-                        1
-                    </Checkbox>
-                    {' '}
-                    <Checkbox inline>
-                        2
-                    </Checkbox>
-                    {' '}
-                    <Checkbox inline>
-                        3
-                    </Checkbox>
-                </FormGroup>
-            </Popover>
-        );
         return (
             <Row>
                 <Col md={12}>
@@ -54,7 +37,7 @@ export default class SideBar extends React.Component {
                         </Col>
                         <Col md={12} className="mt-2">
                             <Label >{t('SELECT_PET')}</Label>
-                            <FormControl name="animal" onChange={this.props.animalChanged} componentClass="select">
+                            <FormControl name="animal" onChange={this.props.onAnimalChange} componentClass="select">
                                 {
                                     this.props.animals && this.props.animals.map((item, index) => (
                                         <option value={item}>{item}</option>
@@ -64,13 +47,14 @@ export default class SideBar extends React.Component {
                         </Col>
                         <Col md={12} className="mt-2">
                             <Label >{t('SELECT_BREED')}</Label>
-                            <FormControl name="breed" componentClass="select">
+                            <FormGroup name="breed" >
                                 {
                                     this.props.breeds && this.props.breeds.map((item, index) => (
-                                        <option value={item}>{item}</option>
+                                        /*<option value={item}>{item}</option>*/
+                                        <Checkbox >{item}</Checkbox>
                                     ))
                                 }
-                            </FormControl>
+                            </FormGroup>
                         </Col>
                         <Col md={12} className="mt-2">
                             <Label >{t('LOCATION')}</Label>

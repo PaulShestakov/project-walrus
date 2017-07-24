@@ -33,8 +33,7 @@ class Promos extends React.Component {
 	}
 
 	animalChanged = e => {
-		console.log(e.target);
-		this.props.loadBreeds('DOG');
+		this.props.loadBreeds(e.target.value);
 	};
 
 	handleClick = e => {
@@ -51,7 +50,7 @@ class Promos extends React.Component {
 						<Row>
 							<Col md={12} className="d-flex">
 								<SearchInput placeholder={t('ENTER_REQUEST')} />
-								<Button accent="blue" className="ml-2">
+								<Button accent="blue" className="ml-2 text-white">
 									{t('FIND')}
 								</Button>
 							</Col>
@@ -71,7 +70,10 @@ class Promos extends React.Component {
 					</Col>
 
 					<Col md={3}>
-						<SideBar onAnimalChange={this.animalChanged.bind(this)} animals={this.props.animals} cities={this.props.cities} />
+						<SideBar onAnimalChange={this.animalChanged.bind(this)}
+								 animals={this.props.animals}
+								 cities={this.props.cities}
+								 breeds={this.props.breeds} />
 					</Col>
 				</Row>
 			</Grid>
