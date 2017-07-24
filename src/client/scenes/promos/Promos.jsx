@@ -18,7 +18,7 @@ class Promos extends React.Component {
 	}
 
 	componentDidMount() {
-        this.props.requestPromos();
+        this.props.loadPromos();
 	}
 
 	handleClick = e => {

@@ -3,6 +3,7 @@ import fetch from 'isomorphic-fetch';
 export const SAVE_PROMO_REQUEST = 'SAVE_PROMO_REQUEST';
 export const SAVE_PROMO_SUCCESS = 'SAVE_PROMO_SUCCESS';
 export const SAVE_PROMO_FAILURE = 'SAVE_PROMO_FAILURE';
+
 export const CODE_VALUES_LOADED = 'CODE_VALUES_LOADED';
 export const CODE_VALUES_REQUEST = 'CODE_VALUES_REQUEST';
 
@@ -39,7 +40,6 @@ const savePromo = data => {
 	data.images.forEach((file, index) => {
 		form.append('image', file);
 	});
-
 
 	return dispatch => {
 		dispatch(savePromoStart());

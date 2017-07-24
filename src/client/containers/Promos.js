@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
 import PromosComponent from '../scenes/promos/Promos.jsx';
-import { fetchPromos } from './../actionCreators/promos';
+import { loadPromos } from './../actionCreators/promos';
 
 const Promos = connect(
 	state => {
@@ -11,8 +10,8 @@ const Promos = connect(
 	},
 	dispatch => {
 		return {
-			requestPromos: () => {
-				dispatch(fetchPromos());
+			loadPromos: () => {
+				dispatch(loadPromos());
 			}
 		}
 	}

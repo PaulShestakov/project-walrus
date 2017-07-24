@@ -1,5 +1,7 @@
 import {
 	REQUEST_PROMOS,
+	REQUEST_PROMOS_SUCCESS,
+	REQUEST_PROMOS_ERROR,
 	ADD_FILTER,
 	REMOVE_FILTER
 } from '../actionCreators/promos';
@@ -68,10 +70,23 @@ const promos = (state = {}, action) => {
 		case REQUEST_PROMOS: {
 			return {
 				...state,
-				...mockData,
 				isFetching: true
 			};
 		}
+		case REQUEST_PROMOS_SUCCESS: {
+			return {
+				...state,
+				promos: action.data,
+				isFetching: false
+			};
+		}
+		case REQUEST_PROMOS_ERROR: {
+			return {
+				...state,
+				isFetching: false
+			};
+		}
+
 		case ADD_FILTER: {
 			const filterGroupId = action.payload.filterGroupId;
 			const filterValueId = action.payload.filterValueId;
