@@ -67,11 +67,11 @@ const loadPromosError = () => {
     };
 };
 
-export const loadPromos = () => {
+export const loadPromos = (filter) => {
     return dispatch => {
         dispatch(loadPromosStart());
 
-        return fetch(baseUrl + '/promo').then(
+        return fetch(buildUrl(baseUrl + '/promo', filter)).then(
             response => {
                 if (response.ok) {
                     return response.json();
@@ -107,3 +107,21 @@ export const fetchBreed = (animal) => {
         });
     };
 };
+
+function buildUrl(baseUrl, params) {
+    if (Object.keys(params).length === 0) {
+        return baseUrl;
+    }
+    baseUrl += '?';
+    Object.keys(params).forEach(key => {
+        let value = params[key];
+        if (value instanceof Array) {
+            value.forEach(item => {
+                baseUrl += `${key}=${item}&`;
+            });
+        } else {
+            baseUrl += `${key}=${value}&`;
+        }
+    });
+    return baseUrl.slice(0, -1);
+}
