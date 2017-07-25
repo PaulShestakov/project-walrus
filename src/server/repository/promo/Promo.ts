@@ -44,10 +44,14 @@ class Promo extends BaseCRUD {
 			});
 		};
 		const saveImages = (connection, done) => {
-			connection.query(promoImagesSQL.SAVE_ALL, [images], (error, rows) => {
-				Util.handleError(error, done);
-				done(null, rows);
-			});
+			if (images.length === 0) {
+				done(null);
+			} else {
+				connection.query(promoImagesSQL.SAVE_ALL, [images], (error, rows) => {
+					Util.handleError(error, done);
+					done(null, rows);
+				});
+			}
 		};
 		const savePromo = (connection, done) => {
 			connection.query(promoSQL.SAVE, [promoEntity], (error, rows) => {

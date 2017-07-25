@@ -1,7 +1,6 @@
-@import "../../app.module";
+@import "./../../index.module.scss";
 
 .separator {
   width: 100%;
-  margin : 20px 0;
   border-bottom: 1px solid $color-secondary;
 }

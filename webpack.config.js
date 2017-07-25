@@ -12,7 +12,7 @@ let clientConfig = {
 	name : 'client',
 	devtool: 'inline-source-map',
 	entry: {
-		app: './src/client/App.js'
+		app: './src/client/index.js'
 	},
 	output: {
 		path: path.resolve(__dirname, 'dist', 'client'),

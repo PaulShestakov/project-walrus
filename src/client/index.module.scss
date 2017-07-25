@@ -25,25 +25,3 @@ $color-hover: #9d331b;
 
 $grey: #e1e1e1;
 $dark-grey: $color-header-bottom-menu;
-
-html {
-  position: relative;
-  min-height: 100%;
-  font-size: 16px;
-  color : $black;
-}
-
-body, body > div {
-  height: 100%;
-}
-
-.appWrapper {
-  margin-bottom: $footer-height;
-}
-
-.appFooter {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: $footer-height;
-}
