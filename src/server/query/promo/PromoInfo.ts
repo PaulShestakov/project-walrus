@@ -1,7 +1,9 @@
-let table = 'wikipet.promo_info';
+const TABLE_NAME = 'wikipet.promo_info';
 
 export default {
-    TABLE_NAME : table,
+    TABLE_NAME,
 
-    SAVE    : 'INSERT INTO   ' + table + ' set ?'
+    SAVE: `INSERT INTO ${TABLE_NAME} SET ?`,
+
+    DELETE: `DELETE FROM ${TABLE_NAME} WHERE PI_UUID = ?`
 };

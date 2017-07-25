@@ -6,9 +6,9 @@ import TypeRepo from "./Type";
 import BaseCRUD from "../BaseCRUD";
 import {PromoEntity, PromoInfoEntity} from "../../entity/PromoEntity";
 
-import promoQ from '../../query/promo/Promo';
-import promoInfoQ from '../../query/promo/PromoInfo';
-import promoImagesQ from '../../query/promo/PromoImages';
+import promoSQL from '../../query/promo/Promo';
+import promoInfoSQL from '../../query/promo/PromoInfo';
+import promoImagesSQL from '../../query/promo/PromoImages';
 
 class Promo extends BaseCRUD {
 
@@ -17,46 +17,40 @@ class Promo extends BaseCRUD {
 	private typeRepo	: TypeRepo;
 
 	constructor() {
-		super(promoQ.TABLE_NAME);
+		super(promoSQL.TABLE_NAME);
 		this.mapper		 = new Mapper();
 		this.statusRepo  = new StatusRepo();
 		this.typeRepo 	 = new TypeRepo();
 	}
 
-	/**
-	 *
-	 * @param promo
-	 * @param callback
-	 */
-	save(promo : any, callback) : void {
-		let promoEntity : PromoEntity =
-			this.mapper.mapToEntity(promo, this.mapper.PROMO, {'pr_uuid' : uuid()});
+	public save(promo: any, callback): void {
+		let promoEntity: PromoEntity =
+			this.mapper.mapToEntity(promo, this.mapper.PROMO, {'pr_uuid': uuid()});
 
-		let promoInfoEntity : PromoInfoEntity =
-			this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO, {'pi_uuid' : uuid()});
+		let promoInfoEntity: PromoInfoEntity =
+			this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO, {'pi_uuid': uuid()});
 
 		promoEntity.pi_uuid = promoInfoEntity.pi_uuid;
 		let images = promo.images.map(file => ([
-				uuid(),
-				promoInfoEntity.pi_uuid,
-				file.path
-			])
-		);
+			uuid(),
+			promoInfoEntity.pi_uuid,
+			file.path
+		]));
 
 		const savePromoInfo = (connection, done) => {
-			connection.query(promoInfoQ.SAVE, [promoInfoEntity], (error, rows) => {
+			connection.query(promoInfoSQL.SAVE, [promoInfoEntity], (error, rows) => {
 				Util.handleError(error, done);
 				done(null, rows);
 			});
 		};
 		const saveImages = (connection, done) => {
-			connection.query(promoImagesQ.SAVE_ALL, [images], (error, rows) => {
+			connection.query(promoImagesSQL.SAVE_ALL, [images], (error, rows) => {
 				Util.handleError(error, done);
 				done(null, rows);
 			});
 		};
 		const savePromo = (connection, done) => {
-			connection.query(promoQ.SAVE, [promoEntity], (error, rows) => {
+			connection.query(promoSQL.SAVE, [promoEntity], (error, rows) => {
 				Util.handleError(error, done);
 				done(null, rows);
 			});
@@ -68,8 +62,8 @@ class Promo extends BaseCRUD {
 		});
 	}
 
-	getAll(callback) : void {
-		super.getAll(promoQ.GET_ALL, (error, result) => {
+	public getAll(callback): void {
+		super.getAll(promoSQL.GET_ALL, (error, result) => {
 			let promos = result.map((item) => {
 				let promoInfoDTO = this.mapper.mapToDTO(item, this.mapper.PROMO_INFO);
 				return this.mapper.mapToDTO(item, this.mapper.PROMO, promoInfoDTO);
@@ -79,14 +73,41 @@ class Promo extends BaseCRUD {
 		});
 	}
 
-	/**
-	 *
-	 * @param promo
-	 * @param callback
-	 */
-	public update(promo : any, callback) : void {
+	public update(promo: any, callback): void {
 		promo.uuid = uuid();
         super.update(promo, callback);
+	}
+
+	public remove(uuid: string, callback): void {
+		//TODO: Change db structure maybe?
+		// this.wrapWithTransaction([
+		// 		function removePromo(connection, done) {
+		// 			connection.query(promoSQL.DELETE, [uuid], (error, rows) => {
+		// 				Util.handleError(error, done);
+		// 				done(null, rows);
+		// 			});
+		// 		},
+		// 		function removePromoInfo(connection, done) {
+		// 			connection.query(promoSQL.DELETE, [uuid], (error, rows) => {
+		// 				Util.handleError(error, done);
+		// 				done(null, rows);
+		// 			});
+		// 		},
+		// 		function removeImages(connection, done) {
+		// 			connection.query(promoSQL.DELETE, [uuid], (error, rows) => {
+		// 				Util.handleError(error, done);
+		// 				done(null, rows);
+		// 			});
+		// 		}
+		// 	],
+		// 	function handleResult(error) {
+		// 		if (error) {
+		// 			Util.handleError(error, callback);
+		// 		} else {
+		// 			callback(null, 'Success');
+		// 		}
+		// 	}
+		// );
 	}
 }
 
