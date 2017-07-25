@@ -6,79 +6,104 @@ export const REQUEST_PROMOS_ERROR = 'REQUEST_PROMOS_ERROR';
 
 export const ADD_FILTER = 'ADD_FILTER';
 export const REMOVE_FILTER = 'REMOVE_FILTER';
+export const FETCH_BREED_SUCCESS = 'FETCH_BREED_SUCCESS';
 
 const baseUrl = '/api/v1';
 
 export const requestPromos = () => {
-	return {
-		type: REQUEST_PROMOS,
-		isFetching : true
-	};
+    return {
+        type: REQUEST_PROMOS,
+        isFetching: true
+    };
+};
+
+export const loadBreedSuccess = (data) => {
+    return {
+        type: FETCH_BREED_SUCCESS,
+        data,
+        isFetching: false
+    };
 };
 
 export const addFilter = (filterGroupId, filterValueId) => {
-	return {
-		type: ADD_FILTER,
-		payload: {
-			filterGroupId,
-			filterValueId
-		}
-	};
+    return {
+        type: ADD_FILTER,
+        payload: {
+            filterGroupId,
+            filterValueId
+        }
+    };
 };
 
 export const removeFilter = (filterGroupId, filterValueId) => {
-	return {
-		type: ADD_FILTER,
-		payload: {
-			filterGroupId,
-			filterValueId
-		}
-	};
+    return {
+        type: ADD_FILTER,
+        payload: {
+            filterGroupId,
+            filterValueId
+        }
+    };
 };
 
 const loadPromosStart = () => {
-	return {
+    return {
         type: REQUEST_PROMOS,
-        isFetching : true
+        isFetching: true
     };
 };
 
 const loadPromosSuccess = (data) => {
-	return {
-		type: REQUEST_PROMOS_SUCCESS,
-		isFetching : false,
-		data
-	};
+    return {
+        type: REQUEST_PROMOS_SUCCESS,
+        isFetching: false,
+        data
+    };
 };
 
 const loadPromosError = () => {
-	return {
-		type: REQUEST_PROMOS_ERROR,
-		isFetching : false
-	};
+    return {
+        type: REQUEST_PROMOS_ERROR,
+        isFetching: false
+    };
 };
 
 export const loadPromos = () => {
-	return dispatch => {
-		dispatch(loadPromosStart());
+    return dispatch => {
+        dispatch(loadPromosStart());
 
-		return fetch(baseUrl + '/promo').then(
-			response => {
-				if (response.ok) {
-					return response.json();
-				}
-				else {
-					throw new Error('Network response was not ok.');
-				}
-			},
-			error => {
-				console.log('An error occured.', error);
-				dispatch(savePromoFailed(error))
-			}
-		).then(json => {
-			dispatch(loadPromosSuccess(json))
-		}).catch(error => {
-			dispatch(loadPromosError());
-		})
-	};
+        return fetch(baseUrl + '/promo').then(
+            response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            },
+            error => {
+                console.log('An error occured.', error);
+                dispatch(savePromoFailed(error))
+            }
+        ).then(json => {
+            dispatch(loadPromosSuccess(json))
+        }).catch(error => {
+            dispatch(loadPromosError());
+        })
+    };
+};
+
+export const fetchBreed = (animal) => {
+    return dispatch => {
+        fetch(baseUrl + "/codevalue/promo/breed?animal=" + animal).then(
+            response => {
+                if (response.ok) {
+                    return response.json();
+                }
+            },
+            error => {
+                console.log('An error occured.', error);
+            }
+        ).then(json => {
+            dispatch(loadBreedSuccess(json));
+        });
+    };
 };

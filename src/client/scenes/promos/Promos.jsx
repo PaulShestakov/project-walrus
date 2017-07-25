@@ -8,6 +8,7 @@ import { Title, Button, Card, Label, Textarea } from 'components';
 
 import PromoItem from './components/promoItem/PromoItem';
 import SearchInput from './components/searchInput/SearchInput';
+import SideBar from "./components/sidebar/SideBar";
 
 
 @translate(['promos'])
@@ -19,7 +20,15 @@ class Promos extends React.Component {
 
 	componentDidMount() {
         this.props.loadPromos();
+        if (!this.props.animals) {
+            console.log('Load code values');
+            this.props.loadCodeValues();
+        }
 	}
+
+	animalChanged = e => {
+		this.props.loadBreeds(e.target.value);
+	};
 
 	handleClick = e => {
 		this.setState({ target: e.target, show: !this.state.show });
@@ -28,37 +37,19 @@ class Promos extends React.Component {
 	render() {
 		const t = this.props.t;
 
-		const petTypesPopover = (
-			<Popover id="petType" title="Select pet">
-				<FormGroup>
-					<Checkbox inline>
-						1
-					</Checkbox>
-					{' '}
-					<Checkbox inline>
-						2
-					</Checkbox>
-					{' '}
-					<Checkbox inline>
-						3
-					</Checkbox>
-				</FormGroup>
-			</Popover>
-		);
-
 		return (
 			<Grid className="my-3">
 				<Row>
-					<Col md={10}>
+					<Col md={9}>
 						<Row>
 							<Col md={12} className="d-flex">
 								<SearchInput placeholder={t('ENTER_REQUEST')} />
-								<Button accent="blue" className="ml-2">
+								<Button accent="blue" className="ml-2 text-white">
 									{t('FIND')}
 								</Button>
 							</Col>
 						</Row>
-						<Row className="my-3">
+						{/*<Row className="my-3">
 							<Col md={12}>
 								{
 									this.props.promos.map(promo => {
@@ -69,42 +60,14 @@ class Promos extends React.Component {
 									})
 								}
 							</Col>
-						</Row>
+						</Row>*/}
 					</Col>
 
-					<Col md={2} className="pl-2">
-						<Link to="/newPromo" className="mt-2">
-							<Button accent="red">
-								<FontAwesome name="plus" />
-								{t('CREATE_PROMO')}
-							</Button>
-						</Link>
-
-						<Card className="mt-2">
-							<Label accent="blue" className="py-2 px-3">{t('FILTERS')}</Label>
-
-
-							<OverlayTrigger trigger="click" placement="left" overlay={petTypesPopover} container={this}>
-								<BootstrapButton>Select pet type</BootstrapButton>
-							</OverlayTrigger>
-
-
-							<Button onClick={this.handleClick}>
-								Holy guacamole!
-							</Button>
-
-							<Overlay
-								show={this.state.show}
-								target={this.state.target}
-								placement="bottom"
-								container={this}
-								containerPadding={20}
-							>
-								<Popover id="popover-contained" title="Popover bottom">
-									<strong>Holy guacamole!</strong> Check this info.
-								</Popover>
-							</Overlay>
-						</Card>
+					<Col md={3}>
+						<SideBar onAnimalChange={this.animalChanged.bind(this)}
+								 animals={this.props.animals}
+								 cities={this.props.cities}
+								 breeds={this.props.breeds} />
 					</Col>
 				</Row>
 			</Grid>

@@ -1,7 +1,7 @@
 import promoInfoTable from './PromoInfo';
 import promoImages from './PromoImages';
 
-let table = 'WIKIPET.PROMO';
+let table = 'wikipet.promo';
 let infoTable = promoInfoTable.TABLE_NAME;
 let images = promoImages.TABLE_NAME;
 

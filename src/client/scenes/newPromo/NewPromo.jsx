@@ -150,7 +150,7 @@ class NewPromo extends React.Component {
 
 							<div className="d-flex justify-content-around">
 								<Button type="submit"
-									className="my-5"
+									className="my-5 text-white"
 									bsSize="large"
 									accent="blue">
 									{t('PUBLISH')}

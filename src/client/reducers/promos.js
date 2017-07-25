@@ -3,8 +3,11 @@ import {
 	REQUEST_PROMOS_SUCCESS,
 	REQUEST_PROMOS_ERROR,
 	ADD_FILTER,
-	REMOVE_FILTER
+	REMOVE_FILTER,
+	FETCH_BREED_SUCCESS
 } from '../actionCreators/promos';
+
+import {CODE_VALUES_LOADED} from "../actionCreators/newPromo";
 
 const mockData = {
 	promos:
@@ -64,7 +67,7 @@ const filters = {
 };
 
 
-const promos = (state = {}, action) => {
+const promos = (state = mockData, action) => {
 	switch (action.type) {
 
 		case REQUEST_PROMOS: {
@@ -116,6 +119,18 @@ const promos = (state = {}, action) => {
 				}
 			};
 		}
+        case CODE_VALUES_LOADED:
+            return {
+                ...state,
+                animals: action.response[0].animals,
+                cities: action.response[1].cities,
+                isFetching: false
+            };
+		case FETCH_BREED_SUCCESS:
+			return {
+                ...state,
+				breeds : action.data
+			};
 		default: {
 			return state;
 		}

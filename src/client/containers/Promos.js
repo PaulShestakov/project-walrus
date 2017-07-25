@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import PromosComponent from '../scenes/promos/Promos.jsx';
 import { loadPromos } from './../actionCreators/promos';
+import {loadCodeValues} from "../actionCreators/newPromo";
+import {fetchBreed} from "../actionCreators/promos";
 
 const Promos = connect(
 	state => {
@@ -11,7 +13,13 @@ const Promos = connect(
 	dispatch => {
 		return {
 			loadPromos: () => {
-				dispatch(loadPromos());
+                dispatch(loadPromos());
+            },
+            loadCodeValues : () => {
+                dispatch(loadCodeValues())
+            },
+			loadBreeds : (animal) => {
+				dispatch(fetchBreed(animal))
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-let table = 'WIKIPET.PROMO_IMAGES';
+let table = 'wikipet.promo_images';
 
 export default {
     TABLE_NAME : table,
