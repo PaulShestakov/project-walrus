@@ -37,31 +37,33 @@ export default class SideBar extends React.Component {
                         </Col>
                         <Col md={12} className="mt-2">
                             <Label >{t('SELECT_PET')}</Label>
-                            <FormControl name="animal" onChange={this.props.onAnimalChange} componentClass="select">
+                            <FormControl name="animal"
+                                         onChange={this.props.onFilterChanged}
+                                         selected={}
+                                         componentClass="select">
                                 {
                                     this.props.animals && this.props.animals.map((item, index) => (
-                                        <option value={item}>{item}</option>
+                                        <option value={item} name={item}>{item}</option>
                                     ))
                                 }
                             </FormControl>
                         </Col>
                         <Col md={12} className="mt-2">
                             <Label >{t('SELECT_BREED')}</Label>
-                            <FormGroup name="breed" >
+                            <FormGroup onChange={this.props.onFilterChanged}>
                                 {
                                     this.props.breeds && this.props.breeds.map((item, index) => (
-                                        /*<option value={item}>{item}</option>*/
-                                        <Checkbox >{item}</Checkbox>
+                                        <Checkbox value={item} name="breed">{item}</Checkbox>
                                     ))
                                 }
                             </FormGroup>
                         </Col>
                         <Col md={12} className="mt-2">
                             <Label >{t('LOCATION')}</Label>
-                            <FormControl name="city" componentClass="select">
+                            <FormControl name="city" onChange={this.props.onFilterChanged} componentClass="select">
                                 {
                                     this.props.cities && this.props.cities.map((item, index) => (
-                                        <option value={item}>{item}</option>
+                                        <option value={item} name={item} >{item}</option>
                                     ))
                                 }
                             </FormControl>

@@ -12,8 +12,8 @@ const Promos = connect(
 	},
 	dispatch => {
 		return {
-			loadPromos: () => {
-                dispatch(loadPromos());
+			loadPromos: (filter) => {
+                dispatch(loadPromos(filter));
             },
             loadCodeValues : () => {
                 dispatch(loadCodeValues())

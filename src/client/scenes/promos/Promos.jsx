@@ -15,19 +15,38 @@ import SideBar from "./components/sidebar/SideBar";
 class Promos extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			filter : {
+				animal : 'DOG',
+				breed : [],
+				city : 'MINSK'
+			}
+		};
 	}
 
 	componentDidMount() {
-        this.props.loadPromos();
+        this.props.loadPromos(this.state.filter);
         if (!this.props.animals) {
             console.log('Load code values');
             this.props.loadCodeValues();
         }
 	}
 
-	animalChanged = e => {
-		this.props.loadBreeds(e.target.value);
+	filterChanged = e => {
+		let target = e.target;
+		let filter = this.state.filter;
+		if (target.name === 'breed') {
+			if (target.checked) {
+                filter.breed.push(target.value);
+			} else {
+                let index = filter.breeds.indexOf(target.value);
+                filter.breed.splice(index, 1);
+			}
+		} else {
+			filter[target.name] = target.value;
+		}
+		this.setState({filter});
+		this.props.loadPromos(this.state.filter);
 	};
 
 	handleClick = e => {
@@ -64,7 +83,7 @@ class Promos extends React.Component {
 					</Col>
 
 					<Col md={3}>
-						<SideBar onAnimalChange={this.animalChanged.bind(this)}
+						<SideBar onFilterChanged={this.filterChanged.bind(this)}
 								 animals={this.props.animals}
 								 cities={this.props.cities}
 								 breeds={this.props.breeds} />
