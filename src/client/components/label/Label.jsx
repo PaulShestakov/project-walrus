@@ -42,4 +42,5 @@ Label.defaultProps = {
 
 Label.propTypes = {
 	fontSize: PropTypes.string,
+	accent: PropTypes.string
 };

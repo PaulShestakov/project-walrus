@@ -32,14 +32,13 @@ export default class SideBar extends React.Component {
                 <Col md={12}>
                     <Card className="mt-2 py-2">
                         <Col md={12}>
-                            <Label accent="blue" className="px-1 text-white">{t('FILTERS')}</Label>
+                            <Label accent="blue" className="p-2">{t('FILTERS')}</Label>
                             <Separator className="mt-2" />
                         </Col>
                         <Col md={12} className="mt-2">
                             <Label >{t('SELECT_PET')}</Label>
                             <FormControl name="animal"
                                          onChange={this.props.onFilterChanged}
-                                         selected={}
                                          componentClass="select">
                                 {
                                     this.props.animals && this.props.animals.map((item, index) => (

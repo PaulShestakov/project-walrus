@@ -4,12 +4,17 @@
   line-height: 1.25rem;
   font-family: BebasNeueRegular, serif;
   text-transform: uppercase;
-}
+  color: black;
 
-.accentBlue {
-  background-color: $accent-blue;
-}
+  &.accentBlue, &.accentRed {
+    color: white;
+  }
 
-.accentRed {
-  background-color: $accent-red;
+  &.accentBlue {
+    background-color: $accent-blue;
+  }
+
+  &.accentRed {
+    background-color: $accent-red;
+  }
 }

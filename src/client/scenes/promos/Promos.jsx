@@ -11,7 +11,7 @@ import SearchInput from './components/searchInput/SearchInput';
 import SideBar from "./components/sidebar/SideBar";
 
 
-@translate(['promos'])
+@translate(['common', 'promos'])
 class Promos extends React.Component {
 	constructor(props) {
 		super(props);
@@ -62,31 +62,41 @@ class Promos extends React.Component {
 					<Col md={9}>
 						<Row>
 							<Col md={12} className="d-flex">
-								<SearchInput placeholder={t('ENTER_REQUEST')} />
+								<SearchInput placeholder={t('promos:ENTER_REQUEST')} />
 								<Button accent="blue" className="ml-2 text-white">
-									{t('FIND')}
+									{t('promos:FIND')}
 								</Button>
 							</Col>
 						</Row>
-						{/*<Row className="my-3">
-							<Col md={12}>
-								{
-									this.props.promos.map(promo => {
-										return (
-											<PromoItem item={promo}
-											   className="my-3"/>
-										);
-									})
-								}
-							</Col>
-						</Row>*/}
+						{
+							<Row className="my-3">
+								<Col md={12}>
+									{
+										this.props.promos.map(promo => {
+											return (
+												<Row>
+													<PromoItem title={promo.title}
+													   type={t(promo.type)}
+													   imageSrc={promo.imageSrc}
+													   date={promo.date}
+													   description={promo.description}
+													   price={promo.price}
+													   className="my-3"/>
+												</Row>
+
+											);
+										})
+									}
+								</Col>
+							</Row>
+						}
 					</Col>
 
 					<Col md={3}>
 						<SideBar onFilterChanged={this.filterChanged.bind(this)}
-								 animals={this.props.animals}
-								 cities={this.props.cities}
-								 breeds={this.props.breeds} />
+							 animals={this.props.animals}
+							 cities={this.props.cities}
+							 breeds={this.props.breeds} />
 					</Col>
 				</Row>
 			</Grid>
