@@ -1,14 +1,17 @@
 import * as uuid from 'uuid/v4'
+import * as squel from "squel";
 import Mapper from '../../util/Mapper';
 import Util from '../../util/Util';
 import StatusRepo from './Status';
 import TypeRepo from "./Type";
 import BaseCRUD from "../BaseCRUD";
 import {PromoEntity, PromoInfoEntity} from "../../entity/PromoEntity";
+import { executeQuery, executeSeries, executeParallel } from '../../database/DBHelper';
 
 import promoSQL from '../../query/promo/Promo';
 import promoInfoSQL from '../../query/promo/PromoInfo';
 import promoImagesSQL from '../../query/promo/PromoImages';
+
 
 class Promo extends BaseCRUD {
 
@@ -24,23 +27,33 @@ class Promo extends BaseCRUD {
 	}
 
 	public save(promo: any, callback): void {
-		let promoEntity: PromoEntity =
-			this.mapper.mapToEntity(promo, this.mapper.PROMO, {'pr_uuid': uuid()});
+		const promoId = uuid();
+		const promoInfoId = uuid();
 
-		let promoInfoEntity: PromoInfoEntity =
-			this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO, {'pi_uuid': uuid()});
+		const promoBase = {
+			'PROMO_ID': promoId
+		};
+		const promoInfoBase = {
+			'PROMO_INFO_ID': promoInfoId,
+			'PROMO_ID': promoId
+		};
 
-		promoEntity.pi_uuid = promoInfoEntity.pi_uuid;
+		let promoEntity: PromoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO, promoBase);
+		let promoInfoEntity: PromoInfoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO, promoInfoBase);
+
 		let images = promo.images.map(file => ([
 			uuid(),
-			promoInfoEntity.pi_uuid,
+			promoId,
 			file.path
 		]));
 
 		const savePromoInfo = (connection, done) => {
 			connection.query(promoInfoSQL.SAVE, [promoInfoEntity], (error, rows) => {
-				Util.handleError(error, done);
-				done(null, rows);
+				if (error) {
+					Util.handleError(error, done);
+				} else {
+					done(null, rows);
+				}
 			});
 		};
 		const saveImages = (connection, done) => {
@@ -48,21 +61,30 @@ class Promo extends BaseCRUD {
 				done(null);
 			} else {
 				connection.query(promoImagesSQL.SAVE_ALL, [images], (error, rows) => {
-					Util.handleError(error, done);
-					done(null, rows);
+					if (error) {
+						Util.handleError(error, done);
+					} else {
+						done(null, rows);
+					}
 				});
 			}
 		};
 		const savePromo = (connection, done) => {
 			connection.query(promoSQL.SAVE, [promoEntity], (error, rows) => {
-				Util.handleError(error, done);
-				done(null, rows);
+				if (error) {
+					Util.handleError(error, done);
+				} else {
+					done(null, rows);
+				}
 			});
 		};
 
-		this.wrapWithTransaction([savePromoInfo, saveImages, savePromo], (error, result) => {
-			Util.handleError(error, callback);
-			callback(null, 'Success');
+		executeSeries([savePromoInfo, saveImages, savePromo], (error, result) => {
+			if (error) {
+				Util.handleError(error, callback);
+			} else {
+				callback(null, 'Success');
+			}
 		});
 	}
 
@@ -77,41 +99,77 @@ class Promo extends BaseCRUD {
 		});
 	}
 
+	public getFiltered(params, callback): void {
+		const offset = 0;
+		const limit = 10;
+
+		const promoTypeId = 'BUY';
+		const animalsIds = ['DOG', 'CAT'];
+		const breedsIds = ['TAKSA'];
+		const citiesIds = ['MINSK', 'GRODNO'];
+
+		const priceMin = 0;
+		const priceMax = 100;
+
+		const sql = squel.select()
+			.field('*')
+			.from('wikipet.promo', 'p')
+			.where('p.TYPE_ID = ?', promoTypeId)
+			.where('p.ANIMAL_ID IN ?', animalsIds)
+			.where('p.BREED_ID IN ?', breedsIds)
+			.where('p.CITY_ID IN ?', citiesIds)
+			// .where('p.PRICE > ? AND p.PRICE < ?', priceMin, priceMax) ??? move price to promo?
+			.offset(offset)
+			.limit(limit)
+			.toParam();
+
+		executeQuery(sql.text, sql.values, (error, rows) => {
+			if (error) {
+				callback(error);
+				return;
+			}
+
+			let promos = rows.map(row => {
+				return this.mapper.mapToDTO(row, this.mapper.PROMO);
+			});
+			callback(null, promos);
+		});
+	}
+
 	public update(promo: any, callback): void {
 		promo.uuid = uuid();
         super.update(promo, callback);
 	}
 
 	public remove(uuid: string, callback): void {
-		//TODO: Change db structure maybe?
-		// this.wrapWithTransaction([
-		// 		function removePromo(connection, done) {
-		// 			connection.query(promoSQL.DELETE, [uuid], (error, rows) => {
-		// 				Util.handleError(error, done);
-		// 				done(null, rows);
-		// 			});
-		// 		},
-		// 		function removePromoInfo(connection, done) {
-		// 			connection.query(promoSQL.DELETE, [uuid], (error, rows) => {
-		// 				Util.handleError(error, done);
-		// 				done(null, rows);
-		// 			});
-		// 		},
-		// 		function removeImages(connection, done) {
-		// 			connection.query(promoSQL.DELETE, [uuid], (error, rows) => {
-		// 				Util.handleError(error, done);
-		// 				done(null, rows);
-		// 			});
-		// 		}
-		// 	],
-		// 	function handleResult(error) {
-		// 		if (error) {
-		// 			Util.handleError(error, callback);
-		// 		} else {
-		// 			callback(null, 'Success');
-		// 		}
-		// 	}
-		// );
+		executeParallel([
+				function removePromo(connection, done) {
+					connection.query(promoSQL.DELETE, [uuid], (error, rows) => {
+						Util.handleError(error, done);
+						done(null, rows);
+					});
+				},
+				function removePromoInfo(connection, done) {
+					connection.query(promoSQL.DELETE, [uuid], (error, rows) => {
+						Util.handleError(error, done);
+						done(null, rows);
+					});
+				},
+				function removeImages(connection, done) {
+					connection.query(promoSQL.DELETE, [uuid], (error, rows) => {
+						Util.handleError(error, done);
+						done(null, rows);
+					});
+				}
+			],
+			function handleResult(error) {
+				if (error) {
+					Util.handleError(error, callback);
+				} else {
+					callback(null, 'Success');
+				}
+			}
+		);
 	}
 }
 

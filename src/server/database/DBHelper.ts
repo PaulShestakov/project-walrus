@@ -4,6 +4,7 @@ import * as config from 'config';
 import log from "../util/Logger";
 import Util from "../util/Util";
 
+
 const pool = mysql.createPool({
 	connectionLimit : 100, //important
 	host     :  process.env.DATABASE_HOST || config.get('mysql.host'),
@@ -12,6 +13,7 @@ const pool = mysql.createPool({
 	password :  config.get('mysql.password'),
 	database :  config.get('mysql.db')
 });
+
 
 // Test connection
 pool.getConnection(function(err, connection) {
@@ -23,28 +25,9 @@ pool.getConnection(function(err, connection) {
 	connection.release();
 });
 
-const executeQuery = (query, params, callback) => {
-	pool.getConnection((err,connection) => {
-		if (err) {
-			connection.release();
-			Util.handleError(err, callback);
-		}
-		try {
-			connection.query(query, params, (err, rows) => {
-				if (err) {
-					Util.handleError(err, callback);
-					return;
-				}
-				callback(null, rows);
-			});
-		} catch (e) {
-			connection.release();
-			Util.handleError(err, callback);
-		}
-	});
-};
 
-const performTransaction = function (functions, callback) {
+const _performInTransaction = (functionToPerform, callback) => {
+
 	pool.getConnection(function (err, connection) {
 		if (err) {
 			console.log(err);
@@ -52,45 +35,93 @@ const performTransaction = function (functions, callback) {
 			return;
 		}
 
-		connection.beginTransaction(function (err) {
-			if (err) {
-				connection.rollback(function (err) {
+		connection.beginTransaction(function(transactionError) {
+
+			if (transactionError) {
+				connection.rollback(function(rollbackError) {
 					connection.release();
-					Util.handleError(err, callback);
+					// We'll loose transaction error in case rollback also fires error
+					callback(rollbackError || transactionError);
 				});
 				return;
 			}
 
-			functions = functions.map((func) => func.bind(null, connection));
-
-			async.series(functions, function (err, result) {
-				if (err) {
-					Util.handleError(err);
-					connection.rollback(function (err) {
-						connection.release();
-						Util.handleError(err, callback);
-					});
-					return;
-				}
-
-				connection.commit(function (err) {
-					if (err) {
-						Util.handleError(err);
-						connection.rollback(function (err) {
-							connection.release();
-							Util.handleError(err, callback);
-						});
-						return;
-					}
-
-					connection.release();
-
-					callback(null, result);
-				});
-			});
+			functionToPerform(connection, callback);
 		});
 	});
 };
 
 
-export {executeQuery, pool, performTransaction};
+const executeQuery = (query, params, callback) => {
+
+	function transactionContent(connection, callback) {
+		connection.query(query, params, (queryError, result) => {
+			if (queryError) {
+				connection.rollback(function (rollbackError) {
+					connection.release();
+					// We'll loose query error in case rollback also fires error
+					callback(rollbackError || queryError);
+				});
+				return;
+			}
+
+			connection.commit(function (commitError) {
+				if (commitError) {
+					connection.rollback(function (rollbackError) {
+						connection.release();
+						// We'll loose commit error in case rollback also fires error
+						callback(rollbackError || commitError);
+					});
+					return;
+				}
+
+				connection.release();
+				callback(null, result);
+			});
+		});
+	}
+
+	_performInTransaction(transactionContent, callback);
+};
+
+
+const _executeFunctions = (asyncMethod, functions, callback) => {
+
+	function transactionContent(connection, callback) {
+
+		functions = functions.map((func) => func.bind(null, connection));
+
+		async[asyncMethod](functions, function(seriesError, result) {
+			if (seriesError) {
+				connection.rollback(function(rollbackError) {
+					connection.release();
+					callback(rollbackError || seriesError);
+				});
+				return;
+			}
+
+			connection.commit(function(commitError) {
+				if (commitError) {
+					connection.rollback(function(rollbackError) {
+						connection.release();
+						// We'll loose commit error in case rollback also fires error
+						callback(rollbackError || commitError);
+					});
+					return;
+				}
+
+				connection.release();
+				callback(null, result);
+			});
+		});
+	}
+
+	_performInTransaction(transactionContent, callback);
+};
+
+
+const executeSeries = _executeFunctions.bind(null, 'series');
+const executeParallel = _executeFunctions.bind(null, 'parallel');
+
+
+export { executeQuery, executeSeries, executeParallel, pool };

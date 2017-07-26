@@ -1,47 +1,49 @@
 export default class Mapper {
 
     PROMO : Map<string, string> = new Map([
-        ['title'         ,   'PR_TITLE'],
-
+        ['title'         ,   'TITLE'],
         ['city'          ,   'CITY_ID'],
-
         ['animal'        ,   'ANIMAL_ID'],
         ['breed'         ,   'BREED_ID'],
-
-        ['image'         ,   'PR_IMAGE'],
-        ['type'          ,   'TY_ID'],
-        ['status'        ,   'ST_ID'],
+        ['image'         ,   'IMAGE'],
+        ['type'          ,   'TYPE_ID'],
+        ['status'        ,   'STATUS_ID'],
         ['userId'        ,   'USER_ID'],
-
-        ['description'   ,   'PR_DESCRIPTION'],
+        ['description'   ,   'DESCRIPTION'],
     ]);
 
     PROMO_INFO : Map<string, string> = new Map([
-        ['uuid'          ,   'PI_UUID'],
-        ['address'       ,   'PI_ADDRESS'],
-        ['date'          ,   'PI_DATE'],
-        ['gender'        ,   'PI_GENDER'],
-        ['age'           ,   'PI_AGE'],
-        ['price'         ,   'PI_COST']
+        ['uuid'          ,   'PROMO_INFO_ID'],
+        ['address'       ,   'ADDRESS'],
+        ['date'          ,   'DATE'],
+        ['gender'        ,   'GENDER'],
+        ['age'           ,   'AGE'],
+        ['price'         ,   'COST']
     ]);
 
-    mapToEntity(json : JSON, map : Map<string, string>, additionalValues : any) : JSON {
-        let result = {...additionalValues};
-        for (let key in json) {
-            if (map.has(key) && json[key]) {
-                result[map.get(key)] = json[key];
+    mapToEntity(json: any, map: Map<string, string>, baseObject: any): any {
+
+        return Object.keys(json).reduce((acc, key) => {
+
+            if (map.has(key)) {
+                acc[map.get(key)] = json[key];
             }
-        }
-        return result;
+
+            return acc;
+
+        }, baseObject || {});
     }
 
-    mapToDTO(json : JSON, map : Map<string, string>, additionalValues : any) : JSON {
-        let result = {...additionalValues};
-        map.forEach(function (value , key) {
-            if (json[value]) {
-                result[key] = json[value];
+    mapToDTO(json: any, map: Map<string, string>, baseObject: any): any {
+
+        return Array.from(map.keys()).reduce((acc, key) => {
+            const mapValue = map.get(key);
+
+            if (json[mapValue]) {
+                acc[key] = json[mapValue];
             }
-        });
-        return result;
+            return acc;
+
+        }, baseObject || {});
     }
 }

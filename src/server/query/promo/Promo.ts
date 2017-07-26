@@ -11,11 +11,11 @@ export default {
     GET_ALL:
         `SELECT * FROM ${PROMO_TABLE} AS p
         
-            LEFT JOIN ${PROMO_INFO_TABLE} AS p_info ON p_info.PI_UUID = p.PI_UUID
+            LEFT JOIN ${PROMO_INFO_TABLE} AS p_info ON p_info.PROMO_ID = p.PROMO_ID
         
-            LEFT JOIN ${PROMO_IMAGES_TABLE} AS p_images ON p_images.PI_UUID = p.PI_UUID`,
+            LEFT JOIN ${PROMO_IMAGES_TABLE} AS p_images ON p_images.PROMO_ID = p.PROMO_ID`,
 
     SAVE: `INSERT INTO ${PROMO_TABLE} SET ?`,
 
-    DELETE: `DELETE FROM ${PROMO_TABLE} WHERE PR_UUID = ?`,
+    DELETE: `DELETE FROM ${PROMO_TABLE} WHERE PROMO_ID = ?`,
 };

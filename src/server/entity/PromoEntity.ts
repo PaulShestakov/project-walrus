@@ -1,17 +1,18 @@
 interface PromoEntity extends JSON {
-    title       : string,
-    description : string,
-    pi_uuid     : any,
-    pr_uuid     : any
+    PROMO_ID: string,
+    TITLE: string,
+    DESCRIPTION: string,
 }
 
 interface PromoInfoEntity extends JSON  {
-    pi_uuid        : string
+    PROMO_INFO_ID: string
+    PROMO_ID: string
 }
+
 interface PromoImage extends JSON {
-    uuid        : string,
-    pi_uuid     : string,
-    image_path  : string
+    PROMO_IMAGE_ID: string,
+    PROMO_ID: string,
+    IMAGE_PATH: string
 }
 
 export { PromoEntity, PromoInfoEntity, PromoImage };

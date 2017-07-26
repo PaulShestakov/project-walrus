@@ -13,6 +13,9 @@ class Promo extends BaseController {
 		super();
 		this.router = Router();
 		this.router.get('/', this.getAll.bind(this));
+
+		this.router.get('/filtered', this.getFiltered.bind(this));
+
 		this.router.get('/:uuid', this.get.bind(this));
 		this.router.post('/', upload.array('image', IMAGES_UPLOAD_MAX_COUNT), this.save.bind(this));
 		this.router.put('/:uuid', this.update.bind(this));
@@ -36,6 +39,15 @@ class Promo extends BaseController {
 
 	private getAll(req: Request, res: Response) {
 		repo.getAll((error, result) => {
+			if (error) {
+				this.error(res, 500, error);
+			}
+			this.okResponse(res, result);
+		});
+	}
+
+	private getFiltered(req: Request, res: Response) {
+		repo.getFiltered(req.params, (error, result) => {
 			if (error) {
 				this.error(res, 500, error);
 			}

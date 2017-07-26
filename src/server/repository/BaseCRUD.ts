@@ -1,4 +1,4 @@
-import {executeQuery, performTransaction} from '../database/DBHelper';
+import { executeQuery, executeSeries } from '../database/DBHelper';
 import Util from "../util/Util";
 
 export default class BaseCRUD {
@@ -27,7 +27,7 @@ export default class BaseCRUD {
      * @param callback
      */
     get(uuid : string, callback : Function) : void {
-        this.wrapSingleQuery(this.GET_BY_UUID, [uuid], callback);
+        executeQuery(this.GET_BY_UUID, [uuid], callback);
     }
 
     /**
@@ -36,7 +36,7 @@ export default class BaseCRUD {
      * @param callback
      */
     getAll(query : string, callback : Function) : void {
-        this.wrapSingleQuery(query ? query : this.GET_ALL, [], callback);
+        executeQuery(query ? query : this.GET_ALL, [], callback);
     }
 
     /**
@@ -52,7 +52,7 @@ export default class BaseCRUD {
                 done(null, result);
             });
         };
-        this.wrapWithTransaction(saveEntity, callback);
+        executeSeries(saveEntity, callback);
     }
 
     /**
@@ -66,7 +66,7 @@ export default class BaseCRUD {
                 done(null, result);
             });
         };
-        this.wrapWithTransaction(deleteEntity, callback);
+        executeSeries(deleteEntity, callback);
     }
 
     /**
@@ -80,20 +80,7 @@ export default class BaseCRUD {
                 done(null, result);
             });
         };
-        this.wrapWithTransaction([updateEntity], callback);
+        executeSeries([updateEntity], callback);
     }
 
-    protected wrapSingleQuery(query : string, params, callback : Function) : void {
-        executeQuery(query, params, function executeQueryCallback(error, result) {
-            Util.handleError(error, callback);
-            callback(null, result);
-        });
-    }
-
-    protected wrapWithTransaction(queries, callback : Function) : void {
-        performTransaction(queries, (error, result) => {
-            Util.handleError(error, callback);
-            callback(null, result);
-        });
-    }
 }

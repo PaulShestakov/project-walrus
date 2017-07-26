@@ -5,5 +5,5 @@ export default {
 
     SAVE: `INSERT INTO ${TABLE_NAME} SET ?`,
 
-    DELETE: `DELETE FROM ${TABLE_NAME} WHERE PI_UUID = ?`
+    DELETE: `DELETE FROM ${TABLE_NAME} WHERE PROMO_ID = ?`
 };
