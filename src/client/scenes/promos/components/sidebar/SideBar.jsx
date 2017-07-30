@@ -15,6 +15,7 @@ export default class SideBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.filter = this.props.filter;
     }
 
     render() {
@@ -42,7 +43,7 @@ export default class SideBar extends React.Component {
                                          componentClass="select">
                                 {
                                     this.props.animals && this.props.animals.map((item, index) => (
-                                        <option value={item} name={item}>{item}</option>
+                                        <option value={item} name="animal" selected={this.filter.animal === item}>{item}</option>
                                     ))
                                 }
                             </FormControl>
@@ -52,7 +53,9 @@ export default class SideBar extends React.Component {
                             <FormGroup onChange={this.props.onFilterChanged}>
                                 {
                                     this.props.breeds && this.props.breeds.map((item, index) => (
-                                        <Checkbox value={item} name="breed">{item}</Checkbox>
+                                        <Checkbox value={item} name="breed" checked={this.filter.breeds.indexOf(item) != -1}>
+                                            {item}
+                                        </Checkbox>
                                     ))
                                 }
                             </FormGroup>
@@ -62,7 +65,7 @@ export default class SideBar extends React.Component {
                             <FormControl name="city" onChange={this.props.onFilterChanged} componentClass="select">
                                 {
                                     this.props.cities && this.props.cities.map((item, index) => (
-                                        <option value={item} name={item} >{item}</option>
+                                        <option value={item} name="city" selected={this.filter.city === item}>{item}</option>
                                     ))
                                 }
                             </FormControl>

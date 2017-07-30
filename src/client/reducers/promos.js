@@ -9,65 +9,7 @@ import {
 
 import {CODE_VALUES_LOADED} from "../actionCreators/newPromo";
 
-const mockData = {
-	promos:
-		[...new Array(10)].map(x => ({
-			title: 'Title',
-			type: 'SELL',
-			imageSrc: 'https://vignette1.wikia.nocookie.net/sanicsource/images/9/97/Doge.jpg/revision/latest?cb=20160112233015',
-			date: new Date(),
-			description: 'Descr',
-			price: 100
-		}))
-};
-
-const filters = {
-	promoTypes: [
-		{
-			id: 'PETS',
-			text: 'Питомцы'
-		},
-		{
-			id: 'GOODS_FOR_PETS',
-			text: 'Товары для питомцев'
-		}
-	],
-	animals: [
-		{
-			id: 'DOG',
-			text: "Собака"
-		},
-		{
-			id: 'CAT',
-			text: "Собака"
-		},
-		{
-			id: 'BIRD',
-			text: "Птица"
-		},
-		{
-			id: 'FISH',
-			text: "Рыбка"
-		}
-	],
-	cities: [
-		{
-			id: "MINSK",
-			text: "Минск"
-		},
-		{
-			id: "GRODNO",
-			text: "Гродно"
-		},
-		{
-			id: "GOMEL",
-			text: "Гомель"
-		}
-	]
-};
-
-
-const promos = (state = mockData, action) => {
+const promos = (state = {}, action) => {
 	switch (action.type) {
 
 		case REQUEST_PROMOS: {

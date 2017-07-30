@@ -3,8 +3,10 @@ import {
 	SAVE_PROMO_SUCCESS,
 	SAVE_PROMO_FAILURE,
     CODE_VALUES_REQUEST,
-	CODE_VALUES_LOADED
+	CODE_VALUES_LOADED,
 } from '../actionCreators/newPromo';
+
+import { FETCH_BREED_SUCCESS } from '../actionCreators/promos';
 
 const newPromo = (state = {}, action) => {
 	switch (action.type) {
@@ -37,7 +39,11 @@ const newPromo = (state = {}, action) => {
 				cities: action.response[1].cities,
 				isFetching: false
 			};
-
+        case FETCH_BREED_SUCCESS:
+            return {
+                ...state,
+                breeds : action.data
+            };
 		default:
 			return state;
 	}

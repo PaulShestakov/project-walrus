@@ -1,4 +1,5 @@
 import BaseCRUD from "../BaseCRUD";
+import {executeQuery} from "../../database/DBHelper";
 
 export default class Breed extends BaseCRUD {
 
@@ -10,6 +11,6 @@ export default class Breed extends BaseCRUD {
     }
 
     getByAnimal(animal : string, callback) : void {
-        this.wrapSingleQuery(this.GET_BREEDS_BY_ANIMAL, [animal], callback);
+        executeQuery(this.GET_BREEDS_BY_ANIMAL, [animal], callback);
     }
 }

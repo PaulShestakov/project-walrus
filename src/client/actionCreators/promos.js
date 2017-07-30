@@ -108,9 +108,12 @@ export const fetchBreed = (animal) => {
     };
 };
 
-function buildUrl(baseUrl, params) {
-    if (Object.keys(params).length === 0) {
+export function buildUrl(baseUrl, params) {
+    if (!params || Object.keys(params).length === 0) {
         return baseUrl;
+    }
+    if (!baseUrl) {
+        baseUrl = '';
     }
     baseUrl += '?';
     Object.keys(params).forEach(key => {

@@ -1,4 +1,5 @@
 import BaseCRUD from "../BaseCRUD";
+import {executeQuery} from "../../database/DBHelper";
 
 export default class Status extends BaseCRUD {
 
@@ -10,6 +11,6 @@ export default class Status extends BaseCRUD {
     }
 
     public getByName(name, callback) {
-        this.wrapSingleQuery(this.GET_BY_NAME, [name], callback);
+        executeQuery(this.GET_BY_NAME, [name], callback);
     }
 }

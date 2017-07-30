@@ -9,6 +9,7 @@ import { Title, Button, Card, Label, Textarea } from 'components';
 import PromoItem from './components/promoItem/PromoItem';
 import SearchInput from './components/searchInput/SearchInput';
 import SideBar from "./components/sidebar/SideBar";
+import {buildUrl} from "../../actionCreators/promos";
 
 
 @translate(['common', 'promos'])
@@ -18,18 +19,17 @@ class Promos extends React.Component {
 		this.state = {
 			filter : {
 				animal : 'DOG',
-				breed : [],
+				breeds : [],
 				city : 'MINSK'
 			}
 		};
+        this.props.history.push({search : buildUrl(null, this.state.filter)});
 	}
 
 	componentDidMount() {
         this.props.loadPromos(this.state.filter);
-        if (!this.props.animals) {
-            console.log('Load code values');
-            this.props.loadCodeValues();
-        }
+		this.props.loadCodeValues();
+		this.props.loadBreeds(this.state.filter.animal);
 	}
 
 	filterChanged = e => {
@@ -37,20 +37,21 @@ class Promos extends React.Component {
 		let filter = this.state.filter;
 		if (target.name === 'breed') {
 			if (target.checked) {
-                filter.breed.push(target.value);
+                filter.breeds.push(target.value);
 			} else {
                 let index = filter.breeds.indexOf(target.value);
-                filter.breed.splice(index, 1);
+                filter.breeds.splice(index, 1);
 			}
-		} else {
+		} else if (target.name === 'animal') {
+			this.props.loadBreeds(target.value);
+			filter.breeds = [];
+            filter.animal = target.value;
+        } else {
 			filter[target.name] = target.value;
 		}
 		this.setState({filter});
+		this.props.history.push({search : buildUrl(null, this.state.filter)});
 		this.props.loadPromos(this.state.filter);
-	};
-
-	handleClick = e => {
-		this.setState({ target: e.target, show: !this.state.show });
 	};
 
 	render() {
@@ -72,7 +73,7 @@ class Promos extends React.Component {
 							<Row className="my-3">
 								<Col md={12}>
 									{
-										this.props.promos.map(promo => {
+										this.props.promos && this.props.promos.map(promo => {
 											return (
 												<Row>
 													<PromoItem title={promo.title}
@@ -96,7 +97,8 @@ class Promos extends React.Component {
 						<SideBar onFilterChanged={this.filterChanged.bind(this)}
 							 animals={this.props.animals}
 							 cities={this.props.cities}
-							 breeds={this.props.breeds} />
+							 breeds={this.props.breeds}
+							 filter={this.state.filter} />
 					</Col>
 				</Row>
 			</Grid>
