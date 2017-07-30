@@ -5,6 +5,7 @@ import PromosComponent from '../scenes/promos/Promos.jsx';
 import { loadPromos } from './../actionCreators/promos';
 import {loadCodeValues} from "../actionCreators/newPromo";
 import {fetchBreed} from "../actionCreators/promos";
+import {push} from "react-router-redux";
 
 const Promos = connect(
 	state => {

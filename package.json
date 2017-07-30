@@ -4,7 +4,7 @@
   "description": "wikipet",
   "main": "./dist/server/index.js",
   "scripts": {
-    "build": "rm -rf ./dist && NODE_ENV=\"development\" webpack --profile --colors --watch",
+    "build": "webpack --profile --colors --watch",
     "build-prod": "rm -rf ./dist && NODE_ENV=\"production\" webpack --profile --progress --colors",
     "server": "nodemon --inspect dist/server/index.js"
   },
@@ -19,7 +19,7 @@
     "express": "^4.15.3",
     "font-awesome": "^4.7.0",
     "helmet": "^3.6.1",
-    "history": "^4.6.2",
+    "history": "^4.6.3",
     "i18next": "^8.4.2",
     "i18next-resource-store-loader": "^0.1.2",
     "i18next-xhr-backend": "^1.4.2",
@@ -39,7 +39,9 @@
     "react-fontawesome": "^1.6.1",
     "react-i18next": "^4.6.1",
     "react-redux": "^5.0.5",
+    "react-router": "^4.1.2",
     "react-router-dom": "^4.1.1",
+    "react-router-redux": "^5.0.0-alpha.6",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",

@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import {push} from "react-router-redux";
 
 export const REQUEST_PROMOS = 'REQUEST_PROMOS';
 export const REQUEST_PROMOS_SUCCESS = 'REQUEST_PROMOS_SUCCESS';
@@ -71,7 +72,7 @@ export const loadPromos = (filter) => {
     return dispatch => {
         dispatch(loadPromosStart());
 
-        return fetch(buildUrl(baseUrl + '/promo', filter)).then(
+        return fetch(buildUrl(baseUrl + '/promo/filtered', filter)).then(
             response => {
                 if (response.ok) {
                     return response.json();
@@ -84,7 +85,7 @@ export const loadPromos = (filter) => {
                 dispatch(savePromoFailed(error))
             }
         ).then(json => {
-            dispatch(loadPromosSuccess(json))
+            dispatch(loadPromosSuccess(json));
         }).catch(error => {
             dispatch(loadPromosError());
         })

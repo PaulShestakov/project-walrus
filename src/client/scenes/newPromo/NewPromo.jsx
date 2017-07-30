@@ -1,31 +1,34 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
-import { Grid, Row, Col, Form, FormControl } from 'react-bootstrap';
-import { Title, Button, Tabs, Input, Textarea } from 'components';
 
 import LostPromo from './components/LostPromo.jsx';
 import FoundPromo from './components/FoundPromo.jsx';
 import BuyOrSellPromo from './components/BuyOrSellPromo.jsx';
 import GiveOrAcceptGiftPromo from './components/GiveOrAcceptGiftPromo.jsx';
 import ImageUploader from 'imageUploader/ImageUploader';
+import Title from "../../components/title/Title";
+import Input from "../../components/input/input/Input";
+import Textarea from "../../components/input/textarea/Textarea";
+import {Col, Form, FormControl, FormGroup, Grid, Label, Row} from "react-bootstrap";
+import Tabs from "../../components/tabs/Tabs";
+import Button from "../../components/button/Button";
 
 
 
-@translate(['newPromo'])
+@translate(['common', 'newPromo'])
 class NewPromo extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
             promoType: 'LOST',
-            imageObjects: [],
-            animals: [],
-            cities: []
+            imageObjects: []
         };
 	}
 
 	componentDidMount() {
         this.props.loadCodeValues();
+        this.props.loadBreeds('DOG')
 	}
 
 	handleImageAdd = (imageObject) => {
@@ -54,6 +57,9 @@ class NewPromo extends React.Component {
 		const formElements = e.target.elements;
 
 		const formData = {
+			animal:			_.get(formElements.animal, 'value', null),
+            breed:			_.get(formElements.breed, 'value', null),
+
 			address:		_.get(formElements.address, 'value', null),
 			date:			_.get(formElements.date, 'value', null),
 
@@ -73,6 +79,7 @@ class NewPromo extends React.Component {
 		};
 
 		this.props.handleSubmit(formData);
+		this.props.goToPromos();
 	};
 
 	render() {
@@ -114,19 +121,34 @@ class NewPromo extends React.Component {
 								]}
 							/>
 
-							<ImageUploader className="mt-5"
-								imageObjects={this.state.imageObjects}
-								onImageAdd={this.handleImageAdd}
-								onImageDelete={this.handleImageDelete} />
-
 							<Title text={t('PROMO_NAME')} className="mt-5" />
 							<Input name="title" placeholder={t('ENTER_PROMO_NAME')} />
+
+							<Title text={t('SELECT_PET')} className="mt-5"/>
+							<FormControl name="animal"
+										 onChange={e => this.props.loadBreeds(e.target.value)}
+										 componentClass="select">
+                                {
+                                    this.props.animals && this.props.animals.map((item, index) => (
+										<option value={item} selected={item === 'DOG'}>{item}</option>
+                                    ))
+                                }
+							</FormControl>
+
+							<Title text={t('SELECT_BREED')} className="mt-5"/>
+							<FormControl name="breed" componentClass="select">
+                                {
+                                    this.props.breeds && this.props.breeds.map((item, index) => (
+										<option value={item}>{item}</option>
+                                    ))
+                                }
+							</FormControl>
 
 							<Title text={t('CITY')} className="mt-5" />
 							<FormControl name="city" componentClass="select" placeholder={t('ENTER_CITY')}>
                                 {
                                 	this.props.cities && this.props.cities.map((item, index) => (
-										<option value={item}>{item}</option>
+										<option value={item} selected={item === 'Minsk'}>{item}</option>
                                 	))
                                 }
 							</FormControl>
@@ -147,6 +169,11 @@ class NewPromo extends React.Component {
 
 							<Title text={t('DESCRIPTION')} className="mt-4" />
 							<Textarea name="description" placeholder={t('ENTER_DESCRIPTION')} />
+
+							<ImageUploader className="mt-5"
+										   imageObjects={this.state.imageObjects}
+										   onImageAdd={this.handleImageAdd}
+										   onImageDelete={this.handleImageDelete} />
 
 							<div className="d-flex justify-content-around">
 								<Button type="submit"

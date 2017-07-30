@@ -62,7 +62,7 @@ const savePromo = data => {
                 dispatch(savePromoFailed(error))
             }
         ).then(json => {
-			dispatch(savePromoSuccess(json))
+			dispatch(savePromoSuccess(json));
 		}).catch(error => {
 			dispatch(savePromoFailed(error))
 		})

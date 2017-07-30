@@ -8,10 +8,8 @@ class Promo extends React.Component {
 
         return (
             <Switch>
-
                 <Route exact path="/promos" component={Promos}/>
                 <Route path="/promos/new" component={NewPromo}/>
-                <Route path="/promos/:id"/>
             </Switch>
         );
     }

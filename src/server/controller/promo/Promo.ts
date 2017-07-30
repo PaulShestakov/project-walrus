@@ -47,7 +47,7 @@ class Promo extends BaseController {
 	}
 
 	private getFiltered(req: Request, res: Response) {
-		repo.getFiltered(req.params, (error, result) => {
+		repo.getFiltered(req.query, (error, result) => {
 			if (error) {
 				this.error(res, 500, error);
 			}

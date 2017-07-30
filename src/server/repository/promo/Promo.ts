@@ -79,7 +79,7 @@ class Promo extends BaseCRUD {
 			});
 		};
 
-		executeSeries([savePromoInfo, saveImages, savePromo], (error, result) => {
+		executeSeries([savePromo, savePromoInfo, saveImages], (error, result) => {
 			if (error) {
 				Util.handleError(error, callback);
 			} else {
@@ -100,24 +100,24 @@ class Promo extends BaseCRUD {
 	}
 
 	public getFiltered(params, callback): void {
+		console.log(params);
 		const offset = 0;
 		const limit = 10;
 
-		const promoTypeId = 'BUY';
-		const animalsIds = ['DOG', 'CAT'];
-		const breedsIds = ['TAKSA'];
-		const citiesIds = ['MINSK', 'GRODNO'];
+		const promoTypeId = 'LOST';
+		const breedsIds = []; // ?????
+		const citiesIds = ['BREST', 'GRODNO'];
 
 		const priceMin = 0;
 		const priceMax = 100;
 
 		const sql = squel.select()
 			.field('*')
-			.from('wikipet.promo', 'p')
-			.where('p.TYPE_ID = ?', promoTypeId)
-			.where('p.ANIMAL_ID IN ?', animalsIds)
-			.where('p.BREED_ID IN ?', breedsIds)
-			.where('p.CITY_ID IN ?', citiesIds)
+			.from('wikipet.promo p')
+			//.where('p.TYPE_ID = ?', promoTypeId)
+			.where('p.ANIMAL_ID = ?', params.animal)
+			//.where('p.BREED_ID IN ?', breedsIds)
+			.where('p.CITY_ID = ?', params.city)
 			// .where('p.PRICE > ? AND p.PRICE < ?', priceMin, priceMax) ??? move price to promo?
 			.offset(offset)
 			.limit(limit)
@@ -137,7 +137,7 @@ class Promo extends BaseCRUD {
 	}
 
 	public update(promo: any, callback): void {
-		promo.uuid = uuid();
+		//promo.uuid = uuid();
         super.update(promo, callback);
 	}
 
