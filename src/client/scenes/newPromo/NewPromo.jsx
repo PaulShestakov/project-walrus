@@ -125,7 +125,7 @@ class NewPromo extends React.Component {
 							<Title text={t('CITY')} className="mt-5" />
 							<FormControl name="city" componentClass="select" placeholder={t('ENTER_CITY')}>
                                 {
-                                	this.props.cities.map((item, index) => (
+                                	this.props.cities && this.props.cities.map((item, index) => (
 										<option value={item}>{item}</option>
                                 	))
                                 }

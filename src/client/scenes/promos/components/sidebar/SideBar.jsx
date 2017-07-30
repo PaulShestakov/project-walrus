@@ -23,7 +23,7 @@ export default class SideBar extends React.Component {
         return (
             <Row>
                 <Col md={12}>
-                    <Link to="/newPromo">
+                    <Link to="/promos/new">
                         <Button accent="red" className="w-100 text-white">
                             <FontAwesome name="plus" />
                             {t('CREATE_PROMO')}
