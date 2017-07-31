@@ -20,6 +20,36 @@ export default class SideBar extends React.Component {
 
     render() {
         const t = this.props.t;
+
+		const allBreedsPopover = (
+            <Popover>
+                <FormGroup onChange={this.props.onFilterChanged}>
+					{
+						this.props.breeds && this.props.breeds.map((item, index) => (
+                            <Checkbox value={item} name="breeds" checked={this.filter.breeds.indexOf(item) !== -1}>
+								{item}
+                            </Checkbox>
+						))
+					}
+                </FormGroup>
+            </Popover>
+		);
+
+		const allCitiesPopover = (
+            <Popover>
+                <FormGroup onChange={this.props.onFilterChanged}>
+					{
+						this.props.cities && this.props.cities.map((item, index) => (
+                            <Checkbox value={item} name="cities" checked={this.filter.cities.indexOf(item) !== -1}>
+								{item}
+                            </Checkbox>
+						))
+					}
+                </FormGroup>
+            </Popover>
+		);
+
+
         return (
             <Row>
                 <Col md={12}>
@@ -31,67 +61,60 @@ export default class SideBar extends React.Component {
                     </Link>
                 </Col>
                 <Col md={12}>
-                    <Card className="mt-2 py-2">
-                        <Col md={12}>
-                            <Label accent="blue" className="p-2">{t('FILTERS')}</Label>
-                            <Separator className="mt-2" />
-                        </Col>
-                        <Col md={12} className="mt-2">
-                            <Label >{t('SELECT_PET')}</Label>
-                            <FormControl name="animal"
-                                         onChange={this.props.onFilterChanged}
-                                         componentClass="select">
-                                {
-                                    this.props.animals && this.props.animals.map((item, index) => (
-                                        <option value={item} name="animal" selected={this.filter.animal === item}>{item}</option>
-                                    ))
-                                }
-                            </FormControl>
-                        </Col>
-                        <Col md={12} className="mt-2">
-                            <Label >{t('SELECT_BREED')}</Label>
-                            <FormGroup onChange={this.props.onFilterChanged}>
-                                {
-                                    this.props.breeds && this.props.breeds.map((item, index) => (
-                                        <Checkbox value={item} name="breed" checked={this.filter.breeds.indexOf(item) != -1}>
-                                            {item}
-                                        </Checkbox>
-                                    ))
-                                }
-                            </FormGroup>
-                        </Col>
-                        <Col md={12} className="mt-2">
-                            <Label >{t('LOCATION')}</Label>
-                            <FormControl name="city" onChange={this.props.onFilterChanged} componentClass="select">
-                                {
-                                    this.props.cities && this.props.cities.map((item, index) => (
-                                        <option value={item} name="city" selected={this.filter.city === item}>{item}</option>
-                                    ))
-                                }
-                            </FormControl>
-                        </Col>
+                    <Card className="mt-2 p-3">
 
-                        {/*<OverlayTrigger trigger="click" placement="left" overlay={petTypesPopover} container={this}>
-                            <BootstrapButton>Select pet type</BootstrapButton>
+                        <Label accent="blue" className="p-2">{t('FILTERS')}</Label>
+                        <Separator className="mt-2" />
+
+
+
+                        <Label className="mt-3">{t('SELECT_PET')}</Label>
+                        <FormControl name="animal"
+                             onChange={this.props.onFilterChanged}
+                             componentClass="select">
+							{
+								this.props.animals && this.props.animals.map((item, index) => (
+                                    <option value={item} name="animal" selected={this.filter.animal === item}>{item}</option>
+								))
+							}
+                        </FormControl>
+
+
+                        <Label className="mt-3">{t('SELECT_BREED')}</Label>
+                        <FormGroup onChange={this.props.onFilterChanged}>
+                            {
+                                this.props.breeds && this.props.breeds.slice(0, 4).map((item, index) => (
+                                    <Checkbox value={item} name="breeds" checked={this.filter.breeds.indexOf(item) !== -1}>
+                                        {item}
+                                    </Checkbox>
+                                ))
+                            }
+                        </FormGroup>
+                        <OverlayTrigger trigger="click" rootClose placement="left" overlay={allBreedsPopover} container={this}>
+                            <Button>{t('ALL_BREEDS')}</Button>
                         </OverlayTrigger>
 
 
-                        <Button onClick={this.handleClick}>
-                            Holy guacamole!
-                        </Button>
 
-                        <Overlay
-                            show={this.state.show}
-                            target={this.state.target}
-                            placement="bottom"
-                            container={this}
-                            containerPadding={20}
-                        >
-                            <Popover id="popover-contained" title="Popover bottom">
-                                <strong>Holy guacamole!</strong> Check this info.
-                            </Popover>
-                        </Overlay>
-                        */}
+
+                        <Label className="mt-3">{t('LOCATION')}</Label>
+                        <FormGroup onChange={this.props.onFilterChanged}>
+                            {
+								this.props.cities && this.props.cities.slice(0, 4).map((item, index) => (
+                                    <Checkbox value={item} name="cities" checked={this.filter.cities.indexOf(item) !== -1}>
+                                        {item}
+                                    </Checkbox>
+								))
+                            }
+                        </FormGroup>
+                        <OverlayTrigger trigger="click" rootClose placement="left" overlay={allCitiesPopover} container={this}>
+                            <Button>{t('ALL_CITIES')}</Button>
+                        </OverlayTrigger>
+
+
+
+
+
                     </Card>
                </Col>
             </Row>

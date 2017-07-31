@@ -20,7 +20,7 @@ class Promos extends React.Component {
 			filter : {
 				animal : 'DOG',
 				breeds : [],
-				city : 'MINSK'
+				cities : ['MINSK']
 			}
 		};
         this.props.history.push({search : buildUrl(null, this.state.filter)});
@@ -32,23 +32,29 @@ class Promos extends React.Component {
 		this.props.loadBreeds(this.state.filter.animal);
 	}
 
-	filterChanged = e => {
-		let target = e.target;
+	handleFilterChanged = (event) => {
+		let target = event.target;
 		let filter = this.state.filter;
-		if (target.name === 'breed') {
-			if (target.checked) {
-                filter.breeds.push(target.value);
+
+
+		if (['cities', 'breeds'].indexOf(target.name) > 0) {
+			let checked = target.checked;
+			let value = target.value;
+
+			if (checked) {
+				filter[target.name].push(value);
 			} else {
-                let index = filter.breeds.indexOf(target.value);
-                filter.breeds.splice(index, 1);
+				let index = filter[target.name].indexOf(value);
+				filter[target.name].splice(index, 1);
 			}
-		} else if (target.name === 'animal') {
-			this.props.loadBreeds(target.value);
-			filter.breeds = [];
-            filter.animal = target.value;
-        } else {
-			filter[target.name] = target.value;
 		}
+		else if (target.name === 'animal') {
+			filter.breeds = [];
+			filter.animal = target.value;
+
+			this.props.loadBreeds(target.value);
+		}
+
 		this.setState({filter});
 		this.props.history.push({search : buildUrl(null, this.state.filter)});
 		this.props.loadPromos(this.state.filter);
@@ -94,7 +100,7 @@ class Promos extends React.Component {
 					</Col>
 
 					<Col md={3}>
-						<SideBar onFilterChanged={this.filterChanged.bind(this)}
+						<SideBar onFilterChanged={this.handleFilterChanged}
 							 animals={this.props.animals}
 							 cities={this.props.cities}
 							 breeds={this.props.breeds}
