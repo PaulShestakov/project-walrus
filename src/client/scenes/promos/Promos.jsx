@@ -12,10 +12,6 @@ import SideBar from "./components/sidebar/SideBar";
 import {buildUrl} from "../../actionCreators/promos";
 
 
-
-
-
-
 @translate(['common', 'promos'])
 class Promos extends React.Component {
 	constructor(props) {
@@ -41,7 +37,7 @@ class Promos extends React.Component {
 		let filter = this.state.filter;
 
 
-		if (['cities', 'breeds'].indexOf(target.name) > 0) {
+		if (['cities', 'breeds'].indexOf(target.name) > -1) {
 			let checked = target.checked;
 			let value = target.value;
 
@@ -51,8 +47,7 @@ class Promos extends React.Component {
 				let index = filter[target.name].indexOf(value);
 				filter[target.name].splice(index, 1);
 			}
-		}
-		else if (target.name === 'animal') {
+		} else if (target.name === 'animal') {
 			filter.breeds = [];
 			filter.animal = target.value;
 

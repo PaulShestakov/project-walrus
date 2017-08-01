@@ -96,7 +96,7 @@ export default class SideBar extends React.Component {
                             <Grid item xs={6}>
                                 <FormControlLabel styleName="formControlLabel" label={item} control={
                                     <Checkbox value={item}
-                                          name="breeds"
+                                          name="cities"
                                           checked={this.filter.cities.indexOf(item) !== -1}
                                           onChange={this.props.onFilterChanged}
                                           classes={{
@@ -159,7 +159,7 @@ export default class SideBar extends React.Component {
                                     <Grid item xs={6}>
                                         <FormControlLabel styleName="formControlLabel" label={item} control={
                                             <Checkbox value={item}
-                                                  name="breeds"
+                                                  name="cities"
                                                   checked={this.filter.cities.indexOf(item) !== -1}
                                                   onChange={this.props.onFilterChanged}
                                                   classes={{

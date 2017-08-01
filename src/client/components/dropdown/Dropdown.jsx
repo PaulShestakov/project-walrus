@@ -66,7 +66,8 @@ class Dropdown extends React.Component {
 					<FontAwesome name="angle-down" className="ml-2"/>
 				</Button>
 
-				<Menu anchorEl={this.state.anchorEl}
+				<DropDownMenu
+					anchorEl={this.state.anchorEl}
 					open={this.state.open}
 					onRequestClose={this.handleRequestClose}>
 					{
