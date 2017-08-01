@@ -61,10 +61,11 @@ const loadPromosSuccess = (data) => {
     };
 };
 
-const loadPromosError = () => {
+const loadPromosError = (error) => {
     return {
         type: REQUEST_PROMOS_ERROR,
-        isFetching: false
+        isFetching: false,
+        error
     };
 };
 
@@ -87,7 +88,7 @@ export const loadPromos = (filter) => {
         ).then(json => {
             dispatch(loadPromosSuccess(json));
         }).catch(error => {
-            dispatch(loadPromosError());
+            dispatch(loadPromosError(error));
         })
     };
 };

@@ -31,8 +31,7 @@ const savePromoSuccess = (response) => {
 	}
 };
 
-const savePromo = data => {
-
+const savePromo = (data) => {
 	let form = new FormData();
 
 	form.append('promo', JSON.stringify(data));

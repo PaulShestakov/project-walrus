@@ -93,7 +93,6 @@ class Promo extends BaseCRUD {
 			let promos = result.map((item) => {
 				let promoInfoDTO = this.mapper.mapToDTO(item, this.mapper.PROMO_INFO);
 				return this.mapper.mapToDTO(item, this.mapper.PROMO, promoInfoDTO);
-
 			});
 			callback(null, promos);
 		});

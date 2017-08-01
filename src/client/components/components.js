@@ -10,6 +10,7 @@ import Text from			'./text/Text';
 import Title from			'./title/Title';
 import Textarea from		'./input/textarea/Textarea';
 import DateTimePicker from	'./input/dateTimePicker/DateTimePicker';
+import Dropdown from		'./dropdown/Dropdown';
 
 
 export {
@@ -24,5 +25,6 @@ export {
 	Text,
 	Title,
 	Textarea,
-	DateTimePicker
+	DateTimePicker,
+	Dropdown
 };

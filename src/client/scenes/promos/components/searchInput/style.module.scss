@@ -1,36 +1,14 @@
-input.searchInput {
-  border: none;
-  outline: none;
-  padding-left: 0;
-  background-color: transparent;
+@import "./../../../../index.module.scss";
 
-  &::placeholder {
-    color: #e1e1e1;
-  }
+.searchInput {
+  border: 2px solid $grey;
+  border-radius: 0;
 
   &:focus {
-    background-color: transparent;
+    border: 2px solid $dark-grey;
   }
-}
 
-.inputWithUnderline:focus + .inputUnderline {
-  &:after {
-    width: 100%;
-  }
-}
-
-.inputUnderline {
-  width: 100%;
-  height: 2px;
-  position: relative;
-  background-color: #e1e1e1;
-
-  &:after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    background-color: #737373;
-    transition: width 0.3s ease-in-out;
+  &::placeholder {
+    color: $grey;
   }
 }

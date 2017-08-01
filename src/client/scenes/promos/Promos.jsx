@@ -12,6 +12,10 @@ import SideBar from "./components/sidebar/SideBar";
 import {buildUrl} from "../../actionCreators/promos";
 
 
+
+
+
+
 @translate(['common', 'promos'])
 class Promos extends React.Component {
 	constructor(props) {
@@ -106,6 +110,10 @@ class Promos extends React.Component {
 							 breeds={this.props.breeds}
 							 filter={this.state.filter} />
 					</Col>
+
+
+
+
 				</Row>
 			</Grid>
 
