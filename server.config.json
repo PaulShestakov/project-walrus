@@ -2,8 +2,11 @@
   "name"        : "wiki-server",
   "script"      : "./dist/server/index.js",
   "watch"       : true,
+  "detached"    : true,
+
   "autorestart" : true,
-  "max_restarts" : 10,
+  "max_restarts" : 5,
+  "restart_delay" : 5000,
 
   "out_file" : "./log/log.log"
 }
