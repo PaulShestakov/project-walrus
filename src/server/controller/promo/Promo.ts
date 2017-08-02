@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import repo from '../../repository/promo/Promo';
 import BaseController from "../BaseController";
-import upload from '../../util/Upload';
+import upload from "../../util/Upload";
 
 const IMAGES_UPLOAD_MAX_COUNT = 100;
 
@@ -13,6 +13,9 @@ class Promo extends BaseController {
 		super();
 		this.router = Router();
 		this.router.get('/', this.getAll.bind(this));
+
+		this.router.get('/filtered', this.getFiltered.bind(this));
+
 		this.router.get('/:uuid', this.get.bind(this));
 		this.router.post('/', upload.array('image', IMAGES_UPLOAD_MAX_COUNT), this.save.bind(this));
 		this.router.put('/:uuid', this.update.bind(this));
@@ -43,11 +46,21 @@ class Promo extends BaseController {
 		});
 	}
 
+	private getFiltered(req: Request, res: Response) {
+		repo.getFiltered(req.query, (error, result) => {
+			if (error) {
+				this.error(res, 500, error);
+			}
+			this.okResponse(res, result);
+		});
+	}
+
 	private save(req: any, res: Response) {
 		const promo = JSON.parse(req.body.promo);
-		const files = req.files;
 
 		if (promo) {
+			promo.images = req.files;
+
 			repo.save(promo, (error, data) => {
 				if (error) {
 					this.error(res, 500, error);

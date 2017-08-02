@@ -1,3 +1,5 @@
+@import "./../../../index.module.scss";
+
 input.inputWithUnderline {
     border: none;
     outline: none;
@@ -5,7 +7,7 @@ input.inputWithUnderline {
     background-color: transparent;
 
     &::placeholder {
-        color: #e1e1e1;
+        color: $grey;
     }
 
     &:focus {
@@ -23,14 +25,14 @@ input.inputWithUnderline {
     width: 100%;
     height: 2px;
     position: relative;
-    background-color: #e1e1e1;
+    background-color: $grey;
 
     &:after {
         content: '';
         position: absolute;
         width: 0;
         height: 2px;
-        background-color: #737373;
+        background-color: $dark-grey;
         transition: width 0.3s ease-in-out;
     }
 }

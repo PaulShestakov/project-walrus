@@ -1,3 +1,8 @@
 {
-  "common": "COMMON"
+  "WILL_SELL": "Продам",
+  "WILL_BUY": "Куплю",
+  "WILL_GIVE_GIFT": "Подарю",
+  "WILL_ACCEPT_GIFT": "Приму в дар",
+  "LOST": "Потерялся",
+  "FOUND": "Нашёлся"
 }

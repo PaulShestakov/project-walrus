@@ -15,6 +15,7 @@ class PromoCV extends BaseController {
     breedRepo : BreedRepo;
 
     constructor() {
+        super();
         this.router = Router();
         this.animalRepo = new AnimalRepo();
         this.cityRepo = new CityRepo();

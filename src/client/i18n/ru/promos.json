@@ -9,5 +9,9 @@
   "SELECT_BREED": "Выберите породу",
   "PRICE_FROM": "Цена от",
   "PRICE_TO": "Цена до",
-  "LOCATION": "Местоположение"
+  "LOCATION": "Местоположение",
+
+  "ALL_PETS": "Все питомцы",
+  "ALL_BREEDS": "Все породы",
+  "ALL_CITIES": "Все города"
 }

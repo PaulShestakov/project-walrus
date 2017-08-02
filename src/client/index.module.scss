@@ -19,29 +19,9 @@ $main-page-slider-height: 400px;
 
 // Colors
 $accent-red: #9d331b;
-$accent-blue: #014c8c;
+$accent-blue: #2f767b;
 
 $color-hover: #9d331b;
 
 $grey: #e1e1e1;
-
-html {
-  position: relative;
-  min-height: 100%;
-  font-size: 16px;
-}
-
-body, body > div {
-  height: 100%;
-}
-
-.appWrapper {
-  margin-bottom: $footer-height;
-}
-
-.appFooter {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: $footer-height;
-}
+$dark-grey: $color-header-bottom-menu;

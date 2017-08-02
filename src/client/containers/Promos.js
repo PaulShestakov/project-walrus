@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
 import PromosComponent from '../scenes/promos/Promos.jsx';
-// import { savePromo } from './../actionCreators/newPromo';
+import { loadPromos } from './../actionCreators/promos';
+import {loadCodeValues} from "../actionCreators/newPromo";
+import {fetchBreed} from "../actionCreators/promos";
+import {push} from "react-router-redux";
 
 const Promos = connect(
 	state => {
@@ -11,8 +13,14 @@ const Promos = connect(
 	},
 	dispatch => {
 		return {
-			requestPromos: () => {
-
+			loadPromos: (filter) => {
+                dispatch(loadPromos(filter));
+            },
+            loadCodeValues : () => {
+                dispatch(loadCodeValues())
+            },
+			loadBreeds : (animal) => {
+				dispatch(fetchBreed(animal))
 			}
 		}
 	}

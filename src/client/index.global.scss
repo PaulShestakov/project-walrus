@@ -1,0 +1,29 @@
+/* making bootstrap 4 compatible with components, that need version 3*/
+
+/* Popover */
+.fade.in {
+  opacity: 1;
+}
+
+
+
+/* Dropdown */
+.open>.dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu>li>a:hover {
+  text-decoration: none;
+  color: #262626;
+  background-color: #f5f5f5;
+}
+
+.dropdown-menu>li>a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+}

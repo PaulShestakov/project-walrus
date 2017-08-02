@@ -3,12 +3,7 @@ import CSSModules from 'react-css-modules';
 import { Link } from "react-router-dom";
 import { Grid, Row, Col } from 'react-bootstrap';
 import { translate, Interpolate, Trans } from 'react-i18next';
-
-import Separator from '../../components/separator/Separator';
-
-import './style.module.scss';
-import Input from '../../components/input/Input';
-import Button from '../../components/button/Button';
+import { Input, Button, Separator } from 'components';
 
 import styles from './style.module.scss';
 
@@ -71,7 +66,7 @@ class Footer extends React.Component {
 							</Link>
 							<Input placeholder={t('ENTER_EMAIL')} className="my-2" />
 							<Button accent="red"
-								className="my-2">
+								className="my-2 text-white">
 								{t('SUBSCRIBE')}
 							</Button>
 						</Col>

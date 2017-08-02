@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-
+import CSSModules from 'react-css-modules';
 import { FormControl } from 'react-bootstrap';
 
-import './style.module.scss';
+import styles from './style.module.scss';
 
+
+@CSSModules(styles)
 export default class SearchInput extends React.Component {
 	render() {
 		return (

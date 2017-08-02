@@ -1,27 +1,34 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
-import { Grid, Row, Col, Form } from 'react-bootstrap';
-import Title from '../../components/title/Title.jsx';
-import Button from '../../components/button/Button';
-import Tabs from '../../components/tabs/Tabs';
 
 import LostPromo from './components/LostPromo.jsx';
 import FoundPromo from './components/FoundPromo.jsx';
 import BuyOrSellPromo from './components/BuyOrSellPromo.jsx';
 import GiveOrAcceptGiftPromo from './components/GiveOrAcceptGiftPromo.jsx';
 import ImageUploader from 'imageUploader/ImageUploader';
-import Input from 'input/Input';
+import Title from "../../components/title/Title";
+import Input from "../../components/input/input/Input";
+import Textarea from "../../components/input/textarea/Textarea";
+import {Col, Form, FormControl, FormGroup, Grid, Label, Row} from "react-bootstrap";
+import Tabs from "../../components/tabs/Tabs";
+import Button from "../../components/button/Button";
 
 
-@translate(['newPromo'])
+
+@translate(['common', 'newPromo'])
 class NewPromo extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			promoType: 'LOST',
-			imageObjects: []
-		};
+            promoType: 'LOST',
+            imageObjects: []
+        };
+	}
+
+	componentDidMount() {
+        this.props.loadCodeValues();
+        this.props.loadBreeds('DOG')
 	}
 
 	handleImageAdd = (imageObject) => {
@@ -50,28 +57,29 @@ class NewPromo extends React.Component {
 		const formElements = e.target.elements;
 
 		const formData = {
-			lostAddress:	_.get(formElements.lostAddress, 'value', null),
-			lostTime:		_.get(formElements.lostTime, 'value', null),
+			animal:			_.get(formElements.animal, 'value', null),
+            breed:			_.get(formElements.breed, 'value', null),
 
-			foundAddress:	_.get(formElements.foundAddress, 'value', null),
-			foundTime:		_.get(formElements.foundTime, 'value', null),
+			address:		_.get(formElements.address, 'value', null),
+			date:			_.get(formElements.date, 'value', null),
 
 			gender:			_.get(formElements.gender, 'value', null),
-			approximateAge:	_.get(formElements.approximateAge, 'value', null),
+			age:			parseInt(_.get(formElements.age, 'value', -1)),
 
 			price:			_.get(formElements.price, 'value', null),
 
-			personName:		_.get(formElements.personName, 'value', null),
-			personAddress:	_.get(formElements.personAddress, 'value', null),
-			personPhone:	_.get(formElements.personPhone, 'value', null),
-			personEmail:	_.get(formElements.personEmail, 'value', null),
-
 			description:	_.get(formElements.description, 'value', null),
+			title:			_.get(formElements.title, 'value', null),
+			city:			_.get(formElements.city, 'value', null),
+			type:			this.state.promoType,
+			status:			'ACTIVE',
+			userId:			1,
 
 			images:	this.state.imageObjects.map(imageObject => imageObject.file)
 		};
 
 		this.props.handleSubmit(formData);
+		this.props.goToPromos();
 	};
 
 	render() {
@@ -113,18 +121,41 @@ class NewPromo extends React.Component {
 								]}
 							/>
 
-							<ImageUploader className="mt-5"
-								imageObjects={this.state.imageObjects}
-								onImageAdd={this.handleImageAdd}
-								onImageDelete={this.handleImageDelete}
-							/>
+							<Title text={t('PROMO_NAME')} className="mt-5" />
+							<Input name="title" placeholder={t('ENTER_PROMO_NAME')} />
 
-							<Title text={t('PROMO_NAME')} className="mt-5"/>
-							<Input name="promoName" placeholder={t('ENTER_PROMO_NAME')} />
+							<Title text={t('SELECT_PET')} className="mt-5"/>
+							<FormControl name="animal"
+										 onChange={e => this.props.loadBreeds(e.target.value)}
+										 componentClass="select">
+                                {
+                                    this.props.animals && this.props.animals.map((item, index) => (
+										<option value={item} selected={item === 'DOG'}>{item}</option>
+                                    ))
+                                }
+							</FormControl>
+
+							<Title text={t('SELECT_BREED')} className="mt-5"/>
+							<FormControl name="breed" componentClass="select">
+                                {
+                                    this.props.breeds && this.props.breeds.map((item, index) => (
+										<option value={item}>{item}</option>
+                                    ))
+                                }
+							</FormControl>
+
+							<Title text={t('CITY')} className="mt-5" />
+							<FormControl name="city" componentClass="select" placeholder={t('ENTER_CITY')}>
+                                {
+                                	this.props.cities && this.props.cities.map((item, index) => (
+										<option value={item} selected={item === 'Minsk'}>{item}</option>
+                                	))
+                                }
+							</FormControl>
 
 							{
 								(this.state.promoType === 'LOST'
-									&& <LostPromo />)
+									&& <LostPromo  />)
 								||
 								(this.state.promoType === 'FOUND'
 									&& <FoundPromo />)
@@ -136,9 +167,17 @@ class NewPromo extends React.Component {
 									&& <GiveOrAcceptGiftPromo />)
 							}
 
+							<Title text={t('DESCRIPTION')} className="mt-4" />
+							<Textarea name="description" placeholder={t('ENTER_DESCRIPTION')} />
+
+							<ImageUploader className="mt-5"
+										   imageObjects={this.state.imageObjects}
+										   onImageAdd={this.handleImageAdd}
+										   onImageDelete={this.handleImageDelete} />
+
 							<div className="d-flex justify-content-around">
 								<Button type="submit"
-									className="my-5"
+									className="my-5 text-white"
 									bsSize="large"
 									accent="blue">
 									{t('PUBLISH')}

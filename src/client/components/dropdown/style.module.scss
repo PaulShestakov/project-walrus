@@ -1,0 +1,11 @@
+@import "./../../index.module.scss";
+
+.dropdownButton {
+  border-radius: 0;
+  border: 1px solid $dark-grey;
+  background-color: white;
+
+  &:focus {
+    box-shadow: none;
+  }
+}

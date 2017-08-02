@@ -4,114 +4,111 @@ import { translate } from 'react-i18next';
 import FontAwesome from 'react-fontawesome';
 
 import { Grid, Row, Col, Form, OverlayTrigger, Popover, Button as BootstrapButton, FormGroup, Checkbox, Overlay } from 'react-bootstrap';
-import Title from '../../components/title/Title.jsx';
-import RadioGroup from '../../components/radioGroup/RadioGroup.jsx';
-import Button from 'button/Button';
-import Card from 'card/Card';
-import Label from 'label/Label';
-import Separator from 'separator/Separator';
-
+import { Title, Button, Card, Label, Textarea } from 'components';
 
 import PromoItem from './components/promoItem/PromoItem';
 import SearchInput from './components/searchInput/SearchInput';
+import SideBar from "./components/sidebar/SideBar";
+import {buildUrl} from "../../actionCreators/promos";
 
 
-@translate(['promos'])
+@translate(['common', 'promos'])
 class Promos extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			filter : {
+				animal : 'DOG',
+				breeds : [],
+				cities : ['MINSK']
+			}
+		};
+        this.props.history.push({search : buildUrl(null, this.state.filter)});
 	}
 
-	handleClick = e => {
-		this.setState({ target: e.target, show: !this.state.show });
+	componentDidMount() {
+        this.props.loadPromos(this.state.filter);
+		this.props.loadCodeValues();
+		this.props.loadBreeds(this.state.filter.animal);
+	}
+
+	handleFilterChanged = (event) => {
+		let target = event.target;
+		let filter = this.state.filter;
+
+
+		if (['cities', 'breeds'].indexOf(target.name) > -1) {
+			let checked = target.checked;
+			let value = target.value;
+
+			if (checked) {
+				filter[target.name].push(value);
+			} else {
+				let index = filter[target.name].indexOf(value);
+				filter[target.name].splice(index, 1);
+			}
+		} else if (target.name === 'animal') {
+			filter.breeds = [];
+			filter.animal = target.value;
+
+			this.props.loadBreeds(target.value);
+		}
+
+		this.setState({filter});
+		this.props.history.push({search : buildUrl(null, this.state.filter)});
+		this.props.loadPromos(this.state.filter);
 	};
 
 	render() {
 		const t = this.props.t;
 
-		const petTypesPopover = (
-			<Popover id="petType" title="Select pet">
-				<FormGroup>
-					<Checkbox inline>
-						1
-					</Checkbox>
-					{' '}
-					<Checkbox inline>
-						2
-					</Checkbox>
-					{' '}
-					<Checkbox inline>
-						3
-					</Checkbox>
-				</FormGroup>
-			</Popover>
-		);
-
 		return (
 			<Grid className="my-3">
 				<Row>
-					<Col md={10}>
+					<Col md={9}>
 						<Row>
 							<Col md={12} className="d-flex">
-								<SearchInput placeholder={t('ENTER_REQUEST')} />
-								<Button accent="blue" className="ml-2">
-									{t('FIND')}
+								<SearchInput placeholder={t('promos:ENTER_REQUEST')} />
+								<Button accent="blue" className="ml-2 text-white">
+									{t('promos:FIND')}
 								</Button>
 							</Col>
 						</Row>
-						<Row>
-							<Col md={12}>
-								{
-									this.props.promos.map(promo => {
-										return (
-											<PromoItem title={promo.title}
-											   type={promo.type}
-											   imageSrc={promo.imageSrc}
-											   date={promo.date}
-											   description={promo.description}
-											   price={promo.price} />
-										);
-									})
-								}
-							</Col>
-						</Row>
+						{
+							<Row className="my-3">
+								<Col md={12}>
+									{
+										this.props.promos && this.props.promos.map(promo => {
+											return (
+												<Row>
+													<PromoItem title={promo.title}
+													   type={t(promo.type)}
+													   imageSrc={promo.imageSrc}
+													   date={promo.date}
+													   description={promo.description}
+													   price={promo.price}
+													   className="my-3"/>
+												</Row>
+
+											);
+										})
+									}
+								</Col>
+							</Row>
+						}
 					</Col>
 
-					<Col md={2} className="pl-2">
-						<Link to="/newPromo" className="mt-2">
-							<Button accent="red">
-								<FontAwesome name="plus" />
-								{t('CREATE_PROMO')}
-							</Button>
-						</Link>
-
-						<Card className="mt-2">
-							<Label accent="blue" className="py-2 px-3">{t('FILTERS')}</Label>
-
-
-							<OverlayTrigger trigger="click" placement="left" overlay={petTypesPopover} container={this}>
-								<BootstrapButton>Select pet type</BootstrapButton>
-							</OverlayTrigger>
-
-
-							<Button onClick={this.handleClick}>
-								Holy guacamole!
-							</Button>
-
-							<Overlay
-								show={this.state.show}
-								target={this.state.target}
-								placement="bottom"
-								container={this}
-								containerPadding={20}
-							>
-								<Popover id="popover-contained" title="Popover bottom">
-									<strong>Holy guacamole!</strong> Check this info.
-								</Popover>
-							</Overlay>
-						</Card>
+					<Col md={3}>
+						<SideBar onFilterChanged={this.handleFilterChanged}
+							 animals={this.props.animals}
+							 cities={this.props.cities}
+							 breeds={this.props.breeds}
+							 filter={this.state.filter} />
 					</Col>
+
+
+
+
 				</Row>
 			</Grid>
 

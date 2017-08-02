@@ -1,11 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 
-import { FormControl } from 'react-bootstrap';
-import Separator from '../../../components/separator/Separator';
-import Title from '../../../components/title/Title.jsx';
-import Input from '../../../components/input/Input';
-import ImageUploader from 'imageUploader/ImageUploader';
+import { Title, Input } from 'components';
 
 @translate(['newPromo'])
 class BuyPromo extends React.Component {
@@ -14,9 +10,7 @@ class BuyPromo extends React.Component {
 
 		return (
 			<div>
-				<Title text={t('CITY')} className="mt-5" />
-				<Input name="city" placeholder={t('ENTER_CITY')} />
-
+				{/*
 				<Title text={t('YOUR_NAME')} className="mt-4" />
 				<Input name="personName" placeholder={t('ENTER_YOUR_NAME')} />
 
@@ -28,9 +22,7 @@ class BuyPromo extends React.Component {
 
 				<Title text={t('YOUR_PHONE')} className="mt-4" />
 				<Input name="personPhone" placeholder={t('ENTER_YOUR_PHONE')} />
-
-				<Title text={t('DESCRIPTION')} className="mt-4" />
-				<Input name="description" placeholder={t('ENTER_DESCRIPTION')} />
+				*/}
 			</div>
 		);
 	}
