@@ -1,5 +1,0 @@
-{
-  "events": {
-    "crash": "npm run server"
-  }
-}

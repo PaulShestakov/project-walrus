@@ -1,0 +1,9 @@
+{
+  "name"        : "wiki-server",
+  "script"      : "./dist/server/index.js",
+  "watch"       : true,
+  "autorestart" : true,
+  "max_restarts" : 10,
+
+  "out_file" : "./log/log.log"
+}

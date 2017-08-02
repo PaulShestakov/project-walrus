@@ -4,9 +4,13 @@
   "description": "wikipet",
   "main": "./dist/server/index.js",
   "scripts": {
+
     "build": "webpack --profile --colors --watch",
     "build-prod": "rm -rf ./dist && NODE_ENV=\"production\" webpack --profile --progress --colors",
-    "server": "nodemon --inspect dist/server/index.js"
+
+    "run-server": "pm2 startOrReload server.config.json --update-env",
+    "stop-server": "pm2 stop server.config.json"
+
   },
   "author": "",
   "license": "ISC",
@@ -30,6 +34,7 @@
     "moment": "^2.18.1",
     "multer": "^1.3.0",
     "mysql": "^2.13.0",
+    "pm2": "^2.6.1",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.0",
