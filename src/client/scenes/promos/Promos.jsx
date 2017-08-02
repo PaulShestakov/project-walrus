@@ -36,8 +36,15 @@ class Promos extends React.Component {
 		let target = event.target;
 		let filter = this.state.filter;
 
+		let value = event.value;
 
-		if (['cities', 'breeds'].indexOf(target.name) > -1) {
+		if (value) {
+            filter.breeds = [];
+            filter.animal = value;
+
+            this.props.loadBreeds(value);
+
+		} else if (['cities', 'breeds'].indexOf(target.name) > -1) {
 			let checked = target.checked;
 			let value = target.value;
 
@@ -47,11 +54,6 @@ class Promos extends React.Component {
 				let index = filter[target.name].indexOf(value);
 				filter[target.name].splice(index, 1);
 			}
-		} else if (target.name === 'animal') {
-			filter.breeds = [];
-			filter.animal = target.value;
-
-			this.props.loadBreeds(target.value);
 		}
 
 		this.setState({filter});
@@ -105,9 +107,6 @@ class Promos extends React.Component {
 							 breeds={this.props.breeds}
 							 filter={this.state.filter} />
 					</Col>
-
-
-
 
 				</Row>
 			</Grid>
