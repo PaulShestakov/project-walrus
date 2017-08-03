@@ -2,39 +2,20 @@ import * as React from "react";
 import CSSModules from 'react-css-modules';
 import Col from "react-bootstrap/es/Col";
 import {Link} from "react-router-dom";
-import Button from "../../../../components/button/Button";
-import Card from "../../../../components/card/Card";
-import Label from "../../../../components/label/Label";
-import {Overlay, OverlayTrigger, Popover, Button as BootstrapButton, Row, FormControl, DropdownButton} from "react-bootstrap";
+import { OverlayTrigger, Popover, Row } from "react-bootstrap";
 import FontAwesome from 'react-fontawesome';
 import {translate} from "react-i18next";
-import { Separator, Checkbox } from "components";
+import { Button, Card, Label, Separator, Checkbox } from "components";
 import Dropdown from "react-dropdown";
 
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
-import Checkbox from 'material-ui/Checkbox';
-
 import Grid from 'material-ui/Grid';
-import Menu, { MenuItem } from 'material-ui/Menu';
-
 
 import styles from './style.module.scss';
 import ButtonMore from "../buttonMore/ButtonMore";
 
 
-
-import { withStyles, createStyleSheet } from 'material-ui/styles';
-import grey from 'material-ui/colors/grey';
-
-const styleSheet = createStyleSheet({
-	checked: {
-		color: grey[900],
-	},
-});
-
-
 @translate(['promos'])
-@withStyles(styleSheet)
 @CSSModules(styles)
 export default class SideBar extends React.Component {
 
@@ -57,29 +38,26 @@ export default class SideBar extends React.Component {
 
     render() {
         const t = this.props.t;
-		const classes = this.props.classes;
 
         const animals = this.props.animals.map(animal => {
             return {
-                key: animal,
-                value: animal
+                value: animal.animalId,
+                label: animal.name
             }
         });
+        const selectedOptionLabel = animals.find(item => item.value === this.filter.animal).label;
 
 		const allBreedsPopover = (
             <Popover>
                 <FormGroup row>
 					{
-						this.props.breeds && this.props.breeds.map((item, index) => (
+						this.props.breeds && this.props.breeds.map((breed, index) => (
                             <Grid item xs={6}>
-                                <FormControlLabel styleName="formControlLabel" label={item} control={
-                                    <Checkbox value={item}
+                                <FormControlLabel styleName="formControlLabel" label={breed.name} control={
+                                    <Checkbox value={breed.breedId}
                                           name="breeds"
-                                          checked={this.filter.breeds.indexOf(item) !== -1}
+                                          checked={this.filter.breeds.indexOf(breed.breedId) !== -1}
                                           onChange={this.props.onFilterChanged}
-                                          classes={{
-                                              checked: classes.checked,
-                                          }}
                                     />
                                 } />
                             </Grid>
@@ -93,16 +71,13 @@ export default class SideBar extends React.Component {
             <Popover>
                 <FormGroup row>
                     {
-                        this.props.cities && this.props.cities.map((item, index) => (
+                        this.props.cities && this.props.cities.map((city, index) => (
                             <Grid item xs={6}>
-                                <FormControlLabel styleName="formControlLabel" label={item} control={
-                                    <Checkbox value={item}
+                                <FormControlLabel styleName="formControlLabel" label={city.name} control={
+                                    <Checkbox value={city.cityId}
                                           name="cities"
-                                          checked={this.filter.cities.indexOf(item) !== -1}
+                                          checked={this.filter.cities.indexOf(city.cityId) !== -1}
                                           onChange={this.props.onFilterChanged}
-                                          classes={{
-                                              checked: classes.checked,
-                                          }}
                                     />
                                 } />
                             </Grid>
@@ -129,7 +104,7 @@ export default class SideBar extends React.Component {
 
 
                         <Label className="mt-4">{t('SELECT_PET')}</Label>
-                        <Dropdown options={animals} selectedOptionKey={this.filter.animal} />
+                        <Dropdown options={animals} value={selectedOptionLabel} />
 
 
 						<Label className="mt-4">{t('SELECT_BREED')}</Label>
@@ -148,12 +123,9 @@ export default class SideBar extends React.Component {
 											<Grid item xs={6}>
 												<FormControlLabel className="m-0" label={breed.name} control={
 													<Checkbox value={breed.breedId}
-															  name="breeds"
-															  checked={checked}
-															  onChange={this.props.onFilterChanged}
-															  classes={{
-																  checked: classes.checked,
-															  }}
+														  name="breeds"
+														  checked={checked}
+														  onChange={this.props.onFilterChanged}
 													/>
 												}/>
 											</Grid>
@@ -182,12 +154,9 @@ export default class SideBar extends React.Component {
 											<Grid item xs={6}>
 												<FormControlLabel className="m-0" label={city.name} control={
 													<Checkbox value={city.cityId}
-															  name="cities"
-															  checked={checked}
-															  onChange={this.props.onFilterChanged}
-															  classes={{
-																  checked: classes.checked,
-															  }}
+														  name="cities"
+														  checked={checked}
+														  onChange={this.props.onFilterChanged}
 													/>
 												}/>
 											</Grid>
