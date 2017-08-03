@@ -39,12 +39,18 @@ export default class SideBar extends React.Component {
     render() {
         const t = this.props.t;
 
-        const animals = this.props.animals.map(animal => {
-            return {
-                value: animal.animalId,
-                label: animal.name
-            }
-        });
+        let animals;
+        if (this.props.animals) {
+            animals = this.props.animals.map(animal => {
+                return {
+                    value: animal.animalId,
+                    label: animal.name
+                }
+            });
+        } else {
+            animals = [];
+        }
+
         let selectedOptionLabel = animals.find(item => item.value === this.filter.animal);
 
         if (selectedOptionLabel) {
