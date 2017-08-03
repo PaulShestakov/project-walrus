@@ -34,11 +34,13 @@ class PromoCV extends BaseController {
                     Util.handleError(error, callback);
 
                     result = {
-                        "animals" : result.map((entity) => {return entity.ANIMAL_ID})
+                        "animals": result.map((entity) => ({
+                            animalId: entity.ANIMAL_ID,
+                            name: entity.NAME
+                        }))
                     };
 
                     callback(null, result);
-
                 });
             },
             function (callback) {
@@ -47,11 +49,13 @@ class PromoCV extends BaseController {
                     Util.handleError(error, callback);
 
                     result = {
-                      "cities"  : result.map((entity) => {return entity.CITY_ID})
+                      "cities": result.map((entity) => ({
+                          cityId: entity.CITY_ID,
+                          name: entity.NAME
+                      }))
                     };
 
                     callback(null, result);
-
                 });
             }
         ], function (error, result) {
@@ -72,10 +76,12 @@ class PromoCV extends BaseController {
                 return;
             }
 
-            result = result.map((entity) => {return entity.BREED_ID;});
+            result = result.map((entity) => ({
+                breedId: entity.BREED_ID,
+                name: entity.NAME,
+            }));
 
             this.okResponse(res, result);
-
         });
     }
 }

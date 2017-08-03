@@ -8,7 +8,7 @@ import Label from "../../../../components/label/Label";
 import {Overlay, OverlayTrigger, Popover, Button as BootstrapButton, Row, FormControl, DropdownButton} from "react-bootstrap";
 import FontAwesome from 'react-fontawesome';
 import {translate} from "react-i18next";
-import { Separator } from "components";
+import { Separator, Checkbox } from "components";
 import Dropdown from "react-dropdown";
 
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
@@ -45,23 +45,6 @@ export default class SideBar extends React.Component {
 			open: false,
 		};
         this.filter = this.props.filter;
-        this.options = [
-            { value: 'one', label: 'One' },
-            { value: 'two', label: 'Two' },
-            {
-                type: 'group', name: 'group1', items: [
-                { value: 'three', label: 'Three' },
-                { value: 'four', label: 'Four' }
-            ]
-            },
-            {
-                type: 'group', name: 'group2', items: [
-                { value: 'five', label: 'Five' },
-                { value: 'six', label: 'Six' }
-            ]
-            }
-        ]
-
     }
 
 	handleClick = event => {
@@ -94,7 +77,9 @@ export default class SideBar extends React.Component {
                                           name="breeds"
                                           checked={this.filter.breeds.indexOf(item) !== -1}
                                           onChange={this.props.onFilterChanged}
-
+                                          classes={{
+                                              checked: classes.checked,
+                                          }}
                                     />
                                 } />
                             </Grid>
@@ -112,11 +97,12 @@ export default class SideBar extends React.Component {
                             <Grid item xs={6}>
                                 <FormControlLabel styleName="formControlLabel" label={item} control={
                                     <Checkbox value={item}
-                                              key={item}
-                                              name="cities"
-                                              checked={this.filter.cities.indexOf(item) !== -1}
-                                              onChange={this.props.onFilterChanged}
-
+                                          name="cities"
+                                          checked={this.filter.cities.indexOf(item) !== -1}
+                                          onChange={this.props.onFilterChanged}
+                                          classes={{
+                                              checked: classes.checked,
+                                          }}
                                     />
                                 } />
                             </Grid>
@@ -143,55 +129,79 @@ export default class SideBar extends React.Component {
 
 
                         <Label className="mt-4">{t('SELECT_PET')}</Label>
-                        <Dropdown options={this.props.animals}
-                                  value={this.filter.animal}
-                                  onChange={this.props.onFilterChanged} />
-
-                        <Label className="mt-4">{t('SELECT_BREED')}</Label>
-                        <FormGroup row>
-                            {
-								this.props.breeds && this.props.breeds.slice(0, 4).map((item, index) => (
-									<FormControlLabel styleName="formControlLabel" label={item} control={
-									    <Checkbox value={item}
-                                                  name="breeds"
-                                                  key={item}
-                                                  checked={this.filter.breeds.indexOf(item) !== -1}
-
-                                        />
-									} />
-								))
-                            }
-                        </FormGroup>
-                        <OverlayTrigger trigger="click" rootClose placement="left" overlay={allBreedsPopover} container={this}>
-                            <ButtonMore className="w-100">{t('ALL_BREEDS')}</ButtonMore>
-                        </OverlayTrigger>
+                        <Dropdown options={animals} selectedOptionKey={this.filter.animal} />
 
 
-                        <Label className="mt-4">{t('LOCATION')}</Label>
-                        <FormGroup row>
+						<Label className="mt-4">{t('SELECT_BREED')}</Label>
+						<FormGroup>
 							{
-								this.props.cities && this.props.cities.slice(0, 4).map((item, index) => (
-                                    <Grid item xs={6}>
-                                        <FormControlLabel styleName="formControlLabel" label={item} control={
-                                            <Checkbox value={item}
-                                                      key={item}
-                                                  name="cities"
-                                                  checked={this.filter.cities.indexOf(item) !== -1}
-                                                  onChange={this.props.onFilterChanged}
+								this.props.breeds &&
+								this.props.breeds.slice(0, 4)
+									.concat(
+										this.props.breeds.slice(4)
+											.filter(breed => this.filter.breeds.indexOf(breed.breedId) > -1)
+									)
+									.map((breed, index) => {
+										const checked = this.filter.breeds.indexOf(breed.breedId) !== -1;
 
-                                            />
-										} />
-                                    </Grid>
-								))
+										return (
+											<Grid item xs={6}>
+												<FormControlLabel className="m-0" label={breed.name} control={
+													<Checkbox value={breed.breedId}
+															  name="breeds"
+															  checked={checked}
+															  onChange={this.props.onFilterChanged}
+															  classes={{
+																  checked: classes.checked,
+															  }}
+													/>
+												}/>
+											</Grid>
+										)
+									})
 							}
-                        </FormGroup>
-                        <OverlayTrigger trigger="click" rootClose placement="left" overlay={allCitiesPopover} container={this}>
-                            <ButtonMore className="w-100">{t('ALL_CITIES')}</ButtonMore>
-                        </OverlayTrigger>
-                    </Card>
-               </Col>
-            </Row>
-        )
-    }
+						</FormGroup>
+						<OverlayTrigger trigger="click" rootClose placement="left" overlay={allBreedsPopover} container={this}>
+							<ButtonMore className="w-100">{t('ALL_BREEDS')}</ButtonMore>
+						</OverlayTrigger>
+
+
+						<Label className="mt-4">{t('LOCATION')}</Label>
+						<FormGroup>
+							{
+								this.props.cities &&
+								this.props.cities.slice(0, 4)
+									.concat(
+										this.props.cities.slice(4)
+											.filter(city => this.filter.cities.indexOf(city.cityId) > -1)
+									)
+									.map((city, index) => {
+										const checked = this.filter.cities.indexOf(city.cityId) !== -1;
+
+										return (
+											<Grid item xs={6}>
+												<FormControlLabel className="m-0" label={city.name} control={
+													<Checkbox value={city.cityId}
+															  name="cities"
+															  checked={checked}
+															  onChange={this.props.onFilterChanged}
+															  classes={{
+																  checked: classes.checked,
+															  }}
+													/>
+												}/>
+											</Grid>
+										)
+									})
+							}
+						</FormGroup>
+						<OverlayTrigger trigger="click" rootClose placement="left" overlay={allCitiesPopover} container={this}>
+							<ButtonMore className="w-100">{t('ALL_CITIES')}</ButtonMore>
+						</OverlayTrigger>
+					</Card>
+				</Col>
+			</Row>
+		)
+	}
 
 }
