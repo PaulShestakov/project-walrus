@@ -46,5 +46,8 @@
   "DESCRIPTION": "Описание",
   "ENTER_DESCRIPTION": "Введите описание",
 
-  "PUBLISH": "Опубликовать"
+  "PUBLISH": "Опубликовать",
+
+  "SELECT_PET": "Выберите питомца",
+  "SELECT_BREED": "Выберите породу"
 }

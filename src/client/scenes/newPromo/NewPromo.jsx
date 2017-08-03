@@ -16,7 +16,7 @@ import Button from "../../components/button/Button";
 
 
 
-@translate(['common', 'newPromo'])
+@translate(['newPromo', 'common'])
 class NewPromo extends React.Component {
 	constructor(props) {
 		super(props);
@@ -122,7 +122,7 @@ class NewPromo extends React.Component {
 							/>
 
 							<Title text={t('PROMO_NAME')} className="mt-5" />
-							<Input name="title" placeholder={t('ENTER_PROMO_NAME')} />
+							<Input name="title" placeholder={t('PROMO_NAME')} />
 
 							<Title text={t('SELECT_PET')} className="mt-5"/>
 							<FormControl name="animal"
@@ -130,7 +130,7 @@ class NewPromo extends React.Component {
 										 componentClass="select">
                                 {
                                     this.props.animals && this.props.animals.map((item, index) => (
-										<option value={item} selected={item === 'DOG'}>{item}</option>
+										<option value={item.animalId} selected={item.animalId === 'DOG'}>{item.name}</option>
                                     ))
                                 }
 							</FormControl>
@@ -139,7 +139,7 @@ class NewPromo extends React.Component {
 							<FormControl name="breed" componentClass="select">
                                 {
                                     this.props.breeds && this.props.breeds.map((item, index) => (
-										<option value={item}>{item}</option>
+										<option value={item.breedId}>{item.name}</option>
                                     ))
                                 }
 							</FormControl>
@@ -148,7 +148,7 @@ class NewPromo extends React.Component {
 							<FormControl name="city" componentClass="select" placeholder={t('ENTER_CITY')}>
                                 {
                                 	this.props.cities && this.props.cities.map((item, index) => (
-										<option value={item} selected={item === 'Minsk'}>{item}</option>
+										<option value={item.cityId} selected={item.cityId === 'Minsk'}>{item.name}</option>
                                 	))
                                 }
 							</FormControl>

@@ -45,7 +45,11 @@ export default class SideBar extends React.Component {
                 label: animal.name
             }
         });
-        const selectedOptionLabel = animals.find(item => item.value === this.filter.animal).label;
+        let selectedOptionLabel = animals.find(item => item.value === this.filter.animal);
+
+        if (selectedOptionLabel) {
+            selectedOptionLabel = selectedOptionLabel.label;
+        }
 
 		const allBreedsPopover = (
             <Popover>
@@ -104,7 +108,7 @@ export default class SideBar extends React.Component {
 
 
                         <Label className="mt-4">{t('SELECT_PET')}</Label>
-                        <Dropdown options={animals} value={selectedOptionLabel} />
+                        <Dropdown options={animals} onChange={this.props.onFilterChanged} value={selectedOptionLabel} />
 
 
 						<Label className="mt-4">{t('SELECT_BREED')}</Label>

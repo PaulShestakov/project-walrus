@@ -5,8 +5,9 @@ import Header from '../header/Header.jsx';
 import Footer from '../footer/Footer.jsx';
 
 import styles from './router.module.scss';
-import Promo from "../promo/Promo";
-import {Redirect, Route, Switch} from 'react-router';
+import {Redirect, Route, Switch} from "react-router-dom";
+import Promos from "../../containers/Promos";
+import NewPromo from "../../containers/NewPromo";
 
 @CSSModules(styles)
 export default class Router extends React.Component {
@@ -17,8 +18,9 @@ export default class Router extends React.Component {
 
 				<main>
 					<Switch>
-						<Route path='/promos' component={Promo} />
-						<Redirect from='/' to='/promos' />
+						<Route exact path="/promos" component={Promos}/>
+						<Route path="/promos/new" component={NewPromo}/>
+						<Redirect from="/" to="/promos"/>
 					</Switch>
 				</main>
 
