@@ -1,3 +1,11 @@
+
+body {
+  margin: 0;
+}
+
+
+
+
 /* making bootstrap 4 compatible with components, that need version 3*/
 
 /* Popover */
@@ -26,4 +34,26 @@
   line-height: 1.42857143;
   color: #333;
   white-space: nowrap;
+}
+
+
+
+
+
+* {
+  font-family: OpenSans, sans-serif;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.justify-content-between {
+  -webkit-box-pack: justify;
+  justify-content: space-between;
 }

@@ -3,7 +3,9 @@ import CSSModules from 'react-css-modules';
 import { translate, Interpolate, Trans } from 'react-i18next';
 import FontAwesome from 'react-fontawesome';
 import { Link } from 'react-router-dom';
-import { Grid, Row, Col, Image } from 'react-bootstrap';
+
+import { Row, Col, Image } from 'react-bootstrap';
+import { Grid } from 'components';
 
 import logo from './img/Logo.svg';
 import styles from './style.module.scss';
@@ -15,65 +17,68 @@ class Header extends React.Component {
 		const t = this.props.t;
 
 		return (
-			<header className={this.props.className} styleName="headerWrapper"
-				itemType="http://schema.org/Header" itemScope>
-				<Grid className="py-3">
-					<Row styleName="topHeader" className='mb-4'>
-						<Col md={2}>
-							<Image src={logo} alt="Logo" itemProp="logo" style={{width: '100%'}} />
-						</Col>
+			<header className={this.props.className} styleName="headerWrapper" itemType="http://schema.org/Header" itemScope>
 
-						<Col md={10} className='d-flex align-items-center justify-content-between'>
-							<Link to="/">
-								<FontAwesome name="search" className='mr-1' />
-								{t('SEARCH')}
-							</Link>
+				<Grid container direction="column" md="9" styleName="root">
 
-							<Link to="/promos">
-								<FontAwesome name="bullhorn" className='mr-1' />
-								{t('PROMOS')}
-							</Link>
+					<Grid item styleName="topHeader">
 
-							<Link to="/">
-								<FontAwesome name="comments" className='mr-1' />
-								{t('BLOG')}
-							</Link>
+						<Grid container align="center">
+							<Grid item md="2">
+								<Image src={logo} alt="Logo" itemProp="logo" style={{width: '100%'}} />
+							</Grid>
 
-							<Link to="/">
-								<FontAwesome name="paw" className='mr-1' />
-								{t('AFFICHE')}
-							</Link>
 
-							<Link to="/">
-								<FontAwesome name="sign-in" className='mr-1' />
-								{t('ENTER')}
-							</Link>
-						</Col>
-					</Row>
+							<Grid item md="10" className='d-flex align-items-center justify-content-between'>
+								<Link to="/">
+									<FontAwesome name="search" className='mr-1' />
+									{t('SEARCH')}
+								</Link>
 
-					<Row styleName='bottomHeader'>
-						<Col md={12} className='d-flex align-items-center justify-content-between'>
-							<Link to='/'>
-								{t('GUIDE')}
-							</Link>
+								<Link to="/promos">
+									<FontAwesome name="bullhorn" className='mr-1' />
+									{t('PROMOS')}
+								</Link>
 
-							<Link to='/'>
-								{t('ZOOCALLS')}
-							</Link>
+								<Link to="/">
+									<FontAwesome name="comments" className='mr-1' />
+									{t('BLOG')}
+								</Link>
 
-							<Link to='/'>
-								{t('LIFE_WITH_PET')}
-							</Link>
+								<Link to="/">
+									<FontAwesome name="paw" className='mr-1' />
+									{t('AFFICHE')}
+								</Link>
 
-							<Link to='/'>
-								{t('SPECIALISTS')}
-							</Link>
+								<Link to="/">
+									<FontAwesome name="sign-in" className='mr-1' />
+									{t('ENTER')}
+								</Link>
+							</Grid>
+						</Grid>
+					</Grid>
 
-							<Link to='/'>
-								{t('POSITIVE')}
-							</Link>
-						</Col>
-					</Row>
+					<Grid item styleName='bottomHeader' className='d-flex align-items-center justify-content-between'>
+						<Link to='/'>
+							{t('GUIDE')}
+						</Link>
+
+						<Link to='/'>
+							{t('ZOOCALLS')}
+						</Link>
+
+						<Link to='/'>
+							{t('LIFE_WITH_PET')}
+						</Link>
+
+						<Link to='/'>
+							{t('SPECIALISTS')}
+						</Link>
+
+						<Link to='/'>
+							{t('POSITIVE')}
+						</Link>
+					</Grid>
 				</Grid>
 			</header>
 		);

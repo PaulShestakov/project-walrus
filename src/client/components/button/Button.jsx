@@ -5,24 +5,48 @@ import { Button as BootstrapButton } from 'react-bootstrap';
 
 import styles from './style.module.scss';
 
-@CSSModules(styles)
-class Button extends React.Component {
-	render() {
-		let accentStyleClass = '';
 
-		switch (this.props.accent) {
-			case 'blue':
-				accentStyleClass = 'accentBlue';
-				break;
-			case 'red':
-				accentStyleClass = 'accentRed';
-				break;
-		}
+
+
+import { withStyles, createStyleSheet } from 'material-ui/styles';
+
+
+const styleSheet = createStyleSheet(theme => ({
+	button: {
+		margin: theme.spacing.unit,
+	},
+	input: {
+		display: 'none',
+	},
+}));
+
+
+import MaterialButton from 'material-ui/Button';
+
+
+
+
+@withStyles(styleSheet)
+class Button extends React.Component {
+
+	render() {
+
+		const classes = this.props.classes;
+
+		// let accentStyleClass = '';
+		//
+		// switch (this.props.accent) {
+		// 	case 'blue':
+		// 		accentStyleClass = 'accentBlue';
+		// 		break;
+		// 	case 'red':
+		// 		accentStyleClass = 'accentRed';
+		// 		break;
+		// }
 		return (
-			<BootstrapButton {...this.props}
-				className={[this.props.styles.button, this.props.styles[accentStyleClass], this.props.className].join(' ')}>
+			<MaterialButton raised color="primary" className={classes.button} {...this.props}>
 				{this.props.children}
-			</BootstrapButton>
+			</MaterialButton>
 		);
 	}
 }
