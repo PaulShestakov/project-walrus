@@ -5,17 +5,22 @@ import CSSModules from 'react-css-modules';
 import { Grid, Row, Col, Form, Image } from 'react-bootstrap';
 import { Title, Text, Label } from 'components';
 
+import DefaultImage from '../../../../assets/img/promo-default.png';
+
 import styles from './style.module.scss';
 
 @CSSModules(styles)
 export default class PromoItem extends React.Component {
 	render() {
+
+		let image = this.props.imageSrc ? this.props.imageSrc : DefaultImage;
+
 		return (
 			<Grid styleName="promoItem">
 				<Row>
 					<Col md={3}>
 						{
-							<Image src={this.props.imageSrc}
+							<Image src={image}
 								alt={this.props.title}
 								itemProp="logo"
 								className="w-100"/>

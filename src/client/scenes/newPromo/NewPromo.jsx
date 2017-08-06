@@ -7,16 +7,13 @@ import FoundPromo from './components/FoundPromo.jsx';
 import BuyOrSellPromo from './components/BuyOrSellPromo.jsx';
 import GiveOrAcceptGiftPromo from './components/GiveOrAcceptGiftPromo.jsx';
 import ImageUploader from 'imageUploader/ImageUploader';
-import Title from "../../components/title/Title";
-import Input from "../../components/input/input/Input";
-import Textarea from "../../components/input/textarea/Textarea";
-import {Col, Form, FormControl, FormGroup, Grid, Label, Row} from "react-bootstrap";
-import Tabs from "../../components/tabs/Tabs";
 import Button from "../../components/button/Button";
+import {Grid} from "material-ui";
+import { Dropdown, Title, Input, Textarea, Tabs } from "components";
 
 
 
-@translate(['common', 'newPromo'])
+@translate(['newPromo', 'common'])
 class NewPromo extends React.Component {
 	constructor(props) {
 		super(props);
@@ -86,106 +83,93 @@ class NewPromo extends React.Component {
 		const t = this.props.t;
 
 		return (
-			<Grid>
-				<Row>
-					<Col md={12}>
-						<Form onSubmit={this.handleSubmit}>
-							<Tabs activeKey={this.state.promoType}
-								onSelect={this.handlePromoTypeSelected}
-								className="mt-5"
-								options={[
-									{
-										key: "LOST",
-										tabTitle: t('LOST')
-									},
-									{
-										key: "FOUND",
-										tabTitle: t('FOUND')
-									},
-									{
-										key: "BUY",
-										tabTitle: t('WILL_BUY')
-									},
-									{
-										key: "SELL",
-										tabTitle: t('WILL_SELL')
-									},
-									{
-										key: "GIVE_GIFT",
-										tabTitle: t('WILL_GIVE_GIFT')
-									},
-									{
-										key: "ACCEPT_GIFT",
-										tabTitle: t('WILL_ACCEPT_GIFT')
-									}
-								]}
-							/>
-
-							<Title text={t('PROMO_NAME')} className="mt-5" />
-							<Input name="title" placeholder={t('ENTER_PROMO_NAME')} />
-
-							<Title text={t('SELECT_PET')} className="mt-5"/>
-							<FormControl name="animal"
-										 onChange={e => this.props.loadBreeds(e.target.value)}
-										 componentClass="select">
-                                {
-                                    this.props.animals && this.props.animals.map((item, index) => (
-										<option value={item} selected={item === 'DOG'}>{item}</option>
-                                    ))
-                                }
-							</FormControl>
-
-							<Title text={t('SELECT_BREED')} className="mt-5"/>
-							<FormControl name="breed" componentClass="select">
-                                {
-                                    this.props.breeds && this.props.breeds.map((item, index) => (
-										<option value={item}>{item}</option>
-                                    ))
-                                }
-							</FormControl>
-
-							<Title text={t('CITY')} className="mt-5" />
-							<FormControl name="city" componentClass="select" placeholder={t('ENTER_CITY')}>
-                                {
-                                	this.props.cities && this.props.cities.map((item, index) => (
-										<option value={item} selected={item === 'Minsk'}>{item}</option>
-                                	))
-                                }
-							</FormControl>
-
-							{
-								(this.state.promoType === 'LOST'
-									&& <LostPromo  />)
-								||
-								(this.state.promoType === 'FOUND'
-									&& <FoundPromo />)
-								||
-								((this.state.promoType === 'BUY' || this.state.promoType === 'SELL')
-									&& <BuyOrSellPromo />)
-								||
-								((this.state.promoType === 'GIVE_GIFT' || this.state.promoType === 'ACCEPT_GIFT')
-									&& <GiveOrAcceptGiftPromo />)
-							}
-
-							<Title text={t('DESCRIPTION')} className="mt-4" />
-							<Textarea name="description" placeholder={t('ENTER_DESCRIPTION')} />
-
-							<ImageUploader className="mt-5"
-										   imageObjects={this.state.imageObjects}
-										   onImageAdd={this.handleImageAdd}
-										   onImageDelete={this.handleImageDelete} />
-
-							<div className="d-flex justify-content-around">
-								<Button type="submit"
-									className="my-5 text-white"
-									bsSize="large"
-									accent="blue">
-									{t('PUBLISH')}
-								</Button>
-							</div>
-						</Form>
-					</Col>
-				</Row>
+			<Grid container>
+				<Grid item xs={12}>
+					<Tabs activeKey={this.state.promoType}
+						  onSelect={this.handlePromoTypeSelected}
+						  className="mt-5"
+						  options={[
+                              {
+                                  key: "LOST",
+                                  tabTitle: t('LOST')
+                              },
+                              {
+                                  key: "FOUND",
+                                  tabTitle: t('FOUND')
+                              },
+                              {
+                                  key: "BUY",
+                                  tabTitle: t('WILL_BUY')
+                              },
+                              {
+                                  key: "SELL",
+                                  tabTitle: t('WILL_SELL')
+                              },
+                              {
+                                  key: "GIVE_GIFT",
+                                  tabTitle: t('WILL_GIVE_GIFT')
+                              },
+                              {
+                                  key: "ACCEPT_GIFT",
+                                  tabTitle: t('WILL_ACCEPT_GIFT')
+                              }
+                          ]}
+					/>
+				</Grid>
+				<Grid item xs={12}>
+					<Title text={t('PROMO_NAME')} className="mt-5" />
+					<Input name="title" placeholder={t('PROMO_NAME')} />
+				</Grid>
+				<Grid item xs={12}>
+					<Title text={t('SELECT_PET')} className="mt-3"/>
+					<Dropdown name="animal"
+							  onChange={e => this.props.loadBreeds(e.value)}
+							  options={this.props.animals}/>
+				</Grid>
+				<Grid item xs={12}>
+					<Title text={t('SELECT_BREED')} className="mt-3"/>
+					<Dropdown name="breed"
+							  options={this.props.breeds}/>
+				</Grid>
+				<Grid item xs={12}>
+					<Title text={t('ENTER_CITY')} className="mt-3"/>
+					<Dropdown name="city"
+							  selectedOption={null}
+							  options={this.props.cities}/>
+				</Grid>
+				<Grid item xs={12}>
+                    {
+                        (this.state.promoType === 'LOST' && <LostPromo  />)
+                        ||
+                        (this.state.promoType === 'FOUND' && <FoundPromo />)
+                        ||
+                        ((this.state.promoType === 'BUY' || this.state.promoType === 'SELL') && <BuyOrSellPromo />)
+                        ||
+                        (
+                            (this.state.promoType === 'GIVE_GIFT' || this.state.promoType === 'ACCEPT_GIFT') && <GiveOrAcceptGiftPromo />
+                        )
+                    }
+				</Grid>
+				<Grid item xs={12}>
+					<Title text={t('DESCRIPTION')} className="mt-3"/>
+					<Textarea name="description" fullWidth placeholder={t('ENTER_DESCRIPTION')} />
+				</Grid>
+				<Grid item xs={12}>
+					<ImageUploader className="mt-5"
+								   imageObjects={this.state.imageObjects}
+								   onImageAdd={this.handleImageAdd}
+								   onImageDelete={this.handleImageDelete} />
+				</Grid>
+				<Grid item xs={12}>
+					<div className="d-flex justify-content-around">
+						<Button type="submit"
+								className="my-5 text-white"
+								bsSize="large"
+								accent="blue">
+                            {t('PUBLISH')}
+						</Button>
+					</div>
+				</Grid>
 			</Grid>
 		);
 	}

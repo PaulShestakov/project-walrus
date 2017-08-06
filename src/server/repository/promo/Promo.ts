@@ -99,25 +99,31 @@ class Promo extends BaseCRUD {
 	}
 
 	public getFiltered(params, callback): void {
-		console.log(params);
 		const offset = 0;
 		const limit = 10;
 
 		const promoTypeId = 'LOST';
-		const breedsIds = []; // ?????
-		const citiesIds = ['BREST', 'GRODNO'];
+		const breedsIds = Util.wrapWithArray(params.breeds);
+		const citiesIds = Util.wrapWithArray(params.cities);
 
 		const priceMin = 0;
 		const priceMax = 100;
 
-		const sql = squel.select()
-			.field('*')
-			.from('wikipet.promo p')
-			//.where('p.TYPE_ID = ?', promoTypeId)
-			.where('p.ANIMAL_ID = ?', params.animal)
-			//.where('p.BREED_ID IN ?', breedsIds)
-			.where('p.CITY_ID = ?', params.city)
-			// .where('p.PRICE > ? AND p.PRICE < ?', priceMin, priceMax) ??? move price to promo?
+		// .where('p.PRICE > ? AND p.PRICE < ?', priceMin, priceMax) ??? move price to promo?
+        //.where('p.TYPE_ID = ?', promoTypeId)
+
+		let conditions = squel.expr().and('p.ANIMAL_ID = ?', params.animal);
+		if (breedsIds.length > 0) {
+            conditions = conditions.and('p.BREED_ID IN ?', breedsIds)
+		}
+		if (citiesIds.length > 0) {
+			conditions = conditions.and('p.CITY_ID IN ?', citiesIds);
+		}
+
+		let sql = squel
+			.select()
+			.from('wikipet.promo', 'p')
+			.where(conditions)
 			.offset(offset)
 			.limit(limit)
 			.toParam();

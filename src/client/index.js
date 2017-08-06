@@ -13,7 +13,7 @@ import './index.global.scss';
 
 import './assets/fonts/fonts.global.scss';
 import './assets/img/favicon.ico';
-import {ConnectedRouter} from "react-router-redux";
+import {BrowserRouter} from "react-router-dom";
 
 const store = configureStore();
 const i18n = configI18n();
@@ -23,9 +23,9 @@ class Root extends React.Component {
     return (
 		<I18nextProvider i18n={i18n}>
 			<Provider store={store}>
-				<ConnectedRouter  history={history}>
+				<BrowserRouter  history={history}>
 					<Router />
-				</ConnectedRouter>
+				</BrowserRouter>
 			</Provider>
 		</I18nextProvider>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import CSSModules from 'react-css-modules';
 import PropTypes from 'prop-types';
-import { Button as BootstrapButton } from 'react-bootstrap';
+import MaterialButton from 'material-ui/Button';
 
 import styles from './style.module.scss';
 
@@ -9,7 +9,6 @@ import styles from './style.module.scss';
 
 
 import { withStyles, createStyleSheet } from 'material-ui/styles';
-
 
 const styleSheet = createStyleSheet(theme => ({
 	button: {
@@ -19,11 +18,6 @@ const styleSheet = createStyleSheet(theme => ({
 		display: 'none',
 	},
 }));
-
-
-import MaterialButton from 'material-ui/Button';
-
-
 
 
 @withStyles(styleSheet)

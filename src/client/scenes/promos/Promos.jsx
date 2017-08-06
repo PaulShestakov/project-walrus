@@ -3,17 +3,13 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import FontAwesome from 'react-fontawesome';
 
-import { Row, Col, Form, OverlayTrigger, Popover, Button as BootstrapButton, FormGroup, Checkbox, Overlay } from 'react-bootstrap';
-import { Title, Button, Card, Label, Textarea } from 'components';
+import { Form, OverlayTrigger, Popover, Button as BootstrapButton, FormGroup, Checkbox, Overlay } from 'react-bootstrap';
+import { Grid, Title, Button, Card, Label, Textarea } from 'components';
 
 import PromoItem from './components/promoItem/PromoItem';
 import SearchInput from './components/searchInput/SearchInput';
 import SideBar from "./components/sidebar/SideBar";
 import {buildUrl} from "../../actionCreators/promos";
-
-
-
-import Grid from 'material-ui/Grid';
 
 
 @translate(['common', 'promos'])
@@ -70,7 +66,6 @@ class Promos extends React.Component {
 
 		return (
 			<Grid container md="12">
-
 				<Grid item md="9">
 					<SearchInput placeholder={t('promos:ENTER_REQUEST')} />
 					<Button accent="blue" className="ml-2 text-white">
@@ -103,10 +98,8 @@ class Promos extends React.Component {
 						 filter={this.state.filter} />
 				</Grid>
 			</Grid>
-
 		);
 	}
 }
 
 export default Promos;
-

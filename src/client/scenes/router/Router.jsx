@@ -1,12 +1,13 @@
 import React from 'react';
 import CSSModules from 'react-css-modules';
-import {Redirect, Route, Switch} from 'react-router';
+import {Redirect, Route, Switch} from "react-router-dom";
+
+import {Grid} from 'components';
 
 import Header from '../header/Header.jsx';
 import Footer from '../footer/Footer.jsx';
-import Promo from "../promo/Promo";
-
-import {Grid} from 'components';
+import Promos from "../../containers/Promos";
+import NewPromo from "../../containers/NewPromo";
 
 import styles from './style.module.scss';
 
@@ -23,7 +24,8 @@ export default class Router extends React.Component {
 					<Grid container justify="center">
 						<Grid item md="9" styleName="flexGrowFull">
 							<Switch>
-								<Route path='/promos' component={Promo} />
+								<Route path='/promos' component={Promos} />
+                <Route path="/promos/new" component={NewPromo}/>
 								<Redirect from='/' to='/promos' />
 							</Switch>
 						</Grid>

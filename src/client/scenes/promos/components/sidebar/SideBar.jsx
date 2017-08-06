@@ -5,8 +5,7 @@ import {Link} from "react-router-dom";
 import { OverlayTrigger, Popover, Row } from "react-bootstrap";
 import FontAwesome from 'react-fontawesome';
 import {translate} from "react-i18next";
-import { Button, Card, Label, Separator, Checkbox } from "components";
-import Dropdown from "react-dropdown";
+import { Button, Card, Label, Separator, Checkbox, Dropdown } from "components";
 
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import Grid from 'material-ui/Grid';
@@ -39,14 +38,6 @@ export default class SideBar extends React.Component {
     render() {
         const t = this.props.t;
 
-        const animals = this.props.animals.map(animal => {
-            return {
-                value: animal.animalId,
-                label: animal.name
-            }
-        });
-        const selectedOptionLabel = animals.find(item => item.value === this.filter.animal).label;
-
 		const allBreedsPopover = (
             <Popover>
                 <FormGroup row>
@@ -54,9 +45,9 @@ export default class SideBar extends React.Component {
 						this.props.breeds && this.props.breeds.map((breed, index) => (
                             <Grid item xs={6}>
                                 <FormControlLabel styleName="formControlLabel" label={breed.name} control={
-                                    <Checkbox value={breed.breedId}
+                                    <Checkbox value={breed.id}
                                           name="breeds"
-                                          checked={this.filter.breeds.indexOf(breed.breedId) !== -1}
+                                          checked={this.filter.breeds.indexOf(breed.id) !== -1}
                                           onChange={this.props.onFilterChanged}
                                     />
                                 } />
@@ -74,9 +65,9 @@ export default class SideBar extends React.Component {
                         this.props.cities && this.props.cities.map((city, index) => (
                             <Grid item xs={6}>
                                 <FormControlLabel styleName="formControlLabel" label={city.name} control={
-                                    <Checkbox value={city.cityId}
+                                    <Checkbox value={city.id}
                                           name="cities"
-                                          checked={this.filter.cities.indexOf(city.cityId) !== -1}
+                                          checked={this.filter.cities.indexOf(city.id) !== -1}
                                           onChange={this.props.onFilterChanged}
                                     />
                                 } />
@@ -104,7 +95,9 @@ export default class SideBar extends React.Component {
 
 
                         <Label className="mt-4">{t('SELECT_PET')}</Label>
-                        <Dropdown options={animals} value={selectedOptionLabel} />
+                        <Dropdown options={this.props.animals}
+                                  onChange={this.props.onFilterChanged}
+                                  selectedOption={this.filter.animal} />
 
 
 						<Label className="mt-4">{t('SELECT_BREED')}</Label>
@@ -114,15 +107,15 @@ export default class SideBar extends React.Component {
 								this.props.breeds.slice(0, 4)
 									.concat(
 										this.props.breeds.slice(4)
-											.filter(breed => this.filter.breeds.indexOf(breed.breedId) > -1)
+											.filter(breed => this.filter.breeds.indexOf(breed.id) > -1)
 									)
 									.map((breed, index) => {
-										const checked = this.filter.breeds.indexOf(breed.breedId) !== -1;
+										const checked = this.filter.breeds.indexOf(breed.id) !== -1;
 
 										return (
 											<Grid item xs={6}>
 												<FormControlLabel className="m-0" label={breed.name} control={
-													<Checkbox value={breed.breedId}
+													<Checkbox value={breed.id}
 														  name="breeds"
 														  checked={checked}
 														  onChange={this.props.onFilterChanged}
@@ -145,15 +138,15 @@ export default class SideBar extends React.Component {
 								this.props.cities.slice(0, 4)
 									.concat(
 										this.props.cities.slice(4)
-											.filter(city => this.filter.cities.indexOf(city.cityId) > -1)
+											.filter(city => this.filter.cities.indexOf(city.id) > -1)
 									)
 									.map((city, index) => {
-										const checked = this.filter.cities.indexOf(city.cityId) !== -1;
+										const checked = this.filter.cities.indexOf(city.id) !== -1;
 
 										return (
 											<Grid item xs={6}>
 												<FormControlLabel className="m-0" label={city.name} control={
-													<Checkbox value={city.cityId}
+													<Checkbox value={city.id}
 														  name="cities"
 														  checked={checked}
 														  onChange={this.props.onFilterChanged}

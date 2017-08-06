@@ -1,5 +1,4 @@
 import Button from			'./button/Button';
-//import Card from			'./card/Card';
 import ImageUploader from	'./imageUploader/ImageUploader';
 import Input from            './input/input/Input';
 import Label from			'./label/Label';
@@ -12,14 +11,12 @@ import Textarea from		'./input/textarea/Textarea';
 import DateTimePicker from	'./input/dateTimePicker/DateTimePicker';
 import Checkbox from 		'./checkbox/Checkbox';
 import Grid from 			'material-ui/Grid';
-
-
-import Card from 'material-ui/Card';
+import Card from  'material-ui/Card';
+import Dropdown from  './dropdown/Dropdown';
 
 
 export {
 	Button,
-	Card,
 	ImageUploader,
 	Input,
 	Label,
@@ -31,5 +28,7 @@ export {
 	Textarea,
 	DateTimePicker,
 	Checkbox,
-	Grid
+	Grid,
+  Card,
+	Dropdown
 };
