@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import FontAwesome from 'react-fontawesome';
 
-import { Grid, Row, Col, Form, OverlayTrigger, Popover, Button as BootstrapButton, FormGroup, Checkbox, Overlay } from 'react-bootstrap';
+import { Form, OverlayTrigger, Popover, Button as BootstrapButton, FormGroup, Checkbox, Overlay } from 'react-bootstrap';
 import { Title, Button, Card, Label, Textarea } from 'components';
 
 import PromoItem from './components/promoItem/PromoItem';
 import SearchInput from './components/searchInput/SearchInput';
 import SideBar from "./components/sidebar/SideBar";
 import {buildUrl} from "../../actionCreators/promos";
+import {Grid} from "material-ui";
 
 
 @translate(['common', 'promos'])
@@ -65,52 +66,38 @@ class Promos extends React.Component {
 		const t = this.props.t;
 
 		return (
-			<Grid className="my-3">
-				<Row>
-					<Col md={9}>
-						<Row>
-							<Col md={12} className="d-flex">
-								<SearchInput placeholder={t('promos:ENTER_REQUEST')} />
-								<Button accent="blue" className="ml-2 text-white">
-									{t('promos:FIND')}
-								</Button>
-							</Col>
-						</Row>
-						{
-							<Row className="my-3">
-								<Col md={12}>
-									{
-										this.props.promos && this.props.promos.map(promo => {
-											return (
-												<Row>
-													<PromoItem title={promo.title}
-													   type={t(promo.type)}
-													   imageSrc={promo.imageSrc}
-													   date={promo.date}
-													   description={promo.description}
-													   price={promo.price}
-													   className="my-3"/>
-												</Row>
-
-											);
-										})
-									}
-								</Col>
-							</Row>
-						}
-					</Col>
-
-					<Col md={3}>
-						<SideBar onFilterChanged={this.handleFilterChanged}
+			<Grid container className="my-3">
+				<Grid item xs={9} >
+					<Grid item md={12} className="d-flex">
+						<SearchInput placeholder={t('promos:ENTER_REQUEST')} />
+						<Button accent="blue" className="ml-2 text-white">
+                            {t('promos:FIND')}
+						</Button>
+					</Grid>
+					<Grid item className="my-3">
+                        {
+                            this.props.promos && this.props.promos.map(promo => {
+                                return (
+									<PromoItem title={promo.title}
+											   type={t(promo.type)}
+											   imageSrc={promo.imageSrc}
+											   date={promo.date}
+											   description={promo.description}
+											   price={promo.price}
+											   className="my-3"/>
+                                );
+                            })
+                        }
+					</Grid>
+				</Grid>
+				<Grid item xs={3}>
+					<SideBar onFilterChanged={this.handleFilterChanged}
 							 animals={this.props.animals}
 							 cities={this.props.cities}
 							 breeds={this.props.breeds}
 							 filter={this.state.filter} />
-					</Col>
-
-				</Row>
+				</Grid>
 			</Grid>
-
 		);
 	}
 }

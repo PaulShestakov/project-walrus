@@ -19,7 +19,8 @@ class Button extends React.Component {
 				break;
 		}
 		return (
-			<BootstrapButton {...this.props}
+			<BootstrapButton
+				{...this.props}
 				className={[this.props.styles.button, this.props.styles[accentStyleClass], this.props.className].join(' ')}>
 				{this.props.children}
 			</BootstrapButton>

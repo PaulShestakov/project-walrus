@@ -11,6 +11,7 @@ import Title from			'./title/Title';
 import Textarea from		'./input/textarea/Textarea';
 import DateTimePicker from	'./input/dateTimePicker/DateTimePicker';
 import Checkbox from 		'./checkbox/Checkbox';
+import Dropdown from		'./dropdown/Dropdown';
 
 
 export {
@@ -26,5 +27,6 @@ export {
 	Title,
 	Textarea,
 	DateTimePicker,
-	Checkbox
+	Checkbox,
+	Dropdown
 };

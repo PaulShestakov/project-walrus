@@ -35,7 +35,7 @@ class PromoCV extends BaseController {
 
                     result = {
                         "animals": result.map((entity) => ({
-                            animalId: entity.ANIMAL_ID,
+                            id: entity.ANIMAL_ID,
                             name: entity.NAME
                         }))
                     };
@@ -50,7 +50,7 @@ class PromoCV extends BaseController {
 
                     result = {
                       "cities": result.map((entity) => ({
-                          cityId: entity.CITY_ID,
+                          id: entity.CITY_ID,
                           name: entity.NAME
                       }))
                     };
@@ -77,7 +77,7 @@ class PromoCV extends BaseController {
             }
 
             result = result.map((entity) => ({
-                breedId: entity.BREED_ID,
+                id: entity.BREED_ID,
                 name: entity.NAME,
             }));
 

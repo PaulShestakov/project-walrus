@@ -8,6 +8,7 @@ import styles from './router.module.scss';
 import {Redirect, Route, Switch} from "react-router-dom";
 import Promos from "../../containers/Promos";
 import NewPromo from "../../containers/NewPromo";
+import {Grid} from "material-ui";
 
 @CSSModules(styles)
 export default class Router extends React.Component {
@@ -17,11 +18,15 @@ export default class Router extends React.Component {
 				<Header />
 
 				<main>
-					<Switch>
-						<Route exact path="/promos" component={Promos}/>
-						<Route path="/promos/new" component={NewPromo}/>
-						<Redirect from="/" to="/promos"/>
-					</Switch>
+					<Grid container justify="center">
+						<Grid item xs={8}>
+							<Switch>
+								<Route exact path="/promos" component={Promos}/>
+								<Route path="/promos/new" component={NewPromo}/>
+								<Redirect from="/" to="/promos"/>
+							</Switch>
+						</Grid>
+					</Grid>
 				</main>
 
 				<Footer styleName='appFooter' />
