@@ -9,7 +9,7 @@ export default class Mapper {
         ['type'          ,   'TYPE_ID'],
         ['status'        ,   'STATUS_ID'],
         ['userId'        ,   'USER_ID'],
-        ['description'   ,   'DESCRIPTION'],
+        ['description'   ,   'DESCRIPTION']
     ]);
 
     PROMO_INFO : Map<string, string> = new Map([
@@ -19,6 +19,12 @@ export default class Mapper {
         ['gender'        ,   'GENDER'],
         ['age'           ,   'AGE'],
         ['price'         ,   'COST']
+    ]);
+
+    PROMO_USER : Map<string, string> = new Map([
+        ['userName'      ,   'USER_NAME'],
+        ['email'         ,   'EMAIL'],
+        ['phone'         ,   'PHONE']
     ]);
 
     mapToEntity(json: any, map: Map<string, string>, baseObject: any): any {

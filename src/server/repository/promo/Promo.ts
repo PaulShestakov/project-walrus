@@ -5,12 +5,13 @@ import Util from '../../util/Util';
 import StatusRepo from './Status';
 import TypeRepo from "./Type";
 import BaseCRUD from "../BaseCRUD";
-import {PromoEntity, PromoInfoEntity} from "../../entity/PromoEntity";
 import { executeQuery, executeSeries, executeParallel } from '../../database/DBHelper';
 
 import promoSQL from '../../query/promo/Promo';
 import promoInfoSQL from '../../query/promo/PromoInfo';
 import promoImagesSQL from '../../query/promo/PromoImages';
+import promoUsersSQL from '../../query/promo/PromoUsers';
+import {PromoEntity, PromoInfoEntity, PromoUser} from "../../entity/Promo";
 
 
 class Promo extends BaseCRUD {
@@ -31,20 +32,38 @@ class Promo extends BaseCRUD {
 		const promoInfoId = uuid();
 
 		const promoBase = {
-			'PROMO_ID': promoId
+			'PROMO_ID' : promoId
 		};
 		const promoInfoBase = {
-			'PROMO_INFO_ID': promoInfoId,
-			'PROMO_ID': promoId
+			'PROMO_INFO_ID' : promoInfoId,
+			'PROMO_ID' : promoId
 		};
 
 		let promoEntity: PromoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO, promoBase);
 		let promoInfoEntity: PromoInfoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO, promoInfoBase);
 
+		let savePromoUser;
+		if (!promoEntity.USER_ID) {
+			let promoUserId = uuid();
+			let promoUser : PromoUser = this.mapper.mapToEntity(promo, this.mapper.PROMO_USER, { 'PROMO_USER_ID' : promoUserId });
+			promoEntity.PROMO_USER_ID = promoUserId;
+
+			savePromoUser = (connection, done) => {
+				connection.query(promoUsersSQL.SAVE, [promoUser], (error, rows) => {
+					if (error) {
+						Util.handleError(error, done);
+					} else {
+						done(null, rows);
+					}
+				});
+			};
+		}
+
 		let images = promo.images.map(file => ([
 			uuid(),
 			promoId,
-			file.path
+			file.path,
+			0
 		]));
 
 		const savePromoInfo = (connection, done) => {
@@ -79,7 +98,13 @@ class Promo extends BaseCRUD {
 			});
 		};
 
-		executeSeries([savePromo, savePromoInfo, saveImages], (error, result) => {
+		let functionsToExecute = [savePromoInfo, saveImages];
+		if (savePromoUser) {
+			functionsToExecute.push(savePromoUser);
+		}
+		functionsToExecute.push(savePromo);
+
+		executeSeries(functionsToExecute, (error, result) => {
 			if (error) {
 				Util.handleError(error, callback);
 			} else {
