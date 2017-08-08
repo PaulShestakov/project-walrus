@@ -6,10 +6,8 @@ import LostPromo from './components/LostPromo.jsx';
 import FoundPromo from './components/FoundPromo.jsx';
 import BuyOrSellPromo from './components/BuyOrSellPromo.jsx';
 import GiveOrAcceptGiftPromo from './components/GiveOrAcceptGiftPromo.jsx';
-import ImageUploader from 'imageUploader/ImageUploader';
-import Button from "../../components/button/Button";
-import {Grid} from "material-ui";
-import { Dropdown, Title, Input, Textarea, Tabs } from "components";
+
+import { Dropdown, Button, Title, Input, Textarea, Tabs, Grid, ImageUploader } from "components";
 
 
 
