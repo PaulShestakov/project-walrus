@@ -9,13 +9,12 @@ import Title from			'./title/Title';
 import Textarea from		'./input/textarea/Textarea';
 import DateTimePicker from	'./input/dateTimePicker/DateTimePicker';
 import Checkbox from 		'./checkbox/Checkbox';
+import Dropdown from 		'./dropdown/Dropdown';
 
 import TextField from 		'material-ui/TextField';
 import Grid from 			'material-ui/Grid';
 import Card from  			'material-ui/Card';
 import Input from  			'material-ui/Input';
-
-import Dropdown from 		'react-dropdown';
 
 export {
 	Button,

@@ -12,7 +12,7 @@ class FoundPromo extends React.Component {
 		return (
 			<div>
 				<Title text={t('FOUND_ADDRESS')} className="mt-5" />
-				<Input name="address" placeholder={t('ENTER_FOUND_ADDRESS')} />
+				<Input name="address" fullWidth placeholder={t('ENTER_FOUND_ADDRESS')} />
 
 				<Title text={t('FOUND_TIME')}  className="mt-4"/>
 				<DateTimePicker name="date" locale="ru" placeholder={t('ENTER_FOUND_TIME')} />
@@ -25,7 +25,7 @@ class FoundPromo extends React.Component {
 				</FormControl>
 
 				<Title text={t('APPROXIMATE_AGE')} className="mt-4" />
-				<Input name="age" placeholder={t('ENTER_APPROXIMATE_AGE')} />
+				<Input name="age" fullWidth placeholder={t('ENTER_APPROXIMATE_AGE')} />
 
                 {/*
 				 	<Input name="date" placeholder={t('ENTER_FOUND_TIME')} />

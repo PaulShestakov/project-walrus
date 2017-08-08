@@ -11,7 +11,7 @@ class BuyOrSellPromo extends React.Component {
 		return (
 			<div>
 				<Title text={t('PRICE_IN_BYR')} className="mt-4" />
-				<Input name="price" placeholder={t('ENTER_PRICE_IN_BYR')} />
+				<Input name="price" fullWidth placeholder={t('ENTER_PRICE_IN_BYR')} />
 
                 {/*
 					<Title text={t('YOUR_NAME')} className="mt-4"/>
