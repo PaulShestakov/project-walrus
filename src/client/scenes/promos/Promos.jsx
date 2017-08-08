@@ -1,22 +1,38 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import FontAwesome from 'react-fontawesome';
-
-import { Form, OverlayTrigger, Popover, Button as BootstrapButton, FormGroup, Checkbox, Overlay } from 'react-bootstrap';
-import { Grid, Title, Button, Card, Label, Textarea } from 'components';
+import { Grid, Title, Button, Card, Label, Textarea, TextField, Input } from 'components';
+import { withStyles, createStyleSheet } from 'material-ui/styles';
 
 import PromoItem from './components/promoItem/PromoItem';
 import SearchInput from './components/searchInput/SearchInput';
 import SideBar from "./components/sidebar/SideBar";
+
+import Tabs, { Tab } from 'material-ui/Tabs';
+
 import {buildUrl} from "../../actionCreators/promos";
 
 
-@translate(['common', 'promos'])
+
+const styleSheet = createStyleSheet({
+	tabs: {
+		'& button': {
+			minWidth: 'auto',
+			display: 'flex',
+			flexGrow: 1
+		}
+	}
+});
+
+
+
+
+@translate(['promos', 'common'])
+@withStyles(styleSheet)
 class Promos extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			selectedTabIndex: 0,
 			filter : {
 				animal : 'DOG',
 				breeds : [],
@@ -61,16 +77,48 @@ class Promos extends React.Component {
 		this.props.loadPromos(this.state.filter);
 	};
 
+	handleTabPress = (event, index) => {
+		this.setState({
+			selectedTabIndex: index
+		});
+	};
+
 	render() {
 		const t = this.props.t;
+		const classes = this.props.classes;
 
 		return (
-			<Grid container md="12">
+			<Grid container md="12" className="mt-2">
 				<Grid item md="9">
-					<SearchInput placeholder={t('promos:ENTER_REQUEST')} />
-					<Button accent="blue" className="ml-2 text-white">
-						{t('promos:FIND')}
-					</Button>
+
+					<Card>
+						<Grid container direction="column">
+							<Grid item>
+								<div className="m-2">
+									<Input placeholder={t('SECTION_SEARCH')} className="w-100" />
+								</div>
+							</Grid>
+
+							<Grid item>
+								<Tabs
+									index={this.state.selectedTabIndex}
+									onChange={this.handleTabPress}
+									indicatorColor="primary"
+									textColor="primary"
+									classes={{
+										root: classes.tabs
+									}}
+								>
+									<Tab label={t('common:WILL_SELL')} />
+									<Tab label={t('common:WILL_BUY')} />
+									<Tab label={t('common:WILL_GIVE_GIFT')} />
+									<Tab label={t('common:WILL_ACCEPT_GIFT')} />
+									<Tab label={t('common:LOST')} />
+									<Tab label={t('common:FOUND')} />
+								</Tabs>
+							</Grid>
+						</Grid>
+					</Card>
 
 					{
 						this.props.promos && this.props.promos.map(promo => {

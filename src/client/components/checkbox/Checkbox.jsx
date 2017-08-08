@@ -8,7 +8,8 @@ const styleSheet = createStyleSheet({
 	root: {
 		width: '1.75rem',
 		height: '1.75rem',
-		'margin-left': '-0.375rem',
+		marginLeft: '-0.375rem',
+		marginRight: 0,
 
 		'& svg': {
 			width: '1.25rem',

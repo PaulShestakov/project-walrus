@@ -1,11 +1,11 @@
 import React from 'react';
 import CSSModules from 'react-css-modules';
 import { Link } from "react-router-dom";
-import { translate, Interpolate, Trans } from 'react-i18next';
-import { Input, Button, Separator } from 'components';
+import { translate } from 'react-i18next';
+import { Input, Button, Separator, Grid } from 'components';
 
 import styles from './style.module.scss';
-import {Grid} from "material-ui";
+
 
 @translate(['footer'])
 @CSSModules(styles)

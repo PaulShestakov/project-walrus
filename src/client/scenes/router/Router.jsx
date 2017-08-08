@@ -24,9 +24,8 @@ export default class Router extends React.Component {
 					<Grid container justify="center">
 						<Grid item md="9" styleName="flexGrowFull">
 							<Switch>
-								<Route path='/promos' component={Promos} />
-                <Route path="/promos/new" component={NewPromo}/>
-								<Redirect from='/' to='/promos' />
+								<Route exact path='/promos' component={Promos} />
+								<Route path="/newPromo" component={NewPromo}/>
 							</Switch>
 						</Grid>
 					</Grid>

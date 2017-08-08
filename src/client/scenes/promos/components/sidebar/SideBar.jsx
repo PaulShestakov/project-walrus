@@ -1,17 +1,40 @@
 import * as React from "react";
 import CSSModules from 'react-css-modules';
-import Col from "react-bootstrap/es/Col";
+
 import {Link} from "react-router-dom";
-import { OverlayTrigger, Popover, Row } from "react-bootstrap";
+import { OverlayTrigger, Popover, Row, Col } from "react-bootstrap";
 import FontAwesome from 'react-fontawesome';
 import {translate} from "react-i18next";
-import { Button, Card, Label, Separator, Checkbox, Dropdown } from "components";
+import { Button, Card, Label, Separator, Checkbox, Dropdown, Grid } from "components";
 
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
-import Grid from 'material-ui/Grid';
 
 import styles from './style.module.scss';
 import ButtonMore from "../buttonMore/ButtonMore";
+
+
+
+
+
+import IconButton from 'material-ui/IconButton';
+import Menu, { MenuItem } from 'material-ui/Menu';
+
+const options = [
+	'None',
+	'Atria',
+	'Callisto',
+	'Dione',
+	'Ganymede',
+	'Hangouts Call',
+	'Luna',
+	'Oberon',
+	'Phobos',
+	'Pyxis',
+	'Sedna',
+	'Titania',
+	'Triton',
+	'Umbriel',
+];
 
 
 @translate(['promos'])
@@ -27,12 +50,13 @@ export default class SideBar extends React.Component {
         this.filter = this.props.filter;
     }
 
-	handleClick = event => {
-		this.setState({ open: true, anchorEl: event.currentTarget });
-	};
 
 	handleRequestClose = () => {
 		this.setState({ open: false });
+	};
+
+	handleClick = event => {
+		this.setState({ open: true, anchorEl: event.currentTarget });
 	};
 
     render() {
@@ -80,27 +104,20 @@ export default class SideBar extends React.Component {
 
 
         return (
-            <Row>
-                <Col md={12}>
-                    <Link to="/promos/new">
-                        <Button accent="red" className="w-100 text-white">
-                            <FontAwesome name="plus" />
-                            {t('CREATE_PROMO')}
-                        </Button>
-                    </Link>
-                </Col>
-                <Col md={12}>
-                    <Card className="mt-2 p-3">
-                        <Label accent="blue" className="p-2">{t('FILTERS')}</Label>
+        	<Grid container direction="column">
+
+				<Grid item md={12}>
+					<Button href="/newPromo" accent="red" className="w-100 text-white">
+						<FontAwesome name="plus" />
+						{t('CREATE_PROMO')}
+					</Button>
+				</Grid>
 
 
-                        <Label className="mt-4">{t('SELECT_PET')}</Label>
-                        <Dropdown options={this.props.animals}
-                                  onChange={this.props.onFilterChanged}
-                                  selectedOption={this.filter.animal} />
+				<Grid item md={12}>
+					<Card className="mt-2 p-3">
 
-
-						<Label className="mt-4">{t('SELECT_BREED')}</Label>
+						<Label>{t('SELECT_BREED')}</Label>
 						<FormGroup>
 							{
 								this.props.breeds &&
@@ -116,9 +133,9 @@ export default class SideBar extends React.Component {
 											<Grid item xs={6}>
 												<FormControlLabel className="m-0" label={breed.name} control={
 													<Checkbox value={breed.id}
-														  name="breeds"
-														  checked={checked}
-														  onChange={this.props.onFilterChanged}
+														name="breeds"
+														checked={checked}
+														onChange={this.props.onFilterChanged}
 													/>
 												}/>
 											</Grid>
@@ -147,9 +164,9 @@ export default class SideBar extends React.Component {
 											<Grid item xs={6}>
 												<FormControlLabel className="m-0" label={city.name} control={
 													<Checkbox value={city.id}
-														  name="cities"
-														  checked={checked}
-														  onChange={this.props.onFilterChanged}
+															  name="cities"
+															  checked={checked}
+															  onChange={this.props.onFilterChanged}
 													/>
 												}/>
 											</Grid>
@@ -160,9 +177,49 @@ export default class SideBar extends React.Component {
 						<OverlayTrigger trigger="click" rootClose placement="left" overlay={allCitiesPopover} container={this}>
 							<ButtonMore className="w-100">{t('ALL_CITIES')}</ButtonMore>
 						</OverlayTrigger>
+
+
+						<div>
+							<IconButton
+								aria-label="More"
+								aria-owns={this.state.open ? 'long-menu' : null}
+								aria-haspopup="true"
+								onClick={this.handleClick}
+							>
+								34
+							</IconButton>
+							<Menu
+								id="long-menu"
+								anchorEl={this.state.anchorEl}
+								open={this.state.open}
+								onRequestClose={this.handleRequestClose}
+								style={{ maxHeight: 48 * 4.5 }}
+								MenuListProps={{
+									style: {
+										width: 200,
+									},
+								}}
+							>
+								{options.map(option =>
+									<MenuItem key={option} selected={option === 'Pyxis'} onClick={this.handleRequestClose}>
+										{option}
+									</MenuItem>,
+								)}
+							</Menu>
+						</div>
+
 					</Card>
-				</Col>
-			</Row>
+				</Grid>
+			</Grid>
+
+
+
+
+
+
+
+
+
 		)
 	}
 
