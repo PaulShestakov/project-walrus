@@ -108,7 +108,7 @@ export default class SideBar extends React.Component {
 
 				<Grid item md={12}>
 					<Button href="/newPromo" accent="red" className="w-100 text-white">
-						<FontAwesome name="plus" />
+						<FontAwesome name="plus" className="mr-1" />
 						{t('CREATE_PROMO')}
 					</Button>
 				</Grid>
