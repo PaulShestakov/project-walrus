@@ -10,8 +10,7 @@ interface PromoEntity {
     IMAGE : string,
     TYPE_ID : string,
     STATUS_ID : string,
-    USER_ID : string,
-    PROMO_USER_ID : string
+    USER_ID : string
 }
 
 interface PromoInfoEntity  {
@@ -24,11 +23,25 @@ interface PromoInfoEntity  {
     COST : number
 }
 
+interface ExternalPromo {
+    EXTERNAL_PROMO_ID : string
+    PROMO_ID : string,
+    ADDRESS : string,
+    DATE : Date,
+    GENDER : string,
+    AGE : number,
+    COST : number,
+    URL : string,
+    USER_NAME : string,
+    USER_EMAIL : string,
+    USER_PHONE : string
+}
+
 interface PromoImage {
     PROMO_IMAGE_ID : string,
     PROMO_ID : string,
     IMAGE_PATH : string,
-    IS_MAIN : string
+    IS_MAIN : number
 }
 
 interface Status {
@@ -46,4 +59,4 @@ interface PromoUser {
     PHONE : string
 }
 
-export { PromoEntity, PromoInfoEntity, PromoImage, Status, Type, PromoUser };
+export { PromoEntity, PromoInfoEntity, PromoImage, ExternalPromo, Status, Type, PromoUser };
