@@ -2,6 +2,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { Grid, Title, Button, Card, Label, Textarea, TextField, Input } from 'components';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
+import classNames from 'classnames';
 
 import PromoItem from './components/promoItem/PromoItem';
 import SearchInput from './components/searchInput/SearchInput';
@@ -11,20 +12,7 @@ import Tabs, { Tab } from 'material-ui/Tabs';
 
 import {buildUrl} from "../../actionCreators/promos";
 
-
-
-const styleSheet = createStyleSheet({
-	tabs: {
-		'& button': {
-			minWidth: 'auto',
-			display: 'flex',
-			flexGrow: 1
-		}
-	}
-});
-
-
-
+import styleSheet from './style';
 
 @translate(['promos', 'common'])
 @withStyles(styleSheet)
@@ -84,18 +72,16 @@ class Promos extends React.Component {
 	};
 
 	render() {
-		const t = this.props.t;
-		const classes = this.props.classes;
+		const { t, classes, ...other } = this.props;
 
 		return (
-			<Grid container md="12" className="mt-2">
-				<Grid item md="9">
-
+			<Grid container className="my-2" { ...other }>
+				<Grid item md={9}>
 					<Card>
 						<Grid container direction="column">
 							<Grid item>
 								<div className="m-2">
-									<Input placeholder={t('SECTION_SEARCH')} className="w-100" />
+									<Input placeholder={t('SECTION_SEARCH')} className={classNames(classes.searchInput, 'w-100')} />
 								</div>
 							</Grid>
 
@@ -138,12 +124,12 @@ class Promos extends React.Component {
 					}
 				</Grid>
 
-				<Grid item md="3">
+				<Grid item md={3}>
 					<SideBar onFilterChanged={this.handleFilterChanged}
-						 animals={this.props.animals}
-						 cities={this.props.cities}
-						 breeds={this.props.breeds}
-						 filter={this.state.filter} />
+						animals={this.props.animals}
+						cities={this.props.cities}
+						breeds={this.props.breeds}
+						filter={this.state.filter} />
 				</Grid>
 			</Grid>
 		);

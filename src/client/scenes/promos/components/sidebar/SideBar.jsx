@@ -60,7 +60,7 @@ export default class SideBar extends React.Component {
 	};
 
     render() {
-        const t = this.props.t;
+        const { t, ...other } = this.props;
 
 		const allBreedsPopover = (
             <Popover>
@@ -104,7 +104,7 @@ export default class SideBar extends React.Component {
 
 
         return (
-        	<Grid container direction="column">
+        	<Grid container direction="column" { ...other }>
 
 				<Grid item md={12}>
 					<Button href="/newPromo" accent="red" className="w-100 text-white">
@@ -115,7 +115,7 @@ export default class SideBar extends React.Component {
 
 
 				<Grid item md={12}>
-					<Card className="mt-2 p-3">
+					<Card className="p-3">
 
 						<Label>{t('SELECT_BREED')}</Label>
 						<FormGroup>

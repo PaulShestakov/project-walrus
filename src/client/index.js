@@ -9,7 +9,7 @@ import configI18n from './i18n/configI18n.js';
 
 import Router from './scenes/router/Router';
 
-import './index.global.scss';
+import './style.global.scss';
 
 import './assets/fonts/fonts.global.scss';
 import './assets/img/favicon.ico';
