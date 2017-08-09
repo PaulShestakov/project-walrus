@@ -42,6 +42,8 @@ class Promo extends BaseCRUD {
 		let promoEntity: PromoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO, promoBase);
 		let promoInfoEntity: PromoInfoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO, promoInfoBase);
 
+		console.log(promoEntity);
+
 		let savePromoUser;
 		if (!promoEntity.USER_ID) {
 			let promoUserId = uuid();

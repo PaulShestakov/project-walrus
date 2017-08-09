@@ -43,7 +43,7 @@ const savePromo = (data) => {
 	return dispatch => {
 		dispatch(savePromoStart());
 
-		return fetch(baseUrl + '/promo', {
+		fetch(baseUrl + '/promo', {
 			method: 'POST',
 			body: form
 		}).then(

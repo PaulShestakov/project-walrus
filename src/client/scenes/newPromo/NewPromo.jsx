@@ -17,13 +17,23 @@ class NewPromo extends React.Component {
 		super(props);
 		this.state = {
             promoType: 'LOST',
-            imageObjects: []
+            imageObjects: [],
+			animal : _.get(this.props.animals[0], 'id', null),
+			city : _.get(this.props.cities[0], 'id', null)
         };
 	}
 
 	componentDidMount() {
         this.props.loadCodeValues();
-        this.props.loadBreeds('DOG')
+        if (!this.state.breed) {
+            this.props.loadBreeds(this.state.animal);
+		}
+	}
+
+    componentWillReceiveProps(nextProps) {
+		if (nextProps.breeds && !this.state.breed) {
+			this.setState({  breed : _.get(nextProps.breeds[0], 'id', null) });
+		}
 	}
 
 	handleImageAdd = (imageObject) => {
@@ -52,8 +62,8 @@ class NewPromo extends React.Component {
 		const formElements = e.target.elements;
 
 		const formData = {
-			animal:			_.get(formElements.animal, 'value', null),
-            breed:			_.get(formElements.breed, 'value', null),
+			animal:			this.state.animal,
+            breed:			this.state.breed,
 
 			address:		_.get(formElements.address, 'value', null),
 			date:			_.get(formElements.date, 'value', null),
@@ -65,7 +75,7 @@ class NewPromo extends React.Component {
 
 			description:	_.get(formElements.description, 'value', null),
 			title:			_.get(formElements.title, 'value', null),
-			city:			_.get(formElements.city, 'value', null),
+			city:			this.state.city,
 			type:			this.state.promoType,
 			status:			'ACTIVE',
 			userId:			1,
@@ -122,18 +132,24 @@ class NewPromo extends React.Component {
 					<Grid item xs={12}>
 						<Title text={t('SELECT_PET')} className="mt-3"/>
 						<Dropdown name="animal"
-								  onChange={e => this.props.loadBreeds(e.value)}
+								  onChange={e => {
+                                      	this.setState({ animal : e.value, breed : null });
+										this.props.loadBreeds(e.value);
+									  }
+								  }
 								  options={this.props.animals}/>
 					</Grid>
 					<Grid item xs={12}>
 						<Title text={t('SELECT_BREED')} className="mt-3"/>
 						<Dropdown name="breed"
+								  selectedOption={null}
+								  onChange={e => this.setState({ breed : e.value })}
 								  options={this.props.breeds}/>
 					</Grid>
 					<Grid item xs={12}>
 						<Title text={t('ENTER_CITY')} className="mt-3"/>
 						<Dropdown name="city"
-								  selectedOption={null}
+								  onChange={e => this.setState({ city : e.value })}
 								  options={this.props.cities}/>
 					</Grid>
 					<Grid item xs={12}>
