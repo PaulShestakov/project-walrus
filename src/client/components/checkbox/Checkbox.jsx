@@ -15,9 +15,6 @@ const styleSheet = createStyleSheet({
 			width: '1.25rem',
 			height: '1.25rem'
 		}
-	},
-	checked: {
-		color: grey[900]
 	}
 });
 
@@ -29,8 +26,7 @@ class Checkbox extends React.Component {
 
 		return (
 			<MaterialCheckbox {...other} classes={{
-				root: classes.root,
-				checked: classes.checked,
+				root: classes.root
 			}}/>
 		);
 	}

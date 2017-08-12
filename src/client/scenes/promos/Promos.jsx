@@ -4,8 +4,6 @@ import { Grid, Title, Button, Card, Label, Textarea, TextField, Input } from 'co
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import classNames from 'classnames';
 
-import PromoItem from './components/promoItem/PromoItem';
-import SearchInput from './components/searchInput/SearchInput';
 import SideBar from "./components/sidebar/SideBar";
 
 import Tabs, { Tab } from 'material-ui/Tabs';
@@ -72,7 +70,9 @@ class Promos extends React.Component {
 	};
 
 	render() {
-		const { t, classes, ...other } = this.props;
+		const { t, theme, classes, ...other } = this.props;
+
+		console.log(JSON.stringify(theme));
 
 		return (
 			<Grid container className="my-2" { ...other }>
@@ -107,20 +107,20 @@ class Promos extends React.Component {
 					</Card>
 
 					{
-						this.props.promos && this.props.promos.map(promo => {
-							return (
-								<Row>
-									<PromoItem title={promo.title}
-									   type={t(promo.type)}
-									   imageSrc={promo.imageSrc}
-									   date={promo.date}
-									   description={promo.description}
-									   price={promo.price}
-									   className="my-3"/>
-								</Row>
-
-							);
-						})
+						// this.props.promos && this.props.promos.map(promo => {
+						// 	return (
+						// 		<Row>
+						// 			<PromoItem title={promo.title}
+						// 			   type={t(promo.type)}
+						// 			   imageSrc={promo.imageSrc}
+						// 			   date={promo.date}
+						// 			   description={promo.description}
+						// 			   price={promo.price}
+						// 			   className="my-3"/>
+						// 		</Row>
+						//
+						// 	);
+						// })
 					}
 				</Grid>
 

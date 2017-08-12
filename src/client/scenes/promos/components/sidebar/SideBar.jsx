@@ -2,7 +2,7 @@ import * as React from "react";
 import CSSModules from 'react-css-modules';
 
 import {Link} from "react-router-dom";
-import { OverlayTrigger, Popover, Row, Col } from "react-bootstrap";
+
 import FontAwesome from 'react-fontawesome';
 import {translate} from "react-i18next";
 import { Button, Card, Label, Separator, Checkbox, Dropdown, Grid } from "components";
@@ -10,7 +10,6 @@ import { Button, Card, Label, Separator, Checkbox, Dropdown, Grid } from "compon
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 
 import styles from './style.module.scss';
-import ButtonMore from "../buttonMore/ButtonMore";
 
 
 
@@ -62,45 +61,45 @@ export default class SideBar extends React.Component {
     render() {
         const { t, ...other } = this.props;
 
-		const allBreedsPopover = (
-            <Popover>
-                <FormGroup row>
-					{
-						this.props.breeds && this.props.breeds.map((breed, index) => (
-                            <Grid item xs={6}>
-                                <FormControlLabel styleName="formControlLabel" label={breed.name} control={
-                                    <Checkbox value={breed.id}
-                                          name="breeds"
-                                          checked={this.filter.breeds.indexOf(breed.id) !== -1}
-                                          onChange={this.props.onFilterChanged}
-                                    />
-                                } />
-                            </Grid>
-						))
-					}
-                </FormGroup>
-            </Popover>
-		);
-
-		const allCitiesPopover = (
-            <Popover>
-                <FormGroup row>
-                    {
-                        this.props.cities && this.props.cities.map((city, index) => (
-                            <Grid item xs={6}>
-                                <FormControlLabel styleName="formControlLabel" label={city.name} control={
-                                    <Checkbox value={city.id}
-                                          name="cities"
-                                          checked={this.filter.cities.indexOf(city.id) !== -1}
-                                          onChange={this.props.onFilterChanged}
-                                    />
-                                } />
-                            </Grid>
-                        ))
-                    }
-                </FormGroup>
-            </Popover>
-		);
+		// const allBreedsPopover = (
+         //    <Popover>
+         //        <FormGroup row>
+		// 			{
+		// 				this.props.breeds && this.props.breeds.map((breed, index) => (
+         //                    <Grid item xs={6}>
+         //                        <FormControlLabel styleName="formControlLabel" label={breed.name} control={
+         //                            <Checkbox value={breed.id}
+         //                                  name="breeds"
+         //                                  checked={this.filter.breeds.indexOf(breed.id) !== -1}
+         //                                  onChange={this.props.onFilterChanged}
+         //                            />
+         //                        } />
+         //                    </Grid>
+		// 				))
+		// 			}
+         //        </FormGroup>
+         //    </Popover>
+		// );
+		//
+		// const allCitiesPopover = (
+         //    <Popover>
+         //        <FormGroup row>
+         //            {
+         //                this.props.cities && this.props.cities.map((city, index) => (
+         //                    <Grid item xs={6}>
+         //                        <FormControlLabel styleName="formControlLabel" label={city.name} control={
+         //                            <Checkbox value={city.id}
+         //                                  name="cities"
+         //                                  checked={this.filter.cities.indexOf(city.id) !== -1}
+         //                                  onChange={this.props.onFilterChanged}
+         //                            />
+         //                        } />
+         //                    </Grid>
+         //                ))
+         //            }
+         //        </FormGroup>
+         //    </Popover>
+		// );
 
 
         return (
@@ -143,9 +142,9 @@ export default class SideBar extends React.Component {
 									})
 							}
 						</FormGroup>
-						<OverlayTrigger trigger="click" rootClose placement="left" overlay={allBreedsPopover} container={this}>
-							<ButtonMore className="w-100">{t('ALL_BREEDS')}</ButtonMore>
-						</OverlayTrigger>
+						{/*<OverlayTrigger trigger="click" rootClose placement="left" overlay={allBreedsPopover} container={this}>*/}
+							{/*<ButtonMore className="w-100">{t('ALL_BREEDS')}</ButtonMore>*/}
+						{/*</OverlayTrigger>*/}
 
 
 						<Label className="mt-4">{t('LOCATION')}</Label>
@@ -174,9 +173,9 @@ export default class SideBar extends React.Component {
 									})
 							}
 						</FormGroup>
-						<OverlayTrigger trigger="click" rootClose placement="left" overlay={allCitiesPopover} container={this}>
-							<ButtonMore className="w-100">{t('ALL_CITIES')}</ButtonMore>
-						</OverlayTrigger>
+						{/*<OverlayTrigger trigger="click" rootClose placement="left" overlay={allCitiesPopover} container={this}>*/}
+							{/*<ButtonMore className="w-100">{t('ALL_CITIES')}</ButtonMore>*/}
+						{/*</OverlayTrigger>*/}
 
 
 						<div>
@@ -211,16 +210,6 @@ export default class SideBar extends React.Component {
 					</Card>
 				</Grid>
 			</Grid>
-
-
-
-
-
-
-
-
-
 		)
 	}
-
 }

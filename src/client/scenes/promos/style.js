@@ -7,6 +7,7 @@ export default createStyleSheet({
 			minWidth: 'auto',
 			display: 'flex',
 			flexGrow: 1,
+			justifyContent: 'center',
 
 			'& span': {
 				fontFamily: globalStyle.BEBAS_FONT,

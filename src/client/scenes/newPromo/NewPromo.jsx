@@ -7,7 +7,7 @@ import FoundPromo from './components/FoundPromo.jsx';
 import BuyOrSellPromo from './components/BuyOrSellPromo.jsx';
 import GiveOrAcceptGiftPromo from './components/GiveOrAcceptGiftPromo.jsx';
 
-import { Dropdown, Button, Title, Input, Textarea, Tabs, Grid, ImageUploader } from "components";
+import { Dropdown, Button, Title, Input, Grid, ImageUploader } from "components";
 
 
 
@@ -83,36 +83,36 @@ class NewPromo extends React.Component {
 		return (
 			<Grid container>
 				<Grid item xs={12}>
-					<Tabs activeKey={this.state.promoType}
-						  onSelect={this.handlePromoTypeSelected}
-						  className="mt-5"
-						  options={[
-                              {
-                                  key: "LOST",
-                                  tabTitle: t('LOST')
-                              },
-                              {
-                                  key: "FOUND",
-                                  tabTitle: t('FOUND')
-                              },
-                              {
-                                  key: "BUY",
-                                  tabTitle: t('WILL_BUY')
-                              },
-                              {
-                                  key: "SELL",
-                                  tabTitle: t('WILL_SELL')
-                              },
-                              {
-                                  key: "GIVE_GIFT",
-                                  tabTitle: t('WILL_GIVE_GIFT')
-                              },
-                              {
-                                  key: "ACCEPT_GIFT",
-                                  tabTitle: t('WILL_ACCEPT_GIFT')
-                              }
-                          ]}
-					/>
+					{/*<Tabs activeKey={this.state.promoType}*/}
+						  {/*onSelect={this.handlePromoTypeSelected}*/}
+						  {/*className="mt-5"*/}
+						  {/*options={[*/}
+                              {/*{*/}
+                                  {/*key: "LOST",*/}
+                                  {/*tabTitle: t('LOST')*/}
+                              {/*},*/}
+                              {/*{*/}
+                                  {/*key: "FOUND",*/}
+                                  {/*tabTitle: t('FOUND')*/}
+                              {/*},*/}
+                              {/*{*/}
+                                  {/*key: "BUY",*/}
+                                  {/*tabTitle: t('WILL_BUY')*/}
+                              {/*},*/}
+                              {/*{*/}
+                                  {/*key: "SELL",*/}
+                                  {/*tabTitle: t('WILL_SELL')*/}
+                              {/*},*/}
+                              {/*{*/}
+                                  {/*key: "GIVE_GIFT",*/}
+                                  {/*tabTitle: t('WILL_GIVE_GIFT')*/}
+                              {/*},*/}
+                              {/*{*/}
+                                  {/*key: "ACCEPT_GIFT",*/}
+                                  {/*tabTitle: t('WILL_ACCEPT_GIFT')*/}
+                              {/*}*/}
+                          {/*]}*/}
+					{/*/>*/}
 				</Grid>
 				<Grid item xs={12}>
 					<Title text={t('PROMO_NAME')} className="mt-5" />
@@ -150,7 +150,7 @@ class NewPromo extends React.Component {
 				</Grid>
 				<Grid item xs={12}>
 					<Title text={t('DESCRIPTION')} className="mt-3"/>
-					<Textarea name="description" fullWidth placeholder={t('ENTER_DESCRIPTION')} />
+					{/*<Textarea name="description" fullWidth placeholder={t('ENTER_DESCRIPTION')} />*/}
 				</Grid>
 				<Grid item xs={12}>
 					<ImageUploader className="mt-5"

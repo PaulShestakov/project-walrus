@@ -3,7 +3,7 @@ import CSSModules from 'react-css-modules';
 import { translate } from 'react-i18next';
 import FontAwesome from 'react-fontawesome';
 import { Link } from 'react-router-dom';
-import { Image } from 'react-bootstrap';
+
 import { Grid, Card } from 'components';
 
 import logo from './img/Logo.svg';
@@ -29,7 +29,7 @@ class Header extends React.Component {
 						<Grid item md={9}>
 							<Grid container styleName="topHeader" className='my-2'>
 								<Grid item md={2}>
-									<Image src={logo} alt="Logo" itemProp="logo" style={{width: '100%'}} />
+									{/*<Image src={logo} alt="Logo" itemProp="logo" style={{width: '100%'}} />*/}
 								</Grid>
 								<Grid item md={10} className='d-flex align-items-center justify-content-between'>
 									<Link to="/" className={classes.topLink}>
