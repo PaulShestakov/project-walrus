@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CSSModules from 'react-css-modules';
-import { translate, Interpolate, Trans } from 'react-i18next';
+import { translate } from 'react-i18next';
 import ImagePreview from "./components/ImagePreview";
 import FontAwesome from 'react-fontawesome';
 
-import styles from './style.module.scss';
+import { withStyles, createStyleSheet } from 'material-ui/styles';
+
+import styles from './styles';
+const styleSheet = createStyleSheet(styles);
 
 
 @translate(['components'])
-@CSSModules(styles)
+@withStyles(styleSheet)
 export default class ImageUploader extends React.Component {
 	constructor(props) {
 		super(props);
@@ -41,14 +43,14 @@ export default class ImageUploader extends React.Component {
 	};
 
 	render() {
-		const t = this.props.t;
+		const {t, classes, ...other} = this.props;
 
 		return (
-			<div {...this.props} className={["d-flex", this.props.className].join(' ')}>
-				<input id="file" multiple="multiple" name={this.props.name} styleName="addImageInput" type="file" onChange={this.handleAddImage}/>
+			<div className={["d-flex", this.props.className].join(' ')} {...other}>
+				<input id="file" multiple="multiple" name={this.props.name} className={classes.addImageInput} type="file" onChange={this.handleAddImage}/>
 
-				<label htmlFor="file" styleName="addImageLabel">
-					<FontAwesome name="camera" styleName='cameraIcon' />
+				<label htmlFor="file" className={classes.addImageLabel}>
+					<FontAwesome name="camera" className={classes.cameraIcon} />
 					<span>{t('ADD_PHOTO')}</span>
 				</label>
 				{
@@ -68,4 +70,3 @@ ImageUploader.propTypes = {
 	onImageAdde: PropTypes.func,
 	onImageDelete: PropTypes.func
 };
-

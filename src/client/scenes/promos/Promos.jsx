@@ -17,14 +17,16 @@ import styleSheet from './style';
 class Promos extends React.Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			selectedTabIndex: 0,
-			filter : {
-				animal : 'DOG',
-				breeds : [],
-				cities : ['MINSK']
+			filter: {
+				animal: 'DOG',
+				breeds: [],
+				cities: []
 			}
 		};
+
         this.props.history.push({search : buildUrl(null, this.state.filter)});
 	}
 
@@ -72,7 +74,7 @@ class Promos extends React.Component {
 	render() {
 		const { t, theme, classes, ...other } = this.props;
 
-		console.log(JSON.stringify(theme));
+		console.log(this.props);
 
 		return (
 			<Grid container className="my-2" { ...other }>
@@ -106,22 +108,6 @@ class Promos extends React.Component {
 						</Grid>
 					</Card>
 
-					{
-						// this.props.promos && this.props.promos.map(promo => {
-						// 	return (
-						// 		<Row>
-						// 			<PromoItem title={promo.title}
-						// 			   type={t(promo.type)}
-						// 			   imageSrc={promo.imageSrc}
-						// 			   date={promo.date}
-						// 			   description={promo.description}
-						// 			   price={promo.price}
-						// 			   className="my-3"/>
-						// 		</Row>
-						//
-						// 	);
-						// })
-					}
 				</Grid>
 
 				<Grid item md={3}>

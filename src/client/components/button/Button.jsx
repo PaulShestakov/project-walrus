@@ -1,10 +1,7 @@
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import PropTypes from 'prop-types';
 import MaterialButton from 'material-ui/Button';
 import classNames from 'classnames';
-
-import styles from './style.module.scss';
 
 
 import globalStyle from '../../style';

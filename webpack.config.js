@@ -32,20 +32,8 @@ let clientConfig = {
 				exclude: /node_modules/,
 				loader: 'babel-loader'
 			},
-			// This rule is for css modules files
 			{
-				test: /\.module\.(css|scss)$/,
-				use: ExtractTextPlugin.extract({
-					fallback: "style-loader",
-					use: [
-						'css-loader?modules,localIdentName="[name]-[local]-[hash:base64:6]"',
-						'sass-loader?sourceMap'
-					]
-				})
-			},
-			// This rule is for global css files
-			{
-				test: /\.global\.(css|scss)$/,
+				test: /\.(css|scss)$/,
 				use: ExtractTextPlugin.extract({
 					fallback: "style-loader",
 					use: [
@@ -53,7 +41,6 @@ let clientConfig = {
 						"sass-loader"
 					]
 				})
-
 			},
 			{
 				test: /\.(woff(2)?|svg|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,

@@ -1,22 +1,16 @@
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import { translate } from 'react-i18next';
 import FontAwesome from 'react-fontawesome';
 import { Link } from 'react-router-dom';
-
 import { Grid, Card } from 'components';
-
-import logo from './img/Logo.svg';
-import styles from './style.module.scss';
-
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 
-import css from './style';
+import logo from './img/Logo.svg';
 
-const styleSheet = createStyleSheet(css);
+import styles from './styles';
+const styleSheet = createStyleSheet(styles);
 
 @translate(['header'])
-@CSSModules(styles)
 @withStyles(styleSheet)
 class Header extends React.Component {
 	render() {
@@ -24,12 +18,12 @@ class Header extends React.Component {
 
 		return (
 			<header className={this.props.className} itemType="http://schema.org/Header" itemScope>
-				<Card styleName="headerWrapper">
+				<Card>
 					<Grid container justify="center" className="py-3">
 						<Grid item md={9}>
-							<Grid container styleName="topHeader" className='my-2'>
+							<Grid container className='my-2'>
 								<Grid item md={2}>
-									{/*<Image src={logo} alt="Logo" itemProp="logo" style={{width: '100%'}} />*/}
+									<img src={logo} alt="Logo" style={{width: '100%'}} />
 								</Grid>
 								<Grid item md={10} className='d-flex align-items-center justify-content-between'>
 									<Link to="/" className={classes.topLink}>

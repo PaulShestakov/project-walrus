@@ -1,35 +1,22 @@
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import PropTypes from 'prop-types';
+import { withStyles, createStyleSheet } from 'material-ui/styles';
 
-import styles from './style.module.scss';
+import styles from './styles';
+const styleSheet = createStyleSheet(styles);
 
-@CSSModules(styles)
+
+@withStyles(styleSheet)
 export default class Label extends React.Component {
 	render() {
-		let accentStyleClass = '';
-
-		switch (this.props.accent) {
-			case 'blue':
-				accentStyleClass = 'accentBlue';
-				break;
-			case 'red':
-				accentStyleClass = 'accentRed';
-				break;
-		}
-
-		const className = [
-			this.props.styles.label,
-			this.props.styles[accentStyleClass],
-			this.props.className
-		].join(' ');
+		const {classes, ...other} = this.props;
 
 		const style = {
 			fontSize: this.props.fontSize
 		};
 
 		return (
-			<span style={style} className={className}>
+			<span style={style} className={classes.label} {...other}>
 				{this.props.children}
 			</span>
 		);

@@ -14,6 +14,7 @@ import Card from  			'material-ui/Card';
 import Input from  			'material-ui/Input';
 
 import Dropdown from 		'react-dropdown';
+import Popover from 		'react-popover';
 
 export {
 	Button,
@@ -30,5 +31,6 @@ export {
   	Card,
 	Input,
 
-	Dropdown
+	Dropdown,
+	Popover
 };
