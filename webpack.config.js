@@ -72,7 +72,19 @@ let clientConfig = {
 
 if (nodeEnv === 'production') {
 	clientConfig.plugins.push(
-		new UglifyJSPlugin()
+		new UglifyJSPlugin({
+			compress: {
+				warnings: false,
+			},
+			output: {
+				comments: false,
+			}
+		}),
+		new webpack.DefinePlugin({
+			'process.env': {
+				NODE_ENV: JSON.stringify('production'),
+			},
+		}),
 	);
 }
 
