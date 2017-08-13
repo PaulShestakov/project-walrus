@@ -4,7 +4,6 @@ const nodeExternals = require('webpack-node-externals');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const nodeEnv = process.env.NODE_ENV;
 
@@ -72,7 +71,7 @@ let clientConfig = {
 
 if (nodeEnv === 'production') {
 	clientConfig.plugins.push(
-		new UglifyJSPlugin({
+		new webpack.optimize.UglifyJsPlugin({
 			compress: {
 				warnings: false,
 			},
@@ -85,11 +84,9 @@ if (nodeEnv === 'production') {
 				NODE_ENV: JSON.stringify('production'),
 			},
 		}),
+		new webpack.optimize.ModuleConcatenationPlugin()
 	);
 }
-
-
-
 
 let serverConfig = {
 	name : 'server',
