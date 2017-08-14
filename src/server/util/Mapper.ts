@@ -13,18 +13,11 @@ export default class Mapper {
     ]);
 
     PROMO_INFO : Map<string, string> = new Map([
-        ['uuid'          ,   'PROMO_INFO_ID'],
         ['address'       ,   'ADDRESS'],
         ['date'          ,   'DATE'],
         ['gender'        ,   'GENDER'],
         ['age'           ,   'AGE'],
         ['price'         ,   'COST']
-    ]);
-
-    PROMO_USER : Map<string, string> = new Map([
-        ['userName'      ,   'USER_NAME'],
-        ['email'         ,   'EMAIL'],
-        ['phone'         ,   'PHONE']
     ]);
 
     mapToEntity(json: any, map: Map<string, string>, baseObject: any): any {

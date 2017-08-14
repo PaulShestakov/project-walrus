@@ -37,8 +37,10 @@ class Dropdown extends React.Component {
 
         let options = this.adjustOptions();
 
-        let selectedOptionLabel = options.find(item => item.value === this.state.selected.value);
+        let selected = this.state.selected.value;
+        let selectedOptionLabel = options.find(item => item.value === (selected ? selected : this.state.selected));
         selectedOptionLabel = selectedOptionLabel ? selectedOptionLabel : options[0];
+
 
         return (
             <DropdownLib

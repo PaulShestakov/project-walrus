@@ -12,7 +12,6 @@ export default class SideBar extends React.Component {
     constructor(props) {
         super(props);
 
-
         this.state = {
 			anchorEl: undefined,
 			open: false,
@@ -117,7 +116,11 @@ export default class SideBar extends React.Component {
 						{/*</FormGroup>*/}
 
 
-
+						<FormGroup className="mb-4">
+							<Dropdown options={this.props.animals}
+									  onChange={this.props.onFilterChanged}
+									  selectedOption={this.filter.animal} />
+						</FormGroup>
 
 						<FormGroup>
 							{

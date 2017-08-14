@@ -19,8 +19,8 @@ class Promos extends React.Component {
 		super(props);
 
 		this.state = {
-			selectedTabIndex: 0,
 			filter: {
+                type: 0,
 				animal: 'DOG',
 				breeds: [],
 				cities: []
@@ -66,15 +66,12 @@ class Promos extends React.Component {
 	};
 
 	handleTabPress = (event, index) => {
-		this.setState({
-			selectedTabIndex: index
-		});
+		this.state.filter.type = index;
+        this.handleFilterChanged(event);
 	};
 
 	render() {
 		const { t, theme, classes, ...other } = this.props;
-
-		console.log(this.props);
 
 		return (
 			<Grid container className="my-2" { ...other }>
@@ -89,7 +86,7 @@ class Promos extends React.Component {
 
 							<Grid item>
 								<Tabs
-									index={this.state.selectedTabIndex}
+									index={this.state.filter.type}
 									onChange={this.handleTabPress}
 									indicatorColor="primary"
 									textColor="primary"
@@ -97,6 +94,7 @@ class Promos extends React.Component {
 										root: classes.tabs
 									}}
 								>
+									<Tab label={t('common:ALL')} />
 									<Tab label={t('common:WILL_SELL')} />
 									<Tab label={t('common:WILL_BUY')} />
 									<Tab label={t('common:WILL_GIVE_GIFT')} />
