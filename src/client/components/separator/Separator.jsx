@@ -1,13 +1,18 @@
 import React from 'react';
-import CSSModules from 'react-css-modules';
+import { withStyles, createStyleSheet } from 'material-ui/styles';
+import classNames from 'classnames';
 
-import styles from './style.module.scss';
+import styles from './styles';
+const styleSheet = createStyleSheet(styles);
 
-@CSSModules(styles)
+
+@withStyles(styleSheet)
 export default class Separator extends React.Component {
 	render() {
+		const {classes, className, ...other} = this.props;
+
 		return (
-			<div {...this.props} styleName="separator"></div>
+			<div className={classNames(className, classes.separator)} {...other} />
 		);
 	}
 }

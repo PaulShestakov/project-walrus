@@ -4,7 +4,6 @@ const nodeExternals = require('webpack-node-externals');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const nodeEnv = process.env.NODE_ENV;
 
@@ -32,20 +31,8 @@ let clientConfig = {
 				exclude: /node_modules/,
 				loader: 'babel-loader'
 			},
-			// This rule is for css modules files
 			{
-				test: /\.module\.(css|scss)$/,
-				use: ExtractTextPlugin.extract({
-					fallback: "style-loader",
-					use: [
-						'css-loader?modules,localIdentName="[name]-[local]-[hash:base64:6]"',
-						'sass-loader?sourceMap'
-					]
-				})
-			},
-			// This rule is for global css files
-			{
-				test: /\.global\.(css|scss)$/,
+				test: /\.(css|scss)$/,
 				use: ExtractTextPlugin.extract({
 					fallback: "style-loader",
 					use: [
@@ -53,7 +40,6 @@ let clientConfig = {
 						"sass-loader"
 					]
 				})
-
 			},
 			{
 				test: /\.(woff(2)?|svg|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
@@ -85,12 +71,22 @@ let clientConfig = {
 
 if (nodeEnv === 'production') {
 	clientConfig.plugins.push(
-		new UglifyJSPlugin()
+		new webpack.optimize.UglifyJsPlugin({
+			compress: {
+				warnings: false,
+			},
+			output: {
+				comments: false,
+			}
+		}),
+		new webpack.DefinePlugin({
+			'process.env': {
+				NODE_ENV: JSON.stringify('production'),
+			},
+		}),
+		new webpack.optimize.ModuleConcatenationPlugin()
 	);
 }
-
-
-
 
 let serverConfig = {
 	name : 'server',

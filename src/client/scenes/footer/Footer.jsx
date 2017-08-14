@@ -1,20 +1,17 @@
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import { Link } from "react-router-dom";
 import { translate } from 'react-i18next';
 import { Input, Button, Separator, Grid } from 'components';
 
-import styles from './style.module.scss';
 
 
 @translate(['footer'])
-@CSSModules(styles)
 class Footer extends React.Component {
 	render() {
 		const t = this.props.t;
 
 		return (
-			<footer className={this.props.className} styleName="footerWrapper">
+			<footer className={this.props.className}>
 				<Grid container justify="center">
 					<Grid item xs={8}>
 						<Grid container>

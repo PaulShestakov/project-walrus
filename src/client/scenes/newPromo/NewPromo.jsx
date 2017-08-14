@@ -7,7 +7,7 @@ import FoundPromo from './components/FoundPromo.jsx';
 import BuyOrSellPromo from './components/BuyOrSellPromo.jsx';
 import GiveOrAcceptGiftPromo from './components/GiveOrAcceptGiftPromo.jsx';
 
-import { Dropdown, Button, Title, Input, Textarea, Tabs, Grid, ImageUploader } from "components";
+import { Dropdown, Button, Title, Input, Grid, ImageUploader } from "components";
 
 
 
@@ -94,48 +94,48 @@ class NewPromo extends React.Component {
 			<form onSubmit={this.handleSubmit}>
 				<Grid container>
 					<Grid item xs={12}>
-						<Tabs activeKey={this.state.promoType}
-							  onSelect={this.handlePromoTypeSelected}
-							  className="mt-5"
-							  options={[
-                                  {
-                                      key: "LOST",
-                                      tabTitle: t('LOST')
-                                  },
-                                  {
-                                      key: "FOUND",
-                                      tabTitle: t('FOUND')
-                                  },
-                                  {
-                                      key: "BUY",
-                                      tabTitle: t('WILL_BUY')
-                                  },
-                                  {
-                                      key: "SELL",
-                                      tabTitle: t('WILL_SELL')
-                                  },
-                                  {
-                                      key: "GIVE_GIFT",
-                                      tabTitle: t('WILL_GIVE_GIFT')
-                                  },
-                                  {
-                                      key: "ACCEPT_GIFT",
-                                      tabTitle: t('WILL_ACCEPT_GIFT')
-                                  }
-                              ]}
-						/>
+						{/*<Tabs activeKey={this.state.promoType}*/}
+							  {/*onSelect={this.handlePromoTypeSelected}*/}
+							  {/*className="mt-5"*/}
+							  {/*options={[*/}
+								  {/*{*/}
+									  {/*key: "LOST",*/}
+									  {/*tabTitle: t('LOST')*/}
+								  {/*},*/}
+								  {/*{*/}
+									  {/*key: "FOUND",*/}
+									  {/*tabTitle: t('FOUND')*/}
+								  {/*},*/}
+								  {/*{*/}
+									  {/*key: "BUY",*/}
+									  {/*tabTitle: t('WILL_BUY')*/}
+								  {/*},*/}
+								  {/*{*/}
+									  {/*key: "SELL",*/}
+									  {/*tabTitle: t('WILL_SELL')*/}
+								  {/*},*/}
+								  {/*{*/}
+									  {/*key: "GIVE_GIFT",*/}
+									  {/*tabTitle: t('WILL_GIVE_GIFT')*/}
+								  {/*},*/}
+								  {/*{*/}
+									  {/*key: "ACCEPT_GIFT",*/}
+									  {/*tabTitle: t('WILL_ACCEPT_GIFT')*/}
+								  {/*}*/}
+							  {/*]}*/}
+						{/*/>*/}
 					</Grid>
 					<Grid item xs={12}>
 						<Title text={t('PROMO_NAME')} className="mt-5" />
-						<Input name="title" fullWidth placeholder={t('PROMO_NAME')} />
+						<Input name="title" placeholder={t('PROMO_NAME')} />
 					</Grid>
 					<Grid item xs={12}>
 						<Title text={t('SELECT_PET')} className="mt-3"/>
 						<Dropdown name="animal"
 								  onChange={e => {
-                                      	this.setState({ animal : e.value, breed : null });
-										this.props.loadBreeds(e.value);
-									  }
+									  this.setState({ animal : e.value, breed : null });
+									  this.props.loadBreeds(e.value);
+								  }
 								  }
 								  options={this.props.animals}/>
 					</Grid>
@@ -153,21 +153,21 @@ class NewPromo extends React.Component {
 								  options={this.props.cities}/>
 					</Grid>
 					<Grid item xs={12}>
-                        {
-                            (this.state.promoType === 'LOST' && <LostPromo  />)
-                            ||
-                            (this.state.promoType === 'FOUND' && <FoundPromo />)
-                            ||
-                            ((this.state.promoType === 'BUY' || this.state.promoType === 'SELL') && <BuyOrSellPromo />)
-                            ||
-                            (
-                                (this.state.promoType === 'GIVE_GIFT' || this.state.promoType === 'ACCEPT_GIFT') && <GiveOrAcceptGiftPromo />
-                            )
-                        }
+						{
+							(this.state.promoType === 'LOST' && <LostPromo  />)
+							||
+							(this.state.promoType === 'FOUND' && <FoundPromo />)
+							||
+							((this.state.promoType === 'BUY' || this.state.promoType === 'SELL') && <BuyOrSellPromo />)
+							||
+							(
+								(this.state.promoType === 'GIVE_GIFT' || this.state.promoType === 'ACCEPT_GIFT') && <GiveOrAcceptGiftPromo />
+							)
+						}
 					</Grid>
 					<Grid item xs={12}>
 						<Title text={t('DESCRIPTION')} className="mt-3"/>
-						<Textarea name="description" placeholder={t('ENTER_DESCRIPTION')} />
+						{/*<Textarea name="description" fullWidth placeholder={t('ENTER_DESCRIPTION')} />*/}
 					</Grid>
 					<Grid item xs={12}>
 						<ImageUploader className="mt-5"
@@ -181,7 +181,7 @@ class NewPromo extends React.Component {
 									className="my-5 text-white"
 									bsSize="large"
 									accent="blue">
-                                {t('PUBLISH')}
+								{t('PUBLISH')}
 							</Button>
 						</div>
 					</Grid>

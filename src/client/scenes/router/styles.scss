@@ -1,10 +1,8 @@
-@import "./../../index.module.scss";
 
 html {
   position: relative;
   min-height: 100%;
   font-size: 16px;
-  color : $black;
 }
 
 body, body > div {
@@ -19,20 +17,10 @@ body, body > div {
   main {
     display: flex;
     flex: 1;
-    padding: 0 1rem;
+    overflow: hidden;
   }
 }
 
-
-
-//
-//.appFooter {
-//  position: absolute;
-//  bottom: 0;
-//  width: 100%;
-//  height: $footer-height;
-//}
-//
 .flexGrowFull {
   flex-grow: 1;
 }

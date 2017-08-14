@@ -1,7 +1,6 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 
-import { FormControl } from 'react-bootstrap';
 import { Title, Input, DateTimePicker } from 'components';
 
 @translate(['newPromo'])
@@ -18,10 +17,8 @@ class LostPromo extends React.Component {
 				<DateTimePicker name="date" locale="ru" placeholder={t('ENTER_LOST_TIME')} />
 
 				<Title text={t('GENDER')} className="mt-4" />
-				<FormControl name="gender" componentClass="select" placeholder={t('SELECT_GENDER')}>
-					<option value="m">{t('BOY')}</option>
-					<option value="f">{t('GIRL')}</option>
-				</FormControl>
+				{/*
+				*/}
 
 				<Title text={t('APPROXIMATE_AGE')} className="mt-4" />
 				<Input name="age" fullWidth placeholder={t('ENTER_APPROXIMATE_AGE')} />

@@ -2,43 +2,31 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { Grid, Title, Button, Card, Label, Textarea, TextField, Input } from 'components';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
+import classNames from 'classnames';
 
-import PromoItem from './components/promoItem/PromoItem';
-import SearchInput from './components/searchInput/SearchInput';
 import SideBar from "./components/sidebar/SideBar";
 
 import Tabs, { Tab } from 'material-ui/Tabs';
 
 import {buildUrl} from "../../actionCreators/promos";
 
-
-
-const styleSheet = createStyleSheet({
-	tabs: {
-		'& button': {
-			minWidth: 'auto',
-			display: 'flex',
-			flexGrow: 1
-		}
-	}
-});
-
-
-
+import styleSheet from './style';
 
 @translate(['promos', 'common'])
 @withStyles(styleSheet)
 class Promos extends React.Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			selectedTabIndex: 0,
-			filter : {
-				animal : 'DOG',
-				breeds : [],
-				cities : ['MINSK']
+			filter: {
+				animal: 'DOG',
+				breeds: [],
+				cities: []
 			}
 		};
+
         this.props.history.push({search : buildUrl(null, this.state.filter)});
 	}
 
@@ -84,18 +72,18 @@ class Promos extends React.Component {
 	};
 
 	render() {
-		const t = this.props.t;
-		const classes = this.props.classes;
+		const { t, theme, classes, ...other } = this.props;
+
+		console.log(this.props);
 
 		return (
-			<Grid container md="12" className="mt-2">
-				<Grid item md="9">
-
+			<Grid container className="my-2" { ...other }>
+				<Grid item md={9}>
 					<Card>
 						<Grid container direction="column">
 							<Grid item>
 								<div className="m-2">
-									<Input placeholder={t('SECTION_SEARCH')} className="w-100" />
+									<Input placeholder={t('SECTION_SEARCH')} className={classNames(classes.searchInput, 'w-100')} />
 								</div>
 							</Grid>
 
@@ -120,30 +108,14 @@ class Promos extends React.Component {
 						</Grid>
 					</Card>
 
-					{
-						this.props.promos && this.props.promos.map(promo => {
-							return (
-								<Row>
-									<PromoItem title={promo.title}
-									   type={t(promo.type)}
-									   imageSrc={promo.imageSrc}
-									   date={promo.date}
-									   description={promo.description}
-									   price={promo.price}
-									   className="my-3"/>
-								</Row>
-
-							);
-						})
-					}
 				</Grid>
 
-				<Grid item md="3">
+				<Grid item md={3}>
 					<SideBar onFilterChanged={this.handleFilterChanged}
-						 animals={this.props.animals}
-						 cities={this.props.cities}
-						 breeds={this.props.breeds}
-						 filter={this.state.filter} />
+						animals={this.props.animals}
+						cities={this.props.cities}
+						breeds={this.props.breeds}
+						filter={this.state.filter} />
 				</Grid>
 			</Grid>
 		);

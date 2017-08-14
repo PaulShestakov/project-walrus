@@ -1,10 +1,7 @@
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import PropTypes from 'prop-types';
 
-import styles from './style.module.scss';
 
-@CSSModules(styles)
 export default class Text extends React.Component {
 	render() {
 		let accentStyleClass = '';
@@ -26,7 +23,7 @@ export default class Text extends React.Component {
 		};
 
 		return (
-			<p style={style} styleName="text" className={className}>
+			<p style={style} className={className}>
 				{this.props.children}
 			</p>
 		);
