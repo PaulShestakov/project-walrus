@@ -119,7 +119,8 @@ export default class SideBar extends React.Component {
 						<FormGroup className="mb-4">
 							<Dropdown options={this.props.animals}
 									  onChange={this.props.onFilterChanged}
-									  selectedOption={this.filter.animal} />
+									  selectedOption={this.filter.animal}
+									  pushAll={true}/>
 						</FormGroup>
 
 						<FormGroup>
@@ -180,8 +181,6 @@ export default class SideBar extends React.Component {
 									})
 							}
 						</FormGroup>
-
-
 
 					</Card>
 				</Grid>

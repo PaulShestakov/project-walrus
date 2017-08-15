@@ -23,6 +23,9 @@ class Dropdown extends React.Component {
         } else {
             options = [];
         }
+        if (this.props.pushAll) {
+            options.unshift({value: 'ALL', label: 'Все'});
+        }
         return options;
     }
 

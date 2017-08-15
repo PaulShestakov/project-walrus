@@ -122,10 +122,14 @@ export function buildUrl(baseUrl, params) {
         let value = params[key];
         if (value instanceof Array) {
             value.forEach(item => {
-                baseUrl += `${key}=${item}&`;
+                if (item) {
+                    baseUrl += `${key}=${item}&`;
+                }
             });
         } else {
-            baseUrl += `${key}=${value}&`;
+            if (value) {
+                baseUrl += `${key}=${value}&`;
+            }
         }
     });
     return baseUrl.slice(0, -1);

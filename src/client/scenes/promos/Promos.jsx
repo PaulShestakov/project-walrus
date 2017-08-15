@@ -17,11 +17,20 @@ import styleSheet from './style';
 class Promos extends React.Component {
 	constructor(props) {
 		super(props);
+		this.types = [
+			'ALL',
+            'SELL',
+            'BUY',
+            'GIVE_GIFT',
+			'ACCEPT_GIFT',
+            'LOST',
+			'FOUND'
+			];
 
 		this.state = {
 			filter: {
-                type: 0,
-				animal: 'DOG',
+                type: this.types[0],
+				animal: 'ALL',
 				breeds: [],
 				cities: []
 			}
@@ -66,7 +75,7 @@ class Promos extends React.Component {
 	};
 
 	handleTabPress = (event, index) => {
-		this.state.filter.type = index;
+		this.state.filter.type = this.types[index];
         this.handleFilterChanged(event);
 	};
 
@@ -86,7 +95,7 @@ class Promos extends React.Component {
 
 							<Grid item>
 								<Tabs
-									index={this.state.filter.type}
+									index={this.types.indexOf(this.state.filter.type)}
 									onChange={this.handleTabPress}
 									indicatorColor="primary"
 									textColor="primary"

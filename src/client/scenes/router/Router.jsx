@@ -29,7 +29,7 @@ export default class Router extends React.Component {
 					</Grid>
 				</main>
 
-				<Footer />
+				{/*<Footer />*/}
 			</div>
 		);
 	}

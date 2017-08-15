@@ -49,8 +49,6 @@ class Promo extends BaseCRUD {
 			0
 		]));
 
-		console.log(images);
-
 		const savePromoInfo = (connection, done) => {
 			connection.query(promoInfoSQL.SAVE, [promoInfoEntity], (error, rows) => {
 				if (error) {
