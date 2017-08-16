@@ -7,7 +7,7 @@ import globalStyle from '../../style';
 
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 
-const styleSheet = createStyleSheet("Button", theme => ({
+const styleSheet = createStyleSheet({
 	button: {
 		color: 'white'
 	},
@@ -23,7 +23,7 @@ const styleSheet = createStyleSheet("Button", theme => ({
 			background: globalStyle.ACCENT_BLUE
 		}
 	}
-}));
+});
 
 
 @withStyles(styleSheet)

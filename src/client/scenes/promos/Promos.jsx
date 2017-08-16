@@ -115,6 +115,18 @@ class Promos extends React.Component {
 						</Grid>
 					</Card>
 
+					{
+						this.props.promos &&
+						this.props.promos.map(promo => {
+							return (
+								<Card className="my-3">
+									{JSON.stringify(promo)}
+								</Card>
+							);
+						})
+
+					}
+
 				</Grid>
 
 				<Grid item md={3}>

@@ -2,13 +2,12 @@ import * as mysql from 'mysql';
 import async from 'async';
 import * as config from 'config';
 import log from "../util/Logger";
-import Util from "../util/Util";
 
 
 const pool = mysql.createPool({
-	connectionLimit : 100, //important
-	host     :  process.env.DATABASE_HOST || config.get('mysql.host'),
-	port     :  process.env.PORT || config.get('mysql.port'),
+	connectionLimit : 100,
+	host     :  config.get('mysql.host'),
+	port     :  config.get('mysql.port'),
 	user     :  config.get('mysql.user'),
 	password :  config.get('mysql.password'),
 	database :  config.get('mysql.db')

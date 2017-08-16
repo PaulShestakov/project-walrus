@@ -3,7 +3,7 @@ import * as debug from 'debug';
 
 import App from './App';
 
-const PORT = 8080;
+const PORT = process.env.PORT;
 
 const express = new App().express;
 express.set('port', PORT);

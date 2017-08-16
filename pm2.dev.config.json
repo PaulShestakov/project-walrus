@@ -1,0 +1,21 @@
+{
+  "name": "wiki-server",
+  "script": "./dist/server/index.js",
+  "node_args": ["--inspect"],
+  "watch": true,
+  "ignore_watch": ["node_modules"],
+  "detached": true,
+
+  "autorestart": true,
+  "max_restarts": 5,
+  "restart_delay": 5000,
+
+  "out_file": "./dist/devLog/log.txt",
+
+  "env": {
+    "PORT": 8080,
+    "NODE_ENV": "development"
+  },
+
+  "source_map_support": true
+}

@@ -41,7 +41,6 @@ class Promo extends BaseCRUD {
 		let promoEntity: PromoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO, promoBase);
 		let promoInfoEntity: PromoInfoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO, promoInfoBase);
 
-
 		let images = promo.images.map(file => ([
 			uuid(),
 			promoId,
@@ -82,7 +81,7 @@ class Promo extends BaseCRUD {
 			});
 		};
 
-		executeSeries([savePromo, savePromoInfo, saveImages], (error, result) => {
+		executeParallel([savePromo, savePromoInfo, saveImages], (error, result) => {
 			if (error) {
 				Util.handleError(error, callback);
 			} else {
@@ -145,7 +144,6 @@ class Promo extends BaseCRUD {
 	}
 
 	public update(promo: any, callback): void {
-		//promo.uuid = uuid();
         super.update(promo, callback);
 	}
 

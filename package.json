@@ -4,16 +4,19 @@
   "description": "wikipet",
   "main": "./dist/server/index.js",
   "scripts": {
-    "build": "webpack --profile --progress --colors --watch",
+    "build-dev": "webpack --profile --progress --colors --watch",
     "build-prod": "rm -rf ./dist && NODE_ENV=\"production\" webpack --profile --progress --colors",
-    "run-server": "pm2 startOrReload server.config.json --update-env",
-    "stop-server": "pm2 stop server.config.json"
+    "start-dev-server": "pm2 startOrReload ./pm2.dev.config.json --update-env",
+    "start-prod-server": "pm2 startOrReload ./pm2.prod.config.json --update-env",
+    "stop-dev-server": "pm2 stop ./pm2.dev.config.json",
+    "stop-prod-server": "pm2 stop ./pm2.prod.config.json"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "async": "^2.5.0",
     "body-parser": "^1.17.2",
+    "classnames": "^2.2.5",
     "compression": "^1.6.2",
     "config": "^1.26.1",
     "debug": "^2.6.8",

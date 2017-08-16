@@ -31,7 +31,7 @@ export default class SideBar extends React.Component {
 	};
 
 	handlePopoverOuterAction = event => {
-
+		this.setState({ open: false });
 	};
 
 
@@ -127,7 +127,9 @@ export default class SideBar extends React.Component {
 							preferPlace="left"
 							onOuterAction={this.handlePopoverOuterAction}>
 
-							<ButtonMore onClick={this.handleClick} disabled={this.filter.animal === 'ALL'} />
+							<ButtonMore onClick={this.handleClick} disabled={this.filter.animal === 'ALL'}>
+								{t('SELECT_BREED')}
+							</ButtonMore>
 						</Popover>
 
 

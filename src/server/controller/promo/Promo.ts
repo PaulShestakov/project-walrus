@@ -7,15 +7,13 @@ const IMAGES_UPLOAD_MAX_COUNT = 100;
 
 class Promo extends BaseController {
 
-	router : Router;
+	router: Router;
 
 	constructor() {
 		super();
 		this.router = Router();
 		this.router.get('/', this.getAll.bind(this));
-
 		this.router.get('/filtered', this.getFiltered.bind(this));
-
 		this.router.get('/:uuid', this.get.bind(this));
 		this.router.post('/', upload.array('image', IMAGES_UPLOAD_MAX_COUNT), this.save.bind(this));
 		this.router.put('/:uuid', this.update.bind(this));
