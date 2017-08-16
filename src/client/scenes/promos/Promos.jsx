@@ -25,7 +25,7 @@ class Promos extends React.Component {
 			'ACCEPT_GIFT',
             'LOST',
 			'FOUND'
-			];
+		];
 
 		this.state = {
 			filter: {

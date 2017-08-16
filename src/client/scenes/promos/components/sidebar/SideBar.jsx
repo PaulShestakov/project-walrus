@@ -4,6 +4,7 @@ import {translate} from "react-i18next";
 import { Button, Card, Label, Separator, Checkbox, Dropdown, Grid, Popover } from "components";
 
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
+import ButtonMore from "./components/buttonMore/ButtonMore";
 
 
 @translate(['promos'])
@@ -44,9 +45,9 @@ export default class SideBar extends React.Component {
 						this.props.breeds && this.props.breeds.map((breed, index) => (
 							<FormControlLabel label={breed.name} className="m-0" control={
 								<Checkbox value={breed.id}
-										  name="breeds"
-										  checked={this.filter.breeds.indexOf(breed.id) !== -1}
-										  onChange={this.props.onFilterChanged}
+									name="breeds"
+									checked={this.filter.breeds.indexOf(breed.id) !== -1}
+									onChange={this.props.onFilterChanged}
 								/>
 							} />
 						))
@@ -93,64 +94,40 @@ export default class SideBar extends React.Component {
 				<Grid item md={12}>
 					<Card className="p-3">
 
-
-						{/*<FormGroup>*/}
-							{/*{*/}
-								{/*this.props.animals &&*/}
-								{/*this.props.animals.map((animal) => {*/}
-									{/*const checked = this.filter.animals.indexOf(animal.id) !== -1;*/}
-
-									{/*return (*/}
-										{/*<Grid item xs={6}>*/}
-											{/*<FormControlLabel className="m-0" label={animal.name} control={*/}
-												{/*<Checkbox value={animal.id}*/}
-														  {/*name="animals"*/}
-														  {/*checked={checked}*/}
-														  {/*onChange={this.props.onFilterChanged}*/}
-												{/*/>*/}
-											{/*}/>*/}
-										{/*</Grid>*/}
-									{/*)*/}
-								{/*})*/}
-							{/*}*/}
-						{/*</FormGroup>*/}
-
-
 						<FormGroup className="mb-4">
 							<Dropdown options={this.props.animals}
-									  onChange={this.props.onFilterChanged}
-									  selectedOption={this.filter.animal}
-									  pushAll={true}/>
+								onChange={this.props.onFilterChanged}
+								selectedOption={this.filter.animal}
+								pushAll={true}/>
 						</FormGroup>
 
 						<FormGroup>
 							{
 								this.props.breeds &&
-								this.props.breeds.map((breed) => {
-										const checked = this.filter.breeds.indexOf(breed.id) !== -1;
+								this.props.breeds.slice(0, 4).map((breed) => {
+									const checked = this.filter.breeds.indexOf(breed.id) !== -1;
 
-										return (
-											<Grid item xs={6}>
-												<FormControlLabel className="m-0" label={breed.name} control={
-													<Checkbox value={breed.id}
-														name="breeds"
-														checked={checked}
-														onChange={this.props.onFilterChanged}
-													/>
-												}/>
-											</Grid>
-										)
-									})
+									return (
+										<Grid item xs={6}>
+											<FormControlLabel className="m-0" label={breed.name} control={
+												<Checkbox value={breed.id}
+													name="breeds"
+													checked={checked}
+													onChange={this.props.onFilterChanged}
+												/>
+											}/>
+										</Grid>
+									);
+								})
 							}
 						</FormGroup>
-
-
 
 						<Popover isOpen={this.state.open}
 							body={allBreedsPopover}
 							preferPlace="left"
 							onOuterAction={this.handlePopoverOuterAction}>
-							<Button onClick={this.handleClick}/>
+
+							<ButtonMore onClick={this.handleClick} disabled={this.filter.animal === 'ALL'} />
 						</Popover>
 
 

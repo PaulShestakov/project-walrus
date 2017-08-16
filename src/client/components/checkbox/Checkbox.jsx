@@ -2,7 +2,6 @@ import React from 'react';
 import MaterialCheckbox from 'material-ui/Checkbox';
 
 import { withStyles, createStyleSheet } from 'material-ui/styles';
-import grey from 'material-ui/colors/grey';
 
 const styleSheet = createStyleSheet({
 	root: {

@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import MaterialButton from 'material-ui/Button';
 import classNames from 'classnames';
 
-
 import globalStyle from '../../style';
 
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 
-const styleSheet = createStyleSheet(theme => ({
+const styleSheet = createStyleSheet("Button", theme => ({
 	button: {
 		color: 'white'
 	},
