@@ -3,7 +3,7 @@
   "script": "./dist/server/index.js",
   "node_args": ["--inspect"],
   "watch": true,
-  "ignore_watch": ["node_modules"],
+  "ignore_watch": ["node_modules", "./dist/uploads"],
   "detached": true,
 
   "autorestart": true,

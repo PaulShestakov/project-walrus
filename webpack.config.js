@@ -112,11 +112,6 @@ let serverConfig = {
 	},
 	module: {
 		rules: [
-			// {
-			// 	test: /\.ts$/,
-			// 	enforce: 'pre',
-			// 	loader: 'tslint-loader'
-			// },
 			{
 				test: /.ts$/,
 				exclude: /node_modules/,
@@ -128,4 +123,3 @@ let serverConfig = {
 
 
 module.exports = [clientConfig, serverConfig];
-

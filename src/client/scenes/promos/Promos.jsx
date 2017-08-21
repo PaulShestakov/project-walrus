@@ -11,6 +11,7 @@ import Tabs, { Tab } from 'material-ui/Tabs';
 import {buildUrl} from "../../actionCreators/promos";
 
 import styleSheet from './style';
+import PromoItem from "./components/promoItem/PromoItem";
 
 @translate(['promos', 'common'])
 @withStyles(styleSheet)
@@ -120,7 +121,7 @@ class Promos extends React.Component {
 						this.props.promos.map(promo => {
 							return (
 								<Card className="my-3">
-									{JSON.stringify(promo)}
+									<PromoItem promo={promo} />
 								</Card>
 							);
 						})

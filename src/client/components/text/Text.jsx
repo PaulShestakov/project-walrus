@@ -13,8 +13,7 @@ export default class Text extends React.Component {
 		}
 
 		const className = [
-			this.props.styles.text,
-			this.props.styles[accentStyleClass],
+
 			this.props.className
 		].join(' ');
 

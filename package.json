@@ -6,10 +6,11 @@
   "scripts": {
     "build-dev": "webpack --profile --progress --colors --watch",
     "build-prod": "rm -rf ./dist && NODE_ENV=\"production\" webpack --profile --progress --colors",
-    "start-dev-server": "pm2 startOrReload ./pm2.dev.config.json --update-env",
-    "start-prod-server": "pm2 startOrReload ./pm2.prod.config.json --update-env",
-    "stop-dev-server": "pm2 stop ./pm2.dev.config.json",
-    "stop-prod-server": "pm2 stop ./pm2.prod.config.json"
+    "pm2-start-dev-server": "pm2 startOrReload ./pm2.dev.config.json --update-env",
+    "pm2-start-prod-server": "pm2 startOrReload ./pm2.prod.config.json --update-env",
+    "pm2-stop-dev-server": "pm2 stop ./pm2.dev.config.json",
+    "pm2-stop-prod-server": "pm2 stop ./pm2.prod.config.json",
+    "nodemon-start-server": "nodemon --inspect dist/server/index.js"
   },
   "author": "",
   "license": "ISC",

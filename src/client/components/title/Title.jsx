@@ -1,22 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withStyles, createStyleSheet } from 'material-ui/styles';
+import classNames from 'classnames';
 
-const defaultColor = '#106178';
+import styles from './styles';
+const styleSheet = createStyleSheet(styles);
 
+@withStyles(styleSheet)
 export default class Title extends React.Component {
 	render() {
-		const CustomTag = this.props.tag;
+		const {classes, customTag, fontSize, fontWeight, textTransform, className, ...other} = this.props;
 
 		const style = {
-			fontSize: this.props.fontSize,
-			fontWeight: this.props.fontWeight,
-			textTransform: this.props.textTransform
+			fontSize,
+			fontWeight,
+			textTransform,
 		};
 
 		return (
-			<CustomTag style={style} className={["title", this.props.className].join(' ')}>
-				{this.props.text}
-			</CustomTag>
+			<customTag style={style} className={classNames(className, classes.title)} {...other}>
+				{this.props.children}
+			</customTag>
 		);
 	}
 };
@@ -27,7 +31,7 @@ Title.defaultProps = {
 	fontSize: '1rem',
 	fontWeight: 'normal',
 	textTransform: 'uppercase',
-	color: defaultColor,
+	color: 'black',
 };
 
 Title.propTypes = {

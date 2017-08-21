@@ -6,7 +6,7 @@ import Promo from "./controller/promo/Promo";
 import CodeValue from "./controller/CodeValue";
 
 export default class App {
-	// ref to Express instance
+	// Ref to Express instance
 	public express: express.Application;
 
 	// Run configuration methods on the Express instance.
@@ -18,7 +18,6 @@ export default class App {
 
 	// Configure Express middleware.
 	private middleware(): void {
-		this.express.use('/', express.static(path.join(__dirname, '../client')));
 		this.express.use(helmet());
 		this.express.use(bodyParser.json());
 		this.express.use(bodyParser.urlencoded({ extended: true }));
@@ -26,8 +25,11 @@ export default class App {
 
 	// Configure API endpoints.
 	private routes(): void {
+		this.express.use('/images', express.static(path.join(__dirname, '../uploads')));
 		this.express.use('/api/v1/promo', Promo);
 		this.express.use('/api/v1/codevalue', CodeValue);
+		this.express.use('/', express.static(path.join(__dirname, '../client')));
+
 		this.express.get('*', (req, res) => {
 			res.sendFile(path.join(__dirname, './../client', 'index.html'));
 		});

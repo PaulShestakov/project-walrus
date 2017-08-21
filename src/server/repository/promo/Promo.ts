@@ -1,5 +1,6 @@
 import * as uuid from 'uuid/v4'
 import * as squel from "squel";
+import * as _ from 'lodash';
 import Mapper from '../../util/Mapper';
 import Util from '../../util/Util';
 import StatusRepo from './Status';
@@ -10,14 +11,17 @@ import { executeQuery, executeSeries, executeParallel } from '../../database/DBH
 import promoSQL from '../../query/promo/Promo';
 import promoInfoSQL from '../../query/promo/PromoInfo';
 import promoImagesSQL from '../../query/promo/PromoImages';
-import {PromoEntity, PromoInfoEntity} from "../../entity/Promo";
+
+
+import IPromo from '../../entity/IPromo'
+import IPromoInfo from '../../entity/IPromo'
 
 
 class Promo extends BaseCRUD {
 
-	private mapper 		: Mapper;
-	private statusRepo 	: StatusRepo;
-	private typeRepo	: TypeRepo;
+	private mapper: Mapper;
+	private statusRepo: StatusRepo;
+	private typeRepo: TypeRepo;
 
 	constructor() {
 		super(promoSQL.TABLE_NAME);
@@ -26,27 +30,66 @@ class Promo extends BaseCRUD {
 		this.typeRepo 	 = new TypeRepo();
 	}
 
+	static externalizePromo(promo) {
+		return {
+			promoId: promo.PROMO_ID,
+			title: promo.TITLE,
+			description: promo.DESCRIPTION,
+			cityId: promo.CITY_ID,
+			animalId: promo.ANIMAL_ID,
+			breedId: promo.BREED_ID,
+			image: promo.IMAGE,
+			typeId: promo.TYPE_ID,
+			statusId: promo.STATUS_ID,
+			userId: promo.USER_ID,
+			creationDate: promo.CREATION_DATE,
+			modificationDate: promo.MODIFICATION_DATE
+		};
+	}
+
+	static internalizePromo(promo, promoId, image): IPromo {
+		return {
+			PROMO_ID: promoId,
+			TITLE: promo.title,
+			DESCRIPTION: promo.description,
+			CITY_ID: promo.city,
+			ANIMAL_ID: promo.animal,
+			BREED_ID: promo.breed,
+			IMAGE: image,
+			TYPE_ID: promo.type,
+			STATUS_ID: promo.status,
+			USER_ID: promo.userId,
+			CREATION_DATE: new Date(),
+			MODIFICATION_DATE: new Date()
+		};
+	}
+
 	public save(promo: any, callback): void {
 		const promoId = uuid();
 		const promoInfoId = uuid();
 
 		const promoBase = {
-			'PROMO_ID' : promoId
+			'PROMO_ID': promoId
 		};
 		const promoInfoBase = {
-			'PROMO_INFO_ID' : promoInfoId,
-			'PROMO_ID' : promoId
+			'PROMO_INFO_ID': promoInfoId,
+			'PROMO_ID': promoId
 		};
 
-		let promoEntity: PromoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO, promoBase);
-		let promoInfoEntity: PromoInfoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO, promoInfoBase);
+		//let promoEntity: PromoEntity = this.mapper.mapToEntity(promo, this.mapper.PROMO, promoBase);
+		const promoInfoEntity: IPromoInfo = this.mapper.mapToEntity(promo, this.mapper.PROMO_INFO, promoInfoBase);
 
-		let images = promo.images.map(file => ([
+		const mainImagePath = _.get(promo.images, ['0', 'path'], null);
+		const promoEntity: IPromo = Promo.internalizePromo(promo, promoId, mainImagePath);
+
+		const images = promo.images.map(image => [
 			uuid(),
 			promoId,
-			file.path,
-			0
-		]));
+			image.path,
+			0,
+			new Date(),
+			new Date()
+		]);
 
 		const savePromoInfo = (connection, done) => {
 			connection.query(promoInfoSQL.SAVE, [promoInfoEntity], (error, rows) => {
@@ -72,7 +115,7 @@ class Promo extends BaseCRUD {
 			}
 		};
 		const savePromo = (connection, done) => {
-			connection.query(promoSQL.SAVE, [promoEntity], (error, rows) => {
+			connection.query(promoSQL.SAVE, promoEntity, (error, rows) => {
 				if (error) {
 					Util.handleError(error, done);
 				} else {
@@ -101,33 +144,39 @@ class Promo extends BaseCRUD {
 	}
 
 	public getFiltered(params, callback): void {
-		const offset = 0;
-		const limit = 10;
+		// Retrieve filter params
+		const typeId = params.type;
+		const animalId = params.animal;
+		const breedsIds = Util.ensureArray(params.breeds);
+		const citiesIds = Util.ensureArray(params.cities);
+		const priceFrom = params.priceFrom;
+		const priceTo = params.priceTo;
 
-		const promoTypeId = 'LOST';
-		const breedsIds = Util.wrapWithArray(params.breeds);
-		const citiesIds = Util.wrapWithArray(params.cities);
+		let filter = squel.expr();
 
-		const priceMin = 0;
-		const priceMax = 100;
-
-		// .where('p.PRICE > ? AND p.PRICE < ?', priceMin, priceMax) ??? move price to promo?
-        //.where('p.TYPE_ID = ?', promoTypeId)
-
-		let conditions = squel.expr().and('p.ANIMAL_ID = ?', params.animal);
+		if (typeId && typeId !== 'ALL') {
+			filter = filter.and('p.TYPE_ID = ?', typeId);
+		}
+		if (animalId && animalId !== 'ALL') {
+			filter = filter.and('p.ANIMAL_ID = ?', animalId);
+		}
 		if (breedsIds.length > 0) {
-            conditions = conditions.and('p.BREED_ID IN ?', breedsIds)
+			filter = filter.and('p.BREED_ID IN ?', breedsIds)
 		}
 		if (citiesIds.length > 0) {
-			conditions = conditions.and('p.CITY_ID IN ?', citiesIds);
+			filter = filter.and('p.CITY_ID IN ?', citiesIds);
+		}
+		if (priceFrom) {
+			filter = filter.and('p.PRICE >= ?', priceFrom);
+		}
+		if (priceTo) {
+			filter = filter.and('p.PRICE <= ?', priceTo);
 		}
 
-		let sql = squel
+		const sql = squel
 			.select()
 			.from('wikipet.promo', 'p')
-			.where(conditions)
-			.offset(offset)
-			.limit(limit)
+			.where(filter)
 			.toParam();
 
 		executeQuery(sql.text, sql.values, (error, rows) => {
@@ -135,10 +184,7 @@ class Promo extends BaseCRUD {
 				callback(error);
 				return;
 			}
-
-			let promos = rows.map(row => {
-				return this.mapper.mapToDTO(row, this.mapper.PROMO);
-			});
+			const promos = rows.map(Promo.externalizePromo);
 			callback(null, promos);
 		});
 	}

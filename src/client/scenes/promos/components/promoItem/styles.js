@@ -14,6 +14,11 @@ export default {
 	disabled: {
 		background: 'white',
 		color: `${globalStyles.LIGHT_GREY}`
+	},
+	image: {
+		width: '100%',
+		height: '100%',
+
 	}
 }
 
