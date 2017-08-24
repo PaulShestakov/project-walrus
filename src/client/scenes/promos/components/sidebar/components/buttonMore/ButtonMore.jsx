@@ -1,7 +1,6 @@
 import React from 'react';
 import FontAwesome from 'react-fontawesome';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
-// import { Button } from 'components';
 import Button from 'material-ui/Button';
 import classNames from 'classnames';
 
@@ -19,9 +18,14 @@ export default class ButtonMore extends React.Component {
 				classes={{
 					disabled: classes.disabled,
 				}}
-				className={classNames(classes.button, className)}
+				className={
+					classNames(classes.button, className)
+				}
 				{...other}>
-				<FontAwesome name="angle-left" className="mr-1" />
+
+
+
+				<FontAwesome name="angle-left" className="mr-2" />
 				{this.props.children}
 			</Button>
 		);

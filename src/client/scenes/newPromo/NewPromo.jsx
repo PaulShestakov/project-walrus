@@ -7,7 +7,7 @@ import FoundPromo from './components/FoundPromo.jsx';
 import BuyOrSellPromo from './components/BuyOrSellPromo.jsx';
 import GiveOrAcceptGiftPromo from './components/GiveOrAcceptGiftPromo.jsx';
 
-import { Dropdown, Button, Title, Input, Grid, ImageUploader } from "components";
+import { Dropdown, Button, Title, Input, Grid, ImageUploader, TextField } from "components";
 
 
 
@@ -91,9 +91,9 @@ class NewPromo extends React.Component {
 		const t = this.props.t;
 
 		return (
-			<form onSubmit={this.handleSubmit}>
-				<Grid container>
-					<Grid item xs={12}>
+			<form onSubmit={this.handleSubmit} className="d-flex-column align-items-center">
+				<Grid md={9} container spacing={24} direction="column">
+					<Grid item md={12}>
 						{/*<Tabs activeKey={this.state.promoType}*/}
 							  {/*onSelect={this.handlePromoTypeSelected}*/}
 							  {/*className="mt-5"*/}
@@ -125,34 +125,42 @@ class NewPromo extends React.Component {
 							  {/*]}*/}
 						{/*/>*/}
 					</Grid>
-					<Grid item xs={12}>
-						<Title text={t('PROMO_NAME')} className="mt-5" />
-						<Input name="title" placeholder={t('PROMO_NAME')} />
+
+					<Grid item md={12} direction="column">
+						<Title>{t('PROMO_NAME')}</Title>
+						<Input name="title" placeholder={t('PROMO_NAME')} fullWidth className="mt-2"/>
 					</Grid>
-					<Grid item xs={12}>
-						<Title text={t('SELECT_PET')} className="mt-3"/>
+
+					<Grid item md={12} direction="column">
+						<Title>{t('SELECT_PET')}</Title>
 						<Dropdown name="animal"
-								  onChange={e => {
-									  this.setState({ animal : e.value, breed : null });
-									  this.props.loadBreeds(e.value);
-								  }
-								  }
-								  options={this.props.animals}/>
+							onChange={e => {
+									this.setState({ animal : e.value, breed : null });
+									this.props.loadBreeds(e.value);
+								}
+							}
+							options={this.props.animals}
+							className="mt-2"/>
 					</Grid>
-					<Grid item xs={12}>
-						<Title text={t('SELECT_BREED')} className="mt-3"/>
+
+					<Grid item md={12}>
+						<Title>{t('SELECT_BREED')}</Title>
 						<Dropdown name="breed"
-								  selectedOption={null}
-								  onChange={e => this.setState({ breed : e.value })}
-								  options={this.props.breeds}/>
+							selectedOption={null}
+							onChange={e => this.setState({ breed : e.value })}
+							options={this.props.breeds}
+							className="mt-2" />
 					</Grid>
-					<Grid item xs={12}>
-						<Title text={t('ENTER_CITY')} className="mt-3"/>
+
+					<Grid item md={12}>
+						<Title>{t('ENTER_CITY')}</Title>
 						<Dropdown name="city"
-								  onChange={e => this.setState({ city : e.value })}
-								  options={this.props.cities}/>
+							onChange={e => this.setState({ city : e.value })}
+							options={this.props.cities}
+							className="mt-2"/>
 					</Grid>
-					<Grid item xs={12}>
+
+					<Grid item md={12}>
 						{
 							(this.state.promoType === 'LOST' && <LostPromo  />)
 							||
@@ -160,30 +168,30 @@ class NewPromo extends React.Component {
 							||
 							((this.state.promoType === 'BUY' || this.state.promoType === 'SELL') && <BuyOrSellPromo />)
 							||
-							(
-								(this.state.promoType === 'GIVE_GIFT' || this.state.promoType === 'ACCEPT_GIFT') && <GiveOrAcceptGiftPromo />
-							)
+							((this.state.promoType === 'GIVE_GIFT' || this.state.promoType === 'ACCEPT_GIFT') && <GiveOrAcceptGiftPromo />)
 						}
 					</Grid>
-					<Grid item xs={12}>
-						<Title text={t('DESCRIPTION')} className="mt-3"/>
-						{/*<Textarea name="description" fullWidth placeholder={t('ENTER_DESCRIPTION')} />*/}
+
+					<Grid item md={12}>
+						<Title>{t('DESCRIPTION')}</Title>
+						<TextField multiline name="description" fullWidth placeholder={t('ENTER_DESCRIPTION')} />
 					</Grid>
-					<Grid item xs={12}>
+
+					<Grid item md={12}>
 						<ImageUploader className="mt-5"
-									   imageObjects={this.state.imageObjects}
-									   onImageAdd={this.handleImageAdd}
-									   onImageDelete={this.handleImageDelete} />
+							imageObjects={this.state.imageObjects}
+							onImageAdd={this.handleImageAdd}
+							onImageDelete={this.handleImageDelete} />
 					</Grid>
-					<Grid item xs={12}>
-						<div className="d-flex justify-content-around">
-							<Button type="submit"
-									className="my-5 text-white"
-									bsSize="large"
-									accent="blue">
-								{t('PUBLISH')}
-							</Button>
-						</div>
+
+					<Grid item md={12} className="mb-4">
+						<Grid container justify="center">
+							<Grid item>
+								<Button type="submit"  className="my-5 text-white" bsSize="large" accent="blue">
+									{t('PUBLISH')}
+								</Button>
+							</Grid>
+						</Grid>
 					</Grid>
 				</Grid>
 			</form>

@@ -9,7 +9,7 @@ const styleSheet = createStyleSheet(styles);
 @withStyles(styleSheet)
 export default class Title extends React.Component {
 	render() {
-		const {classes, customTag, fontSize, fontWeight, textTransform, className, ...other} = this.props;
+		const {classes, tag, fontSize, fontWeight, textTransform, className, ...other} = this.props;
 
 		const style = {
 			fontSize,
@@ -18,16 +18,16 @@ export default class Title extends React.Component {
 		};
 
 		return (
-			<customTag style={style} className={classNames(className, classes.title)} {...other}>
+			<tag style={style} className={classNames(className, classes.title)} {...other}>
 				{this.props.children}
-			</customTag>
+			</tag>
 		);
 	}
 };
 
 Title.defaultProps = {
 	text: '',
-	tag: 'h1',
+	tag: 'span',
 	fontSize: '1rem',
 	fontWeight: 'normal',
 	textTransform: 'uppercase',

@@ -1,6 +1,8 @@
 import React from 'react';
 import DropdownLib from "react-dropdown";
 
+import './styles.scss';
+
 class Dropdown extends React.Component {
 
     constructor(props) {
@@ -37,7 +39,6 @@ class Dropdown extends React.Component {
     };
 
     render() {
-
         let options = this.adjustOptions();
 
         let selected = this.state.selected.value;
@@ -46,12 +47,13 @@ class Dropdown extends React.Component {
 
 
         return (
-            <DropdownLib
-                options={options}
-                name={this.props.name}
-                onChange={this.onChange.bind(this)}
-                value={selectedOptionLabel}
-                className={this.props.className}/>
+            <div className={this.props.className}>
+                <DropdownLib
+                    options={options}
+                    name={this.props.name}
+                    onChange={this.onChange.bind(this)}
+                    value={selectedOptionLabel} />
+            </div>
         );
     }
 }

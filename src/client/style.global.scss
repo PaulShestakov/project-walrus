@@ -47,6 +47,16 @@ body {
   display: flex;
 }
 
+.d-flex-row {
+   display: flex;
+   flex-direction: row;
+}
+
+.d-flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .align-items-center {
   -webkit-box-align: center;
   align-items: center;
@@ -55,6 +65,10 @@ body {
 .justify-content-between {
   -webkit-box-pack: justify;
   justify-content: space-between;
+}
+
+.justify-content-center {
+  justify-content: center;
 }
 
 
@@ -105,3 +119,39 @@ body {
 .p-3 { padding: 1rem !important; }
 .p-4 { padding: 1.5rem !important; }
 
+
+//Material ui standart box-shadow
+@mixin shadow() {
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
+}
+
+
+.Popover-body {
+  position: relative;
+  margin-right: 10px;
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -7px;
+    margin: auto 0;
+
+    width: 14px;
+    height: 14px;
+
+    transform: rotate(45deg);
+
+    background-color: white;
+  }
+
+  &:before {
+    z-index: -1;
+    @include shadow();
+  }
+
+  &+svg {
+    display: none;
+  }
+}

@@ -30,24 +30,31 @@ const styleSheet = createStyleSheet({
 class Button extends React.Component {
 
 	render() {
-		const { accent, classes, className, ...other } = this.props;
+		const { accent, classes, className, raised, ...other } = this.props;
 
 		return (
-			<MaterialButton raised className={classNames(
-				classes.button,
-				{
-					[classes.redAccent]: accent === 'red',
-					[classes.blueAccent]: accent === 'blue'
-				},
-				className
-			)} { ...other }>
+			<MaterialButton raised={raised} className={classNames(
+					classes.button,
+					{
+						[classes.redAccent]: accent === 'red',
+						[classes.blueAccent]: accent === 'blue'
+					},
+					className
+				)}
+				{ ...other }>
 				{this.props.children}
 			</MaterialButton>
 		);
 	}
 }
 
+Button.defaultProps = {
+	raised: true,
+	accent: 'red'
+};
+
 Button.propTypes = {
+	raised: PropTypes.bool,
 	accent: PropTypes.oneOf(['blue', 'red'])
 };
 

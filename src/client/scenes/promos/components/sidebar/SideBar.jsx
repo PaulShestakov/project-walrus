@@ -84,7 +84,7 @@ export default class SideBar extends React.Component {
         	<Grid container direction="column" { ...other }>
 
 				<Grid item md={12}>
-					<Button href="/newPromo" accent="red" className="w-100 text-white">
+					<Button href="/newPromo" accent="red" disableRipple={true} className="w-100 text-white">
 						<FontAwesome name="plus" className="mr-1" />
 						{t('CREATE_PROMO')}
 					</Button>
@@ -100,6 +100,7 @@ export default class SideBar extends React.Component {
 								selectedOption={this.filter.animal}
 								pushAll={true}/>
 						</FormGroup>
+
 
 						<FormGroup>
 							{
@@ -128,7 +129,7 @@ export default class SideBar extends React.Component {
 							onOuterAction={this.handlePopoverOuterAction}>
 
 							<ButtonMore onClick={this.handleClick} disabled={this.filter.animal === 'ALL'}>
-								{t('SELECT_BREED')}
+								{t('ALL_BREEDS')}
 							</ButtonMore>
 						</Popover>
 
