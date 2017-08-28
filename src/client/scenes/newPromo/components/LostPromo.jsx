@@ -1,7 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 
-import { Title, Input, DateTimePicker } from 'components';
+import { Title, Input, DateTimePicker, Grid } from 'components';
 
 @translate(['newPromo'])
 class LostPromo extends React.Component {
@@ -10,17 +10,17 @@ class LostPromo extends React.Component {
 
 		return (
 			<div>
-				<Title text={t('LOST_ADDRESS')} className="mt-5" />
+				<Title className="mt-5">{t('LOST_ADDRESS')}</Title>
 				<Input name="address" fullWidth placeholder={t('ENTER_LOST_ADDRESS')} />
 
-				<Title text={t('LOST_TIME')}  className="mt-4"/>
+				<Title className="mt-4">{t('LOST_TIME')}</Title>
 				<DateTimePicker name="date" locale="ru" placeholder={t('ENTER_LOST_TIME')} />
 
-				<Title text={t('GENDER')} className="mt-4" />
+				{/*<Title text={t('GENDER')} className="mt-4" />*/}
 				{/*
 				*/}
 
-				<Title text={t('APPROXIMATE_AGE')} className="mt-4" />
+				<Title className="mt-4">{t('APPROXIMATE_AGE')}</Title>
 				<Input name="age" fullWidth placeholder={t('ENTER_APPROXIMATE_AGE')} />
 
                 {/*

@@ -3,15 +3,13 @@ import { translate } from 'react-i18next';
 import { Grid, Title, Button, Card, Label, Textarea, TextField, Input } from 'components';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import classNames from 'classnames';
-
 import SideBar from "./components/sidebar/SideBar";
-
 import Tabs, { Tab } from 'material-ui/Tabs';
-
 import {buildUrl} from "../../actionCreators/promos";
 
-import styleSheet from './style';
+import styleSheet from './styles';
 import PromoItem from "./components/promoItem/PromoItem";
+
 
 @translate(['promos', 'common'])
 @withStyles(styleSheet)
@@ -95,8 +93,7 @@ class Promos extends React.Component {
 							</Grid>
 
 							<Grid item>
-								<Tabs
-									index={this.types.indexOf(this.state.filter.type)}
+								<Tabs index={this.types.indexOf(this.state.filter.type)}
 									onChange={this.handleTabPress}
 									indicatorColor="primary"
 									textColor="primary"
@@ -104,7 +101,7 @@ class Promos extends React.Component {
 										root: classes.tabs
 									}}
 								>
-									<Tab label={t('common:ALL')} />
+									<Tab label={t('common:ALL')}/>
 									<Tab label={t('common:WILL_SELL')} />
 									<Tab label={t('common:WILL_BUY')} />
 									<Tab label={t('common:WILL_GIVE_GIFT')} />

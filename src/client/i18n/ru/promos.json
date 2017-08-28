@@ -13,6 +13,9 @@
 
   "ALL_PETS": "Все питомцы",
   "ALL_BREEDS": "Все породы",
-  "ALL_CITIES": "Все города"
+  "ALL_CITIES": "Все города",
+
+
+  "TITLE_NOT_PROVIDED": "Заглавие не указано"
 
 }

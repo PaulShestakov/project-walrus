@@ -3,12 +3,11 @@ import rootReducer from '../reducers/index.js';
 import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk';
 import { loadState, saveState } from './localStorage';
-import {routerMiddleware} from "react-router-redux";
-import createHistory from 'history/createBrowserHistory';
 
-const history = createHistory();
 
-export { history };
+// const history = createHistory();
+//
+// export { history };
 
 export default function configureStore() {
   const logger = createLogger();
@@ -17,7 +16,7 @@ export default function configureStore() {
   const store = createStore(
     rootReducer,
     persistedState,
-    applyMiddleware(logger, thunk, routerMiddleware(history))
+    applyMiddleware(logger, thunk)
   );
 
   store.subscribe(function() {

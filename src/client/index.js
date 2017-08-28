@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import { I18nextProvider } from 'react-i18next';
-import { history } from './store/configStore';
+import createHistory from 'history/createBrowserHistory';
 
 import configureStore from './store/configStore.js';
 import configI18n from './i18n/configI18n.js';
@@ -55,7 +55,7 @@ class Root extends React.Component {
 		<I18nextProvider i18n={i18n}>
 			<Provider store={store}>
 				<MuiThemeProvider theme={theme}>
-					<BrowserRouter  history={history}>
+					<BrowserRouter>
 						<Router />
 					</BrowserRouter>
 				</MuiThemeProvider>

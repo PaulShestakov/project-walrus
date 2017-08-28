@@ -1,5 +1,4 @@
 import fetch from 'isomorphic-fetch';
-import {push} from "react-router-redux";
 
 export const REQUEST_PROMOS = 'REQUEST_PROMOS';
 export const REQUEST_PROMOS_SUCCESS = 'REQUEST_PROMOS_SUCCESS';
@@ -93,9 +92,9 @@ export const loadPromos = (filter) => {
     };
 };
 
-export const fetchBreed = (animal) => {
+export const fetchBreed = (animalId) => {
     return dispatch => {
-        fetch(baseUrl + "/codevalue/promo/breed?animal=" + animal).then(
+        fetch(baseUrl + "/codevalue/promo/breed?animal=" + animalId).then(
             response => {
                 if (response.ok) {
                     return response.json();

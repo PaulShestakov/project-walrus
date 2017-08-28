@@ -1,28 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withStyles, createStyleSheet } from 'material-ui/styles';
+import classNames from 'classnames';
+
+import globalStyles from '../../style';
+import styles from './styles';
+const styleSheet = createStyleSheet(styles);
 
 
+@withStyles(styleSheet)
 export default class Text extends React.Component {
 	render() {
-		let accentStyleClass = '';
-
-		switch (this.props.accent) {
-			case 'grey':
-				accentStyleClass = 'accentGrey';
-				break;
-		}
-
-		const className = [
-
-			this.props.className
-		].join(' ');
+		const {classes, className, ...other} = this.props;
 
 		const style = {
-			fontSize: this.props.fontSize
+			fontSize: this.props.fontSize,
+			color: this.props.color
 		};
 
 		return (
-			<p style={style} className={className}>
+			<p style={style} className={classNames(classes.text, className)} {...other}>
 				{this.props.children}
 			</p>
 		);
@@ -30,10 +27,11 @@ export default class Text extends React.Component {
 };
 
 Text.defaultProps = {
-	fontSize: '1rem'
+	fontSize: '1rem',
+	color: globalStyles.DARK_GREY,
 };
 
 Text.propTypes = {
 	fontSize: PropTypes.string,
-	accent: PropTypes.string
+	color: PropTypes.string,
 };

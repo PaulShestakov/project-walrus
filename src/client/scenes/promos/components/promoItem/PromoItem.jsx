@@ -2,9 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Title, Button, Card, Label, Textarea, TextField, Input, Text } from 'components';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
+import moment from 'moment';
 
 import styles from './styles';
+import TypeLabel from "./components/typeLabel/TypeLabel";
 const styleSheet = createStyleSheet(styles);
+
 
 
 // TODO: maybe use https://www.npmjs.com/package/dotenv for everything?
@@ -14,6 +17,12 @@ const PORT = '8080';
 
 @withStyles(styleSheet)
 export default class PromoItem extends React.Component {
+
+	formatCreationDate = (creationDate) => {
+		return moment(creationDate).format('DD.MM.YYYY, HH:mm');
+	};
+
+
 	render() {
 		const {classes, className, promo, ...other} = this.props;
 
@@ -27,17 +36,17 @@ export default class PromoItem extends React.Component {
 						}
 					</Grid>
 					<Grid item md={9}>
-						<Grid container direction="column">
+						<Grid container spacing={4} direction="column">
 							<Grid item>
-								<Title tag="h4" fontSize="1.5rem">{promo.title}</Title>
+								<Label fontsize="1.5rem" className="mt-3">{promo.title}</Label>
 							</Grid>
 							<Grid item>
-								<Grid container>
+								<Grid container align="center">
 									<Grid item>
-										<Title tag="span" fontSize="1rem">{promo.typeId}</Title>
+										<TypeLabel tag="span" fontSize="1rem">{promo.typeId}</TypeLabel>
 									</Grid>
 									<Grid item>
-										<Title tag="span" fontSize=".5rem">{promo.creationDate}</Title>
+										<Text fontSize="0.85rem">{this.formatCreationDate(promo.creationDate)}</Text>
 									</Grid>
 								</Grid>
 							</Grid>

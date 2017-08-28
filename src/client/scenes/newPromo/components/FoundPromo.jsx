@@ -10,20 +10,20 @@ class FoundPromo extends React.Component {
 
 		return (
 			<div>
-				<Title text={t('FOUND_ADDRESS')} className="mt-5" />
+				<Title className="mt-5">{t('FOUND_ADDRESS')}</Title>
 				<Input name="address" fullWidth placeholder={t('ENTER_FOUND_ADDRESS')} />
 
 				<Title text={t('FOUND_TIME')}  className="mt-4"/>
 				<DateTimePicker name="date" locale="ru" placeholder={t('ENTER_FOUND_TIME')} />
 
 
-				<Title text={t('GENDER')} className="mt-4" />
+				{/*<Title className="mt-4">{t('GENDER')}</Title>*/}
 				{/*<FormControl name="gender" componentClass="select" placeholder={t('SELECT_GENDER')}>*/}
 					{/*<option value="m">{t('BOY')}</option>*/}
 					{/*<option value="f">{t('GIRL')}</option>*/}
 				{/*</FormControl>*/}
 
-				<Title text={t('APPROXIMATE_AGE')} className="mt-4" />
+				<Title className="mt-4">{t('APPROXIMATE_AGE')}</Title>
 				<Input name="age" fullWidth placeholder={t('ENTER_APPROXIMATE_AGE')} />
 
                 {/*

@@ -1,0 +1,17 @@
+import globalStyle from '../../style';
+
+export default {
+	tabs: {
+		'& button': {
+			minWidth: 'auto',
+			display: 'flex',
+			flexGrow: 1,
+			justifyContent: 'center',
+
+			'& span': {
+				fontFamily: globalStyle.BEBAS_FONT,
+				fontSize: '1.2rem'
+			}
+		}
+	}
+}
