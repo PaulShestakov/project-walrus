@@ -11,7 +11,8 @@ import { loadState, saveState } from './localStorage';
 
 export default function configureStore() {
   const logger = createLogger();
-  const persistedState = loadState();
+  //const persistedState = loadState();
+  const persistedState = {};
 
   const store = createStore(
     rootReducer,
@@ -19,9 +20,9 @@ export default function configureStore() {
     applyMiddleware(logger, thunk)
   );
 
-  store.subscribe(function() {
-    saveState(store.getState())
-  });
+  // store.subscribe(function() {
+  //   saveState(store.getState())
+  // });
 
   return store;
 }

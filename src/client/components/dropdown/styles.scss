@@ -3,6 +3,14 @@
 
 .Dropdown-root {
 
+  .Dropdown-control {
+    &.Dropdown-disabled {
+      .Dropdown-placeholder {
+        color: #e1e1e1;
+      }
+    }
+  }
+
   .Dropdown-menu {
 
     .Dropdown-option {

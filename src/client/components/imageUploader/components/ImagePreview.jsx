@@ -4,13 +4,12 @@ import classNames from 'classnames';
 
 import FontAwesome from 'react-fontawesome';
 
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 
 import styles from './styles';
-const styleSheet = createStyleSheet(styles);
 
 
-@withStyles(styleSheet)
+@withStyles(styles)
 export default class ImagePreview extends React.Component {
 	constructor(props) {
 		super(props);

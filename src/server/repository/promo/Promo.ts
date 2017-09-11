@@ -177,6 +177,7 @@ class Promo extends BaseCRUD {
 			.select()
 			.from('wikipet.promo', 'p')
 			.where(filter)
+			.order('p.CREATION_DATE', false)
 			.toParam();
 
 		executeQuery(sql.text, sql.values, (error, rows) => {
@@ -223,6 +224,10 @@ class Promo extends BaseCRUD {
 			}
 		);
 	}
+
+	// public getById(promoId: string): IPromo {
+	//
+	// }
 }
 
 export default new Promo();

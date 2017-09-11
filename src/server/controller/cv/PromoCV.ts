@@ -30,30 +30,24 @@ class PromoCV extends BaseController {
         async.parallel([
             function (callback) {
                 that.animalRepo.getAll(null, (error, result) => {
-
                     Util.handleError(error, callback);
 
-                    result = {
-                        "animals": result.map((entity) => ({
-                            id: entity.ANIMAL_ID,
-                            name: entity.NAME
-                        }))
-                    };
+                    result = result.map(entity => ({
+                        id: entity.ANIMAL_ID,
+                        name: entity.NAME
+                    }));
 
                     callback(null, result);
                 });
             },
             function (callback) {
                 that.cityRepo.getAll(null, (error, result) => {
-
                     Util.handleError(error, callback);
 
-                    result = {
-                      "cities": result.map((entity) => ({
-                          id: entity.CITY_ID,
-                          name: entity.NAME
-                      }))
-                    };
+                    result = result.map(entity => ({
+                        id: entity.CITY_ID,
+                        name: entity.NAME
+                    }));
 
                     callback(null, result);
                 });
@@ -63,7 +57,13 @@ class PromoCV extends BaseController {
                 that.error(res, 500, error);
                 return;
             }
-            that.okResponse(res, result);
+
+            const responseData = {
+                animals: result[0],
+                cities: result[1]
+            };
+
+            that.okResponse(res, responseData);
         });
     }
 

@@ -21,11 +21,10 @@ const store = configureStore();
 const i18n = configI18n();
 
 
-import createPalette from 'material-ui/styles/palette';
 import { createMuiTheme } from 'material-ui/styles';
 
 const theme = createMuiTheme({
-	palette: createPalette({
+	palette: {
 		primary: {
 			50: '#f3e2e2',
 			100: '#e0b6b6',
@@ -45,7 +44,7 @@ const theme = createMuiTheme({
 
 			contrastDefaultColor: 'light'
 		}
-	}),
+	}
 });
 
 

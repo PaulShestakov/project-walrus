@@ -4,14 +4,13 @@ import { translate } from 'react-i18next';
 import ImagePreview from "./components/ImagePreview";
 import FontAwesome from 'react-fontawesome';
 
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 
 import styles from './styles';
-const styleSheet = createStyleSheet(styles);
 
 
 @translate(['components'])
-@withStyles(styleSheet)
+@withStyles(styles)
 export default class ImageUploader extends React.Component {
 	constructor(props) {
 		super(props);

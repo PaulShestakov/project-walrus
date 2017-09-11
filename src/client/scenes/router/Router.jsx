@@ -5,8 +5,9 @@ import {Grid} from 'components';
 
 import Header from '../header/Header.jsx';
 import Footer from '../footer/Footer.jsx';
-import Promos from "../../containers/Promos";
-import NewPromo from "../../containers/NewPromo";
+import PromosList from "../../containers/promos/PromosList";
+import NewPromo from "../../containers/promos/NewPromo";
+import PromoPage from "../../containers/promos/PromoPage";
 
 import styles from './styles.scss';
 
@@ -22,8 +23,10 @@ export default class Router extends React.Component {
 					<Grid container justify="center">
 						<Grid item md={9} className="flexGrowFull">
 							<Switch>
-								<Route exact path='/promos' component={Promos} />
+								<Route exact path='/promosList' component={PromosList} />
 								<Route path="/newPromo" component={NewPromo}/>
+								{/*<Route path="/promo/:promoId" component={PromoPage}/>*/}
+
 							</Switch>
 						</Grid>
 					</Grid>
