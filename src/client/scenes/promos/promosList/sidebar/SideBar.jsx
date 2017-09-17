@@ -126,6 +126,10 @@ export default class SideBar extends React.Component {
 			</Card>
 		);
 
+		// TODO: REMOVE THIS
+		const selectedAnimalOption = this.props.animals.find(x => x.value === this.props.filter.selectedAnimalId);
+		let selectedAnimalLabel = selectedAnimalOption ? selectedAnimalOption.label : 'Все';
+
         return (
         	<Grid container direction="column" { ...other }>
 
@@ -143,7 +147,7 @@ export default class SideBar extends React.Component {
 						{/* Select animal block */}
 						<Label>{t('SELECT_ANIMAL')}</Label>
 						<Dropdown name="animal"
-							value={this.props.filter.selectedAnimalLabel}
+							value={selectedAnimalLabel}
 							options={this.props.animals}
 							onChange={this.handleAnimalSelected}
 							className="mt-2"

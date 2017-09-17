@@ -85,7 +85,7 @@ export const addBreed = (breedId) => {
 };
 export const removeBreed = (breedId) => {
 	return {
-		type: ADD_BREED,
+		type: REMOVE_BREED,
 		payload: breedId
 	};
 };
