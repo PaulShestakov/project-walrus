@@ -10,6 +10,8 @@ export default class Title extends React.Component {
 	render() {
 		const {classes, tag, fontSize, fontWeight, textTransform, className, ...other} = this.props;
 
+		const Tag = tag;
+
 		const style = {
 			fontSize,
 			fontWeight,
@@ -17,9 +19,9 @@ export default class Title extends React.Component {
 		};
 
 		return (
-			<tag style={style} className={classNames(className, classes.title)} {...other}>
+			<Tag style={style} className={classNames(className, classes.title)} {...other}>
 				{this.props.children}
-			</tag>
+			</Tag>
 		);
 	}
 };

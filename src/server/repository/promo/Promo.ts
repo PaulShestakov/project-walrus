@@ -145,10 +145,10 @@ class Promo extends BaseCRUD {
 
 	public getFiltered(params, callback): void {
 		// Retrieve filter params
-		const typeId = params.type;
-		const animalId = params.animal;
-		const breedsIds = Util.ensureArray(params.breeds);
-		const citiesIds = Util.ensureArray(params.cities);
+		const typeId = params.promoTypeId;
+		const animalId = params.animalId;
+		const breedsIds = Util.ensureArray(params.breedId);
+		const citiesIds = Util.ensureArray(params.cityId);
 		const priceFrom = params.priceFrom;
 		const priceTo = params.priceTo;
 

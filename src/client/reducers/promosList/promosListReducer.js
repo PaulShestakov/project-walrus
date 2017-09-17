@@ -28,46 +28,6 @@ const promosListReducer = (state = {}, action) => {
 				isFetching: false
 			};
 		}
-
-		// case ADD_FILTER: {
-		// 	const filterGroupId = action.payload.filterGroupId;
-		// 	const filterValueId = action.payload.filterValueId;
-		//
-		// 	return {
-		// 		...state,
-		// 		filter: {
-		// 			...state.filter,
-		// 			[filterGroupId]: [
-		// 				...state.filter[filterGroupId],
-		// 				filterValueId
-		// 			]
-		// 		}
-		// 	};
-		// }
-		// case REMOVE_FILTER: {
-		// 	const filterGroupId = action.payload.filterGroupId;
-		// 	const filterValueId = action.payload.filterValueId;
-		//
-		// 	return {
-		// 		...state,
-		// 		filter: {
-		// 			...state.filter,
-		// 			[filterGroupId]: state.filter[filterGroupId].filter(valueId => {
-		// 				return valueId !== filterValueId;
-		// 			})
-		// 		}
-		// 	};
-		// }
-        // case NEW_PROMO_CODEVALUES_SUCCESS:
-        //     return {
-        //         ...state,
-        //         animals: action.payload.animals.map(mapCodeValue),
-        //         cities: action.payload.cities.map(mapCodeValue),
-        //         isFetching: false
-        //     };
-
-
-
 		default: {
 			return state;
 		}

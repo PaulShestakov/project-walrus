@@ -22,64 +22,34 @@ const PROMOS_TYPES = [
 @translate(['promos', 'common'])
 @withStyles(styles)
 class Promos extends React.Component {
+
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			// selectedTabIndex: 0,
-			// selectedPromoType: PROMOS_TYPES[0],
-			//
-			// currentFilter: {
-			//
-			// }
-		};
-
-        //this.props.history.push({search : buildUrl(null, this.state.filter)});
 	}
 
 	componentDidMount() {
+		const searchParams = new URLSearchParams(this.props.location.search);
+
 		this.props.loadPromoCodeValues();
-        // this.props.loadPromos(this.state.filter);
-		// this.props.loadBreeds(this.state.filter.animal);
+
+		if ([...searchParams.keys()].length > 0) {
+			this.props.updateFilterStateWithUrlSource(searchParams);
+		}
+		else {
+			this.props.updateUrlWithStateSource(this.props.history);
+		}
+
+		this.props.loadPromos();
 	}
 
-	handleFilterChange = (event) => {
-		let target = event.target;
-		let filter = this.state.filter;
 
-		let value = event.value;
-
-		this.props.filterChange(target.name, event.value);
-
-		// if (value) {
-         //    filter.breeds = [];
-         //    filter.animal = value;
-		//
-         //    this.props.loadBreeds(value);
-		//
-		// } else if (['cities', 'breeds'].indexOf(target.name) > -1) {
-		// 	let checked = target.checked;
-		// 	let value = target.value;
-		//
-		// 	if (checked) {
-		// 		filter[target.name].push(value);
-		// 	} else {
-		// 		let index = filter[target.name].indexOf(value);
-		// 		filter[target.name].splice(index, 1);
-		// 	}
-		// }
-		//
-		// this.setState({filter});
-		// this.props.history.push({search : buildUrl(null, this.state.filter)});
-		// this.props.loadPromos(this.state.filter);
-	};
 
 	handleTabPress = (event, index) => {
-		this.setState({
-			selectedTabIndex: index,
-			selectedPromoType: PROMOS_TYPES[index]
-		});
-        this.handleFilterChange(event);
+		this.props.setPromoType(PROMOS_TYPES[index]);
+
+		this.props.updateUrlWithStateSource(this.props.history);
+
+		this.props.loadPromos();
 	};
 
 	render() {
@@ -92,7 +62,7 @@ class Promos extends React.Component {
 						<Input placeholder={t('SECTION_SEARCH')}
 							className={classNames(classes.searchInput, 'm-2', 'mt-3')} />
 
-						<Tabs value={this.state.selectedTabIndex}
+						<Tabs value={PROMOS_TYPES.indexOf(this.props.filter.selectedPromoTypeId)}
 							onChange={this.handleTabPress}
 							indicatorColor="primary"
 							textColor="primary"
@@ -110,8 +80,8 @@ class Promos extends React.Component {
 						</Tabs>
 					</Card>
 					{
-						this.props.promos &&
-						this.props.promos.map(promo => {
+						this.props.main.promos &&
+						this.props.main.promos.map(promo => {
 							return (
 								<Card className="my-3">
 									<PromoItem promo={promo} />
@@ -130,6 +100,17 @@ class Promos extends React.Component {
 						onAnimalSelected={this.props.onAnimalSelected}
 						loadBreeds={this.props.loadBreeds}
 
+						setAnimal={this.props.setAnimal}
+						addBreed={this.props.addBreed}
+						removeBreed={this.props.removeBreed}
+						addCity={this.props.addCity}
+						removeCity={this.props.removeCity}
+
+						updateUrlWithStateSource={this.props.updateUrlWithStateSource}
+
+						history={this.props.history}
+
+						loadPromos={this.props.loadPromos}
 					/>
 				</Grid>
 			</Grid>

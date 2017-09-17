@@ -6,6 +6,8 @@ export const REQUEST_PROMOS_ERROR = 'REQUEST_PROMOS_ERROR';
 
 const baseUrl = '/api/v1';
 
+import {stateDataToUrlQuery} from '../../reducers/promosList/filterReducer';
+
 
 const loadPromosStart = () => {
     return {
@@ -30,11 +32,13 @@ const loadPromosError = (error) => {
     };
 };
 
-export const loadPromos = (filter) => {
-    return dispatch => {
+export const loadPromos = () => {
+    return (dispatch, getState) => {
+        const filterState = getState().promosList.filter;
+
         dispatch(loadPromosStart());
 
-        return fetch(buildUrl(baseUrl + '/promo/filtered', filter)).then(
+        return fetch(baseUrl + '/promo/filtered' + stateDataToUrlQuery(filterState)).then(
             response => {
                 if (response.ok) {
                     return response.json();
@@ -54,27 +58,33 @@ export const loadPromos = (filter) => {
     };
 };
 
-export function buildUrl(baseUrl, params) {
-    if (!params || Object.keys(params).length === 0) {
-        return baseUrl;
-    }
-    if (!baseUrl) {
-        baseUrl = '';
-    }
-    baseUrl += '?';
-    Object.keys(params).forEach(key => {
-        let value = params[key];
-        if (value instanceof Array) {
-            value.forEach(item => {
-                if (item) {
-                    baseUrl += `${key}=${item}&`;
-                }
-            });
-        } else {
-            if (value) {
-                baseUrl += `${key}=${value}&`;
-            }
-        }
-    });
-    return baseUrl.slice(0, -1);
+
+
+
+
+function loadPromoCodeValues() {
+	return (dispatch, getState) => {
+		const { common } = getState();
+
+		if (!common.promoCodeValues.dataLoaded) {
+			dispatch(loadPromoCodeValuesStart());
+
+			fetch('/api/v1/codevalue/promo').then(
+				response => {
+					if (response.ok) {
+						return response.json();
+					}
+				},
+				error => {
+					dispatch(loadPromoCodeValuesError())
+				}
+			).then(json => {
+				dispatch(loadPromoCodeValuesSuccess({
+					animals: json.animals.map(mapCodeValue),
+					cities: json.cities.map(mapCodeValue),
+					dataLoaded: true
+				}));
+			});
+		}
+	}
 }

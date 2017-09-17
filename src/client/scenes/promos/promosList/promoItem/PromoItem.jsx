@@ -7,9 +7,7 @@ import moment from 'moment';
 import styles from './styles';
 import TypeLabel from "./typeLabel/TypeLabel";
 
-
 import Card, { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card';
-
 
 // TODO: maybe use https://www.npmjs.com/package/dotenv for everything?
 const HOST='http://localhost';
@@ -23,7 +21,6 @@ export default class PromoItem extends React.Component {
 		return moment(creationDate).format('DD.MM.YYYY, HH:mm');
 	};
 
-
 	render() {
 		const {classes, className, promo, ...other} = this.props;
 
@@ -31,51 +28,31 @@ export default class PromoItem extends React.Component {
 
 		return (
 			<Card className={classes.card}>
-
-
 				<CardMedia
 					className={classes.cardImage}
-					image="https://www.google.by/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
-					title="Contemplative Reptile"
+					image={imageSrc}
 				/>
 				<CardContent>
-					42
+					<Grid container spacing={4} direction="column">
+						<Grid item>
+							<Label fontsize="1.5rem">{promo.title}</Label>
+						</Grid>
+						<Grid item className="mt-2">
+							<Grid container align="center">
+								<Grid item>
+									<TypeLabel tag="span" fontSize="1rem">{promo.typeId}</TypeLabel>
+								</Grid>
+								<Grid item>
+									<Text fontSize="0.85rem">{this.formatCreationDate(promo.creationDate)}</Text>
+								</Grid>
+							</Grid>
+						</Grid>
+						<Grid item className="mt-2">
+							<Text>{promo.description}</Text>
+						</Grid>
+					</Grid>
 				</CardContent>
-
-
-				{/*<Grid container>*/}
-					{/*<Grid item md={3}>*/}
-						{/*{*/}
-							{/*promo.image &&*/}
-							{/*<img className={classes.image} src={imageSrc} />*/}
-						{/*}*/}
-					{/*</Grid>*/}
-					{/*<Grid item md={9}>*/}
-						{/*<Grid container spacing={4} direction="column">*/}
-							{/*<Grid item>*/}
-								{/*<Label fontsize="1.5rem" className="mt-3">{promo.title}</Label>*/}
-							{/*</Grid>*/}
-							{/*<Grid item>*/}
-								{/*<Grid container align="center">*/}
-									{/*<Grid item>*/}
-										{/*<TypeLabel tag="span" fontSize="1rem">{promo.typeId}</TypeLabel>*/}
-									{/*</Grid>*/}
-									{/*<Grid item>*/}
-										{/*<Text fontSize="0.85rem">{this.formatCreationDate(promo.creationDate)}</Text>*/}
-									{/*</Grid>*/}
-								{/*</Grid>*/}
-							{/*</Grid>*/}
-							{/*<Grid item>*/}
-								{/*<Text>{promo.description}</Text>*/}
-							{/*</Grid>*/}
-						{/*</Grid>*/}
-					{/*</Grid>*/}
-				{/*</Grid>*/}
 			</Card>
-
-
-
-
 		);
 	}
 }

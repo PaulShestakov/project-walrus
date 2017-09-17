@@ -5,7 +5,21 @@ import PromosListComponent from '../../scenes/promos/promosList/PromosList.jsx';
 import {loadPromos} from '../../actionCreators/promosList/promosList';
 import {loadBreeds} from "../../actionCreators/promosList/filter";
 import {loadPromoCodeValues} from "../../actionCreators/common";
-import {onFilterChange, onAnimalSelected} from "../../actionCreators/promosList/filter";
+import {
+	onFilterChange,
+	onAnimalSelected,
+
+	setAnimal,
+	setPromoType,
+	addBreed,
+	removeBreed,
+	addCity,
+	removeCity,
+
+	updateUrlWithStateSource,
+
+	updateFilterStateWithUrlSource
+} from "../../actionCreators/promosList/filter";
 
 const PromosList = connect(
 	state => {
@@ -20,7 +34,18 @@ const PromosList = connect(
 		loadPromos,
 		loadBreeds,
 		onFilterChange,
-		onAnimalSelected
+		onAnimalSelected,
+
+		setAnimal,
+		setPromoType,
+		addBreed,
+		removeBreed,
+		addCity,
+		removeCity,
+
+		updateUrlWithStateSource,
+
+		updateFilterStateWithUrlSource
 	}
 )(PromosListComponent);
 
