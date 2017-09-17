@@ -4,11 +4,11 @@ import {
 	SAVE_PROMO_FAILURE,
 
 	NEW_PROMO_CODEVALUES_SUCCESS,
-} from '../actionCreators/newPromo';
+} from '../../actionCreators/newPromo';
 
-import { FETCH_BREED_SUCCESS } from '../actionCreators/promosList/promosList';
+import { FETCH_BREED_SUCCESS } from '../../actionCreators/promosList/promosList';
 
-const newPromo = (state = {}, action) => {
+const newPromoReducer = (state = {}, action) => {
 	switch (action.type) {
 
 		case SAVE_PROMO_SUCCESS:
@@ -52,4 +52,4 @@ function mapCodeValue(codevalue) {
 	}
 }
 
-export default newPromo;
+export default newPromoReducer;

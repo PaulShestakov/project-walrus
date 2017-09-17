@@ -47,6 +47,17 @@ class Promo extends BaseCRUD {
 		};
 	}
 
+	static externalizePromoInfo(promoInfo) {
+		return {
+			address: promoInfo.ADDRESS,
+			date: promoInfo.DATE,
+			gender: promoInfo.GENDER,
+			age: promoInfo.AGE,
+			cost: promoInfo.COST
+		};
+	}
+
+
 	static internalizePromo(promo, promoId, image): IPromo {
 		return {
 			PROMO_ID: promoId,
@@ -133,15 +144,6 @@ class Promo extends BaseCRUD {
 		});
 	}
 
-	public getAll(callback): void {
-		super.getAll(promoSQL.GET_ALL, (error, result) => {
-			let promos = result.map((item) => {
-				let promoInfoDTO = this.mapper.mapToDTO(item, this.mapper.PROMO_INFO);
-				return this.mapper.mapToDTO(item, this.mapper.PROMO, promoInfoDTO);
-			});
-			callback(null, promos);
-		});
-	}
 
 	public getFiltered(params, callback): void {
 		// Retrieve filter params
@@ -225,9 +227,15 @@ class Promo extends BaseCRUD {
 		);
 	}
 
-	// public getById(promoId: string): IPromo {
-	//
-	// }
+	public get(promoId: string, callback) {
+		executeQuery(promoSQL.GET, [promoId], (error, result) => {
+			result = result.map(record => ({
+				...Promo.externalizePromo(record),
+				...Promo.externalizePromoInfo(record)
+			}));
+			callback(error, result[0]);
+		});
+	}
 }
 
 export default new Promo();

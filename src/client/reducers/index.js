@@ -1,13 +1,18 @@
 import { combineReducers } from 'redux';
 
-import newPromo from './newPromo';
+import newPromoReducer from './newPromo/newPromo';
+
+import promoPageReducer from './promoPage/promoPage';
+
 import promosListReducer from './promosList/promosListReducer';
 import filterReducer from './promosList/filterReducer';
-import { commonReducer } from './common';
+
+import commonReducer from './common/common';
 
 const rootReducer = combineReducers({
 	common: commonReducer,
-	newPromo,
+	newPromo: newPromoReducer,
+	promoPage: promoPageReducer,
 
 	promosList: combineReducers({
 		main: promosListReducer,

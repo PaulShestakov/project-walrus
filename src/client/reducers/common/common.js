@@ -2,7 +2,7 @@ import {
 	LOAD_PROMO_CODE_VALUES_START,
 	LOAD_PROMO_CODE_VALUES_SUCCESS,
 	LOAD_PROMO_CODE_VALUES_ERROR,
-} from '../actionCreators/common';
+} from '../../actionCreators/common';
 
 const defaultState = {
 	promoCodeValues: {
@@ -26,4 +26,4 @@ const commonReducer = (state = defaultState, action) => {
 	}
 };
 
-export { commonReducer };
+export default commonReducer;

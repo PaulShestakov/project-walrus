@@ -25,7 +25,11 @@ export default class Router extends React.Component {
 							<Switch>
 								<Route exact path='/promosList' component={PromosList} />
 								<Route path="/newPromo" component={NewPromo}/>
-								{/*<Route path="/promo/:promoId" component={PromoPage}/>*/}
+
+								<Route path="/promoPage/:promoId" component={PromoPage}/>
+
+								<Route path="/company/:companyId" component={PromoPage}/>
+								<Route path="/companiesList" component={PromoPage}/>
 
 							</Switch>
 						</Grid>

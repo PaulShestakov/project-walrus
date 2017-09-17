@@ -8,12 +8,38 @@ const PROMO_IMAGES_TABLE = promoImages.TABLE_NAME;
 export default {
     TABLE_NAME: PROMO_TABLE,
 
-    GET_ALL:
-        `SELECT * FROM ${PROMO_TABLE} AS p
+	GET_ALL: `
+	    SELECT
+		    p.PROMO_ID,
+		    p.TITLE,
+		    p.DESCRIPTION,
+		    p.CREATION_DATE,
+		    p.MODIFICATION_DATE,
+		    p.CITY_ID,
+		    p.ANIMAL_ID,
+		    p.BREED_ID,
+		    p.IMAGE,
+		    p.TYPE_ID,
+		    p.STATUS_ID,
+		    p.USER_ID,
+		    
+		    p_info.ADDRESS,
+		    p_info.DATE,
+		    p_info.GENDER,
+		    p_info.AGE,
+		    p_info.COST
+		
+        FROM ${PROMO_TABLE} AS p
         
-            LEFT JOIN ${PROMO_INFO_TABLE} AS p_info ON p_info.PROMO_ID = p.PROMO_ID
-        
-            LEFT JOIN ${PROMO_IMAGES_TABLE} AS p_images ON p_images.PROMO_ID = p.PROMO_ID`,
+        LEFT JOIN ${PROMO_INFO_TABLE} AS p_info
+            ON p_info.PROMO_ID = p.PROMO_ID
+    `,
+
+    get GET() {
+        return this.GET_ALL + `
+        WHERE p.PROMO_ID = ?
+        `
+    },
 
     SAVE: `INSERT INTO ${PROMO_TABLE} SET ?`,
 

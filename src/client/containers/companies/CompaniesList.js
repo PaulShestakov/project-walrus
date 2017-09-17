@@ -6,7 +6,7 @@ import {loadPromo} from "../../actionCreators/promoPage/promoPage";
 
 const PromoPage = connect(
 	state => {
-		return state.promoPage;
+		return state.promo
 	},
 	{
 		loadPromo

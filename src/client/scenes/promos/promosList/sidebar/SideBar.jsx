@@ -1,13 +1,18 @@
 import * as React from "react";
 import FontAwesome from 'react-fontawesome';
+import { Link } from 'react-router-dom';
 import {translate} from "react-i18next";
 import { Button, Card, Label, Separator, Checkbox, Dropdown, Grid, Popover, Title } from "components";
 
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import ButtonMore from "./buttonMore/ButtonMore";
+import { withStyles } from 'material-ui/styles';
+import classNames from 'classnames';
 
+import styles from './styles';
 
 @translate(['promos'])
+@withStyles(styles)
 export default class SideBar extends React.Component {
 
     constructor(props) {
@@ -77,7 +82,7 @@ export default class SideBar extends React.Component {
 	};
 
     render() {
-        const { t, ...other } = this.props;
+        const { t, classes, ...other } = this.props;
 
 		const allBreedsPopover = (
 			<Card>
@@ -134,9 +139,11 @@ export default class SideBar extends React.Component {
         	<Grid container direction="column" { ...other }>
 
 				<Grid item md={12}>
-					<Button href="/newPromo" accent="red" disableRipple={true} className="w-100 text-white">
-						<FontAwesome name="plus" className="mr-1" />
-						{t('CREATE_PROMO')}
+					<Button accent="red" disableRipple={true} className='w-100'>
+						<Link to="/newPromo" className={classes.link}>
+							<FontAwesome name="plus" className="mr-1" />
+							{t('CREATE_PROMO')}
+						</Link>
 					</Button>
 				</Grid>
 

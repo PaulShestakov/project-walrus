@@ -15,7 +15,8 @@ let clientConfig = {
 	},
 	output: {
 		path: path.resolve(__dirname, 'dist', 'client'),
-		filename: '[name].js'
+		filename: '[name].js',
+		publicPath: '/'
 	},
 	resolve: {
 		extensions: ['.js', '.jsx'],
@@ -53,7 +54,8 @@ let clientConfig = {
 				test: /\.(svg|ico|png)$/,
 				loader: 'file-loader',
 				query: {
-					name: '/images/[name].[ext]'
+					name: '/images/[name].[ext]',
+					publicPath: 'http://localhost:8080/'
 				}
 			}
 		]

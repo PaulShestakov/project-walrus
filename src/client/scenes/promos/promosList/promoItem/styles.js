@@ -29,6 +29,10 @@ export default {
 		width: '100%',
 		height: '100%',
 
+	},
+	link: {
+		color: 'white',
+		textDecoration: 'none'
 	}
 }
 

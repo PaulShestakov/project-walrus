@@ -8,7 +8,7 @@ import styles from './styles';
 
 @translate(['common'])
 @withStyles(styles)
-export default class CatalogPage extends React.Component {
+export default class CompanyPage extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -19,6 +19,7 @@ export default class CatalogPage extends React.Component {
 		return (
 			<Grid md={12} container>
 				<Grid item>
+					CompanyPage
 				</Grid>
 			</Grid>
 		);

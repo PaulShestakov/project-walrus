@@ -25,7 +25,7 @@ export default class App {
 
 	// Configure API endpoints.
 	private routes(): void {
-		this.express.use('/images', express.static(path.join(__dirname, '../uploads')));
+		this.express.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 		this.express.use('/api/v1/promo', Promo);
 		this.express.use('/api/v1/codevalue', CodeValue);
 		this.express.use('/', express.static(path.join(__dirname, '../client')));

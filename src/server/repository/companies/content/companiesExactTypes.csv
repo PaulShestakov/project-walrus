@@ -1,0 +1,7 @@
+COMPANY_TYPE_ID,COMPANY_EXACT_TYPE_ID,COMPANY_EXACT_TYPE_NAME
+HEALTH,0,Ветклинники
+HEALTH,1,Ветаптека
+HEALTH,2,Ветстанции
+HEALTH,3,Ветпрепараты
+HEALTH,4,Специалисты
+HEALTH,5,Экстренная помощь

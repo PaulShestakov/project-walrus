@@ -21,30 +21,14 @@ export default class BaseCRUD {
         this.DELETE         = 'DELETE FROM   ' + this.TABLE_NAME + ' WHERE UUID = ?';
     }
 
-    /**
-     *
-     * @param uuid
-     * @param callback
-     */
     get(uuid : string, callback : Function) : void {
         executeQuery(this.GET_BY_UUID, [uuid], callback);
     }
 
-    /**
-     *
-     * @param query
-     * @param callback
-     */
     getAll(query : string, callback : Function) : void {
         executeQuery(query ? query : this.GET_ALL, [], callback);
     }
 
-    /**
-     * Saves entity
-     *
-     * @param entity
-     * @param callback
-     */
     save(entity : any, callback : Function) : void {
         const saveEntity = (connection, done) => {
             connection.query(this.SAVE, [entity], (error, result) => {
@@ -55,10 +39,6 @@ export default class BaseCRUD {
         executeSeries(saveEntity, callback);
     }
 
-    /**
-     * Delete by uuid
-     * @returns {Promise<T>}
-     */
     delete(uuid : string, callback : Function) : void {
         const deleteEntity = (connection, done) => {
             connection.query(this.DELETE, [uuid], (error, result) => {
@@ -69,10 +49,6 @@ export default class BaseCRUD {
         executeSeries(deleteEntity, callback);
     }
 
-    /**
-     * Updates entity
-     * @returns {Promise<T>}
-     */
     update(entity : any, callback : Function) : void {
         const updateEntity = (connection, done) => {
             connection.query(this.UPDATE, [entity], (error, result) => {

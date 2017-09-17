@@ -1,8 +1,11 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
-import { Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card } from "components";
+import { withStyles } from 'material-ui/styles';
+import { Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, Tab } from "components";
 import styles from './styles';
+import classNames from 'classnames';
+
+import Card, { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card';
 
 
 @translate(['common'])
@@ -12,14 +15,28 @@ export default class PromoPage extends React.Component {
 		super(props);
 	}
 
+	componentDidMount() {
+		const promoId = this.props.match.params.promoId;
+
+		if (promoId) {
+			this.props.loadPromo(promoId);
+		}
+	}
+
 	render() {
-		const {t, classes, ...other} = this.props;
+		const {t, classes, promo, ...other} = this.props;
+
+		const imageSrc = promo.image ? `/uploads/${promo.image.split('/').slice(2).join('/')}` : '';
 
 		return (
-			<Grid md={12} container>
-				<Grid item>
-				</Grid>
-			</Grid>
+
+			<Card className={classNames('mt-4', classes.card)}>
+				<CardMedia
+					className={classes.cardImage}
+					image={imageSrc}
+				/>
+				{JSON.stringify(promo)}
+			</Card>
 		);
 	}
-}
+};
