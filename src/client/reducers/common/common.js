@@ -1,7 +1,6 @@
 import {
-	LOAD_PROMO_CODE_VALUES_START,
 	LOAD_PROMO_CODE_VALUES_SUCCESS,
-	LOAD_PROMO_CODE_VALUES_ERROR,
+	LOAD_COMPANIES_TYPES_SUCCESS,
 } from '../../actionCreators/common';
 
 const defaultState = {
@@ -9,7 +8,8 @@ const defaultState = {
 		animals: [],
 		cities: [],
 		dataLoaded: false
-	}
+	},
+	companiesTypes: []
 };
 
 const commonReducer = (state = defaultState, action) => {
@@ -19,8 +19,16 @@ const commonReducer = (state = defaultState, action) => {
 			return {
 				...state,
 				promoCodeValues: action.payload,
-				isFetching: false
+				promoCodeValuesLoaded: true
 			};
+
+		case LOAD_COMPANIES_TYPES_SUCCESS:
+			return {
+				...state,
+				companiesTypes: action.payload,
+				companiesTypesLoaded: true
+			};
+
 		default:
 			return state;
 	}

@@ -7,8 +7,7 @@ import BreedRepo from "../../repository/promo/Breed";
 import BaseController from "../BaseController";
 
 
-class PromoCV extends BaseController {
-
+class PromoCodevalues extends BaseController {
     router: Router;
     animalRepo : AnimalRepo;
     cityRepo : CityRepo;
@@ -86,4 +85,4 @@ class PromoCV extends BaseController {
     }
 }
 
-export default new PromoCV().router;
+export default new PromoCodevalues().router;

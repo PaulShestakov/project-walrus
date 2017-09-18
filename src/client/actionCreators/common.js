@@ -24,11 +24,11 @@ const loadPromoCodeValuesError = (error) => {
 	};
 };
 
-function loadPromoCodeValues() {
+export function loadPromoCodeValues() {
 	return (dispatch, getState) => {
 		const { common } = getState();
 
-		if (!common.promoCodeValues.dataLoaded) {
+		if (!common.promoCodeValuesLoaded) {
 			dispatch(loadPromoCodeValuesStart());
 
 			fetch('/api/v1/codevalue/promo').then(
@@ -43,8 +43,7 @@ function loadPromoCodeValues() {
 			).then(json => {
 				dispatch(loadPromoCodeValuesSuccess({
 					animals: json.animals.map(mapCodeValue),
-					cities: json.cities.map(mapCodeValue),
-					dataLoaded: true
+					cities: json.cities.map(mapCodeValue)
 				}));
 			});
 		}
@@ -58,4 +57,53 @@ function mapCodeValue(codevalue) {
 	}
 }
 
-export {loadPromoCodeValues};
+
+
+export const LOAD_COMPANIES_TYPES_START = 'LOAD_COMPANIES_TYPES_START';
+export const LOAD_COMPANIES_TYPES_SUCCESS = 'LOAD_COMPANIES_TYPES_SUCCESS';
+export const LOAD_COMPANIES_TYPES_ERROR = 'LOAD_COMPANIES_TYPES_ERROR';
+
+
+const loadCompaniesTypesStart = () => {
+	return {
+		type: LOAD_COMPANIES_TYPES_START,
+		isFetching: true
+	};
+};
+const loadCompaniesTypesSuccess = (data) => {
+	return {
+		type: LOAD_COMPANIES_TYPES_SUCCESS,
+		payload: data,
+		isFetching: false
+	};
+};
+const loadCompaniesTypesError = (error) => {
+	return {
+		type: LOAD_COMPANIES_TYPES_ERROR,
+		payload: error,
+		isFetching: false
+	};
+};
+
+export function loadCompaniesTypes() {
+	return (dispatch, getState) => {
+		const { common } = getState();
+
+		if (!common.companiesTypesLoaded) {
+			dispatch(loadCompaniesTypesStart());
+
+			fetch('/api/v1/codevalue/companiesTypes').then(
+				response => {
+					if (response.ok) {
+						return response.json();
+					}
+				},
+				error => {
+					dispatch(loadCompaniesTypesError())
+				}
+			).then(json => {
+				dispatch(loadCompaniesTypesSuccess(json));
+			});
+		}
+	}
+}

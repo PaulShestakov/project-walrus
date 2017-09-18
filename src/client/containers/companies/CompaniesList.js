@@ -1,16 +1,16 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import PromosComponent from '../../scenes/promos/promoPage/PromoPage';
-import {loadPromo} from "../../actionCreators/promoPage/promoPage";
+import CompaniesListComponent from '../../scenes/companies/companiesList/CompaniesList';
 
-const PromoPage = connect(
+
+const CompaniesList = connect(
 	state => {
-		return state.promo
+		return state.companiesList
 	},
 	{
-		loadPromo
-	}
-)(PromosComponent);
 
-export default PromoPage;
+	}
+)(CompaniesListComponent);
+
+export default CompaniesList;

@@ -2,7 +2,6 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
 import { Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card } from "components";
-
 import styles from './styles';
 
 
