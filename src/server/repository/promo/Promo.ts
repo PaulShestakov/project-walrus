@@ -8,13 +8,13 @@ import TypeRepo from "./Type";
 import BaseCRUD from "../BaseCRUD";
 import { executeQuery, executeSeries, executeParallel } from '../../database/DBHelper';
 
-import promoSQL from '../../query/promo/Promo';
-import promoInfoSQL from '../../query/promo/PromoInfo';
-import promoImagesSQL from '../../query/promo/PromoImages';
+import promoSQL from './sql/Promo';
+import promoInfoSQL from './sql/PromoInfo';
+import promoImagesSQL from './sql/PromoImages';
 
 
-import IPromo from '../../entity/IPromo'
-import IPromoInfo from '../../entity/IPromo'
+import IPromo from './entities/IPromo'
+import IPromoInfo from './entities/IPromo'
 
 
 class Promo extends BaseCRUD {

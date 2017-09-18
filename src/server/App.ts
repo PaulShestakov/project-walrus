@@ -3,6 +3,7 @@ import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import * as helmet from 'helmet';
 import Promo from "./controller/promo/Promo";
+import Company from "./controller/companies/Companies";
 import CodeValue from "./controller/CodeValue";
 
 export default class App {
@@ -27,6 +28,7 @@ export default class App {
 	private routes(): void {
 		this.express.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 		this.express.use('/api/v1/promo', Promo);
+		this.express.use('/api/v1/company', Company);
 		this.express.use('/api/v1/codevalue', CodeValue);
 		this.express.use('/', express.static(path.join(__dirname, '../client')));
 

@@ -14,7 +14,8 @@ export default {
 			c.EMAIL,
 			c.URL,
 			c.PHONE,
-			c.LOCATION,
+			c.LAT,
+			c.LNG,
 
 			ct.COMPANY_TYPE_NAME,
 
