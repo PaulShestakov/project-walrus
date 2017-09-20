@@ -10,8 +10,8 @@ class Companies extends BaseController {
 	constructor() {
 		super();
 		this.router = Router();
-		this.router.get('/:companyId', this.getCompany);
-		this.router.get('/filtered', this.getFiltered);
+		this.router.get('/:companyId', this.getCompany.bind(this));
+		this.router.get('/filtered', this.getFiltered.bind(this));
 
 	}
 
@@ -25,7 +25,7 @@ class Companies extends BaseController {
 	}
 
 	private getCompany(req: Request, res: Response) {
-		CompaniesRepository.getCompany('42', (error, result) => {
+		CompaniesRepository.getCompany(req.params.companyId, (error, result) => {
 			if (error) {
 				this.error(res, 500, error);
 			} else {

@@ -21,7 +21,8 @@ export default class Companies {
 			email: company.EMAIL,
 			url: company.URL,
 			phone: company.PHONE,
-			location: company.LOCATION,
+			lat: company.LAT,
+			lng: company.LNG,
 			companyTypeName: company.COMPANY_TYPE_NAME,
 			companyExactTypeName: company.COMPANY_EXACT_TYPE_NAME,
 		};

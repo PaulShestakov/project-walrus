@@ -6,5 +6,6 @@ class Company {
 	email: string;
 	url: string;
 	phone: string;
-	location: string;
+	lat: number;
+	lng: number;
 }

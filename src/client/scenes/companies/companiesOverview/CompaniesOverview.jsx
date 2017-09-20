@@ -33,7 +33,7 @@ export default class CompaniesOverview extends React.Component {
 
 		return (
 			<Card className="mt-4">
-				<AppBar position="static" color="white">
+				<AppBar position="static">
 					<Tabs
 						value={this.state.selectedTabIndex}
 						onChange={this.handleTabPress}
@@ -42,7 +42,7 @@ export default class CompaniesOverview extends React.Component {
 						fullWidth
 					>
 					{
-						this.props.common.companiesTypes.map(type => {
+                        this.props.common.companiesTypes && this.props.common.companiesTypes.map(type => {
 							return (
 								<Tab label={type.companyTypeName} />
 							);
@@ -52,7 +52,7 @@ export default class CompaniesOverview extends React.Component {
 				</AppBar>
 				<SwipeableViews index={this.state.selectedTabIndex} onChangeIndex={this.handleChangeIndex}>
 				{
-					this.props.common.companiesTypes.map(type => {
+                    this.props.common.companiesTypes && this.props.common.companiesTypes.map(type => {
 						return (
 							<div className={classes.exactTypesContainer}>
 								{
