@@ -1,9 +1,9 @@
 import React from 'react';
 import MaterialCheckbox from 'material-ui/Checkbox';
 
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 
-const styleSheet = createStyleSheet({
+const styleSheet = {
 	root: {
 		width: '1.75rem',
 		height: '1.75rem',
@@ -15,7 +15,7 @@ const styleSheet = createStyleSheet({
 			height: '1.25rem'
 		}
 	}
-});
+};
 
 
 @withStyles(styleSheet)

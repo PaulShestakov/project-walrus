@@ -1,10 +1,10 @@
 export default class Util {
 
-    static isEmpty(obj) : boolean {
+    static isEmpty(obj): boolean {
         return Object.keys(obj).length === 0;
     }
 
-    static wrapWithArray(element : any) {
+    static ensureArray(element: any) {
         return Array.isArray(element) ? element : (element) ? [element] : [];
     }
 
@@ -16,5 +16,4 @@ export default class Util {
             }
         }
     }
-
 }

@@ -5,13 +5,18 @@
 
   "FILTERS": "Фильтры",
   "SELECT_PROMO_TYPE": "Выберите тип объявления",
-  "SELECT_PET": "Выберите питомца",
+  "SELECT_ANIMAL": "Выберите питомца",
   "SELECT_BREED": "Выберите породу",
+  "SELECT_LOCATION": "Выберите местоположение",
   "PRICE_FROM": "Цена от",
   "PRICE_TO": "Цена до",
   "LOCATION": "Местоположение",
 
   "ALL_PETS": "Все питомцы",
   "ALL_BREEDS": "Все породы",
-  "ALL_CITIES": "Все города"
+  "ALL_CITIES": "Все города",
+
+
+  "TITLE_NOT_PROVIDED": "Заглавие не указано"
+
 }

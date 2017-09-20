@@ -1,8 +1,6 @@
 {
   "name": "wiki-server",
   "script": "./dist/server/index.js",
-  "watch": true,
-  "ignore_watch": ["node_modules"],
   "detached": true,
 
   "autorestart": true,

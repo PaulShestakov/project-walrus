@@ -1,6 +1,6 @@
 export default class Mapper {
 
-    PROMO : Map<string, string> = new Map([
+    PROMO: Map<string, string> = new Map([
         ['title'         ,   'TITLE'],
         ['city'          ,   'CITY_ID'],
         ['animal'        ,   'ANIMAL_ID'],
@@ -12,7 +12,7 @@ export default class Mapper {
         ['description'   ,   'DESCRIPTION']
     ]);
 
-    PROMO_INFO : Map<string, string> = new Map([
+    PROMO_INFO: Map<string, string> = new Map([
         ['address'       ,   'ADDRESS'],
         ['date'          ,   'DATE'],
         ['gender'        ,   'GENDER'],

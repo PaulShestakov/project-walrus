@@ -3,15 +3,14 @@ import { translate } from 'react-i18next';
 import FontAwesome from 'react-fontawesome';
 import { Link } from 'react-router-dom';
 import { Grid, Card } from 'components';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 
 import logo from './img/Logo.svg';
 
 import styles from './styles';
-const styleSheet = createStyleSheet(styles);
 
 @translate(['header'])
-@withStyles(styleSheet)
+@withStyles(styles)
 class Header extends React.Component {
 	render() {
 		const { t, classes } = this.props;
@@ -31,7 +30,7 @@ class Header extends React.Component {
 										{t('SEARCH')}
 									</Link>
 
-									<Link to="/promos" className={classes.topLink}>
+									<Link to="/promosList" className={classes.topLink}>
 										<FontAwesome name="bullhorn" className='mr-1' />
 										{t('PROMOS')}
 									</Link>
@@ -59,8 +58,8 @@ class Header extends React.Component {
 										{t('GUIDE')}
 									</Link>
 
-									<Link to='/' className={classes.bottomLink}>
-										{t('ZOOCALLS')}
+									<Link to='/companiesOverview' className={classes.bottomLink}>
+										{t('CATALOGUES')}
 									</Link>
 
 									<Link to='/' className={classes.bottomLink}>

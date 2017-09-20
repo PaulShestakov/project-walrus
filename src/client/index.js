@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import { I18nextProvider } from 'react-i18next';
-import { history } from './store/configStore';
+import createHistory from 'history/createBrowserHistory';
 
 import configureStore from './store/configStore.js';
 import configI18n from './i18n/configI18n.js';
@@ -21,11 +21,10 @@ const store = configureStore();
 const i18n = configI18n();
 
 
-import createPalette from 'material-ui/styles/palette';
 import { createMuiTheme } from 'material-ui/styles';
 
 const theme = createMuiTheme({
-	palette: createPalette({
+	palette: {
 		primary: {
 			50: '#f3e2e2',
 			100: '#e0b6b6',
@@ -45,7 +44,7 @@ const theme = createMuiTheme({
 
 			contrastDefaultColor: 'light'
 		}
-	}),
+	}
 });
 
 
@@ -55,7 +54,7 @@ class Root extends React.Component {
 		<I18nextProvider i18n={i18n}>
 			<Provider store={store}>
 				<MuiThemeProvider theme={theme}>
-					<BrowserRouter  history={history}>
+					<BrowserRouter>
 						<Router />
 					</BrowserRouter>
 				</MuiThemeProvider>

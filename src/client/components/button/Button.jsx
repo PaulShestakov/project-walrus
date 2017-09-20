@@ -5,9 +5,9 @@ import classNames from 'classnames';
 
 import globalStyle from '../../style';
 
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 
-const styleSheet = createStyleSheet({
+const styleSheet = {
 	button: {
 		color: 'white'
 	},
@@ -23,31 +23,38 @@ const styleSheet = createStyleSheet({
 			background: globalStyle.ACCENT_BLUE
 		}
 	}
-});
+};
 
 
 @withStyles(styleSheet)
 class Button extends React.Component {
 
 	render() {
-		const { accent, classes, className, ...other } = this.props;
+		const { accent, classes, className, raised, ...other } = this.props;
 
 		return (
-			<MaterialButton raised className={classNames(
-				classes.button,
-				{
-					[classes.redAccent]: accent === 'red',
-					[classes.blueAccent]: accent === 'blue'
-				},
-				className
-			)} { ...other }>
+			<MaterialButton raised={raised} className={classNames(
+					classes.button,
+					{
+						[classes.redAccent]: accent === 'red',
+						[classes.blueAccent]: accent === 'blue'
+					},
+					className
+				)}
+				{ ...other }>
 				{this.props.children}
 			</MaterialButton>
 		);
 	}
 }
 
+Button.defaultProps = {
+	raised: true,
+	accent: 'red'
+};
+
 Button.propTypes = {
+	raised: PropTypes.bool,
 	accent: PropTypes.oneOf(['blue', 'red'])
 };
 

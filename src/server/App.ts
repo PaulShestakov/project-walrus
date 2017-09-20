@@ -3,10 +3,11 @@ import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import * as helmet from 'helmet';
 import Promo from "./controller/promo/Promo";
+import Company from "./controller/companies/Companies";
 import CodeValue from "./controller/CodeValue";
 
 export default class App {
-	// ref to Express instance
+	// Ref to Express instance
 	public express: express.Application;
 
 	// Run configuration methods on the Express instance.
@@ -18,7 +19,6 @@ export default class App {
 
 	// Configure Express middleware.
 	private middleware(): void {
-		this.express.use('/', express.static(path.join(__dirname, '../client')));
 		this.express.use(helmet());
 		this.express.use(bodyParser.json());
 		this.express.use(bodyParser.urlencoded({ extended: true }));
@@ -26,8 +26,12 @@ export default class App {
 
 	// Configure API endpoints.
 	private routes(): void {
+		this.express.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 		this.express.use('/api/v1/promo', Promo);
+		this.express.use('/api/v1/company', Company);
 		this.express.use('/api/v1/codevalue', CodeValue);
+		this.express.use('/', express.static(path.join(__dirname, '../client')));
+
 		this.express.get('*', (req, res) => {
 			res.sendFile(path.join(__dirname, './../client', 'index.html'));
 		});
