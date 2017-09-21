@@ -6,7 +6,7 @@ import styles from './styles';
 
 import { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card';
 import {Divider, Typography, Paper} from "material-ui";
-import { Pets, Call, Mail, Http } from 'material-ui-icons';
+import { Pets, Call, Mail, Public } from 'material-ui-icons';
 import CompanyInfo from "./info/CompanyInfo";
 import Feedbacks from "./feedback/Feedbacks";
 
@@ -37,6 +37,7 @@ export default class CompanyPage extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        console.log(this.props);
         let feedbacks = newProps.location.pathname.indexOf("/feedbacks");
         let feedback = newProps.location.pathname.indexOf("/feedback");
         let index;
@@ -114,7 +115,7 @@ export default class CompanyPage extends React.Component {
 											</Typography>
 										</Grid>
 										<Grid item className="d-flex align-items-center">
-											<Http className="mr-2"/>
+											<Public className="mr-2"/>
 											<Typography component="p">
                                                 {company.url}
 											</Typography>

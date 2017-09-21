@@ -58,7 +58,8 @@ class Header extends React.Component {
 										{t('GUIDE')}
 									</Link>
 
-									<Link to='/companiesOverview' className={classes.bottomLink}>
+									<Link to={{ pathname: '/companiesOverview', search: 'category=HEALTH' }}
+										  className={classes.bottomLink}>
 										{t('CATALOGUES')}
 									</Link>
 
