@@ -37,33 +37,34 @@ export default class Companies {
 		});
 	}
 
-	public getFiltered(params, callback): void {
-		// Retrieve filter params
-		const typeId = params.type;
-		const animalId = params.animal;
-		const breedsIds = Util.ensureArray(params.breeds);
-		const citiesIds = Util.ensureArray(params.cities);
-		const priceFrom = params.priceFrom;
-		const priceTo = params.priceTo;
+	static getFiltered(params, callback): void {
+		const companyCategoryId = params.companyCategoryId;
+		const companySubcategoryId = params.companySubcategoryId;
+		const cityId = params.cityId;
 
 		let filter = squel.expr();
 
+		if (companyCategoryId && companyCategoryId !== 'ALL') {
+			filter = filter.and('c.COMPANY_CATEGORY_ID = ?', companyCategoryId);
+		}
+		if (companySubcategoryId && companySubcategoryId !== 'ALL') {
+			filter = filter.and('c.COMPANY_SUBCATEGORY_ID = ?', companySubcategoryId);
+		}
 
 		const sql = squel
 			.select()
-			.from('wikipet.companies', 'p')
-			.where(filter)
-			.order('p.CREATION_DATE', false)
+			.from('wikipet.companies', 'c')
+			// .where(filter)
 			.toParam();
 
-		// executeQuery(sql.text, sql.values, (error, rows) => {
-		// 	if (error) {
-		// 		callback(error);
-		// 		return;
-		// 	}
-		// 	const promos = rows.map(Promo.externalizePromo);
-		// 	callback(null, promos);
-		// });
+		executeQuery(sql.text, sql.values, (error, rows) => {
+			if (error) {
+				callback(error);
+				return;
+			}
+			const companies = rows.map(Companies.externalizeCompany);
+			callback(null, companies);
+		});
 	}
 
 	static getCompaniesTypes(callback) {

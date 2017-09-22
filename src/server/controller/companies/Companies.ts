@@ -10,18 +10,17 @@ class Companies extends BaseController {
 	constructor() {
 		super();
 		this.router = Router();
-		this.router.get('/:companyId', this.getCompany.bind(this));
 		this.router.get('/filtered', this.getFiltered.bind(this));
-
+		this.router.get('/:companyId', this.getCompany.bind(this));
 	}
 
 	private getFiltered(req: Request, res: Response) {
-		// repo.getFiltered(req.query, (error, result) => {
-		// 	if (error) {
-		// 		this.error(res, 500, error);
-		// 	}
-		// 	this.okResponse(res, result);
-		// });
+		CompaniesRepository.getFiltered(req.query, (error, result) => {
+			if (error) {
+				this.error(res, 500, error);
+			}
+			this.okResponse(res, result);
+		});
 	}
 
 	private getCompany(req: Request, res: Response) {
