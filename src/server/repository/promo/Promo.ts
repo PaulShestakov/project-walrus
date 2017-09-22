@@ -3,8 +3,8 @@ import * as squel from "squel";
 import * as _ from 'lodash';
 import Mapper from '../../util/Mapper';
 import Util from '../../util/Util';
-import StatusRepo from './Status';
-import TypeRepo from "./Type";
+import StatusRepo from '../codevalues/Status';
+import TypeRepo from "../codevalues/Type";
 import BaseCRUD from "../BaseCRUD";
 import { executeQuery, executeSeries, executeParallel } from '../../database/DBHelper';
 

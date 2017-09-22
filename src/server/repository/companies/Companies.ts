@@ -67,37 +67,37 @@ export default class Companies {
 		});
 	}
 
-	static getCompaniesTypes(callback) {
-		executeQuery(Queries.GET_COMPANIES_TYPES, [], (error, result) => {
+	static getCompaniesCategories(callback) {
+		executeQuery(Queries.GET_COMPANIES_CATEGORIES, [], (error, result) => {
 			if (result) {
-				const reducedRecords = result.map(Companies.externalizeCompanyType).reduce(Companies.companiesTypesReducer, {});
+				const reducedRecords = result.map(Companies.externalizeCompanyCategory).reduce(Companies.companiesCategoryReducer, {});
 				result = Object.values(reducedRecords);
 			}
 			callback(error, result);
 		});
 	}
 
-	static externalizeCompanyType(record) {
+	static externalizeCompanyCategory(record) {
 		return {
-			companyTypeId: record.COMPANY_TYPE_ID,
-			companyTypeName: record.COMPANY_TYPE_NAME,
-			companyExactTypeId: record.COMPANY_EXACT_TYPE_ID,
-			companyExactTypeName: record.COMPANY_EXACT_TYPE_NAME,
+			companyCategoryId: record.COMPANY_CATEGORY_ID,
+			companyCategoryName: record.COMPANY_CATEGORY_NAME,
+			companySubcategoryId: record.COMPANY_SUBCATEGORY_ID,
+			companySubcategoryName: record.COMPANY_SUBCATEGORY_NAME,
 		}
 	}
 
 
-	static companiesTypesReducer(acc, record) {
-		if (!acc[record.companyTypeId]) {
-			acc[record.companyTypeId] = {
-				companyTypeId: record.companyTypeId,
-				companyTypeName: record.companyTypeName,
-				exactTypes: []
+	static companiesCategoryReducer(acc, record) {
+		if (!acc[record.companyCategoryId]) {
+			acc[record.companyCategoryId] = {
+                companyCategoryId: record.companyCategoryId,
+                companyCategoryName: record.companyCategoryName,
+				subcategories: []
 			};
 		}
-		acc[record.companyTypeId].exactTypes.push({
-			companyExactTypeId: record.companyExactTypeId,
-			companyExactTypeName: record.companyExactTypeName,
+		acc[record.companyCategoryId].subcategories.push({
+            companySubcategoryId: record.companySubcategoryId,
+            companySubcategoryName: record.companySubcategoryName,
 		});
 		return acc;
 	}

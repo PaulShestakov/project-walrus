@@ -1,11 +1,11 @@
 import {Router} from "express";
 
 import promoCodevaluesRouter from "./codevalues/PromoCodevalues";
-import companiesTypesRouter from "./codevalues/CompaniesTypesRouter";
+import companiesCategoriesRouter from "./codevalues/CompaniesCategoriesRouter";
 
 const codevaluesRouter = Router();
 
 codevaluesRouter.use('/promo', promoCodevaluesRouter);
-codevaluesRouter.use('/companiesTypes', companiesTypesRouter);
+codevaluesRouter.use('/companiesCategories', companiesCategoriesRouter);
 
 export default codevaluesRouter;

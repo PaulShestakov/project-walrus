@@ -20,10 +20,10 @@ export default class Type extends React.Component {
         return (
             <div className={classes.exactTypesContainer}>
                 {
-                    type.exactTypes.map(exactType => {
+                    type.subcategories.map(subcategory => {
                         return (
-                            <Link className={classes.exactTypeLink} to={'/companiesList' + location.search + "&exactType=" + exactType.companyExactTypeId}>
-                                {exactType.companyExactTypeName}
+                            <Link className={classes.exactTypeLink} to={'/companiesList' + location.search + "&subcategory=" + subcategory.companySubcategoryId}>
+                                {subcategory.companySubcategoryName}
                             </Link>
                         );
                     })

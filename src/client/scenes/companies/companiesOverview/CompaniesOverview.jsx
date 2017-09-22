@@ -20,16 +20,16 @@ export default class CompaniesOverview extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.loadCompaniesTypes();
+		this.props.loadCompanyCategories();
 	}
 
     componentWillReceiveProps(nextProps) {
         const params = new URLSearchParams(nextProps.location.search);
         const category = params.get('category');
         let categoryIndex = 0;
-        if (category && nextProps.common.companiesTypes) {
-        	nextProps.common.companiesTypes.forEach((type, index) => {
-        		if (type.companyTypeId === category) {
+        if (category && nextProps.common.companiesCategories) {
+        	nextProps.common.companiesCategories.forEach((type, index) => {
+        		if (type.companyCategoryId === category) {
                     categoryIndex = index;
 				}
 			});
@@ -39,7 +39,7 @@ export default class CompaniesOverview extends React.Component {
 
 	handleTabPress = (event, index) => {
         const params = new URLSearchParams(this.props.location.search);
-        params.set('category', this.props.common.companiesTypes[index].companyTypeId);
+        params.set('category', this.props.common.companiesCategories[index].companyCategoryId);
         this.props.history.push({
             pathname: this.props.location.pathname,
             search: params.toString()
@@ -50,6 +50,7 @@ export default class CompaniesOverview extends React.Component {
 		const {t, classes, match, common, ...other} = this.props;
 
 		return (
+
 			<Card className="mt-4">
 				<Paper>
 					<Tabs
@@ -59,7 +60,7 @@ export default class CompaniesOverview extends React.Component {
 						onChange={this.handleTabPress}
 						fullWidth>
                         {
-                            common.companiesTypes && common.companiesTypes.map((type, index) => {
+                            common.companiesCategories && common.companiesCategories.map((type, index) => {
                                 let icon;
                                 if (index === 0) {
                                     icon = <Healing />;
@@ -75,7 +76,7 @@ export default class CompaniesOverview extends React.Component {
                                     icon = <Extension />
                                 }
                                 return (
-									<Tab label={type.companyTypeName} icon={icon} />
+									<Tab label={type.companyCategoryName} icon={icon} />
                                 );
                             })
                         }
@@ -83,7 +84,7 @@ export default class CompaniesOverview extends React.Component {
 				</Paper>
 				<SwipeableViews index={this.state.selectedTabIndex} onChangeIndex={this.handleChangeIndex}>
 				{
-                    common.companiesTypes && common.companiesTypes.map(type => {
+                    common.companiesCategories && common.companiesCategories.map(type => {
 						return (
 							<Category type={type} location={location}/>
 						);

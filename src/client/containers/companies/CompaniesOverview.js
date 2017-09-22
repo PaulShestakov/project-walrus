@@ -2,19 +2,19 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import CompaniesOverviewComponent from '../../scenes/companies/companiesOverview/CompaniesOverview';
-import {loadCompaniesTypes} from "../../actionCreators/common";
+import {loadCompanyCategories} from "../../actionCreators/common";
 
 const CompaniesOverview = connect(
 	state => {
 		return {
 			main: state.companiesOverview,
 			common: {
-				companiesTypes: state.common.companiesTypes
+				companiesCategories: state.common.companiesCategories
 			}
 		};
 	},
 	{
-		loadCompaniesTypes
+		loadCompanyCategories
 	}
 )(CompaniesOverviewComponent);
 

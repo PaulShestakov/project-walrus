@@ -1,9 +1,9 @@
 import { Router, Request, Response } from 'express';
 import async from 'async';
 import Util from "../../util/Util";
-import AnimalRepo from "../../repository/promo/Animal";
-import CityRepo from "../../repository/promo/City";
-import BreedRepo from "../../repository/promo/Breed";
+import AnimalRepo from "../../repository/codevalues/Animal";
+import CityRepo from "../../repository/codevalues/City";
+import BreedRepo from "../../repository/codevalues/Breed";
 import BaseController from "../BaseController";
 
 

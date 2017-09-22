@@ -85,14 +85,14 @@ const loadCompaniesTypesError = (error) => {
 	};
 };
 
-export function loadCompaniesTypes() {
+export function loadCompanyCategories() {
 	return (dispatch, getState) => {
 		const { common } = getState();
 
 		if (!common.companiesTypesLoaded) {
 			dispatch(loadCompaniesTypesStart());
 
-			fetch('/api/v1/codevalue/companiesTypes').then(
+			fetch('/api/v1/codevalue/companiesCategories').then(
 				response => {
 					if (response.ok) {
 						return response.json();

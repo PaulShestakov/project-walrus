@@ -9,7 +9,7 @@ const defaultState = {
 		cities: [],
 		dataLoaded: false
 	},
-	companiesTypes: []
+	companiesCategories: []
 };
 
 const commonReducer = (state = defaultState, action) => {
@@ -25,8 +25,8 @@ const commonReducer = (state = defaultState, action) => {
 		case LOAD_COMPANIES_TYPES_SUCCESS:
 			return {
 				...state,
-				companiesTypes: action.payload,
-				companiesTypesLoaded: true
+				companiesCategories: action.payload,
+				companiesCategoriesLoaded: true
 			};
 
 		default:

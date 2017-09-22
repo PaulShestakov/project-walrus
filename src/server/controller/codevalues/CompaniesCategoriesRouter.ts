@@ -6,7 +6,7 @@ const companiesTypesRouter = Router();
 companiesTypesRouter.get('/', get);
 
 function get(req: Request, res: Response) {
-	Companies.getCompaniesTypes((error, result) => {
+	Companies.getCompaniesCategories((error, result) => {
 		if (error) {
 			res.status(500).send(error);
 		} else {
