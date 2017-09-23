@@ -30,10 +30,10 @@ export default class Companies {
 
 	static getCompany(companyId: string, callback) {
 		executeQuery(Queries.GET, [companyId], (error, result) => {
-			if (result) {
+			if (result && result.length > 0) {
 				result = Companies.externalizeCompany(result[0]);
 			}
-			callback(error, result);
+            callback(error, result);
 		});
 	}
 

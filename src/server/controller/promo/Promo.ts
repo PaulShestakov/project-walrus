@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import repo from '../../repository/promo/Promo';
 import BaseController from "../BaseController";
 import upload from "../../util/Upload";
+import * as passport from 'passport';
 
 const IMAGES_UPLOAD_MAX_COUNT = 100;
 
@@ -12,7 +13,7 @@ class Promo extends BaseController {
 	constructor() {
 		super();
 		this.router = Router();
-		this.router.get('/', this.getAll.bind(this));
+		this.router.get('/', passport.authenticate('jwt', { session: false }), this.getAll.bind(this));
 		this.router.get('/filtered', this.getFiltered.bind(this));
 		this.router.get('/:uuid', this.get.bind(this));
 		this.router.post('/', upload.array('image', IMAGES_UPLOAD_MAX_COUNT), this.save.bind(this));
@@ -36,7 +37,7 @@ class Promo extends BaseController {
 	}
 
 	private getAll(req: Request, res: Response) {
-		repo.getAll((error, result) => {
+		repo.getAll(null,(error, result) => {
 			if (error) {
 				this.error(res, 500, error);
 			}

@@ -5,8 +5,10 @@ import * as helmet from 'helmet';
 import Promo from "./controller/promo/Promo";
 import Company from "./controller/companies/Companies";
 import CodeValue from "./controller/CodeValue";
-import * as jwt from "jsonwebtoken";
 import * as cookieParser from "cookie-parser";
+import * as passport from 'passport';
+import { Strategy as JWTStrategy } from 'passport-jwt';
+import User from "./repository/user/User";
 
 export default class App {
 	// Ref to Express instance
@@ -25,36 +27,9 @@ export default class App {
 		this.express.use(helmet());
 		this.express.use(bodyParser.json());
 		this.express.use(bodyParser.urlencoded({ extended: false }));
-		this.express.use(function(req, res, next) {
-			// check header or url parameters or post parameters for token
-			let token = req.cookies.jwt;
 
-			// decode token
-			if (token) {
-
-				// verifies secret and checks exp
-				jwt.verify(token, Buffer.from('rixlgJCCQ4n94NUvKNJkZ6xWOTbTYKvCGDxWSZqrkl7yGGF3P5yh86GqF9UDGTr', 'base64'),
-					function(err, decoded) {
-					if (err) {
-						return res.json({ success: false, message: 'Failed to authenticate token.' });
-					} else {
-						// if everything is good, save to request for use in other routes
-						req.decoded = decoded;
-						next();
-					}
-				});
-
-			} else {
-
-				// if there is no token
-				// return an error
-				return res.status(403).send({
-					success: false,
-					message: 'No token provided.'
-				});
-
-			}
-		});
+		this.jwtMiddleware();
+        this.express.use(passport.initialize());
 	}
 
 	// Configure API endpoints.
@@ -68,5 +43,28 @@ export default class App {
 		this.express.get('*', (req, res) => {
 			res.sendFile(path.join(__dirname, './../client', 'index.html'));
 		});
+	}
+
+	private jwtMiddleware() {
+        const opts = {
+            secretOrKey: Buffer.from('rixlgJCCQ4n94NUvKNJkZ6xWOTbTYKvCGDxWSZqrkl7yGGF3P5yh86GqF9UDGTr', 'base64'),
+            jwtFromRequest: (req) => req.cookies.jwt,
+            algorithms: ['HS512'],
+            ignoreExpiration: true,
+            issuer: 'https://wikipet.by/'
+		};
+        passport.use(new JWTStrategy(opts, function(jwt_payload, done) {
+            User.getById(jwt_payload.data.id, function(err, user) {
+                if (err) {
+                    return done(err, false);
+                }
+                if (user) {
+                    return done(null, user);
+                } else {
+                    return done(null, false);
+                    // or you could create a new account
+                }
+            });
+        }));
 	}
 }

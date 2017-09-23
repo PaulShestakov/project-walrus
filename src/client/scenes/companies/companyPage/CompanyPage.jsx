@@ -63,89 +63,85 @@ export default class CompanyPage extends React.Component {
         const imageSrc = company.logo ? company.logo : '';
 
 		return (
-			<Grid container className="my-4">
-				<Grid item md={12}>
-					<Card raised>
-						<CardContent>
-							<Grid container>
-								<Grid item md={8}>
-									<Typography type="headline" component="h2">
-                                        {company.name}
-									</Typography>
+			<Card raised className="my-4">
+				<CardContent>
+					<Grid container>
+						<Grid item md={8}>
+							<Typography type="headline" component="h2">
+                                {company.name}
+							</Typography>
+							<Typography component="p">
+                                {company.companyExactTypeName}
+							</Typography>
+						</Grid>
+						<Grid item md={4}>
+							<Link to={`${this.props.match.url}/feedback`} className={classes.link}>
+								<Button accent="red" className='w-100'>
+                                    {t('Оставить отзыв')}
+								</Button>
+							</Link>
+						</Grid>
+					</Grid>
+					<Divider className="mt-4 mb-2" />
+					<Grid container>
+						<Grid item md={4}>
+							<Paper className="d-flex justify-content-center">
+								<CardMedia
+									className={classes.cardImage}
+									image={imageSrc}
+								/>
+							</Paper>
+						</Grid>
+						<Grid item md={8}>
+							<Grid container className="d-flex-column h-100">
+								<Grid item className="d-flex align-items-center">
+									<Pets className="mr-2"/>
 									<Typography component="p">
-                                        {company.companyExactTypeName}
+										Empty
 									</Typography>
 								</Grid>
-								<Grid item md={4}>
-									<Link to={`${this.props.match.url}/feedback`} className={classes.link}>
-										<Button accent="red" className='w-100'>
-											{t('Оставить отзыв')}
-										</Button>
-									</Link>
+								<Grid item className="d-flex align-items-center">
+									<Call className="mr-2"/>
+									<Typography component="p">
+                                        {company.phone}
+									</Typography>
+								</Grid>
+								<Grid item className="d-flex align-items-center">
+									<Mail className="mr-2"/>
+									<Typography component="p">
+                                        {company.email}
+									</Typography>
+								</Grid>
+								<Grid item className="d-flex align-items-center">
+									<Public className="mr-2"/>
+									<Typography component="p">
+                                        {company.url}
+									</Typography>
 								</Grid>
 							</Grid>
-							<Divider className="mt-4 mb-2" />
-							<Grid container>
-								<Grid item md={4}>
-									<Paper className="d-flex justify-content-center">
-										<CardMedia
-											className={classes.cardImage}
-											image={imageSrc}
-										/>
-									</Paper>
-								</Grid>
-								<Grid item md={8}>
-									<Grid container className="d-flex-column h-100">
-										<Grid item className="d-flex align-items-center">
-											<Pets className="mr-2"/>
-											<Typography component="p">
-                                                Empty
-											</Typography>
-										</Grid>
-										<Grid item className="d-flex align-items-center">
-											<Call className="mr-2"/>
-											<Typography component="p">
-                                                {company.phone}
-											</Typography>
-										</Grid>
-										<Grid item className="d-flex align-items-center">
-											<Mail className="mr-2"/>
-											<Typography component="p">
-                                                {company.email}
-											</Typography>
-										</Grid>
-										<Grid item className="d-flex align-items-center">
-											<Public className="mr-2"/>
-											<Typography component="p">
-                                                {company.url}
-											</Typography>
-										</Grid>
-									</Grid>
-								</Grid>
-							</Grid>
-							<Divider className="mt-4" />
-							<Tabs indicatorColor="primary"
-								  onChange={this.handleTabPress}
-								  value={this.state.selectedTab}
-								  textColor="primary"
-								  classes={{
-                                      root: classes.tabs
-                                  }}>
-								<Tab label={t('Инфо')}/>
-								<Tab label={t('Отзывы')}/>
-							</Tabs>
-							<Divider />
+						</Grid>
+					</Grid>
+					<Divider className="mt-4" />
+					<Tabs indicatorColor="primary"
+						  onChange={this.handleTabPress}
+						  value={this.state.selectedTab}
+						  textColor="primary"
+						  classes={{
+                              root: classes.tabs
+                          }}>
+						<Tab label={t('Инфо')}/>
+						<Tab label={t('Отзывы')}/>
+					</Tabs>
+					<Divider />
 
-							<Route exact path={`${this.props.match.url}/`} render={(props) => <CompanyInfo company={company} /> }/>
+					<Route exact path={`${this.props.match.url}/`} render={(props) => <CompanyInfo company={company} /> }/>
 
-							<Route path={`${this.props.match.url}/feedbacks`} component={Feedbacks}/>
+					<Route path={`${this.props.match.url}/feedbacks`} component={Feedbacks}/>
 
-							<Route exact path={`${this.props.match.url}/feedback`} component={NewFeedback}/>
+					<Route exact path={`${this.props.match.url}/feedback`} component={NewFeedback}/>
 
-						</CardContent>
-					</Card>
-				</Grid>
-			</Grid>
+				</CardContent>
+			</Card>
 		);
 	}
 }
