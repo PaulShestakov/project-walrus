@@ -6,10 +6,10 @@ import promoPageReducer from './promoPage/promoPage';
 import companyPageReducer from './companyPage/companyPage';
 
 import promosListReducer from './promosList/promosListReducer';
-import filterReducer from './promosList/filterReducer';
+import {promosFilterReducer} from './promosList/filterReducer';
 
 import companiesListReducer from './companiesList/companiesListReducer';
-import companiesFilterReducer from './companiesList/filterReducer';
+import {companiesFilterReducer} from './companiesList/filterReducer';
 
 import commonReducer from './common/common';
 
@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
 
 	promosList: combineReducers({
 		main: promosListReducer,
-		filter: filterReducer,
+		filter: promosFilterReducer,
 	}),
 
 	companiesList: combineReducers({

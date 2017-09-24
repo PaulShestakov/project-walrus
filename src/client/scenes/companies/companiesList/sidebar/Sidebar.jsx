@@ -1,7 +1,7 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Popover, Checkbox} from "components";
+import {Dropdown, Button, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Popover, Checkbox} from "components";
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import classNames from 'classnames';
 import styles from './styles';
@@ -28,6 +28,21 @@ export default class Sidebar extends React.Component {
 		this.setState({
 			isLocationPopoverOpened: false
 		});
+	};
+
+	handleCheckboxPressed = (event) => {
+		switch(event.target.name) {
+			case 'cities': {
+				if (event.target.checked) {
+					this.props.addCity(event.target.value);
+				} else {
+					this.props.removeCity(event.target.value);
+				}
+				break;
+			}
+		}
+		this.props.updateUrlWithStateSource(this.props.history);
+		this.props.loadCompanies();
 	};
 
 	render() {
@@ -58,7 +73,7 @@ export default class Sidebar extends React.Component {
 
 		return (
 			<Card className="p-3">
-				<Title uppercase>{t('CITY')}</Title>
+				<Label uppercase bold fontSize="1.5rem">{t('LOCATION')}</Label>
 				{
 					this.props.cities.slice(0, 4)
 						.concat(

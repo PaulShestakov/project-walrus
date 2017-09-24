@@ -31,7 +31,7 @@ const defaultState = {
 };
 
 
-const filterReducer = (state = defaultState, action) => {
+export const promosFilterReducer = (state = defaultState, action) => {
 	switch (action.type) {
 
 		case SET_ANIMAL: {
@@ -97,9 +97,7 @@ const filterReducer = (state = defaultState, action) => {
 	}
 };
 
-
-function updateUrl(state, history) {
-
+export function stateDataToUrlQuery(state) {
 	const filterData = {
 		animalId: state.selectedAnimalId,
 		promoTypeId: state.selectedPromoTypeId,
@@ -111,8 +109,13 @@ function updateUrl(state, history) {
 		priceTo: state.priceTo
 	};
 
+	return Util.objectToUrlQuery(filterData);
+}
+
+
+function updateUrl(state, history) {
 	history.push({
-		search: Util.objectToUrlQuery(filterData)
+		search: stateDataToUrlQuery(state)
 	});
 }
 
@@ -130,5 +133,3 @@ function urlParamsToStateData(searchParams) {
 		priceTo: urlData.priceTo || defaultState.priceTo
 	};
 }
-
-export default filterReducer;

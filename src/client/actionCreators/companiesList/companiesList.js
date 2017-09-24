@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import {stateDataToUrlQuery} from '../../reducers/companiesList/filterReducer';
 
 export const LOAD_COMPANIES_START = 'LOAD_COMPANIES_START';
 export const LOAD_COMPANIES_SUCCESS = 'LOAD_COMPANIES_SUCCESS';
@@ -28,9 +29,9 @@ export const loadCompanies = () => {
     return (dispatch, getState) => {
         dispatch(loadCompaniesStart());
 
-        // const filterState = getState().companiesList.filter;
+        const filterState = getState().companiesList.filter;
 
-        return fetch(baseUrl + '/company/filtered').then(
+        return fetch(baseUrl + '/company/filtered' + stateDataToUrlQuery(filterState)).then(
             response => {
                 if (response.ok) {
                     return response.json();

@@ -5,7 +5,10 @@ import CompaniesListComponent from '../../scenes/companies/companiesList/Compani
 import {loadCompanies} from "../../actionCreators/companiesList/companiesList";
 import {
 	updateStateWithUrlSource,
-	updateUrlWithStateSource
+	updateUrlWithStateSource,
+
+	addCity,
+	removeCity
 } from "../../actionCreators/companiesList/filter";
 import {loadCompaniesCodeValues} from "../../actionCreators/common";
 
@@ -23,7 +26,11 @@ const CompaniesList = connect(
 		loadCompanies,
 
 		updateStateWithUrlSource,
-		updateUrlWithStateSource
+		updateUrlWithStateSource,
+
+
+		addCity,
+		removeCity
 	}
 )(CompaniesListComponent);
 

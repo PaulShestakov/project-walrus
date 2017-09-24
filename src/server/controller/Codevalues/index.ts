@@ -53,14 +53,14 @@ class Codevalues extends BaseController {
 
 		function mapAnimal(animal) {
 			return {
-				animalId: animal.ANIMAL_ID,
+				id: animal.ANIMAL_ID,
 				name: animal.NAME
 			}
 		}
 
 		function mapCity(city) {
 			return {
-				cityId: city.CITY_ID,
+				id: city.CITY_ID,
 				name: city.NAME
 			}
 		}

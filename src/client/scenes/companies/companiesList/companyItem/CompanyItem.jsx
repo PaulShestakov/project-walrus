@@ -10,7 +10,7 @@ import FontAwesome from 'react-fontawesome';
 import styles from './styles';
 
 
-@translate(['common'])
+@translate(['companiesList'])
 @withStyles(styles)
 export default class CompanyItem extends React.Component {
 	render() {

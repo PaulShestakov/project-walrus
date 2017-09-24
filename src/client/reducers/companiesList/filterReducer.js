@@ -1,46 +1,41 @@
 import Util from '../util/Util';
 import {
-	LOAD_BREEDS_SUCCESS,
+	COMPANIES_LIST_ADD_CITY,
+	COMPANIES_LIST_REMOVE_CITY,
 
-	SET_ANIMAL,
-	SET_PROMO_TYPE,
-	ADD_BREED,
-	REMOVE_BREED,
-	ADD_CITY,
-	REMOVE_CITY,
+	COMPANIES_LIST_UPDATE_URL_WITH_STATE_SOURCE,
 
-	UPDATE_URL_WITH_STATE_SOURCE,
-
-	UPDATE_FILTER_STATE_WITH_URL_SOURCE
-} from './../../actionCreators/promosList/filter';
+	COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE
+} from './../../actionCreators/companiesList/filter';
 
 const defaultState = {
+	companyCategoryId: undefined,
 	companySubcategoryId: undefined,
 	selectedCitiesIds: []
 };
 
 
-const filterReducer = (state = defaultState, action) => {
+export const companiesFilterReducer = (state = defaultState, action) => {
 	switch (action.type) {
-		case ADD_CITY: {
+		case COMPANIES_LIST_ADD_CITY: {
 			return {
 				...state,
 				selectedCitiesIds: state.selectedCitiesIds.concat([action.payload])
 			}
 		}
-		case REMOVE_CITY: {
+		case COMPANIES_LIST_REMOVE_CITY: {
 			return {
 				...state,
 				selectedCitiesIds: state.selectedCitiesIds.filter(x => x !== action.payload)
 			}
 		}
 
-		case UPDATE_URL_WITH_STATE_SOURCE: {
+		case COMPANIES_LIST_UPDATE_URL_WITH_STATE_SOURCE: {
 			updateUrl(state, action.payload);
 
 			return state;
 		}
-		case UPDATE_FILTER_STATE_WITH_URL_SOURCE: {
+		case COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE: {
 			return {
 				...state,
 				...urlParamsToStateData(action.payload)
@@ -53,15 +48,19 @@ const filterReducer = (state = defaultState, action) => {
 	}
 };
 
-
-function updateUrl(state, history) {
+export function stateDataToUrlQuery(state) {
 	const filterData = {
+		companyCategoryId: state.companyCategoryId,
 		companySubcategoryId: state.companySubcategoryId,
 		cityId: state.selectedCitiesIds
 	};
 
+	return Util.objectToUrlQuery(filterData);
+}
+
+function updateUrl(state, history) {
 	history.push({
-		search: Util.objectToUrlQuery(filterData)
+		search: stateDataToUrlQuery(state)
 	});
 }
 
@@ -70,10 +69,8 @@ function urlParamsToStateData(searchParams) {
 	const urlData = Util.searchParamsToObject(searchParams);
 
 	return {
+		companyCategoryId: urlData.companyCategoryId || defaultState.companyCategoryId,
 		companySubcategoryId: urlData.companySubcategoryId  || defaultState.companySubcategoryId,
 		selectedCitiesIds: urlData.cityId || defaultState.selectedCitiesIds,
-
 	};
 }
-
-export default filterReducer;

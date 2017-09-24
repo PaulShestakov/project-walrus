@@ -25,7 +25,7 @@ export default class CompaniesOverview extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const params = new URLSearchParams(nextProps.location.search);
-        const category = params.get('category');
+        const category = params.get('companyCategoryId');
         let categoryIndex = 0;
         if (category && nextProps.common.companiesCategories) {
         	nextProps.common.companiesCategories.forEach((type, index) => {
@@ -39,7 +39,7 @@ export default class CompaniesOverview extends React.Component {
 
 	handleTabPress = (event, index) => {
         const params = new URLSearchParams(this.props.location.search);
-        params.set('category', this.props.common.companiesCategories[index].companyCategoryId);
+        params.set('companyCategoryId', this.props.common.companiesCategories[index].companyCategoryId);
         this.props.history.push({
             pathname: this.props.location.pathname,
             search: params.toString()

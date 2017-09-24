@@ -21,9 +21,6 @@ export default class CompaniesList extends React.Component {
 		const searchParams = new URLSearchParams(this.props.location.search);
 		this.props.updateStateWithUrlSource(searchParams);
 
-
-
-
 		this.props.loadCompanies();
 	}
 
@@ -47,9 +44,17 @@ export default class CompaniesList extends React.Component {
 
 				<Grid item md={3}>
 					<Sidebar
+						history={this.props.history}
 						filter={this.props.filter}
 
 						cities={this.props.common.cities}
+
+						addCity={this.props.addCity}
+						removeCity={this.props.removeCity}
+
+						updateUrlWithStateSource={this.props.updateUrlWithStateSource}
+
+						loadCompanies={this.props.loadCompanies}
 
 					/>
 				</Grid>

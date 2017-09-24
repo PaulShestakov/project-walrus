@@ -7,7 +7,6 @@ import { executeQuery, executeSeries, executeParallel } from '../../database/DBH
 import Queries from './sql/Queries';
 
 
-
 export default class Companies {
 
 	static externalizeCompany(company) {
@@ -38,11 +37,15 @@ export default class Companies {
 	}
 
 	static getFiltered(params, callback): void {
+		const companyCategoryId = params.companyСategoryId;
 		const companySubcategoryId = params.companySubcategoryId;
 		const citiesIds = Util.ensureArray(params.cityId);
 
 		let filter = squel.expr();
 
+		if (companyCategoryId && companyCategoryId !== 'ALL') {
+			filter = filter.and('c.COMPANY_CATEGORY_ID = ?', companyCategoryId);
+		}
 		if (companySubcategoryId && companySubcategoryId !== 'ALL') {
 			filter = filter.and('c.COMPANY_SUBCATEGORY_ID = ?', companySubcategoryId);
 		}
