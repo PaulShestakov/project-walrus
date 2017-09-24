@@ -26,20 +26,20 @@ class Promo extends BaseController {
 		if (uuid) {
 			repo.get(uuid, (error, result) => {
 				if (error) {
-					this.error(res, 500, error);
+					this.errorResponse(res, 500, error);
 					return;
 				}
 				this.okResponse(res, result);
 			});
 		} else {
-			this.error(res, 400, 'Query parameter uuid is missing');
+			this.errorResponse(res, 400, 'Query parameter uuid is missing');
 		}
 	}
 
 	private getAll(req: Request, res: Response) {
 		repo.getAll(null,(error, result) => {
 			if (error) {
-				this.error(res, 500, error);
+				this.errorResponse(res, 500, error);
 			}
 			this.okResponse(res, result);
 		});
@@ -48,7 +48,7 @@ class Promo extends BaseController {
 	private getFiltered(req: Request, res: Response) {
 		repo.getFiltered(req.query, (error, result) => {
 			if (error) {
-				this.error(res, 500, error);
+				this.errorResponse(res, 500, error);
 			}
 			this.okResponse(res, result);
 		});
@@ -62,13 +62,13 @@ class Promo extends BaseController {
 
 			repo.save(promo, (error, data) => {
 				if (error) {
-					this.error(res, 500, error);
+					this.errorResponse(res, 500, error);
 					return;
 				}
 				this.okResponse(res, data);
 			});
 		} else {
-			this.error(res, 400, 'Promo is missing');
+			this.errorResponse(res, 400, 'Promo is missing');
 		}
 	}
 
@@ -77,13 +77,13 @@ class Promo extends BaseController {
 		if (promo) {
 			repo.update(promo, (error, result) => {
 				if (error) {
-					this.error(res, 500, error);
+					this.errorResponse(res, 500, error);
 					return;
 				}
 				this.okResponse(res, result);
 			});
 		} else {
-			this.error(res, 400, 'Promo is missing');
+			this.errorResponse(res, 400, 'Promo is missing');
 		}
 	}
 
@@ -92,13 +92,13 @@ class Promo extends BaseController {
 		if (uuid) {
 			repo.remove(uuid, (error, result) => {
 				if (error) {
-					this.error(res, 500, error);
+					this.errorResponse(res, 500, error);
 					return;
 				}
 				this.okResponse(res, result);
 			});
 		} else {
-			this.error(res, 400, 'Query parameter uuid is missing');
+			this.errorResponse(res, 400, 'Query parameter uuid is missing');
 		}
 	}
 }

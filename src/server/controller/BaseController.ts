@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import {Response} from 'express';
 
 export default class BaseController {
 
@@ -6,7 +6,7 @@ export default class BaseController {
         res.status(200).send(result);
     }
 
-    protected error(res: Response, code: number, error: string|Object): void {
+    protected errorResponse(res: Response, code: number, error: string|Object): void {
         res.status(code).send({error});
     }
 }

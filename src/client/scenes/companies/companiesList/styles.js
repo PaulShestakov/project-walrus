@@ -1,8 +1,10 @@
 export default {
-	cardContainer: {
-		flexGrow: 1
+	inputWrapper: {
+		display: 'flex'
 	},
 	searchInput: {
+		flexGrow: '1',
+
 		'& input': {
 			textAlign: 'center'
 		}

@@ -17,7 +17,7 @@ class Companies extends BaseController {
 	private getFiltered(req: Request, res: Response) {
 		CompaniesRepository.getFiltered(req.query, (error, result) => {
 			if (error) {
-				this.error(res, 500, error);
+				this.errorResponse(res, 500, error);
 			}
 			this.okResponse(res, result);
 		});
@@ -26,7 +26,7 @@ class Companies extends BaseController {
 	private getCompany(req: Request, res: Response) {
 		CompaniesRepository.getCompany(req.params.companyId, (error, result) => {
 			if (error) {
-				this.error(res, 500, error);
+				this.errorResponse(res, 500, error);
 			} else {
 				this.okResponse(res, result);
 			}

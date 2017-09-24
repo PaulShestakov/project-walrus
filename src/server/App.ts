@@ -2,45 +2,44 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import * as helmet from 'helmet';
-import Promo from "./controller/promo/Promo";
-import Company from "./controller/companies/Companies";
-import CodeValue from "./controller/CodeValue";
+import * as expressValidator from 'express-validator';
 import * as cookieParser from "cookie-parser";
 import * as passport from 'passport';
 import { Strategy as JWTStrategy } from 'passport-jwt';
+
 import User from "./repository/user/User";
+import Promo from "./controller/Promo";
+import Company from "./controller/Companies";
+import CodeValue from "./controller/Codevalues";
+
 
 export default class App {
-	// Ref to Express instance
-	public express: express.Application;
+	public app: express.Application;
 
-	// Run configuration methods on the Express instance.
 	constructor() {
-		this.express = express();
-		this.middleware();
-		this.routes();
+		this.app = express();
+		this.configureMiddleware();
+		this.configureRoutes();
 	}
 
-	// Configure Express middleware.
-	private middleware(): void {
-		this.express.use(cookieParser());
-		this.express.use(helmet());
-		this.express.use(bodyParser.json());
-		this.express.use(bodyParser.urlencoded({ extended: false }));
-
+	private configureMiddleware(): void {
+		this.app.use(cookieParser());
+		this.app.use(helmet());
+		this.app.use(expressValidator());
+		this.app.use(bodyParser.json());
+		this.app.use(bodyParser.urlencoded({ extended: true }));
 		this.jwtMiddleware();
-        this.express.use(passport.initialize());
+		this.app.use(passport.initialize());
 	}
 
-	// Configure API endpoints.
-	private routes(): void {
-		this.express.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-		this.express.use('/api/v1/promo', Promo);
-		this.express.use('/api/v1/company', Company);
-		this.express.use('/api/v1/codevalue', CodeValue);
-		this.express.use('/', express.static(path.join(__dirname, '../client')));
+	private configureRoutes(): void {
+		this.app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+		this.app.use('/api/v1/promo', Promo);
+		this.app.use('/api/v1/company', Company);
+		this.app.use('/api/v1/codevalue', CodeValue);
+		this.app.use('/', express.static(path.join(__dirname, '../client')));
 
-		this.express.get('*', (req, res) => {
+		this.app.get('*', (req, res) => {
 			res.sendFile(path.join(__dirname, './../client', 'index.html'));
 		});
 	}

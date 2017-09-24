@@ -5,10 +5,10 @@ import App from './App';
 
 const PORT = process.env.PORT || 8080;
 
-const express = new App().express;
-express.set('port', PORT);
+const app = new App().app;
+app.set('port', PORT);
 
-const server = http.createServer(express);
+const server = http.createServer(app);
 server.listen(PORT);
 server.on('error', onError);
 server.on('listening', onListening);

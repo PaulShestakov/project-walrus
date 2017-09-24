@@ -4,7 +4,7 @@ export default class Util {
         return Object.keys(obj).length === 0;
     }
 
-    static ensureArray(element: any) {
+    static ensureArray(element: any): any[] {
         return Array.isArray(element) ? element : (element) ? [element] : [];
     }
 

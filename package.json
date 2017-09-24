@@ -23,6 +23,7 @@
     "cookie-parser": "^1.4.3",
     "debug": "^2.6.8",
     "express": "^4.15.3",
+    "express-validator": "^4.2.0",
     "font-awesome": "^4.7.0",
     "helmet": "^3.6.1",
     "i18next": "^8.4.2",

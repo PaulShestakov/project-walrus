@@ -9,6 +9,7 @@ import promosListReducer from './promosList/promosListReducer';
 import filterReducer from './promosList/filterReducer';
 
 import companiesListReducer from './companiesList/companiesListReducer';
+import companiesFilterReducer from './companiesList/filterReducer';
 
 import commonReducer from './common/common';
 
@@ -23,7 +24,10 @@ const rootReducer = combineReducers({
 		filter: filterReducer,
 	}),
 
-	companiesList: companiesListReducer
+	companiesList: combineReducers({
+		main: companiesListReducer,
+		filter: companiesFilterReducer,
+	}),
 });
 
 export default rootReducer;

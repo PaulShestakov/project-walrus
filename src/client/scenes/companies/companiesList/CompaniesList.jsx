@@ -16,6 +16,14 @@ export default class CompaniesList extends React.Component {
 	}
 
 	componentDidMount() {
+		this.props.loadCompaniesCodeValues();
+
+		const searchParams = new URLSearchParams(this.props.location.search);
+		this.props.updateStateWithUrlSource(searchParams);
+
+
+
+
 		this.props.loadCompanies();
 	}
 
@@ -25,21 +33,25 @@ export default class CompaniesList extends React.Component {
 		return (
 			<Grid container className="mt-4">
 				<Grid item md={9}>
-					<Card>
-						<Input placeholder={t('SECTION_SEARCH')}
-							className={classNames(classes.searchInput, 'm-2', 'mt-3')} />
+					<Card className={classes.inputWrapper}>
+						<Input placeholder={t('SECTION_SEARCH')} className={classNames(classes.searchInput, 'm-2', 'mt-3')} />
 					</Card>
 					{
-						this.props.companies.map(company => {
+						this.props.main.companies.map(company => {
 							return (
-								<CompanyItem {...company} />
+								<CompanyItem company={company} />
 							);
 						})
 					}
 				</Grid>
 
 				<Grid item md={3}>
-					<Sidebar />
+					<Sidebar
+						filter={this.props.filter}
+
+						cities={this.props.common.cities}
+
+					/>
 				</Grid>
 			</Grid>
 		);

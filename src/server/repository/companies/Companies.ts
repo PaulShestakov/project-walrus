@@ -38,23 +38,22 @@ export default class Companies {
 	}
 
 	static getFiltered(params, callback): void {
-		const companyCategoryId = params.companyCategoryId;
 		const companySubcategoryId = params.companySubcategoryId;
-		const cityId = params.cityId;
+		const citiesIds = Util.ensureArray(params.cityId);
 
 		let filter = squel.expr();
 
-		if (companyCategoryId && companyCategoryId !== 'ALL') {
-			filter = filter.and('c.COMPANY_CATEGORY_ID = ?', companyCategoryId);
-		}
 		if (companySubcategoryId && companySubcategoryId !== 'ALL') {
 			filter = filter.and('c.COMPANY_SUBCATEGORY_ID = ?', companySubcategoryId);
+		}
+		if (citiesIds.length > 0) {
+			filter = filter.and('c.CITY_ID IN ?', citiesIds);
 		}
 
 		const sql = squel
 			.select()
 			.from('wikipet.companies', 'c')
-			// .where(filter)
+			.where(filter)
 			.toParam();
 
 		executeQuery(sql.text, sql.values, (error, rows) => {
@@ -65,40 +64,5 @@ export default class Companies {
 			const companies = rows.map(Companies.externalizeCompany);
 			callback(null, companies);
 		});
-	}
-
-	static getCompaniesCategories(callback) {
-		executeQuery(Queries.GET_COMPANIES_CATEGORIES, [], (error, result) => {
-			if (result) {
-				const reducedRecords = result.map(Companies.externalizeCompanyCategory).reduce(Companies.companiesCategoryReducer, {});
-				result = Object.values(reducedRecords);
-			}
-			callback(error, result);
-		});
-	}
-
-	static externalizeCompanyCategory(record) {
-		return {
-			companyCategoryId: record.COMPANY_CATEGORY_ID,
-			companyCategoryName: record.COMPANY_CATEGORY_NAME,
-			companySubcategoryId: record.COMPANY_SUBCATEGORY_ID,
-			companySubcategoryName: record.COMPANY_SUBCATEGORY_NAME,
-		}
-	}
-
-
-	static companiesCategoryReducer(acc, record) {
-		if (!acc[record.companyCategoryId]) {
-			acc[record.companyCategoryId] = {
-                companyCategoryId: record.companyCategoryId,
-                companyCategoryName: record.companyCategoryName,
-				subcategories: []
-			};
-		}
-		acc[record.companyCategoryId].subcategories.push({
-            companySubcategoryId: record.companySubcategoryId,
-            companySubcategoryName: record.companySubcategoryName,
-		});
-		return acc;
 	}
 }

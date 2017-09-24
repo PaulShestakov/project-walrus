@@ -25,7 +25,7 @@ const PromosList = connect(
 		return {
 			main: state.promosList.main,
 			filter: state.promosList.filter,
-			common: state.common.promoCodeValues
+			common: state.common
 		}
 	},
 	{

@@ -11,13 +11,22 @@ const styleSheet = {
 	button: {
 		color: 'white'
 	},
+	whiteAccent: {
+		color: globalStyle.DARK_GREY,
+		background: globalStyle.ACCENT_WHITE,
+		'&:hover': {
+			background: globalStyle.ACCENT_WHITE
+		}
+	},
 	redAccent: {
+		color: 'white',
 		background: globalStyle.ACCENT_RED,
 		'&:hover': {
 			background: globalStyle.ACCENT_RED
 		}
 	},
 	blueAccent: {
+		color: 'white',
 		background: globalStyle.ACCENT_BLUE,
 		'&:hover': {
 			background: globalStyle.ACCENT_BLUE
@@ -36,6 +45,7 @@ class Button extends React.Component {
 			<MaterialButton raised={raised} className={classNames(
 					classes.button,
 					{
+						[classes.whiteAccent]: accent === 'white',
 						[classes.redAccent]: accent === 'red',
 						[classes.blueAccent]: accent === 'blue'
 					},
@@ -55,7 +65,7 @@ Button.defaultProps = {
 
 Button.propTypes = {
 	raised: PropTypes.bool,
-	accent: PropTypes.oneOf(['blue', 'red'])
+	accent: PropTypes.oneOf(['white', 'blue', 'red'])
 };
 
 export default Button;

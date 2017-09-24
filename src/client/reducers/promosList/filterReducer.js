@@ -1,3 +1,4 @@
+import Util from '../util/Util';
 import {
 	LOAD_BREEDS_SUCCESS,
 
@@ -97,62 +98,7 @@ const filterReducer = (state = defaultState, action) => {
 };
 
 
-function wrapQueryParam(name, param) {
-	return `${name}=${param}&`;
-}
-
-
 function updateUrl(state, history) {
-	history.push({
-		search: stateDataToUrlQuery(state)
-	});
-}
-
-
-
-
-
-
-function urlParamsToStateData(searchParams) {
-	const urlData = reduceSearchParams(searchParams);
-
-	return {
-		selectedAnimalId: urlData.animalId || defaultState.selectedAnimalId,
-		selectedPromoTypeId: urlData.promoTypeId  || defaultState.selectedPromoTypeId,
-
-		selectedCitiesIds: urlData.cityId  || defaultState.selectedCitiesIds,
-		selectedBreedsIds: urlData.breedId  || defaultState.selectedBreedsIds,
-
-		priceFrom: urlData.priceFrom || defaultState.priceFrom,
-		priceTo: urlData.priceTo || defaultState.priceTo
-	};
-}
-function reduceSearchParams(searchParams) {
-	let filterData = {};
-
-	for (let param of searchParams) {
-		let key = param[0];
-		let value = param[1];
-
-		if (filterData[key]) {
-			if (Array.isArray(filterData[key])) {
-				filterData[key].push(value);
-			}
-			else {
-				filterData[key] = [filterData[key]].concat(value);
-			}
-		}
-		else {
-			filterData[key] = value;
-		}
-	}
-	return filterData;
-}
-
-
-
-export function stateDataToUrlQuery(state) {
-	const baseUrl = '?';
 
 	const filterData = {
 		animalId: state.selectedAnimalId,
@@ -165,31 +111,24 @@ export function stateDataToUrlQuery(state) {
 		priceTo: state.priceTo
 	};
 
-	const urlQuery = Object.keys(filterData).reduce((acc, name) => {
-
-		if (filterData[name] === null || filterData[name] === undefined) {
-			// Skip
-		}
-		else if (Array.isArray(filterData[name])) {
-
-			if (filterData[name].length > 0) {
-				acc += filterData[name].map(wrapQueryParam.bind(null, name)).join('');
-			}
-			else {
-				// Skip
-			}
-		}
-		else {
-			acc += wrapQueryParam(name, filterData[name]);
-		}
-
-		return acc;
-
-	}, '');
-
-	return (baseUrl + urlQuery).slice(0, -1);
+	history.push({
+		search: Util.objectToUrlQuery(filterData)
+	});
 }
 
+function urlParamsToStateData(searchParams) {
+	const urlData = Util.searchParamsToObject(searchParams);
 
+	return {
+		selectedAnimalId: urlData.animalId || defaultState.selectedAnimalId,
+		selectedPromoTypeId: urlData.promoTypeId  || defaultState.selectedPromoTypeId,
+
+		selectedCitiesIds: urlData.cityId  || defaultState.selectedCitiesIds,
+		selectedBreedsIds: urlData.breedId  || defaultState.selectedBreedsIds,
+
+		priceFrom: urlData.priceFrom || defaultState.priceFrom,
+		priceTo: urlData.priceTo || defaultState.priceTo
+	};
+}
 
 export default filterReducer;

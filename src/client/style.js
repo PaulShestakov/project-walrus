@@ -1,3 +1,4 @@
+const ACCENT_WHITE = 'white';
 const ACCENT_RED = '#9d331b';
 const ACCENT_BLUE = '#2f767b';
 
@@ -12,6 +13,7 @@ const STANDART_BORDER_RADIUS = '2px;';
 
 
 export default {
+	ACCENT_WHITE,
 	ACCENT_RED,
 	ACCENT_BLUE,
 

@@ -28,10 +28,10 @@ export function loadPromoCodeValues() {
 	return (dispatch, getState) => {
 		const { common } = getState();
 
-		if (!common.promoCodeValuesLoaded) {
+		if (!common.animalsAreLoaded || !common.citiesAreLoaded) {
 			dispatch(loadPromoCodeValuesStart());
 
-			fetch('/api/v1/codevalue/promo').then(
+			fetch('/api/v1/codevalue?type=ANIMALS&type=CITIES').then(
 				response => {
 					if (response.ok) {
 						return response.json();
@@ -42,8 +42,8 @@ export function loadPromoCodeValues() {
 				}
 			).then(json => {
 				dispatch(loadPromoCodeValuesSuccess({
-					animals: json.animals.map(mapCodeValue),
-					cities: json.cities.map(mapCodeValue)
+					animals: json.ANIMALS.map(mapCodeValue),
+					cities: json.CITIES.map(mapCodeValue)
 				}));
 			});
 		}
@@ -92,7 +92,7 @@ export function loadCompanyCategories() {
 		if (!common.companiesTypesLoaded) {
 			dispatch(loadCompaniesTypesStart());
 
-			fetch('/api/v1/codevalue/companiesCategories').then(
+			fetch('/api/v1/codevalue/?type=COMPANIES_CATEGORIES').then(
 				response => {
 					if (response.ok) {
 						return response.json();
@@ -102,7 +102,60 @@ export function loadCompanyCategories() {
 					dispatch(loadCompaniesTypesError())
 				}
 			).then(json => {
-				dispatch(loadCompaniesTypesSuccess(json));
+				dispatch(loadCompaniesTypesSuccess(json.COMPANIES_CATEGORIES));
+			});
+		}
+	}
+}
+
+
+export const LOAD_COMPANIES_CODE_VALUES_START = 'LOAD_COMPANIES_CODE_VALUES_START';
+export const LOAD_COMPANIES_CODE_VALUES_SUCCESS = 'LOAD_COMPANIES_CODE_VALUES_SUCCESS';
+export const LOAD_COMPANIES_CODE_VALUES_ERROR = 'LOAD_COMPANIES_CODE_VALUES_ERROR';
+
+
+const loadCompaniesCodeValuesStart = () => {
+	return {
+		type: LOAD_COMPANIES_CODE_VALUES_START,
+		isFetching: true
+	};
+};
+const loadCompaniesCodeValuesSuccess = (data) => {
+	return {
+		type: LOAD_COMPANIES_CODE_VALUES_SUCCESS,
+		payload: data,
+		isFetching: false
+	};
+};
+const loadCompaniesCodeValuesError = (error) => {
+	return {
+		type: LOAD_COMPANIES_CODE_VALUES_ERROR,
+		payload: error,
+		isFetching: false
+	};
+};
+
+export function loadCompaniesCodeValues() {
+	return (dispatch, getState) => {
+		const { common } = getState();
+
+		if (!common.citiesAreLoaded) {
+			dispatch(loadCompaniesCodeValuesStart());
+
+			fetch('/api/v1/codevalue/?type=CITIES').then(
+				response => {
+					if (response.ok) {
+						return response.json();
+					}
+				},
+				error => {
+					dispatch(loadCompaniesCodeValuesError())
+				}
+			).then(json => {
+				dispatch(loadCompaniesCodeValuesSuccess({
+					cities: json.CITIES.map(mapCodeValue)
+				}));
+
 			});
 		}
 	}

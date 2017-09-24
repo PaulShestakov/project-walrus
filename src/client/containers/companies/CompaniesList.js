@@ -3,14 +3,27 @@ import {connect} from 'react-redux';
 
 import CompaniesListComponent from '../../scenes/companies/companiesList/CompaniesList';
 import {loadCompanies} from "../../actionCreators/companiesList/companiesList";
-
+import {
+	updateStateWithUrlSource,
+	updateUrlWithStateSource
+} from "../../actionCreators/companiesList/filter";
+import {loadCompaniesCodeValues} from "../../actionCreators/common";
 
 const CompaniesList = connect(
 	state => {
-		return state.companiesList;
+		return {
+			main: state.companiesList.main,
+			filter: state.companiesList.filter,
+			common: state.common
+		};
 	},
 	{
-		loadCompanies
+		loadCompaniesCodeValues,
+
+		loadCompanies,
+
+		updateStateWithUrlSource,
+		updateUrlWithStateSource
 	}
 )(CompaniesListComponent);
 
