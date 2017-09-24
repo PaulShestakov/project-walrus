@@ -2,10 +2,9 @@ import * as React from "react";
 import FontAwesome from 'react-fontawesome';
 import { Link } from 'react-router-dom';
 import {translate} from "react-i18next";
-import { Button, Card, Label, Separator, Checkbox, Dropdown, Grid, Popover, Title } from "components";
+import { Button, Card, Label, Separator, Checkbox, Dropdown, Grid, Popover, Title, ButtonMore } from "components";
 
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
-import ButtonMore from "./buttonMore/ButtonMore";
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 

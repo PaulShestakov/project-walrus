@@ -5,7 +5,8 @@ import {Dropdown, Button, Label, Input, Grid, ImageUploader, TextField, Tabs, Ta
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import classNames from 'classnames';
 import styles from './styles';
-import Separator from "../../../../components/separator/Separator";
+import Separator from "../../../../components/Separator/index";
+import CheckboxesBlock from "./checkboxesBlock/CheckboxesBlock";
 
 
 @translate(['companiesList'])
@@ -73,42 +74,58 @@ export default class Sidebar extends React.Component {
 		);
 
 		return (
-			<Card className="p-3">
-				<Label uppercase bold fontSize="1.5rem">{t('LOCATION')}</Label>
-				<Separator className={classes.separator} />
-				<div className={classNames(classes.checkboxesContainer, 'mt-3')}>
-				{
-					this.props.cities.slice(0, 4)
-						.concat(
-							this.props.cities.slice(4)
-								.filter(city => this.props.filter.selectedCitiesIds.indexOf(city.value) > -1)
-						)
-						.map((city, index) => {
-							const checked = this.props.filter.selectedCitiesIds.indexOf(city.value) !== -1;
+			<Card className={classes.card}>
 
-							return (
-								<FormControlLabel className={classNames(classes.checkboxWrapper, 'mt-1')}
-									label={city.label}
-									control={
-										<Checkbox value={city.value}
-											name="cities"
-											checked={checked}
-											onChange={this.handleCheckboxPressed}
-										/>
-									}/>
-							)
-						})
-				}
-				</div>
-				<Popover isOpen={this.state.isLocationPopoverOpened}
-					body={allCitiesPopover}
-					preferPlace="left"
-					onOuterAction={this.handleLocationPopoverOuterAction}>
 
-					<Button onClick={this.handleOpenLocationPopover}>
-						{t('ALL_CITIES')}
-					</Button>
-				</Popover>
+				<CheckboxesBlock
+					title={t('LOCATION')}
+					showMoreLabel={t('ALL_CITIES')}
+
+					items={this.props.cities}
+					selectedIds={this.props.filter.selectedCitiesIds}
+
+					handleCheckboxPressed={this.handleCheckboxPressed}
+				/>
+
+				{/*<Label uppercase bold fontSize="1.5rem" className="m-3">{t('LOCATION')}</Label>*/}
+				{/*<Separator className="mt-2" />*/}
+				{/*<div className={classNames(classes.checkboxesContainer, 'm-3')}>*/}
+				{/*{*/}
+					{/*this.props.cities.slice(0, 4)*/}
+						{/*.concat(*/}
+							{/*this.props.cities.slice(4)*/}
+								{/*.filter(city => this.props.filter.selectedCitiesIds.indexOf(city.value) > -1)*/}
+						{/*)*/}
+						{/*.map((city, index) => {*/}
+							{/*const checked = this.props.filter.selectedCitiesIds.indexOf(city.value) !== -1;*/}
+
+							{/*return (*/}
+								{/*<FormControlLabel className={classNames(classes.checkboxWrapper, 'mt-1')}*/}
+									{/*label={city.label}*/}
+									{/*control={*/}
+										{/*<Checkbox value={city.value}*/}
+											{/*name="cities"*/}
+											{/*checked={checked}*/}
+											{/*onChange={this.handleCheckboxPressed}*/}
+										{/*/>*/}
+									{/*}/>*/}
+							{/*)*/}
+						{/*})*/}
+				{/*}*/}
+				{/*</div>*/}
+				{/*<Popover isOpen={this.state.isLocationPopoverOpened}*/}
+					{/*body={allCitiesPopover}*/}
+					{/*preferPlace="left"*/}
+					{/*onOuterAction={this.handleLocationPopoverOuterAction}>*/}
+
+					{/*<Button onClick={this.handleOpenLocationPopover}>*/}
+						{/*{t('ALL_CITIES')}*/}
+					{/*</Button>*/}
+				{/*</Popover>*/}
+
+
+
+
 			</Card>
 		);
 	}

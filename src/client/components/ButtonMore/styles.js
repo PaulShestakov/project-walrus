@@ -1,4 +1,4 @@
-import globalStyles from './../../../../../style';
+import globalStyles from './../../style';
 
 
 export default {
@@ -7,12 +7,20 @@ export default {
 		background: 'white',
 		color: `${globalStyles.DARK_GREY}`,
 
-		border: `1px solid ${globalStyles.DARK_GREY}`,
+		'& span': {
+			justifyContent: 'start',
+			alignItems: 'baseline'
+		}
 	},
+
 	disabled: {
 		background: 'white',
 		color: `${globalStyles.LIGHT_GREY}`,
 		border: `1px solid ${globalStyles.LIGHT_GREY}`,
+	},
+
+	arrowIcon: {
+		fontSize: '1.5rem'
 	}
 }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import FontAwesome from 'react-fontawesome';
 import { withStyles } from 'material-ui/styles';
+import Label from '../Label';
 import Button from 'material-ui/Button';
 import classNames from 'classnames';
 import styles from './styles';
@@ -9,7 +10,7 @@ import styles from './styles';
 @withStyles(styles)
 export default class ButtonMore extends React.Component {
 	render() {
-		const {classes, className, ...other} = this.props;
+		const {classes, className, label, ...other} = this.props;
 
 		return (
 			<Button
@@ -21,10 +22,8 @@ export default class ButtonMore extends React.Component {
 				}
 				{...other}>
 
-
-
-				<FontAwesome name="angle-left" className="mr-2" />
-				{this.props.children}
+				<FontAwesome name="angle-left" className={classNames(classes.arrowIcon, "mr-2")} />
+				<Label uppercase fontSize="1.25rem">{label}</Label>
 			</Button>
 		);
 	}

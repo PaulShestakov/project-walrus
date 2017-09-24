@@ -11,7 +11,8 @@ export default class Label extends React.Component {
 		const {classes, className, ...other} = this.props;
 
 		const style = {
-			fontSize: this.props.fontSize
+			fontSize: this.props.fontSize,
+			lineHeight: this.props.fontSize
 		};
 
 		return (

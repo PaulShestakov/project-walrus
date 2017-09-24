@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
-import ImagePreview from "./components/ImagePreview";
+import ImagePreview from "./ImagePreview";
 import FontAwesome from 'react-fontawesome';
 
 import { withStyles } from 'material-ui/styles';

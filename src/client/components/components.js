@@ -1,13 +1,13 @@
-import Button from			'./button/Button';
-import ImageUploader from	'./imageUploader/ImageUploader';
-import Label from			'./label/Label';
-import Separator from		'./separator/Separator';
-import Text from			'./text/Text';
-import Title from			'./title/Title';
-import DateTimePicker from	'./input/dateTimePicker/DateTimePicker';
-import Checkbox from 		'./checkbox/Checkbox';
-import Dropdown from 		'./dropdown/Dropdown';
-
+import Button from './Button/index';
+import ButtonMore from './ButtonMore';
+import ImageUploader from './ImageUploader';
+import Label from './Label';
+import Separator from './Separator';
+import Text from './Text';
+import Title from './Title';
+import DateTimePicker from './DateTimePicker';
+import Checkbox from './Checkbox';
+import Dropdown from './Dropdown';
 
 import TextField from 		'material-ui/TextField';
 import Grid from 			'material-ui/Grid';
@@ -19,6 +19,7 @@ import Popover from 		'react-popover';
 
 export {
 	Button,
+	ButtonMore,
 	ImageUploader,
 	Label,
 	Separator,

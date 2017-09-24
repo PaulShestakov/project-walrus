@@ -1,12 +1,7 @@
-import globalStyles from '../../../../style';
+import globalStyles from '../../../../../style';
 
 
 export default {
-	card: {
-		// Collapsing margin fix
-		// TODO: Check again this thing
-		paddingTop: '1px'
-	},
 	checkboxesContainer: {
 		display: 'flex',
 		flexDirection: 'column'
@@ -28,7 +23,9 @@ export default {
 		}
 	},
 
-	separator: {
-		width: '100%'
+	popoverCard: {
+		display: 'flex',
+		flexDirection: 'column',
+		padding: '1.5rem'
 	}
 }

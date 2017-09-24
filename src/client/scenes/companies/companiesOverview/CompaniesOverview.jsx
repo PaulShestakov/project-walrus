@@ -49,36 +49,30 @@ export default class CompaniesOverview extends React.Component {
 	render() {
 		const {t, classes, match, common, ...other} = this.props;
 
-		return (
+		const icons = [
+			<Healing className={classes.tabIcon} />,
+			<Favorite className={classes.tabIcon} />,
+			<ShoppingCart className={classes.tabIcon} />,
+			<Pets className={classes.tabIcon} />,
+			<Assignment className={classes.tabIcon} />,
+			<Extension className={classes.tabIcon} />
+		];
 
+		return (
 			<Card className="mt-4">
 				<Paper>
-					<Tabs
-						indicatorColor="primary"
+					<Tabs indicatorColor="primary"
 						textColor="primary"
 						value={this.state.selectedTabIndex}
 						onChange={this.handleTabPress}
 						fullWidth>
                         {
-                            common.companiesCategories && common.companiesCategories.map((type, index) => {
-                                let icon;
-                                if (index === 0) {
-                                    icon = <Healing />;
-                                } else if (index === 1) {
-                                    icon = <Favorite />;
-                                } else if (index === 2) {
-                                    icon = <ShoppingCart />
-                                } else if (index === 3) {
-                                    icon = <Pets/>;
-                                } else if (index === 4) {
-                                    icon = <Assignment />;
-                                } else {
-                                    icon = <Extension />
-                                }
-                                return (
-									<Tab label={type.companyCategoryName} icon={icon} />
-                                );
-                            })
+                            common.companiesCategories.map((type, index) => (
+								<Tab className={classes.tab}
+									 classes={{label: classes.tabLabel, labelContainer: classes.tabLabelContainer}}
+									 label={type.companyCategoryName}
+									 icon={icons[index]} />
+                            ))
                         }
 					</Tabs>
 				</Paper>
