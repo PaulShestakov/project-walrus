@@ -1,12 +1,17 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Dropdown, Button, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Popover, Checkbox} from "components";
+import {Dropdown, Button, Label, Grid, ImageUploader, TextField, Tabs, Tab, Card, Popover, Checkbox} from "components";
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import classNames from 'classnames';
 import styles from './styles';
 import Separator from "../../../../components/Separator/index";
 import CheckboxesBlock from "./checkboxesBlock/CheckboxesBlock";
+
+import Input, { InputLabel } from 'material-ui/Input';
+import { MenuItem } from 'material-ui/Menu';
+import { FormControl, FormHelperText } from 'material-ui/Form';
+import Select from 'material-ui/Select';
 
 
 @translate(['companiesList'])
@@ -42,44 +47,37 @@ export default class Sidebar extends React.Component {
 				}
 				break;
 			}
+			case 'daysOfWeek': {
+				if (event.target.checked) {
+					this.props.addDayOfWeek(event.target.value);
+				} else {
+					this.props.removeDayOfWeek(event.target.value);
+				}
+				break;
+			}
 		}
 		this.props.updateUrlWithStateSource(this.props.history);
 		this.props.loadCompanies();
 	};
 
+	handleChange = () => {
+
+	};
+
+
 	render() {
 		const {t, classes, ...other} = this.props;
-
-		const allCitiesPopover = (
-			<Card>
-				<Grid container direction="column" spacing={8}>
-					{
-						this.props.cities.map((city, index) => (
-							<Grid item>
-								<FormControlLabel
-									label={city.label}
-									className="my-0 mx-2"
-									control={
-										<Checkbox name="cities"
-											  value={city.value}
-											  checked={this.props.filter.selectedCitiesIds.indexOf(city.value) !== -1}
-											  onChange={this.handleCheckboxPressed}
-										/>
-									} />
-							</Grid>
-						))
-					}
-				</Grid>
-			</Card>
-		);
 
 		return (
 			<Card className={classes.card}>
 
 
 				<CheckboxesBlock
+					formGroupName="cities"
 					title={t('LOCATION')}
 					showMoreLabel={t('ALL_CITIES')}
+
+					numberOfItemsToShowDefault={4}
 
 					items={this.props.cities}
 					selectedIds={this.props.filter.selectedCitiesIds}
@@ -87,41 +85,62 @@ export default class Sidebar extends React.Component {
 					handleCheckboxPressed={this.handleCheckboxPressed}
 				/>
 
-				{/*<Label uppercase bold fontSize="1.5rem" className="m-3">{t('LOCATION')}</Label>*/}
-				{/*<Separator className="mt-2" />*/}
-				{/*<div className={classNames(classes.checkboxesContainer, 'm-3')}>*/}
-				{/*{*/}
-					{/*this.props.cities.slice(0, 4)*/}
-						{/*.concat(*/}
-							{/*this.props.cities.slice(4)*/}
-								{/*.filter(city => this.props.filter.selectedCitiesIds.indexOf(city.value) > -1)*/}
-						{/*)*/}
-						{/*.map((city, index) => {*/}
-							{/*const checked = this.props.filter.selectedCitiesIds.indexOf(city.value) !== -1;*/}
+				<CheckboxesBlock
+					formGroupName="daysOfWeek"
+					title={t('WORKING_TIME')}
+					showMoreLabel={t('DAYS_OF_WORK')}
 
-							{/*return (*/}
-								{/*<FormControlLabel className={classNames(classes.checkboxWrapper, 'mt-1')}*/}
-									{/*label={city.label}*/}
-									{/*control={*/}
-										{/*<Checkbox value={city.value}*/}
-											{/*name="cities"*/}
-											{/*checked={checked}*/}
-											{/*onChange={this.handleCheckboxPressed}*/}
-										{/*/>*/}
-									{/*}/>*/}
-							{/*)*/}
-						{/*})*/}
-				{/*}*/}
-				{/*</div>*/}
-				{/*<Popover isOpen={this.state.isLocationPopoverOpened}*/}
-					{/*body={allCitiesPopover}*/}
-					{/*preferPlace="left"*/}
-					{/*onOuterAction={this.handleLocationPopoverOuterAction}>*/}
+					numberOfItemsToShowDefault={0}
 
-					{/*<Button onClick={this.handleOpenLocationPopover}>*/}
-						{/*{t('ALL_CITIES')}*/}
-					{/*</Button>*/}
-				{/*</Popover>*/}
+					items={this.props.daysOfWeek}
+					selectedIds={this.props.filter.selectedDaysOfWeekIds}
+
+					handleCheckboxPressed={this.handleCheckboxPressed}
+				/>
+
+				<div className={classNames(classes.timeSelectionContainer, 'p-3')}>
+					<Label>{t('FROM') + ':'}</Label>
+
+					<FormControl className={classes.formControl}>
+						<InputLabel htmlFor="from">From</InputLabel>
+						<Select
+							value={9}
+							onChange={this.handleChange('age')}
+							input={<Input id="from" />}
+						>
+							<MenuItem value="">
+								<em>None</em>
+							</MenuItem>
+							{
+								[...new Array(24)].map((x, i) => (
+									<MenuItem value={i + 1}>{i + 1}</MenuItem>
+								))
+							}
+						</Select>
+					</FormControl>
+
+					<Label>{t('TO') + ':'}</Label>
+
+					<FormControl className={classes.formControl}>
+						<InputLabel htmlFor="to">To</InputLabel>
+						<Select
+							value={24}
+							onChange={this.handleChange('age')}
+							input={<Input id="to" />}
+						>
+							<MenuItem value="">
+								<em>None</em>
+							</MenuItem>
+							{
+								[...new Array(24)].map((x, i) => (
+									<MenuItem value={i + 1}>{i + 1}</MenuItem>
+								))
+							}
+						</Select>
+					</FormControl>
+				</div>
+
+
 
 
 

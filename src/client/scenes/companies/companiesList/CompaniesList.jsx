@@ -28,7 +28,7 @@ export default class CompaniesList extends React.Component {
 		const {t, classes, ...other} = this.props;
 
 		return (
-			<Grid container className="mt-4">
+			<Grid container className="my-4">
 				<Grid item md={9}>
 					<Card className={classes.inputWrapper}>
 						<Input placeholder={t('SECTION_SEARCH')} className={classNames(classes.searchInput, 'm-2', 'mt-3')} />
@@ -48,14 +48,16 @@ export default class CompaniesList extends React.Component {
 						filter={this.props.filter}
 
 						cities={this.props.common.cities}
-
 						addCity={this.props.addCity}
 						removeCity={this.props.removeCity}
+
+						daysOfWeek={this.props.common.daysOfWeek}
+						addDayOfWeek={this.props.addDayOfWeek}
+						removeDayOfWeek={this.props.removeDayOfWeek}
 
 						updateUrlWithStateSource={this.props.updateUrlWithStateSource}
 
 						loadCompanies={this.props.loadCompanies}
-
 					/>
 				</Grid>
 			</Grid>

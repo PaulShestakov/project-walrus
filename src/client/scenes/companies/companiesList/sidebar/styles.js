@@ -30,5 +30,11 @@ export default {
 
 	separator: {
 		width: '100%'
+	},
+
+	timeSelectionContainer: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center'
 	}
 }

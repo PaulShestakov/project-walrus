@@ -4,6 +4,7 @@ import {
 
 	LOAD_COMPANIES_CODE_VALUES_SUCCESS
 } from '../../actionCreators/common';
+import daysOfWeek from './daysOfWeek';
 
 const defaultState = {
 	animals: [],
@@ -13,7 +14,9 @@ const defaultState = {
 	citiesAreLoaded: false,
 
 	companiesCategories: [],
-	companiesCategoriesAreLoaded: false
+	companiesCategoriesAreLoaded: false,
+
+	daysOfWeek: daysOfWeek
 };
 
 const commonReducer = (state = defaultState, action) => {

@@ -8,7 +8,10 @@ import {
 	updateUrlWithStateSource,
 
 	addCity,
-	removeCity
+	removeCity,
+
+	addDayOfWeek,
+	removeDayOfWeek,
 } from "../../actionCreators/companiesList/filter";
 import {loadCompaniesCodeValues} from "../../actionCreators/common";
 
@@ -30,7 +33,10 @@ const CompaniesList = connect(
 
 
 		addCity,
-		removeCity
+		removeCity,
+
+		addDayOfWeek,
+		removeDayOfWeek,
 	}
 )(CompaniesListComponent);
 

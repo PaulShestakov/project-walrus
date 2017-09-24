@@ -126,8 +126,8 @@ function urlParamsToStateData(searchParams) {
 		selectedAnimalId: urlData.animalId || defaultState.selectedAnimalId,
 		selectedPromoTypeId: urlData.promoTypeId  || defaultState.selectedPromoTypeId,
 
-		selectedCitiesIds: urlData.cityId  || defaultState.selectedCitiesIds,
-		selectedBreedsIds: urlData.breedId  || defaultState.selectedBreedsIds,
+		selectedCitiesIds: Util.ensureArray(urlData.cityId),
+		selectedBreedsIds: Util.ensureArray(urlData.breedId),
 
 		priceFrom: urlData.priceFrom || defaultState.priceFrom,
 		priceTo: urlData.priceTo || defaultState.priceTo

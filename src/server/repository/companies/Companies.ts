@@ -37,7 +37,7 @@ export default class Companies {
 	}
 
 	static getFiltered(params, callback): void {
-		const companyCategoryId = params.companyСategoryId;
+		const companyCategoryId = params.companyCategoryId;
 		const companySubcategoryId = params.companySubcategoryId;
 		const citiesIds = Util.ensureArray(params.cityId);
 
@@ -49,9 +49,9 @@ export default class Companies {
 		if (companySubcategoryId && companySubcategoryId !== 'ALL') {
 			filter = filter.and('c.COMPANY_SUBCATEGORY_ID = ?', companySubcategoryId);
 		}
-		if (citiesIds.length > 0) {
-			filter = filter.and('c.CITY_ID IN ?', citiesIds);
-		}
+		// if (citiesIds.length > 0) {
+		// 	filter = filter.and('c.CITY_ID IN ?', citiesIds);
+		// }
 
 		const sql = squel
 			.select()

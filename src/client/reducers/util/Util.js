@@ -51,4 +51,8 @@ export default class Util {
 		}
 		return object;
 	}
+
+	static ensureArray(item) {
+		return Array.isArray(item) ? item : (item ? [item] : []);
+	}
 }

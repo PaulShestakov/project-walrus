@@ -31,7 +31,7 @@
     "i18next-xhr-backend": "^1.4.2",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
-    "material-ui": "^1.0.0-beta.8",
+    "material-ui": "^1.0.0-beta.12",
     "material-ui-icons": "^1.0.0-beta.10",
     "md5": "^2.2.1",
     "mkdirp": "^0.5.1",

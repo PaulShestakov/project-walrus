@@ -3,6 +3,9 @@ import {
 	COMPANIES_LIST_ADD_CITY,
 	COMPANIES_LIST_REMOVE_CITY,
 
+	COMPANIES_LIST_ADD_DAY_OF_WEEK,
+	COMPANIES_LIST_REMOVE_DAY_OF_WEEK,
+
 	COMPANIES_LIST_UPDATE_URL_WITH_STATE_SOURCE,
 
 	COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE
@@ -11,7 +14,8 @@ import {
 const defaultState = {
 	companyCategoryId: undefined,
 	companySubcategoryId: undefined,
-	selectedCitiesIds: []
+	selectedCitiesIds: [],
+	selectedDaysOfWeekIds: []
 };
 
 
@@ -27,6 +31,19 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 			return {
 				...state,
 				selectedCitiesIds: state.selectedCitiesIds.filter(x => x !== action.payload)
+			}
+		}
+
+		case COMPANIES_LIST_ADD_DAY_OF_WEEK: {
+			return {
+				...state,
+				selectedDaysOfWeekIds: state.selectedDaysOfWeekIds.concat([action.payload])
+			}
+		}
+		case COMPANIES_LIST_REMOVE_DAY_OF_WEEK: {
+			return {
+				...state,
+				selectedDaysOfWeekIds: state.selectedDaysOfWeekIds.filter(x => x !== action.payload)
 			}
 		}
 
@@ -52,7 +69,8 @@ export function stateDataToUrlQuery(state) {
 	const filterData = {
 		companyCategoryId: state.companyCategoryId,
 		companySubcategoryId: state.companySubcategoryId,
-		cityId: state.selectedCitiesIds
+		cityId: state.selectedCitiesIds,
+		dayOfWeek: state.selectedDaysOfWeekIds
 	};
 
 	return Util.objectToUrlQuery(filterData);
@@ -71,6 +89,7 @@ function urlParamsToStateData(searchParams) {
 	return {
 		companyCategoryId: urlData.companyCategoryId || defaultState.companyCategoryId,
 		companySubcategoryId: urlData.companySubcategoryId  || defaultState.companySubcategoryId,
-		selectedCitiesIds: urlData.cityId || defaultState.selectedCitiesIds,
+		selectedCitiesIds: Util.ensureArray(urlData.cityId),
+		selectedDaysOfWeekIds: Util.ensureArray(urlData.dayOfWeek),
 	};
 }

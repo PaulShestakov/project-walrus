@@ -31,7 +31,7 @@ export default class CheckboxesBlock extends React.Component {
 	};
 
 	render() {
-		const {classes, title, showMoreLabel, items, selectedIds, ...other} = this.props;
+		const {classes, title, showMoreLabel, formGroupName, items, selectedIds, ...other} = this.props;
 
 		const otherItemsPopover = (
 			<Card className={classes.popoverCard}>
@@ -41,7 +41,7 @@ export default class CheckboxesBlock extends React.Component {
 						label={item.label}
 						className={classNames(classes.checkboxWrapper, 'mt-2')}
 						control={
-							<Checkbox name="cities"
+							<Checkbox name={formGroupName}
 								className="ml-3"
 								value={item.value}
 								checked={selectedIds.indexOf(item.value) !== -1}
@@ -53,15 +53,21 @@ export default class CheckboxesBlock extends React.Component {
 			</Card>
 		);
 
+		const numberOfItemsToShow = this.props.numberOfItemsToShowDefault +
+				items.slice(this.props.numberOfItemsToShowDefault).filter(item => selectedIds.indexOf(item.value) > -1).length;
+
 		return (
 			<div>
 				<Label uppercase bold fontSize="1.5rem" className="m-3">{title}</Label>
 				<Separator />
-				<div className={classNames(classes.checkboxesContainer, 'm-3 mb-2')}>
+				<div className={classNames(
+					classes.checkboxesContainer,
+					numberOfItemsToShow > 0 ? 'm-3 mb-2' : ''
+				)}>
 					{
-						items.slice(0, 4)
+						items.slice(0, this.props.numberOfItemsToShowDefault)
 							.concat(
-								items.slice(4).filter(city => selectedIds.indexOf(city.value) > -1)
+								items.slice(this.props.numberOfItemsToShowDefault).filter(item => selectedIds.indexOf(item.value) > -1)
 							)
 							.map((item, index) => {
 								const checked = selectedIds.indexOf(item.value) !== -1;
@@ -71,7 +77,7 @@ export default class CheckboxesBlock extends React.Component {
 										label={item.label}
 										control={
 											<Checkbox value={item.value}
-												name="cities"
+												name={formGroupName}
 												checked={checked}
 												onChange={this.props.handleCheckboxPressed}
 											/>
@@ -87,7 +93,7 @@ export default class CheckboxesBlock extends React.Component {
 
 					<ButtonMore onClick={this.handleOpenPopover} label={showMoreLabel} />
 				</Popover>
-				<Separator className="mt-2" />
+				<Separator className="pb-2" />
 			</div>
 		);
 	}

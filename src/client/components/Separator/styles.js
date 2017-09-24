@@ -1,9 +1,10 @@
 import globalStyles from './../../style';
 
-
 export default {
 	separator: {
 		width: '100%',
-        borderBottom: `1px solid ${globalStyles.LIGHT_GREY}`
+		height: '1px',
+		backgroundColor: globalStyles.LIGHT_GREY,
+		backgroundClip: 'content-box'
     }
 }
