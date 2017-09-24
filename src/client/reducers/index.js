@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import newPromoReducer from './newPromo/newPromo';
+import newCompanyReducer from './newCompany'
 
 import promoPageReducer from './promoPage/promoPage';
 import companyPageReducer from './companyPage/companyPage';
@@ -16,6 +17,7 @@ import commonReducer from './common/common';
 const rootReducer = combineReducers({
 	common: commonReducer,
 	newPromo: newPromoReducer,
+	newCompany: newCompanyReducer,
 	promoPage: promoPageReducer,
 	companyPage : companyPageReducer,
 

@@ -11,6 +11,7 @@ import NewPromo from "../../containers/promos/NewPromo";
 import PromoPage from "../../containers/promos/PromoPage";
 
 import CompanyPage from "../../containers/companies/CompanyPage";
+import NewCompany from "../../containers/companies/NewCompany";
 import CompaniesList from "../../containers/companies/CompaniesList";
 import CompaniesOverview from "../../containers/companies/CompaniesOverview";
 
@@ -33,6 +34,7 @@ export default class Router extends React.Component {
 								<Route exact path='/promosList' component={PromosList} />
 
 								<Route path="/company/:companyId" component={CompanyPage} />
+								<Route path="/newCompany" component={NewCompany} />
 								<Route path="/companiesList" component={CompaniesList} />
 								<Route path="/companiesOverview" component={CompaniesOverview} />
 

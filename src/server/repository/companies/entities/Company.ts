@@ -5,7 +5,11 @@ class Company {
 	description: string;
 	email: string;
 	url: string;
-	phone: string;
+	phones: Array<string>;
 	lat: number;
 	lng: number;
+    companyCategoryId: string;
+    companySubcategoryId: string;
+    companyCategoryName: string;
+    companySubcategoryName: string;
 }

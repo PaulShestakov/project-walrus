@@ -1,10 +1,12 @@
 import React from 'react';
+import FontAwesome from 'react-fontawesome';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
 import {Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Popover, Checkbox} from "components";
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import classNames from 'classnames';
 import styles from './styles';
+import {Link} from "react-router-dom";
 
 
 @translate(['companiesList'])
@@ -58,6 +60,12 @@ export default class Sidebar extends React.Component {
 
 		return (
 			<Card className="p-3">
+				<Button accent="red" disableRipple={true} className='w-100 my-2'>
+					<Link to="/newCompany" className={classes.link}>
+						<FontAwesome name="plus" className="mr-1" />
+                        Добавить компанию
+					</Link>
+				</Button>
 				<Title uppercase>{t('CITY')}</Title>
 				{
 					this.props.cities.slice(0, 4)

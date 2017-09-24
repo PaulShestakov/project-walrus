@@ -4,7 +4,7 @@ import {
 	SAVE_PROMO_FAILURE,
 
 	NEW_PROMO_CODEVALUES_SUCCESS,
-} from '../../actionCreators/newPromo';
+} from '../../actionCreators/newPromo/index';
 
 import { FETCH_BREED_SUCCESS } from '../../actionCreators/promosList/promosList';
 
