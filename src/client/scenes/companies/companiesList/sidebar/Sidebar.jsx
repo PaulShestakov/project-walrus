@@ -5,6 +5,7 @@ import {Dropdown, Button, Label, Input, Grid, ImageUploader, TextField, Tabs, Ta
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import classNames from 'classnames';
 import styles from './styles';
+import Separator from "../../../../components/separator/Separator";
 
 
 @translate(['companiesList'])
@@ -74,6 +75,8 @@ export default class Sidebar extends React.Component {
 		return (
 			<Card className="p-3">
 				<Label uppercase bold fontSize="1.5rem">{t('LOCATION')}</Label>
+				<Separator className={classes.separator} />
+				<div className={classNames(classes.checkboxesContainer, 'mt-3')}>
 				{
 					this.props.cities.slice(0, 4)
 						.concat(
@@ -84,18 +87,19 @@ export default class Sidebar extends React.Component {
 							const checked = this.props.filter.selectedCitiesIds.indexOf(city.value) !== -1;
 
 							return (
-								<Grid item xs={6}>
-									<FormControlLabel className="m-0" label={city.label} control={
+								<FormControlLabel className={classNames(classes.checkboxWrapper, 'mt-1')}
+									label={city.label}
+									control={
 										<Checkbox value={city.value}
-												  name="cities"
-												  checked={checked}
-												  onChange={this.handleCheckboxPressed}
+											name="cities"
+											checked={checked}
+											onChange={this.handleCheckboxPressed}
 										/>
 									}/>
-								</Grid>
 							)
 						})
 				}
+				</div>
 				<Popover isOpen={this.state.isLocationPopoverOpened}
 					body={allCitiesPopover}
 					preferPlace="left"
