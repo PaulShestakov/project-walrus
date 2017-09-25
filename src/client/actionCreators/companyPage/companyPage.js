@@ -1,8 +1,8 @@
-export const LOAD_COMPANIES_SUCCESS = 'LOAD_COMPANIES_SUCCESS';
+export const LOAD_COMPANY_SUCCESS = 'LOAD_COMPANY_SUCCESS';
 
 
 const loadCompanySuccess = (data) => ({
-    type: LOAD_COMPANIES_SUCCESS,
+    type: LOAD_COMPANY_SUCCESS,
     payload: data,
     isFetching: false
 });

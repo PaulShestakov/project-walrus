@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import NewPromoComponent from '../../scenes/promos/newPromo/NewPromo';
 
-import {savePromo} from '../../actionCreators/newPromo';
+import {savePromo} from '../../actionCreators/newPromo/index';
 import {fetchBreed} from "../../actionCreators/promosList/promosList";
 import {loadPromoCodeValues} from "../../actionCreators/common";
 

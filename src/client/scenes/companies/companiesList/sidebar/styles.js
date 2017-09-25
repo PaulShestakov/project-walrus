@@ -36,5 +36,9 @@ export default {
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center'
+	},
+	link: {
+		color: 'white',
+		textDecoration: 'none'
 	}
 }

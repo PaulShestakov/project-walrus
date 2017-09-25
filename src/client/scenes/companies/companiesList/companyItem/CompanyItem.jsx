@@ -8,6 +8,7 @@ import Card, {CardHeader, CardMedia, CardContent, CardActions} from 'material-ui
 import classNames from 'classnames';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles';
+import {Paper} from "material-ui";
 
 
 @translate(['companiesList'])
@@ -15,11 +16,17 @@ import styles from './styles';
 export default class CompanyItem extends React.Component {
 	render() {
 		const {t, classes, className, company, ...other} = this.props;
+        const imageSrc = company.logo ? company.logo : '';
 
 		return (
 			<Card className={classNames(classes.card, 'mt-3')}>
-				<CardMedia className={classes.cardImage} image={'test'} />
-
+				<div className="p-4">
+					<Link to={`/company/${company.companyId}`} className={classes.linkWrapper}>
+						<Paper className="p-1">
+							<CardMedia className={classes.cardImage} image={imageSrc} />
+						</Paper>
+					</Link>
+				</div>
 				<CardContent className={classes.flexColumn}>
 					<Label uppercase bold fontSize="2rem">{company.name}</Label>
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import FontAwesome from 'react-fontawesome';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
 import {Dropdown, Button, Label, Grid, ImageUploader, TextField, Tabs, Tab, Card, Popover, Checkbox} from "components";
@@ -12,6 +13,7 @@ import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 import Select from 'material-ui/Select';
+import {Link} from "react-router-dom";
 
 
 @translate(['companiesList'])
@@ -70,7 +72,12 @@ export default class Sidebar extends React.Component {
 
 		return (
 			<Card className={classes.card}>
-
+                <Button accent="red" disableRipple={true} className='w-100 my-2'>
+                    <Link to="/newCompany" className={classes.link}>
+                        <FontAwesome name="plus" className="mr-1" />
+                        Добавить компанию
+                    </Link>
+                </Button>
 
 				<CheckboxesBlock
 					formGroupName="cities"
@@ -139,12 +146,6 @@ export default class Sidebar extends React.Component {
 						</Select>
 					</FormControl>
 				</div>
-
-
-
-
-
-
 			</Card>
 		);
 	}

@@ -6,6 +6,7 @@ import CompanyItem from './companyItem/CompanyItem'
 import Sidebar from './sidebar/Sidebar';
 import classNames from 'classnames';
 import styles from './styles';
+import {Link} from "react-router-dom";
 
 
 @translate(['companiesList'])
@@ -34,7 +35,7 @@ export default class CompaniesList extends React.Component {
 						<Input placeholder={t('SECTION_SEARCH')} className={classNames(classes.searchInput, 'm-2', 'mt-3')} />
 					</Card>
 					{
-						this.props.main.companies.map(company => {
+                        this.props.main.companies && this.props.main.companies.map(company => {
 							return (
 								<CompanyItem company={company} />
 							);

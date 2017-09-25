@@ -1,5 +1,5 @@
 import {
-    LOAD_COMPANIES_SUCCESS
+    LOAD_COMPANY_SUCCESS
 } from './../../actionCreators/companyPage/companyPage';
 
 const defaultState = {
@@ -9,7 +9,7 @@ const defaultState = {
 const companyPageReducer = (state = defaultState, action) => {
     switch (action.type) {
 
-        case LOAD_COMPANIES_SUCCESS: {
+        case LOAD_COMPANY_SUCCESS: {
             return {
                 ...state,
                 company: action.payload
