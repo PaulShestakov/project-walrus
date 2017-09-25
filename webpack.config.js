@@ -4,6 +4,7 @@ const nodeExternals = require('webpack-node-externals');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const nodeEnv = process.env.NODE_ENV;
 
@@ -86,7 +87,8 @@ if (nodeEnv === 'production') {
 				NODE_ENV: JSON.stringify('production'),
 			},
 		}),
-		new webpack.optimize.ModuleConcatenationPlugin()
+		new webpack.optimize.ModuleConcatenationPlugin(),
+		// new BundleAnalyzerPlugin()
 	);
 }
 

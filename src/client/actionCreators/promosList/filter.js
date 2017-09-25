@@ -31,7 +31,7 @@ export const loadBreedsSuccess = (data) => {
 };
 export const loadBreeds = (animalId) => {
 	return dispatch => {
-		fetch("/api/v1/codevalue/promo/breed?animal=" + animalId).then(
+		fetch("/api/v1/codevalue/breed?animal=" + animalId).then(
 			response => {
 				if (response.ok) {
 					return response.json();
@@ -47,9 +47,8 @@ export const loadBreeds = (animalId) => {
 };
 function mapBreed(breed) {
 	return {
-		id: breed.id,
-		name: breed.name,
-		isSelected: false
+		value: breed.id,
+		label: breed.name
 	}
 }
 

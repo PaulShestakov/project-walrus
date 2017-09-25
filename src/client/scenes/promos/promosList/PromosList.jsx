@@ -21,8 +21,7 @@ const PROMOS_TYPES = [
 
 @translate(['promos', 'common'])
 @withStyles(styles)
-class Promos extends React.Component {
-
+export default class Promos extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -34,6 +33,10 @@ class Promos extends React.Component {
 
 		if ([...searchParams.keys()].length > 0) {
 			this.props.updateFilterStateWithUrlSource(searchParams);
+
+			if (searchParams.get('animalId')) {
+				this.props.loadBreeds(searchParams.get('animalId'));
+			}
 		}
 		else {
 			this.props.updateUrlWithStateSource(this.props.history);
@@ -41,8 +44,6 @@ class Promos extends React.Component {
 
 		this.props.loadPromos();
 	}
-
-
 
 	handleTabPress = (event, index) => {
 		this.props.setPromoType(PROMOS_TYPES[index]);
@@ -117,5 +118,3 @@ class Promos extends React.Component {
 		);
 	}
 }
-
-export default Promos;

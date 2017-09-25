@@ -58,7 +58,7 @@ export default class CheckboxesBlock extends React.Component {
 
 		return (
 			<div>
-				<Label uppercase bold fontSize="1.5rem" className="m-3">{title}</Label>
+				<Label uppercase bold fontSize="1.5rem" className="m-3 mt-4">{title}</Label>
 				<Separator />
 				<div className={classNames(
 					classes.checkboxesContainer,
@@ -93,7 +93,7 @@ export default class CheckboxesBlock extends React.Component {
 
 					<ButtonMore onClick={this.handleOpenPopover} label={showMoreLabel} />
 				</Popover>
-				<Separator className="pb-2" />
+				<Separator />
 			</div>
 		);
 	}
