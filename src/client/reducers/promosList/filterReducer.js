@@ -16,7 +16,6 @@ import {
 
 const defaultState = {
 	selectedAnimalId: 'ALL',
-	selectedAnimalLabel: 'Все',
 
 	selectedPromoTypeId: 'ALL',
 

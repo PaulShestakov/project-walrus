@@ -58,10 +58,6 @@ export default class SideBar extends React.Component {
     render() {
         const { t, classes, ...other } = this.props;
 
-		// TODO: REMOVE THIS
-		const selectedAnimalOption = this.props.animals.find(x => x.value === this.props.filter.selectedAnimalId);
-		let selectedAnimalId = selectedAnimalOption ? selectedAnimalOption.value : '';
-
         return (
         	<Grid container direction="column" { ...other }>
 
@@ -76,19 +72,18 @@ export default class SideBar extends React.Component {
 
 
 				<Grid item md={12}>
-					<Card className={classes.card}>
+					<Card className={classNames(classes.card, 'mb-3')}>
 						<Label uppercase bold fontSize="1.5rem" className="m-3 mt-4">{t('SELECT_ANIMAL')}</Label>
 						<Separator />
 						<FormControl className={classNames(classes.selectWrapper, "m-3")}>
-							<InputLabel htmlFor="animal">Animal</InputLabel>
+							<InputLabel htmlFor="animal">{t('ANIMAL')}</InputLabel>
 							<Select
-								value={selectedAnimalId}
+								value={this.props.filter.selectedAnimalId}
 								onChange={this.handleAnimalSelected}
-								input={<Input id="animal" />}
-							>
-								<MenuItem value="">
-									<em>None</em>
-								</MenuItem>
+								input={
+									<Input id="animal" />
+								}>
+								<MenuItem value="ALL">{t('ALL')}</MenuItem>
 								{
 									this.props.animals.map(animal => (
 										<MenuItem value={animal.value}>{animal.label}</MenuItem>
@@ -126,7 +121,6 @@ export default class SideBar extends React.Component {
 
 							handleCheckboxPressed={this.handleCheckboxPressed}
 						/>
-
 					</Card>
 				</Grid>
 			</Grid>

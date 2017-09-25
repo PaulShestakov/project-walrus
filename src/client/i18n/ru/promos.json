@@ -1,4 +1,7 @@
 {
+  "ANIMAL": "Питомец",
+  "ALL": "Все",
+
   "SECTION_SEARCH": "Поиск по разделу",
   "CREATE_PROMO": "Создать объявление",
   "ENTER_REQUEST": "Введите запрос",
