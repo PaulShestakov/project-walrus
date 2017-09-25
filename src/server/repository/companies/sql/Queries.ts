@@ -1,7 +1,7 @@
-const COMPANIES_TABLE = 'wikipet.COMPANIES';
-const COMPANIES_CATEGORIES_TABLE = 'wikipet.COMPANIES_CATEGORIES';
-const COMPANIES_SUBCATEGORIES_TABLE = 'wikipet.COMPANIES_SUBCATEGORIES';
-const COMPANIES_PHONES = 'wikipet.COMPANIES_PHONES';
+const COMPANIES_TABLE = 'wikipet.companies';
+const COMPANIES_CATEGORIES_TABLE = 'wikipet.companies_categories';
+const COMPANIES_SUBCATEGORIES_TABLE = 'wikipet.companies_subcategories';
+const COMPANIES_PHONES = 'wikipet.companies_phones';
 
 export default {
 	GET: `

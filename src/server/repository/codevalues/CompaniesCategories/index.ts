@@ -17,9 +17,9 @@ export default class CompaniesCategories extends BaseCRUD {
 				cet.COMPANY_SUBCATEGORY_ID,
 				cet.COMPANY_SUBCATEGORY_NAME
 	
-			FROM wikipet.COMPANIES_CATEGORIES AS ct
+			FROM wikipet.companies_categories AS ct
 	
-			INNER JOIN wikipet.COMPANIES_SUBCATEGORIES AS cet
+			INNER JOIN wikipet.companies_subcategories AS cet
 				ON ct.COMPANY_CATEGORY_ID = cet.COMPANY_CATEGORY_ID`;
 
 		executeQuery(redefinedQuery, [], (error, result) => {

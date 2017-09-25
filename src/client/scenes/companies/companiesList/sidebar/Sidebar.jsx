@@ -72,12 +72,14 @@ export default class Sidebar extends React.Component {
 
 		return (
 			<Card className={classes.card}>
-                <Button accent="red" disableRipple={true} className='w-100 my-2'>
-                    <Link to="/newCompany" className={classes.link}>
-                        <FontAwesome name="plus" className="mr-1" />
-                        Добавить компанию
+
+                    <Link to="/newCompany" className={classNames(classes.link, 'm-3')}>
+						<Button accent="red" disableRipple={true} >
+							<FontAwesome name="plus" className="mr-1" />
+							Добавить компанию
+						</Button>
                     </Link>
-                </Button>
+
 
 				<CheckboxesBlock
 					formGroupName="cities"
