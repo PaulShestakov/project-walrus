@@ -31,7 +31,7 @@ export function loadPromoCodeValues() {
 		if (!common.animalsAreLoaded || !common.citiesAreLoaded) {
 			dispatch(loadPromoCodeValuesStart());
 
-			fetch('/api/v1/codevalue?type=ANIMALS&type=CITIES').then(
+			fetch('/api/v1/codevalue?type=ANIMAL&type=CITY').then(
 				response => {
 					if (response.ok) {
 						return response.json();
@@ -42,8 +42,8 @@ export function loadPromoCodeValues() {
 				}
 			).then(json => {
 				dispatch(loadPromoCodeValuesSuccess({
-					animals: json.ANIMALS.map(mapCodeValue),
-					cities: json.CITIES.map(mapCodeValue)
+					animals: json.map(mapCodeValue),
+					cities: json.map(mapCodeValue)
 				}));
 			});
 		}
@@ -92,7 +92,7 @@ export function loadCompanyCategories() {
 		if (!common.companiesTypesLoaded) {
 			dispatch(loadCompaniesTypesStart());
 
-			fetch('/api/v1/codevalue/?type=COMPANIES_CATEGORIES').then(
+			fetch('/api/v1/codevalue/companyCategories').then(
 				response => {
 					if (response.ok) {
 						return response.json();
@@ -102,7 +102,7 @@ export function loadCompanyCategories() {
 					dispatch(loadCompaniesTypesError())
 				}
 			).then(json => {
-				dispatch(loadCompaniesTypesSuccess(json.COMPANIES_CATEGORIES));
+				dispatch(loadCompaniesTypesSuccess(json));
 			});
 		}
 	}
@@ -142,7 +142,7 @@ export function loadCompaniesCodeValues() {
 		if (!common.citiesAreLoaded) {
 			dispatch(loadCompaniesCodeValuesStart());
 
-			fetch('/api/v1/codevalue/?type=CITIES').then(
+			fetch('/api/v1/codevalue?type=CITY').then(
 				response => {
 					if (response.ok) {
 						return response.json();
@@ -153,7 +153,7 @@ export function loadCompaniesCodeValues() {
 				}
 			).then(json => {
 				dispatch(loadCompaniesCodeValuesSuccess({
-					cities: json.CITIES.map(mapCodeValue)
+					cities: json.map(mapCodeValue)
 				}));
 
 			});
