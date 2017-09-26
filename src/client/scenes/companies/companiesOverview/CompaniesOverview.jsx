@@ -29,7 +29,7 @@ export default class CompaniesOverview extends React.Component {
         let categoryIndex = 0;
         if (category && nextProps.common.companiesCategories) {
         	nextProps.common.companiesCategories.forEach((type, index) => {
-        		if (type.companyCategoryId === category) {
+        		if (type.value === category) {
                     categoryIndex = index;
 				}
 			});
@@ -39,7 +39,7 @@ export default class CompaniesOverview extends React.Component {
 
 	handleTabPress = (event, index) => {
         const params = new URLSearchParams(this.props.location.search);
-        params.set('companyCategoryId', this.props.common.companiesCategories[index].companyCategoryId);
+        params.set('companyCategoryId', this.props.common.companiesCategories[index].value);
         this.props.history.push({
             pathname: this.props.location.pathname,
             search: params.toString()
@@ -70,7 +70,7 @@ export default class CompaniesOverview extends React.Component {
                             common.companiesCategories.map((type, index) => (
 								<Tab className={classes.tab}
 									 classes={{label: classes.tabLabel, labelContainer: classes.tabLabelContainer}}
-									 label={type.companyCategoryName}
+									 label={type.name}
 									 icon={icons[index]} />
                             ))
                         }
