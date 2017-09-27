@@ -1,4 +1,5 @@
 import * as express from 'express';
+import * as compression from 'compression';
 import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import * as helmet from 'helmet';
@@ -23,6 +24,7 @@ export default class App {
 	}
 
 	private configureMiddleware(): void {
+		this.app.use(compression());
 		this.app.use(cookieParser());
 		this.app.use(helmet());
 		this.app.use(expressValidator());
