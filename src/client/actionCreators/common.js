@@ -42,18 +42,11 @@ export function loadPromoCodeValues() {
 				}
 			).then(json => {
 				dispatch(loadPromoCodeValuesSuccess({
-					animals: json.map(mapCodeValue),
-					cities: json.map(mapCodeValue)
+					animals: json.ANIMAL,
+					cities: json.CITY,
 				}));
 			});
 		}
-	}
-}
-
-function mapCodeValue(codevalue) {
-	return {
-		value: codevalue.id,
-		label: codevalue.name
 	}
 }
 
@@ -153,7 +146,7 @@ export function loadCompaniesCodeValues() {
 				}
 			).then(json => {
 				dispatch(loadCompaniesCodeValuesSuccess({
-					cities: json.map(mapCodeValue)
+					cities: json.CITY,
 				}));
 
 			});

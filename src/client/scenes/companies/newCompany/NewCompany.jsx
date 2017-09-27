@@ -14,8 +14,8 @@ export default class NewCompany extends React.Component {
         super(props);
         this.state = {
             phones: [],
-            selectedCategory: null,
-            selectedSubcategory: null
+            selectedCategory: {},
+            selectedSubcategory: {}
         };
     }
 
@@ -27,30 +27,20 @@ export default class NewCompany extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            categories: nextProps.common.companiesCategories.map(category => {
-                return {
-                    value: category.companyCategoryId,
-                    label: category.companyCategoryName
-                }
-            }),
+            categories: nextProps.common.companiesCategories,
             subcatories: []
         });
     }
 
     handleCategoryChange = (option) => {
-        const category = this.props.common.companiesCategories.find((cat) => {
-            return cat.companyCategoryId === option.value;
+        const category = this.props.common.companiesCategories.find((category) => {
+            return category.value === option.value;
         });
-        const subcats = category.subcategories.map(subcategory => {
-            return {
-                value: subcategory.companySubcategoryId,
-                label: subcategory.companySubcategoryName
-            }
-        });
+        const subcategories = category.subCategories;
         this.setState({
             selectedCategory: option,
-            subcategories: subcats,
-            selectedSubcategory: subcats[0]
+            subcategories: subcategories,
+            selectedSubcategory: subcategories[0]
         });
     };
 
@@ -91,7 +81,7 @@ export default class NewCompany extends React.Component {
                         <Grid item md={8}>
                             <Title>Категория</Title>
                             <Dropdown name="companyCategoryId"
-                                      value={this.state.selectedCategory}
+                                      value={this.state.selectedCategory.label}
                                       onChange={this.handleCategoryChange}
                                       options={this.state.categories}
                                       className="mt-2"/>
@@ -99,7 +89,7 @@ export default class NewCompany extends React.Component {
                         <Grid item md={8}>
                             <Title>Подкатегория</Title>
                             <Dropdown name="companySubcategoryId"
-                                      value={this.state.selectedSubcategory}
+                                      value={this.state.selectedSubcategory.label}
                                       options={this.state.subcategories}
                                       className="mt-2"/>
                         </Grid>

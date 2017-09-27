@@ -23,7 +23,7 @@ export default class Type extends React.Component {
                     type.subCategories.map(subcategory => {
                         return (
                             <Link className={classes.exactTypeLink} to={'/companiesList' + location.search + "&companySubcategoryId=" + subcategory.value}>
-                                {subcategory.name}
+                                {subcategory.label}
                             </Link>
                         );
                     })

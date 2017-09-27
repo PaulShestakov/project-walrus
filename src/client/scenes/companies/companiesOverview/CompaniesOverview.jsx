@@ -70,7 +70,7 @@ export default class CompaniesOverview extends React.Component {
                             common.companiesCategories.map((type, index) => (
 								<Tab className={classes.tab}
 									 classes={{label: classes.tabLabel, labelContainer: classes.tabLabelContainer}}
-									 label={type.name}
+									 label={type.label}
 									 icon={icons[index]} />
                             ))
                         }

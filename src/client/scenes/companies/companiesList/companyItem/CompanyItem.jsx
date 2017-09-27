@@ -31,14 +31,23 @@ export default class CompanyItem extends React.Component {
 					<Label uppercase bold fontSize="2rem">{company.name}</Label>
 
 					<div className={classNames(classes.flexRow, 'mt-4')}>
-						<FontAwesome name="map-marker" className={classes.icon} />
-						<Text>{company.lat + ' ' + company.lng}</Text>
+						{
+							company.locations.map(location => {
+								return (
+									<div className={classes.flexRow}>
+										<FontAwesome name="map-marker" className={classes.icon} />
+										<Text>{location.cityName + ': ' + location.lat + ' ' + location.lng}</Text>
+									</div>
+								);
+							})
+						}
+
 					</div>
 
 					<div className={classNames(classes.flexRow, 'mt-2')}>
 						<div className={classNames(classes.flexRow, 'mr-3')}>
 							<FontAwesome name="globe" className={classes.icon} />
-							<Text>{company.url}</Text>
+							<Text>{company.websiteUrl}</Text>
 						</div>
 
 						<div className={classes.flexRow}>

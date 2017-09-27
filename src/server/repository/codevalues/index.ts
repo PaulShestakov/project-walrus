@@ -9,11 +9,20 @@ class CodeValues extends BaseCRUD {
         super(codeValuesSQL.TABLE_NAME);
     }
 
-    static externalizeCodeValue(codeValue: CodeValue) {
-        return {
-            value: codeValue.ID,
-            name: codeValue.NAME
-        }
+    static buildCodeValues(rows) {
+        return rows.reduce((acc, row) => {
+
+            if (!acc[row.GROUP]) {
+				acc[row.GROUP] = [];
+            }
+
+			acc[row.GROUP].push({
+				value: row.ID,
+                label: row.NAME
+            });
+
+            return acc;
+        }, {});
     }
 
     public getByTypes(types, callback) {
@@ -21,10 +30,7 @@ class CodeValues extends BaseCRUD {
             if (error) {
                 return callback(error);
             }
-
-            callback(error, rows.map(row => {
-                return CodeValues.externalizeCodeValue(row);
-            }));
+            callback(null, CodeValues.buildCodeValues(rows));
         });
     }
 
@@ -38,14 +44,14 @@ class CodeValues extends BaseCRUD {
                 if (!accum[row.categoryId]) {
                     accum[row.categoryId] = {
                         value: row.categoryId,
-                        name: row.categoryName,
+                        label: row.categoryName,
                         subCategories: []
                     }
                 }
                 accum[row.categoryId].subCategories.push({
                     value: row.subCategoryId,
-                    name: row.subCategoryName
-                })
+                    label: row.subCategoryName
+                });
                 return accum;
             }, {});
 

@@ -70,6 +70,7 @@ export default class Companies extends BaseCRUD  {
 		const companyCategoryId = params.companyCategoryId;
 		const companySubcategoryId = params.companySubcategoryId;
 		const citiesIds = Util.ensureArray(params.cityId);
+		const daysOfWeekIds = Util.ensureArray(params.dayOfWeek);
 
 		let filter = squel.expr();
 
@@ -79,23 +80,95 @@ export default class Companies extends BaseCRUD  {
 		if (companySubcategoryId && companySubcategoryId !== 'ALL') {
 			filter = filter.and('c.COMPANY_SUBCATEGORY_ID = ?', companySubcategoryId);
 		}
-		// if (citiesIds.length > 0) {
-		// 	filter = filter.and('c.CITY_ID IN ?', citiesIds);
-		// }
+		if (citiesIds.length > 0) {
+			filter = filter.and('l.CITY_ID IN ?', citiesIds);
+		}
+		if (daysOfWeekIds.length > 0) {
+			filter = filter.and('t.DAY_OF_WEEK IN ?', daysOfWeekIds);
+		}
 
 		const sql = squel
 			.select()
+				.field('c.COMPANY_ID')
+				.field('c.COMPANY_CATEGORY_ID')
+				.field('c.COMPANY_SUBCATEGORY_ID')
+				.field('c.LOGO')
+				.field('c.DESCRIPTION')
+				.field('c.EMAIL')
+				.field('c.WEBSITE_URL')
+
+				.field('l.COMPANY_LOCATION_ID')
+				.field('l.CITY_ID')
+				.field('cv1.NAME', 'CITY_NAME')
+				.field('l.ADDRESS')
+				.field('l.SUBWAY_ID')
+				.field('l.LAT')
+				.field('l.LNG')
+
+				.field('t.DAY_OF_WEEK')
+				.field('cv2.NAME', 'DAY_OF_WEEK_NAME')
+				.field('t.OPEN_TIME')
+				.field('t.CLOSE_TIME')
+
 			.from('wikipet.companies', 'c')
+			.left_join('wikipet.companies_location', 'l', 'l.COMPANY_ID = c.COMPANY_ID')
+			.left_join('wikipet.companies_working_time', 't', 't.COMPANY_ID = c.COMPANY_ID')
+			.left_join('wikipet.code_values', 'cv1', "cv1.GROUP = 'CITY' AND cv1.ID = l.CITY_ID")
+			.left_join('wikipet.code_values', 'cv2', "cv2.GROUP = 'DAY_OF_WEEK' AND cv2.ID = t.DAY_OF_WEEK")
 			.where(filter)
 			.toParam();
 
-		executeQuery(sql.text, sql.values, (error, rows) => {
+		executeQuery(sql.text, sql.values, (error, flatData) => {
 			if (error) {
 				callback(error);
 				return;
 			}
-			const companies = rows.map(Companies.externalizeCompany);
-			callback(null, companies);
+
+			const reducedData = flatData.reduce((acc, row) => {
+
+				if (!acc[row.COMPANY_ID]) {
+					acc[row.COMPANY_ID] = {
+						companyId: row.COMPANY_ID,
+						name: row.NAME,
+						logo: row.LOGO,
+						description: row.DESCRIPTION,
+						email: row.EMAIL,
+						websiteUrl: row.WEBSITE_URL,
+
+						locations: {}
+					};
+				}
+
+				if (!acc[row.COMPANY_ID].locations[row.COMPANY_LOCATION_ID]) {
+					acc[row.COMPANY_ID].locations[row.COMPANY_LOCATION_ID] = {
+						companyLocationId: row.COMPANY_LOCATION_ID,
+						cityId: row.CITY_ID,
+						cityName: row.CITY_NAME,
+						address: row.ADDRESS,
+						subwayId: row.SUBWAY_ID,
+						lat: row.LAT,
+						lng: row.LNG,
+
+						workingDays: []
+					}
+				}
+
+				acc[row.COMPANY_ID].locations[row.COMPANY_LOCATION_ID].workingDays.push({
+					dayOfWeek: row.DAY_OF_WEEK,
+					dayOfWeekName: row.DAY_OF_WEEK_NAME,
+					openTime: row.OPEN_TIME,
+					closeTime: row.CLOSE_TIME,
+				});
+
+				return acc;
+			}, {});
+
+			const result = Object.values(reducedData).map(company => ({
+				...company,
+				locations: Object.values(company.locations)
+			}));
+
+			callback(null, result);
 		});
 	}
 
@@ -123,22 +196,26 @@ export default class Companies extends BaseCRUD  {
         };
     }
 
-    static externalizeCompany(company) {
-        return {
-            companyId: company.COMPANY_ID,
-            name: company.NAME,
-            logo: company.LOGO,
-            description: company.DESCRIPTION,
-            email: company.EMAIL,
-            url: company.WEBSITE_URL,
-            phone: company.PHONE,
-            lat: company.LAT,
-            lng: company.LNG,
+	static externalizeCompany(company) {
+		return {
+			companyId: company.COMPANY_ID,
+			name: company.NAME,
+			logo: company.LOGO,
+			description: company.DESCRIPTION,
+			email: company.EMAIL,
+			websiteUrl: company.WEBSITE_URL,
 
-            companyCategoryId: company.COMPANY_CATEGORY_ID,
-            companySubcategoryId: company.COMPANY_SUBCATEGORY_ID,
-            companyCategoryName: company.COMPANY_CATEGORY_NAME,
-            companySubcategoryName: company.COMPANY_SUBCATEGORY_NAME,
-        };
-    }
+			companyLocationId: company.COMPANY_LOCATION_ID,
+			cityId: company.CITY_ID,
+			address: company.ADDRESS,
+			subwayId: company.SUBWAY_ID,
+			lat: company.LAT,
+			lng: company.LNG,
+
+			dayOfWeek: company.DAY_OF_WEEK,
+			dayOfWeekName: company.DAY_OF_WEEK_NAME,
+			openTime: company.OPEN_TIME,
+			closeTime: company.CLOSE_TIME,
+		};
+	}
 }
