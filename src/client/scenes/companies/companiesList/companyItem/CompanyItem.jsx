@@ -8,12 +8,22 @@ import Card, {CardHeader, CardMedia, CardContent, CardActions} from 'material-ui
 import classNames from 'classnames';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles';
-import {Paper} from "material-ui";
+import {Typography, Paper} from "material-ui";
+import { Call } from 'material-ui-icons';
 
 
 @translate(['companiesList'])
 @withStyles(styles)
 export default class CompanyItem extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			showPhones: false,
+			showTime: false
+		};
+	}
+
 	render() {
 		const {t, classes, className, company, ...other} = this.props;
         const imageSrc = company.logo ? company.logo : '';
@@ -36,7 +46,7 @@ export default class CompanyItem extends React.Component {
 								return (
 									<div className={classes.flexRow}>
 										<FontAwesome name="map-marker" className={classes.icon} />
-										<Text>{location.cityName + ': ' + location.lat + ' ' + location.lng}</Text>
+										<Text>{location.cityName + ': ' + location.address}</Text>
 									</div>
 								);
 							})
@@ -50,17 +60,28 @@ export default class CompanyItem extends React.Component {
 							<Text>{company.websiteUrl}</Text>
 						</div>
 
-						<div className={classes.flexRow}>
-							<FontAwesome name="clock-o" className={classes.icon} />
-							<Text>Working time</Text>
-						</div>
+						{
+							this.state.showTime &&
+							<div className={classNames(classes.flexRow, 'mr-3')}>
+								<FontAwesome name="clock-o" className={classes.icon} />
+								<Text>Working time</Text>
+							</div>
+						}
+
+						{
+							this.state.showPhones && 
+							<div className={classes.flexRow}>
+								<FontAwesome name="phone" className={classes.icon} />
+								<Text>{company.phones ? company.phones.map(item => item.phone).join(', ') : 'Телефонов нет'}</Text>
+							</div>
+						}
 					</div>
 
 					<div className={classes.buttonsBlock}>
-						<Button className="mr-2 text-white" bsSize="large" accent="white">
+						<Button className="mr-2 text-white" onClick={(event) => this.setState({ showPhones: !this.state.showPhones})} bsSize="large" accent="white">
 							{t('PHONES')}
 						</Button>
-						<Button className="mr-2 text-white" bsSize="large" accent="white">
+						<Button className="mr-2 text-white" onClick={(event) => this.setState({ showTime: !this.state.showTime})} bsSize="large" accent="white">
 							{t('WORKING_TIME')}
 						</Button>
 						<Button className="mr-2 text-white" bsSize="large" accent="red">

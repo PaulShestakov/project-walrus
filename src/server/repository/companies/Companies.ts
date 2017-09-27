@@ -17,18 +17,18 @@ export default class Companies extends BaseCRUD  {
                 }
                 done(error, result);
             });
-        };
-        const getPhones = (connection, done) => {
-            connection.query(Queries.GET_PHONES, [companyId], (error, result) => {
-                let res = [];
-                if (result && result.length > 0) {
-                    result.forEach(item => {
-                        res.push(item.PHONE);
-                    });
-                }
-                done(error, res);
-            });
-        };
+		};
+		const getPhones = (connection, done) => {
+			connection.query(Queries.GET_PHONES, [companyId], (error, result) => {
+				let res = [];
+				if (result && result.length > 0) {
+					result.forEach(item => {
+						res.push(item.PHONE);
+					});
+				}
+				done(error, res);
+			});
+		};
         executeParallel([getCompany, getPhones], (error, result) => {
             if (error) {
                 Util.handleError(error, callback);
@@ -40,7 +40,8 @@ export default class Companies extends BaseCRUD  {
 	}
 
 	static postCompany(company: Company, callback) {
-	    let phones: Array<string> = company.phones;
+		let phones: Array<string> = company.phones;
+		company.companyId = uuid();
 	    const savePhones = (connection, done) => {
 	        if (phones) {
                 connection.query(Queries.SAVE_PHONES, [phones.map(item => Companies.internalizePhone(company.companyId, item))], (error, result) => {
@@ -50,6 +51,11 @@ export default class Companies extends BaseCRUD  {
 	            done(null, null);
             }
 
+		};
+		const saveLocation = (connection, done) => {
+	        connection.query(Queries.SAVE_LOCATION, [Companies.inernalizeLocation(company)], (error, result) => {
+				done(error, result);
+			});
         };
 	    const saveCompany = (connection, done) => {
 	        delete company.phones;
@@ -57,7 +63,7 @@ export default class Companies extends BaseCRUD  {
                 done(error, result);
             });
         };
-        executeParallel([saveCompany, savePhones], (error, result) => {
+        executeSeries([saveCompany, saveLocation], (error, result) => {
             if (error) {
                 Util.handleError(error, callback);
             } else {
@@ -110,11 +116,17 @@ export default class Companies extends BaseCRUD  {
 				.field('t.OPEN_TIME')
 				.field('t.CLOSE_TIME')
 
+				.field('p.COMPANY_PHONE_ID')
+				.field('p.PHONE')
+
 			.from('wikipet.companies', 'c')
 			.left_join('wikipet.companies_location', 'l', 'l.COMPANY_ID = c.COMPANY_ID')
 			.left_join('wikipet.companies_working_time', 't', 't.COMPANY_ID = c.COMPANY_ID')
 			.left_join('wikipet.code_values', 'cv1', "cv1.GROUP = 'CITY' AND cv1.ID = l.CITY_ID")
 			.left_join('wikipet.code_values', 'cv2', "cv2.GROUP = 'DAY_OF_WEEK' AND cv2.ID = t.DAY_OF_WEEK")
+
+			.left_join('wikipet.companies_phones', 'p', 'p.COMPANY_ID = c.COMPANY_ID')
+
 			.where(filter)
 			.toParam();
 
@@ -135,7 +147,8 @@ export default class Companies extends BaseCRUD  {
 						email: row.EMAIL,
 						websiteUrl: row.WEBSITE_URL,
 
-						locations: {}
+						locations: {},
+						phones: {},
 					};
 				}
 
@@ -153,6 +166,13 @@ export default class Companies extends BaseCRUD  {
 					}
 				}
 
+				if (!acc[row.COMPANY_ID].phones[row.COMPANY_PHONE_ID]) {
+					acc[row.COMPANY_ID].phones[row.COMPANY_PHONE_ID] = {
+						companyPhoneId: row.COMPANY_PHONE_ID,
+						phone: row.PHONE,
+					}
+				}
+
 				acc[row.COMPANY_ID].locations[row.COMPANY_LOCATION_ID].workingDays.push({
 					dayOfWeek: row.DAY_OF_WEEK,
 					dayOfWeekName: row.DAY_OF_WEEK_NAME,
@@ -165,7 +185,8 @@ export default class Companies extends BaseCRUD  {
 
 			const result = Object.values(reducedData).map(company => ({
 				...company,
-				locations: Object.values(company.locations)
+				locations: Object.values(company.locations),
+				phones: Object.values(company.phones),
 			}));
 
 			callback(null, result);
@@ -174,19 +195,29 @@ export default class Companies extends BaseCRUD  {
 
     static internalizeCompany(company: Company) {
         return {
-            COMPANY_ID: uuid(),
+            COMPANY_ID: company.companyId,
             NAME: company.name,
             LOGO: company.logo,
             DESCRIPTION: company.description,
             EMAIL: company.email,
             WEBSITE_URL: company.url,
-            LAT: company.lat,
-            LNG: company.lng,
 
             COMPANY_CATEGORY_ID: company.companyCategoryId,
             COMPANY_SUBCATEGORY_ID: company.companySubcategoryId
         };
-    }
+	}
+	
+	static inernalizeLocation(company) {
+		return {
+			COMPANY_LOCATION_ID: uuid(),
+			SUBWAY_ID: company.subway,
+			COMPANY_ID: company.companyId,
+			CITY_ID: company.city,
+			ADDRESS: company.address,
+			LAT: company.lat,
+			LNG: company.lng
+		}
+	}
 
     static internalizePhone(companyId, phone) {
 	    return {
@@ -198,19 +229,21 @@ export default class Companies extends BaseCRUD  {
 
 	static externalizeCompany(company) {
 		return {
-			companyId: company.COMPANY_ID,
-			name: company.NAME,
-			logo: company.LOGO,
-			description: company.DESCRIPTION,
-			email: company.EMAIL,
-			websiteUrl: company.WEBSITE_URL,
+			companyId: company.companyId,
+			category: company.catId,
+			subcategoryId: company.subCatId,
+			subcategoryName: company.subcatName,
+			name: company.name,
+			logo: company.logo,
+			description: company.description,
+			email: company.email,
+			websiteUrl: company.url,
 
-			companyLocationId: company.COMPANY_LOCATION_ID,
-			cityId: company.CITY_ID,
-			address: company.ADDRESS,
-			subwayId: company.SUBWAY_ID,
-			lat: company.LAT,
-			lng: company.LNG,
+			cityId: company.cityId,
+			address: company.address,
+			subwayId: company.subwayId,
+			lat: company.lat,
+			lng: company.lng,
 
 			dayOfWeek: company.DAY_OF_WEEK,
 			dayOfWeekName: company.DAY_OF_WEEK_NAME,

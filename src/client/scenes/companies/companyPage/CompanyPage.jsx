@@ -37,7 +37,6 @@ export default class CompanyPage extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        console.log(this.props);
         let feedbacks = newProps.location.pathname.indexOf("/feedbacks");
         let feedback = newProps.location.pathname.indexOf("/feedback");
         let index;
@@ -71,7 +70,7 @@ export default class CompanyPage extends React.Component {
                                 {company.name}
 							</Typography>
 							<Typography component="p">
-                                {company.companyExactTypeName}
+                                {company.subcategoryName}
 							</Typography>
 						</Grid>
 						<Grid item md={4}>
@@ -103,7 +102,7 @@ export default class CompanyPage extends React.Component {
 								<Grid item className="d-flex align-items-center">
 									<Call className="mr-2"/>
 									<Typography component="p">
-                                        {company.phone}
+										{company.phones ? company.phones.join(', ') : "Телефонов нет"}						
 									</Typography>
 								</Grid>
 								<Grid item className="d-flex align-items-center">
@@ -115,7 +114,7 @@ export default class CompanyPage extends React.Component {
 								<Grid item className="d-flex align-items-center">
 									<Public className="mr-2"/>
 									<Typography component="p">
-                                        {company.url}
+                                        {company.websiteUrl}
 									</Typography>
 								</Grid>
 							</Grid>

@@ -15,7 +15,9 @@ export default class NewCompany extends React.Component {
         this.state = {
             phones: [],
             selectedCategory: {},
-            selectedSubcategory: {}
+            selectedSubcategory: {},
+            selectedSubway: {},
+            selectedCity: {}
         };
     }
 
@@ -23,6 +25,7 @@ export default class NewCompany extends React.Component {
         if (this.props.common.companiesCategories.length === 0) {
             this.props.loadCompanyCategories();
         }
+        this.props.loadCompaniesCodeValues();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -57,6 +60,12 @@ export default class NewCompany extends React.Component {
 
             companyCategoryId: this.state.selectedCategory.value,
             companySubcategoryId: this.state.selectedSubcategory.value,
+
+            city: this.state.selectedCity.value,
+            subway: this.state.selectedSubway.value,
+            address: _.get(formElements.address, 'value', null),
+            lng: _.get(formElements.lng, 'value', null),
+            lat: _.get(formElements.lat, 'value', null),
         };
 
         this.props.postCompany(formData, this.props.history);
@@ -89,6 +98,7 @@ export default class NewCompany extends React.Component {
                         <Grid item md={8}>
                             <Title>Подкатегория</Title>
                             <Dropdown name="companySubcategoryId"
+                                      onChange={(option) => this.setState({  selectedSubcategory : option })}
                                       value={this.state.selectedSubcategory.label}
                                       options={this.state.subcategories}
                                       className="mt-2"/>
@@ -118,7 +128,48 @@ export default class NewCompany extends React.Component {
                             <Title>Телефоны</Title>
                             <Input name="phones" placeholder="Телефоны" fullWidth className="mt-2"/>
                         </Grid>*/}
+                        <Grid item md={8}>
+                            <Typography type="headline" component="h1" className="mt-4">
+                                    Местоположение
+                            </Typography>
+                        </Grid>
+                        
+                        <Grid item md={8}>
+                            <Title>Город</Title>
+                            <Dropdown name="city"
+                                      onChange={(option) => this.setState({  selectedCity : option })}
+                                      value={this.state.selectedCity.label}
+                                      options={this.props.common.cities}
+                                      className="mt-2"/>
+                        </Grid>
+
+                        <Grid item md={8}>
+                            <Title>Метро</Title>
+                            <Dropdown name="subway"
+                                      onChange={(option) => this.setState({  selectedSubway : option })}
+                                      value={this.state.selectedSubway.label}
+                                      options={this.props.common.subway}
+                                      className="mt-2"/>
+                        </Grid>
+
+                        <Grid item md={8}>
+                            <Title>Адрес</Title>
+                            <Input name="address" placeholder="Адрес" fullWidth className="mt-2"/>
+                        </Grid>
+
                         <Grid container justify="center">
+                            <Grid item md={4}>
+                                <Title>LAT</Title>
+                                <Input name="lat" placeholder="Lat" fullWidth className="mt-2"/>
+                            </Grid>
+
+                            <Grid item md={4}>
+                                <Title>LNG</Title>
+                                <Input name="lng" placeholder="Lng" fullWidth className="mt-2"/>
+                            </Grid>
+                        </Grid>
+
+                        <Grid container justify="center" className="my-3">
                             <Grid item md={4} className="text-center">
                                 <Button type="submit" className="my-4 text-white w-100" accent="blue">
                                     {t('Сохранить')}

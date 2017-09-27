@@ -5,6 +5,7 @@ import NewCompanyComponent from '../../scenes/companies/newCompany/NewCompany';
 
 import {postCompany} from "../../actionCreators/newCompany/index";
 import {loadCompanyCategories} from "../../actionCreators/common";
+import {loadCompaniesCodeValues} from "../../actionCreators/common";
 
 
 const CompanyPage = connect(
@@ -16,7 +17,8 @@ const CompanyPage = connect(
     },
     {
         postCompany,
-        loadCompanyCategories
+        loadCompanyCategories,
+        loadCompaniesCodeValues
     }
 )(NewCompanyComponent);
 

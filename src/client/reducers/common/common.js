@@ -41,10 +41,12 @@ const commonReducer = (state = defaultState, action) => {
 			};
 
 		case LOAD_COMPANIES_CODE_VALUES_SUCCESS:
+		console.log(action.payload);
 			return {
 				...state,
 
 				cities: action.payload.cities,
+				subway: action.payload.subway,
 				citiesAreLoaded: true
 			};
 

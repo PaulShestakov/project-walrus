@@ -135,7 +135,7 @@ export function loadCompaniesCodeValues() {
 		if (!common.citiesAreLoaded) {
 			dispatch(loadCompaniesCodeValuesStart());
 
-			fetch('/api/v1/codevalue?type=CITY').then(
+			fetch('/api/v1/codevalue?type=CITY&type=SUBWAY.MINSK').then(
 				response => {
 					if (response.ok) {
 						return response.json();
@@ -147,6 +147,7 @@ export function loadCompaniesCodeValues() {
 			).then(json => {
 				dispatch(loadCompaniesCodeValuesSuccess({
 					cities: json.CITY,
+					subway: json['SUBWAY.MINSK']
 				}));
 
 			});
