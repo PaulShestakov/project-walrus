@@ -87,7 +87,7 @@ if (nodeEnv === 'production') {
 				NODE_ENV: JSON.stringify('production'),
 			},
 		}),
-		new webpack.optimize.ModuleConcatenationPlugin(),
+		new webpack.optimize.ModuleConcatenationPlugin()
 		// new BundleAnalyzerPlugin()
 	);
 }
