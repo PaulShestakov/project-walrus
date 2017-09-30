@@ -9,11 +9,6 @@ import { Link } from 'react-router-dom';
 @translate(['common'])
 @withStyles(styles)
 export default class Type extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const {t, classes, type, ...other} = this.props;
 
@@ -22,11 +17,13 @@ export default class Type extends React.Component {
                 {
                     type.subCategories.map((subcategory, index) => {
                         return (
-                            <Link key={index} 
-                                  className={classes.exactTypeLink} 
-                                  to={'/company/list' + location.search + "&companySubcategoryId=" + subcategory.value}>
-                                {subcategory.label}
-                            </Link>
+                            <div className={classes.exactTypeLinkWrapper}>
+                                <Link key={index}
+                                    className={classes.exactTypeLink}
+                                    to={'/company/list' + location.search + "&companySubcategoryId=" + subcategory.value}>
+                                    {subcategory.label}
+                                </Link>
+                            </div>
                         );
                     })
                 }

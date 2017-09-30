@@ -1,21 +1,6 @@
 import globalStyle from '../../../style';
 
 export default {
-	exactTypesContainer: {
-		padding: "2rem",
-		display: "flex",
-		flexDirection: 'column'
-	},
-
-	exactTypeLink: {
-		color: globalStyle.DARK_GREY,
-		marginBottom: '0.5rem',
-
-		'&:last-child': {
-			marginBottom: '0'
-		}
-	},
-
 	tab: {
 		height: 'auto',
 		padding: '1rem'
@@ -34,5 +19,24 @@ export default {
 	tabIcon: {
 		width: '3rem',
 		height: '3rem'
-	}
+	},
+
+
+	exactTypesContainer: {
+		padding: "2rem",
+		display: "flex",
+		flexDirection: 'column'
+	},
+
+	exactTypeLinkWrapper: {
+		marginBottom: '1rem',
+
+		'&:last-child': {
+			marginBottom: '0'
+		}
+	},
+
+	exactTypeLink: {
+		color: globalStyle.DARK_GREY,
+	},
 }
