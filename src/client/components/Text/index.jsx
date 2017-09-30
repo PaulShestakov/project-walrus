@@ -10,12 +10,26 @@ import styles from './styles';
 @withStyles(styles)
 export default class Text extends React.Component {
 	render() {
-		const {classes, className, ...other} = this.props;
+		const {classes, className, fontSize, color, maxLines, ...other} = this.props;
 
-		const style = {
-			fontSize: this.props.fontSize,
-			color: this.props.color
+		let style = {
+			fontSize,
+			color
 		};
+
+		if (maxLines) {
+			const maxLinesStyle = {
+				'display': '-webkit-box',
+				'WebkitLineClamp': maxLines,
+				'WebkitBoxOrient': 'vertical',
+				'overflow': 'hidden'
+			};
+
+			style = {
+				...style,
+				...maxLinesStyle
+			}
+		}
 
 		return (
 			<p style={style} className={classNames(classes.text, className)} {...other}>
@@ -33,4 +47,5 @@ Text.defaultProps = {
 Text.propTypes = {
 	fontSize: PropTypes.string,
 	color: PropTypes.string,
+	maxLines: PropTypes.number
 };

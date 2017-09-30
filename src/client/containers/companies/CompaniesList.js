@@ -2,7 +2,15 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import CompaniesListComponent from '../../scenes/companies/companiesList/CompaniesList';
-import {loadCompanies} from "../../actionCreators/companiesList/companiesList";
+
+import {
+	loadCompanies,
+
+	fuzzySearchLoadCompanies,
+	clearFuzzySearchLoadedCompanies,
+	suggestionInputValueChange
+} from "../../actionCreators/companiesList/companiesList";
+
 import {
 	updateStateWithUrlSource,
 	updateUrlWithStateSource,
@@ -25,6 +33,10 @@ const CompaniesList = connect(
 	},
 	{
 		loadCompanies,
+
+		fuzzySearchLoadCompanies,
+		clearFuzzySearchLoadedCompanies,
+		suggestionInputValueChange,
 
 		updateStateWithUrlSource,
 		updateUrlWithStateSource,

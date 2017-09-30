@@ -1,0 +1,2 @@
+COMPANY_ID,COMPANY_CATEGORY_ID,COMPANY_SUBCATEGORY_ID,NAME,LOGO,DESCRIPTION,EMAIL,WEBSITE_URL
+15,HEALTH,VET_CLINICS,Ветклинника 1,http://vetmed.by/sites/vetmed.by/themes/mytheme/images/logo-new.png,В нашей ветлечебнице мы оказываем широкий спектр услуг включающий в себя терапевтические хирургические травматологические и гинекологические услуги лабораторные исследования и УЗИ консультации кардиолога,example@vetmed.by,http://vetmed.by/

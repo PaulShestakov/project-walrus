@@ -13,12 +13,22 @@ class Companies extends BaseController {
 		super();
 		this.router = Router();
 		this.router.get('/filtered', this.getFiltered.bind(this));
+		this.router.get('/fuzzySearch', this.fuzzySearch.bind(this));
 		this.router.get('/:companyId', this.getCompany.bind(this));
 		this.router.post('/', upload.array('image', 1), this.postCompany.bind(this));
 	}
 
 	private getFiltered(req: Request, res: Response) {
 		CompaniesRepository.getFiltered(req.query, (error, result) => {
+			if (error) {
+				this.errorResponse(res, 500, error);
+			}
+			this.okResponse(res, result);
+		});
+	}
+
+	private fuzzySearch(req: Request, res: Response) {
+		CompaniesRepository.fuzzySearch(req.query, (error, result) => {
 			if (error) {
 				this.errorResponse(res, 500, error);
 			}

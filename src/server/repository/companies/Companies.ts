@@ -202,6 +202,18 @@ export default class Companies extends BaseCRUD  {
 		});
 	}
 
+	static fuzzySearch(queryParams, callback): void {
+		const searchQuery = queryParams.searchQuery;
+
+		executeQuery(Queries.GET_BY_NAME, `%${searchQuery}%`, (error, data) => {
+			if (error) {
+				callback(error);
+				return;
+			}
+			callback(null, data);
+		});
+	}
+
     static internalizeCompany(company: Company) {
 		let image = (company.image ?  _.get(company.image, ['0', 'path'], null) : company.logo);
 		if (image) {

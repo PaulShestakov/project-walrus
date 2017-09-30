@@ -1,27 +1,88 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card} from "components";
+import {Title, Grid, Card, Label, Text, TextField} from "components";
 import CompanyItem from './companyItem/CompanyItem'
 import Sidebar from './sidebar/Sidebar';
 import classNames from 'classnames';
 import styles from './styles';
-import {Link} from "react-router-dom";
+
+import Autosuggest from 'react-autosuggest';
+import Paper from 'material-ui/Paper';
+import { MenuItem } from 'material-ui/Menu';
+
+
+
+
+
+function renderInput(inputProps) {
+	const { classes, autoFocus, value, ref, ...other } = inputProps;
+
+	return (
+		<TextField
+			autoFocus={autoFocus}
+			className={classes.textField}
+			value={value}
+			inputRef={ref}
+			InputProps={{
+				classes: {
+					input: classes.input,
+				},
+				...other,
+			}}
+		/>
+	);
+}
+
+function renderSuggestionsContainer(options) {
+	const { containerProps, children } = options;
+
+	return (
+		<Paper {...containerProps} square>
+			{children}
+		</Paper>
+	);
+}
+
+function renderSuggestion(classes, company, { query, isHighlighted }) {
+	return (
+		<MenuItem component="div" className="p-3" classes={{root: classes.suggestionMenuItem}}>
+			<img src={company.logo} className={classes.suggestionImage}/>
+			<div>
+				<Label uppercase bold fontSize="1.5rem">{company.name}</Label>
+				<Text className="mt-1" maxLines={2}>{company.description}</Text>
+			</div>
+		</MenuItem>
+	);
+}
+
+function getSuggestionValue(suggestion) {
+	return suggestion.name;
+}
 
 
 @translate(['companiesList'])
 @withStyles(styles)
 export default class CompaniesList extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
 	componentDidMount() {
 		const searchParams = new URLSearchParams(this.props.location.search);
 		this.props.updateStateWithUrlSource(searchParams);
-
 		this.props.loadCompanies();
 	}
+
+	handleSuggestionsFetchRequested = (change) => {
+		if (this.props.main.suggestionInputValue !== change.value) {
+			this.props.fuzzySearchLoadCompanies(change.value);
+		}
+	};
+
+	handleSuggestionsClearRequested = () => {
+		this.props.clearFuzzySearchLoadedCompanies();
+	};
+
+	handleChange = (event, { newValue }) => {
+		this.props.suggestionInputValueChange(newValue);
+	};
 
 	render() {
 		const {t, classes, ...other} = this.props;
@@ -30,10 +91,31 @@ export default class CompaniesList extends React.Component {
 			<Grid container className="my-4">
 				<Grid item md={9}>
 					<Card className={classes.inputWrapper}>
-						<Input placeholder={t('SECTION_SEARCH')} className={classNames(classes.searchInput, 'm-2', 'mt-3')} />
+						<Autosuggest
+							theme={{
+								container: classNames(classes.container, 'p-3'),
+								suggestionsContainerOpen: classes.suggestionsContainerOpen,
+								suggestionsList: classes.suggestionsList,
+								suggestion: classes.suggestion,
+							}}
+							renderInputComponent={renderInput}
+							suggestions={this.props.main.fuzzySearchCompanies}
+							onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+							onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+							renderSuggestionsContainer={renderSuggestionsContainer}
+							getSuggestionValue={getSuggestionValue}
+							renderSuggestion={renderSuggestion.bind(null, classes)}
+							inputProps={{
+								autoFocus: true,
+								classes,
+								placeholder: t('SECTION_SEARCH'),
+								value: this.props.main.suggestionInputValue,
+								onChange: this.handleChange,
+							}}
+						/>
 					</Card>
 					{
-                        this.props.main.companies && this.props.main.companies.map((company, index) => {
+                        this.props.main.companies.map((company, index) => {
 							return (
 								<CompanyItem key={index} company={company} />
 							);

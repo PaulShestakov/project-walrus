@@ -20,16 +20,26 @@ export default {
 			cl.SUBWAY_ID subwayId,
 			cl.CITY_ID cityId,
 			cl.ADDRESS address,
-			cl.COMPANY_ID companyId,
 			cl.LAT lat,
 			cl.LNG lng
 
 		FROM ${COMPANIES_TABLE} c
-
 		JOIN ${COMPANINES_LOCATION} cl
 			ON c.COMPANY_ID = cl.COMPANY_ID
-
 		WHERE c.COMPANY_ID = ?
+	`,
+
+	GET_BY_NAME: `
+		SELECT
+			c.COMPANY_ID companyId,
+			c.NAME name,
+			c.LOGO logo,
+			c.DESCRIPTION description,
+			c.EMAIL email,
+			c.WEBSITE_URL url
+
+		FROM ${COMPANIES_TABLE} c
+		WHERE c.NAME LIKE ?
 	`,
 
 	SAVE: `INSERT INTO ${COMPANIES_TABLE} set ?`,
