@@ -15,7 +15,7 @@ export default class Type extends React.Component {
         return (
             <div className={classes.exactTypesContainer}>
                 {
-                    type.subCategories.map((subcategory, index) => {
+                    type.subcategories.map((subcategory, index) => {
                         return (
                             <div className={classes.exactTypeLinkWrapper}>
                                 <Link key={index}

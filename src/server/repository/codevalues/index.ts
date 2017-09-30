@@ -1,7 +1,6 @@
 import BaseCRUD from "../BaseCRUD";
 import {executeQuery} from "../../database/DBHelper";
-import codeValuesSQL from './sql/CodeValue';
-import CodeValue from './entities/CodeValue';
+import codeValuesSQL from './sql';
 
 class CodeValues extends BaseCRUD {
 
@@ -45,12 +44,14 @@ class CodeValues extends BaseCRUD {
                     accum[row.categoryId] = {
                         value: row.categoryId,
                         label: row.categoryName,
-                        subCategories: []
+                        sort: row.categorySort,
+                        subcategories: []
                     }
                 }
-                accum[row.categoryId].subCategories.push({
-                    value: row.subCategoryId,
-                    label: row.subCategoryName
+                accum[row.categoryId].subcategories.push({
+                    value: row.subcategoryId,
+                    label: row.subcategoryName,
+                    sort: row.subcategorySort
                 });
                 return accum;
             }, {});

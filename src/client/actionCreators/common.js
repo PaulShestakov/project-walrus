@@ -56,6 +56,7 @@ export function loadCompaniesCodeValues() {
 	return (dispatch) => {
 		const generalCodeValues = fetch('/api/v1/codevalue?type=CITY&type=SUBWAY.MINSK&type=DAY_OF_WEEK');
         const specificCodeValues = fetch('/api/v1/codevalue/companyCategories');
+
         Promise.all([generalCodeValues, specificCodeValues]).then(results => {
             return results.map(result => {
                 if (result.ok) {
@@ -68,10 +69,21 @@ export function loadCompaniesCodeValues() {
                     type: LOAD_COMPANIES_CODE_VALUES_SUCCESS,
                     payload: {
                         ...values[0],
-                        categories: [...values[1]]
+                        categories: sortCompaniesCategories(values[1])
                     }
                 });
             });
         });
 	}
+}
+
+function sortCompaniesCategories(categories) {
+	const comparator = (a, b) => a.sort - b.sort;
+
+	categories.forEach(category => {
+		category.subcategories.sort(comparator)
+	});
+	categories.sort(comparator);
+
+	return categories;
 }
