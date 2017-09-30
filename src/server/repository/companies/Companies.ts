@@ -1,6 +1,7 @@
 import * as squel from "squel";
 
 import { executeQuery, executeSeries, executeParallel } from '../../database/DBHelper';
+import * as _ from 'lodash';
 
 import Queries from './sql/Queries';
 import BaseCRUD from "../BaseCRUD";
@@ -43,27 +44,26 @@ export default class Companies extends BaseCRUD  {
 		let phones: Array<string> = company.phones;
 		company.companyId = uuid();
 	    const savePhones = (connection, done) => {
-	        if (phones) {
-                connection.query(Queries.SAVE_PHONES, [phones.map(item => Companies.internalizePhone(company.companyId, item))], (error, result) => {
+	        if (phones && phones.length > 0) {
+                connection.query(Queries.SAVE_PHONES,
+					[phones.map(item => Companies.internalizePhone(company.companyId, item))], (error, result) => {
                     done(error, result);
                 });
             } else {
 	            done(null, null);
             }
-
 		};
 		const saveLocation = (connection, done) => {
-	        connection.query(Queries.SAVE_LOCATION, [Companies.inernalizeLocation(company)], (error, result) => {
+	        connection.query(Queries.SAVE_LOCATION, [Companies.internalizeLocation(company)], (error, result) => {
 				done(error, result);
 			});
         };
 	    const saveCompany = (connection, done) => {
-	        delete company.phones;
             connection.query(Queries.SAVE, [Companies.internalizeCompany(company)], (error, result) => {
                 done(error, result);
             });
         };
-        executeSeries([saveCompany, saveLocation], (error, result) => {
+        executeSeries([saveCompany, saveLocation, savePhones], (error, result) => {
             if (error) {
                 Util.handleError(error, callback);
             } else {
@@ -194,10 +194,12 @@ export default class Companies extends BaseCRUD  {
 	}
 
     static internalizeCompany(company: Company) {
+		const image =
+			(company.image ?  _.get(company.image, ['0', 'path'], null) : company.logo).split('\\').join('\/');
         return {
             COMPANY_ID: company.companyId,
             NAME: company.name,
-            LOGO: company.logo,
+            LOGO: image,
             DESCRIPTION: company.description,
             EMAIL: company.email,
             WEBSITE_URL: company.url,
@@ -207,7 +209,7 @@ export default class Companies extends BaseCRUD  {
         };
 	}
 	
-	static inernalizeLocation(company) {
+	static internalizeLocation(company) {
 		return {
 			COMPANY_LOCATION_ID: uuid(),
 			SUBWAY_ID: company.subway,
@@ -220,11 +222,11 @@ export default class Companies extends BaseCRUD  {
 	}
 
     static internalizePhone(companyId, phone) {
-	    return {
-	        COMPANY_PHONE_ID: uuid(),
-	        COMPANY_ID: companyId,
-            PHONE: phone
-        };
+	    return [
+	        uuid(),
+	        companyId,
+            phone
+        ];
     }
 
 	static externalizeCompany(company) {

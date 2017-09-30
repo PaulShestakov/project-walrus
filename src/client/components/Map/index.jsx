@@ -50,6 +50,10 @@ const MapWithASearchBox = compose(
           }));
           const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
 
+          if (this.props.onMarkersChanged) {
+              this.props.onMarkersChanged(nextMarkers);
+          }
+
           this.setState({
             center: nextCenter,
             markers: nextMarkers,

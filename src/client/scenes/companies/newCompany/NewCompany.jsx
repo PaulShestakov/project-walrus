@@ -16,7 +16,6 @@ export default class NewCompany extends React.Component {
         this.state = {
             address: '',
             city: {},
-            phones: [],
             imageObjects: [],
             selectedCategory: {},
             selectedSubcategory: {},
@@ -49,9 +48,12 @@ export default class NewCompany extends React.Component {
         e.preventDefault();
         const formElements = e.target.elements;
 
-        const phones = _.get(formElements.phones, 'value', null).split(',').map(i => i.trim());
+        const phones = _.get(formElements.phones, 'value', null)
+            .split(',')
+            .map(i => i.trim())
+            .filter(i => i.length > 0);
 
-        const formData = {
+        let formData = {
             name: _.get(formElements.name, 'value', null),
             logo: _.get(formElements.logo, 'value', null),
             description: _.get(formElements.description, 'value', null),
@@ -65,9 +67,21 @@ export default class NewCompany extends React.Component {
             city: this.state.selectedCity.value,
             subway: this.state.selectedSubway.value,
             address: _.get(formElements.address, 'value', null),
-            lng: _.get(formElements.lng, 'value', null),
-            lat: _.get(formElements.lat, 'value', null),
         };
+
+        if (this.state.markers.length > 0) {
+            formData = {
+                ...formData,
+                ...this.state.markers[0].position.toJSON()
+            };
+        }
+
+        if (this.state.imageObjects.length > 0) {
+            formData = {
+                ...formData,
+                image: this.state.imageObjects[0].file,
+            };
+        }
 
         this.props.postCompany(formData, this.props.history);
     };
@@ -76,7 +90,7 @@ export default class NewCompany extends React.Component {
         const {t, classes, ...other} = this.props;
 
         return (
-            <form className="d-flex-column align-items-center my-4">
+            <form onSubmit={this.saveAction} className="d-flex-column align-items-center my-4">
                 <Card raised>
                     <Grid container justify="center">
 
@@ -172,7 +186,11 @@ export default class NewCompany extends React.Component {
 
                         <Grid item md={8}>
                             <Title>Карта</Title>
-                            <Map search markers={this.state.markers} center={{lat: 53.9, lng: 27.5 }} className="mt-2"/>
+                            <Map search
+                                 markers={this.state.markers}
+                                 center={{lat: 53.9, lng: 27.5 }}
+                                 onMarkersChanged={(markers) => this.setState({ markers })}
+                                 className="mt-2"/>
                         </Grid>
 
                         <Grid item md={8}>
@@ -183,7 +201,7 @@ export default class NewCompany extends React.Component {
 
                         <Grid container justify="center" className="my-3">
                             <Grid item md={4} className="text-center">
-                                <Button onClick={this.saveAction} className="my-4 text-white w-100" accent="blue">
+                                <Button type="submit" className="my-4 text-white w-100" accent="blue">
                                     {t('Сохранить')}
                                 </Button>
                             </Grid>

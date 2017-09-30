@@ -35,7 +35,7 @@ export default class App {
 	}
 
 	private configureRoutes(): void {
-		this.app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+		this.app.use('/dist/uploads', express.static(path.join(__dirname, '../uploads')));
 		this.app.use('/api/v1/promo', Promo);
 		this.app.use('/api/v1/company', Company);
 		this.app.use('/api/v1/codevalue', CodeValue);

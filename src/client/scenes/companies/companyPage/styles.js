@@ -3,6 +3,7 @@ import globalStyle from '../../../style';
 export default {
 
     cardImage: {
+        backgroundSize: 'contain',
         width: '12rem',
         height: '12rem'
     },

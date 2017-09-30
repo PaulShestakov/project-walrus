@@ -59,7 +59,7 @@ export default class CompanyPage extends React.Component {
 	render() {
 		const {t, classes, company, ...other} = this.props;
 
-        const imageSrc = company.logo ? company.logo : '';
+        const imageSrc = (company.logo ? company.logo : '').split('\\').join('\/');
 
 		return (
 			<Card raised className="my-4">

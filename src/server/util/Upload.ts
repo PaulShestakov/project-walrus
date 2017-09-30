@@ -5,7 +5,7 @@ const storage = multer.diskStorage({
 	destination: function(req, file, cb) {
 		const date = new Date();
 		const folderName = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-		const path = 'dist/uploads/' + folderName;
+		const path = '/dist/uploads/' + folderName;
 
 		dir.sync(path, (err) => cb(null, path));
 
