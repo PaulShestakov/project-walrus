@@ -38,6 +38,7 @@ export default class CheckboxesBlock extends React.Component {
 			{
 				items.map((item, index) => (
 					<FormControlLabel
+						key={index}
 						label={item.label}
 						className={classNames(classes.checkboxWrapper, 'mt-2')}
 						control={
@@ -73,7 +74,9 @@ export default class CheckboxesBlock extends React.Component {
 								const checked = selectedIds.indexOf(item.value) !== -1;
 
 								return (
-									<FormControlLabel className={classNames(classes.checkboxWrapper, 'mt-2')}
+									<FormControlLabel
+										key={index}
+									    className={classNames(classes.checkboxWrapper, 'mt-2')}
 										label={item.label}
 										control={
 											<Checkbox value={item.value}

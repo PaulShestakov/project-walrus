@@ -16,6 +16,7 @@ import Input from  			'material-ui/Input';
 import Tabs, { Tab } from 	'material-ui/Tabs';
 
 import Popover from 		'react-popover';
+import Map from	'./Map';
 
 export {
 	Button,
@@ -36,5 +37,6 @@ export {
 	Tab,
 
 	Dropdown,
-	Popover
+	Popover,
+	Map
 };

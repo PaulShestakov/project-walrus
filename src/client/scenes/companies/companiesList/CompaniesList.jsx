@@ -17,8 +17,6 @@ export default class CompaniesList extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.loadCompaniesCodeValues();
-
 		const searchParams = new URLSearchParams(this.props.location.search);
 		this.props.updateStateWithUrlSource(searchParams);
 
@@ -35,9 +33,9 @@ export default class CompaniesList extends React.Component {
 						<Input placeholder={t('SECTION_SEARCH')} className={classNames(classes.searchInput, 'm-2', 'mt-3')} />
 					</Card>
 					{
-                        this.props.main.companies && this.props.main.companies.map(company => {
+                        this.props.main.companies && this.props.main.companies.map((company, index) => {
 							return (
-								<CompanyItem company={company} />
+								<CompanyItem key={index} company={company} />
 							);
 						})
 					}

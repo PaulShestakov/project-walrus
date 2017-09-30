@@ -16,12 +16,12 @@ export default class ImagePreview extends React.Component {
 	}
 
 	render() {
-		const {classes, className, ...other} = this.props;
+		const {classes, className, imageUrl, onDelete, ...other} = this.props;
 
 		return (
 			<div className={classNames(className, classes.imagePreview)} {...other} >
-				<img src={this.props.imageUrl} className={classes.image} />
-				<button onClick={this.props.onDelete} className={classes.deleteButton}>
+				<img src={imageUrl} className={classes.image} />
+				<button onClick={onDelete} className={classes.deleteButton}>
 					<FontAwesome name="times" className={classes.deleteButtonCross} />
 				</button>
 			</div>

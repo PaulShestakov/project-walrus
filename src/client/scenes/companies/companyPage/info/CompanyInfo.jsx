@@ -2,12 +2,11 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
 import FontAwesome from 'react-fontawesome';
-import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card } from "components";
+import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Map } from "components";
 import styles from './styles';
 
 import { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card';
 import {Divider, Typography, Paper} from "material-ui";
-import Map from "./Map";
 
 
 @translate(['common'])
@@ -20,6 +19,12 @@ export default class CompanyInfo extends React.Component {
 
     render() {
         const {t, company, ...other} = this.props;
+        const markers = [{
+            position: {
+                lat: company.lat,
+                lng: company.lng
+            }
+        }];
 
         return (
             <Grid container >
@@ -29,12 +34,7 @@ export default class CompanyInfo extends React.Component {
                     </Typography>
                 </Grid>
                 <Grid item md={12}>
-                    <Map
-                        googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
-                        loadingElement={<div style={{ height: `100%` }} />}
-                        containerElement={<div style={{ height: `400px` }} />}
-                        mapElement={<div style={{ height: `100%` }} />}
-                        location={{lat: company.lat, lng: company.lng}}/>
+                    <Map markers={markers} center={markers[0].position}/>
                 </Grid>
             </Grid>
         );

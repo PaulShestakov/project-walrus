@@ -3,8 +3,6 @@ import * as squel from "squel";
 import * as _ from 'lodash';
 import Mapper from '../../util/Mapper';
 import Util from '../../util/Util';
-import StatusRepo from '../codevalues/Status';
-import TypeRepo from "../codevalues/Type";
 import BaseCRUD from "../BaseCRUD";
 import { executeQuery, executeSeries, executeParallel } from '../../database/DBHelper';
 
@@ -20,14 +18,10 @@ import IPromoInfo from './entities/IPromo'
 class Promo extends BaseCRUD {
 
 	private mapper: Mapper;
-	private statusRepo: StatusRepo;
-	private typeRepo: TypeRepo;
 
 	constructor() {
 		super(promoSQL.TABLE_NAME);
 		this.mapper		 = new Mapper();
-		this.statusRepo  = new StatusRepo();
-		this.typeRepo 	 = new TypeRepo();
 	}
 
 	static externalizePromo(promo) {

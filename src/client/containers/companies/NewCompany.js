@@ -16,9 +16,7 @@ const CompanyPage = connect(
         };
     },
     {
-        postCompany,
-        loadCompanyCategories,
-        loadCompaniesCodeValues
+        postCompany
     }
 )(NewCompanyComponent);
 

@@ -1,22 +1,20 @@
 import {
 	LOAD_PROMO_CODE_VALUES_SUCCESS,
-	LOAD_COMPANIES_TYPES_SUCCESS,
-
 	LOAD_COMPANIES_CODE_VALUES_SUCCESS
 } from '../../actionCreators/common';
-import daysOfWeek from './daysOfWeek';
 
 const defaultState = {
 	animals: [],
 	animalsAreLoaded: false,
 
 	cities: [],
+	subway: [],
 	citiesAreLoaded: false,
 
 	companiesCategories: [],
 	companiesCategoriesAreLoaded: false,
 
-	daysOfWeek: daysOfWeek
+	daysOfWeek: []
 };
 
 const commonReducer = (state = defaultState, action) => {
@@ -33,22 +31,14 @@ const commonReducer = (state = defaultState, action) => {
 				citiesAreLoaded: true
 			};
 
-		case LOAD_COMPANIES_TYPES_SUCCESS:
-			return {
-				...state,
-				companiesCategories: action.payload,
-				companiesCategoriesAreLoaded: true
-			};
-
 		case LOAD_COMPANIES_CODE_VALUES_SUCCESS:
-		console.log(action.payload);
-			return {
-				...state,
-
-				cities: action.payload.cities,
-				subway: action.payload.subway,
-				citiesAreLoaded: true
-			};
+            return {
+                ...state,
+				cities: action.payload.CITY,
+				daysOfWeek: action.payload.DAY_OF_WEEK,
+                subway: action.payload['SUBWAY.MINSK'],
+                companiesCategories: action.payload.categories
+            }
 
 		default:
 			return state;

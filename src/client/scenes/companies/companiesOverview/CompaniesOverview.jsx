@@ -19,10 +19,6 @@ export default class CompaniesOverview extends React.Component {
 		}
 	}
 
-	componentDidMount() {
-		this.props.loadCompanyCategories();
-	}
-
     componentWillReceiveProps(nextProps) {
         const params = new URLSearchParams(nextProps.location.search);
         const category = params.get('companyCategoryId');
@@ -68,7 +64,8 @@ export default class CompaniesOverview extends React.Component {
 						fullWidth>
                         {
                             common.companiesCategories.map((type, index) => (
-								<Tab className={classes.tab}
+								<Tab key={index}
+									 className={classes.tab}
 									 classes={{label: classes.tabLabel, labelContainer: classes.tabLabelContainer}}
 									 label={type.label}
 									 icon={icons[index]} />
@@ -78,9 +75,9 @@ export default class CompaniesOverview extends React.Component {
 				</Paper>
 				<SwipeableViews index={this.state.selectedTabIndex} onChangeIndex={this.handleChangeIndex}>
 				{
-                    common.companiesCategories && common.companiesCategories.map(type => {
+                    common.companiesCategories && common.companiesCategories.map((type, index) => {
 						return (
-							<Category type={type} location={location}/>
+							<Category key={index} type={type} location={location}/>
 						);
                     })
 				}

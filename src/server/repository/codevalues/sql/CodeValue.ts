@@ -3,7 +3,7 @@ const CODE_VALUE_TABLE = 'wikipet.code_values';
 export default {
     TABLE_NAME: CODE_VALUE_TABLE,
 
-    GET_BY_TYPES: `SELECT cv.ID, cv.GROUP, cv.NAME FROM ${CODE_VALUE_TABLE} cv WHERE cv.GROUP IN (?)`,
+    GET_BY_TYPES: `SELECT cv.ID, cv.GROUP, cv.NAME FROM ${CODE_VALUE_TABLE} cv WHERE cv.GROUP IN (?) ORDER BY cv.SORT`,
     
     GET_COMPANIES_CATEGORIES: `
         SELECT 

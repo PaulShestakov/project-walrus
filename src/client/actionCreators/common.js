@@ -50,107 +50,28 @@ export function loadPromoCodeValues() {
 	}
 }
 
-
-
-export const LOAD_COMPANIES_TYPES_START = 'LOAD_COMPANIES_TYPES_START';
-export const LOAD_COMPANIES_TYPES_SUCCESS = 'LOAD_COMPANIES_TYPES_SUCCESS';
-export const LOAD_COMPANIES_TYPES_ERROR = 'LOAD_COMPANIES_TYPES_ERROR';
-
-
-const loadCompaniesTypesStart = () => {
-	return {
-		type: LOAD_COMPANIES_TYPES_START,
-		isFetching: true
-	};
-};
-const loadCompaniesTypesSuccess = (data) => {
-	return {
-		type: LOAD_COMPANIES_TYPES_SUCCESS,
-		payload: data,
-		isFetching: false
-	};
-};
-const loadCompaniesTypesError = (error) => {
-	return {
-		type: LOAD_COMPANIES_TYPES_ERROR,
-		payload: error,
-		isFetching: false
-	};
-};
-
-export function loadCompanyCategories() {
-	return (dispatch, getState) => {
-		const { common } = getState();
-
-		if (!common.companiesTypesLoaded) {
-			dispatch(loadCompaniesTypesStart());
-
-			fetch('/api/v1/codevalue/companyCategories').then(
-				response => {
-					if (response.ok) {
-						return response.json();
-					}
-				},
-				error => {
-					dispatch(loadCompaniesTypesError())
-				}
-			).then(json => {
-				dispatch(loadCompaniesTypesSuccess(json));
-			});
-		}
-	}
-}
-
-
-export const LOAD_COMPANIES_CODE_VALUES_START = 'LOAD_COMPANIES_CODE_VALUES_START';
 export const LOAD_COMPANIES_CODE_VALUES_SUCCESS = 'LOAD_COMPANIES_CODE_VALUES_SUCCESS';
-export const LOAD_COMPANIES_CODE_VALUES_ERROR = 'LOAD_COMPANIES_CODE_VALUES_ERROR';
-
-
-const loadCompaniesCodeValuesStart = () => {
-	return {
-		type: LOAD_COMPANIES_CODE_VALUES_START,
-		isFetching: true
-	};
-};
-const loadCompaniesCodeValuesSuccess = (data) => {
-	return {
-		type: LOAD_COMPANIES_CODE_VALUES_SUCCESS,
-		payload: data,
-		isFetching: false
-	};
-};
-const loadCompaniesCodeValuesError = (error) => {
-	return {
-		type: LOAD_COMPANIES_CODE_VALUES_ERROR,
-		payload: error,
-		isFetching: false
-	};
-};
 
 export function loadCompaniesCodeValues() {
-	return (dispatch, getState) => {
-		const { common } = getState();
-
-		if (!common.citiesAreLoaded) {
-			dispatch(loadCompaniesCodeValuesStart());
-
-			fetch('/api/v1/codevalue?type=CITY&type=SUBWAY.MINSK').then(
-				response => {
-					if (response.ok) {
-						return response.json();
-					}
-				},
-				error => {
-					dispatch(loadCompaniesCodeValuesError())
-				}
-			).then(json => {
-				dispatch(loadCompaniesCodeValuesSuccess({
-					cities: json.CITY,
-					subway: json['SUBWAY.MINSK']
-				}));
-
-			});
-		}
+	return (dispatch) => {
+		const generalCodeValues = fetch('/api/v1/codevalue?type=CITY&type=SUBWAY.MINSK&type=DAY_OF_WEEK');
+        const specificCodeValues = fetch('/api/v1/codevalue/companyCategories');
+        Promise.all([generalCodeValues, specificCodeValues]).then(results => {
+            return results.map(result => {
+                if (result.ok) {
+                    return result.json();
+                }
+            });
+        }).then(results => {
+            Promise.all(results).then(values => {
+                dispatch({
+                    type: LOAD_COMPANIES_CODE_VALUES_SUCCESS,
+                    payload: {
+                        ...values[0],
+                        categories: [...values[1]]
+                    }
+                });
+            });
+        });
 	}
 }

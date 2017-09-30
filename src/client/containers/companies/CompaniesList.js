@@ -13,19 +13,17 @@ import {
 	addDayOfWeek,
 	removeDayOfWeek,
 } from "../../actionCreators/companiesList/filter";
-import {loadCompaniesCodeValues} from "../../actionCreators/common";
 
 const CompaniesList = connect(
 	state => {
 		return {
+			...state,
 			main: state.companiesList.main,
 			filter: state.companiesList.filter,
 			common: state.common
 		};
 	},
 	{
-		loadCompaniesCodeValues,
-
 		loadCompanies,
 
 		updateStateWithUrlSource,

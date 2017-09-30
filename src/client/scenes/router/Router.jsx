@@ -10,10 +10,7 @@ import PromosList from "../../containers/promos/PromosList";
 import NewPromo from "../../containers/promos/NewPromo";
 import PromoPage from "../../containers/promos/PromoPage";
 
-import CompanyPage from "../../containers/companies/CompanyPage";
-import NewCompany from "../../containers/companies/NewCompany";
-import CompaniesList from "../../containers/companies/CompaniesList";
-import CompaniesOverview from "../../containers/companies/CompaniesOverview";
+import CompanyRoute from "../../containers/companies/Company";
 
 import styles from './styles.scss';
 
@@ -33,10 +30,7 @@ export default class Router extends React.Component {
 								<Route path="/newPromo" component={NewPromo} />
 								<Route exact path='/promosList' component={PromosList} />
 
-								<Route path="/company/:companyId" component={CompanyPage} />
-								<Route path="/newCompany" component={NewCompany} />
-								<Route path="/companiesList" component={CompaniesList} />
-								<Route path="/companiesOverview" component={CompaniesOverview} />
+								<Route path="/company" component={CompanyRoute} />
 
 							</Switch>
 						</Grid>

@@ -8,7 +8,10 @@ import {loadCompany} from "../../actionCreators/companyPage/companyPage";
 
 const CompanyPage = connect(
 	state => {
-		return state.companyPage
+		return {
+			...state,
+			...state.companyPage
+		}
 	},
 	{
 		loadCompany

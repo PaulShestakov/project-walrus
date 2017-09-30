@@ -73,7 +73,7 @@ export default class Sidebar extends React.Component {
 		return (
 			<Card className={classNames(classes.card, 'mb-3 py-3 text-center')}>
 
-				<Link to="/newCompany" className={classNames(classes.link)}>
+				<Link to="/company/new" className={classNames(classes.link)}>
 					<Button accent="red" disableRipple={true} >
 						<FontAwesome name="plus" className="mr-1" />
 						Добавить компанию

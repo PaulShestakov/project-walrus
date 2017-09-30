@@ -42,7 +42,7 @@ export default class ImageUploader extends React.Component {
 	};
 
 	render() {
-		const {t, classes, ...other} = this.props;
+		const {t, classes, imageObjects, ...other} = this.props;
 
 		return (
 			<div className={["d-flex", this.props.className].join(' ')} {...other}>
@@ -53,9 +53,9 @@ export default class ImageUploader extends React.Component {
 					<span>{t('ADD_PHOTO')}</span>
 				</label>
 				{
-					this.props.imageObjects.map((imageObject, index) => {
+					imageObjects.map((imageObject, index) => {
 						return (
-							<ImagePreview imageUrl={imageObject.imageUrl} onDelete={this.handleDeleteImage.bind(null, index)} className="ml-3"/>
+							<ImagePreview key={index} imageUrl={imageObject.imageUrl} onDelete={this.handleDeleteImage.bind(null, index)} className="ml-3"/>
 						);
 					})
 				}
@@ -66,6 +66,6 @@ export default class ImageUploader extends React.Component {
 
 ImageUploader.propTypes = {
 	imageObjects: PropTypes.any,
-	onImageAdde: PropTypes.func,
+	onImageAdd: PropTypes.func,
 	onImageDelete: PropTypes.func
 };
