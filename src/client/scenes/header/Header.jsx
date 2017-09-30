@@ -19,12 +19,12 @@ class Header extends React.Component {
 			<header className={this.props.className} itemType="http://schema.org/Header" itemScope>
 				<Card>
 					<Grid container justify="center" className="py-3">
-						<Grid item md={9}>
+						<Grid item xs={9}>
 							<Grid container className='my-2'>
-								<Grid item md={2}>
+								<Grid item xs={2}>
 									<img src={logo} alt="Logo" style={{width: '100%'}} />
 								</Grid>
-								<Grid item md={10} className='d-flex align-items-center justify-content-between'>
+								<Grid item xs={10} className='d-flex align-items-center justify-content-between'>
 									<Link to="/" className={classes.topLink}>
 										<FontAwesome name="search" className='mr-1' />
 										{t('SEARCH')}
@@ -53,7 +53,7 @@ class Header extends React.Component {
 							</Grid>
 
 							<Grid container className='mb-2'>
-								<Grid item md={12} className='d-flex align-items-center justify-content-between'>
+								<Grid item xs={12} className='d-flex align-items-center justify-content-between'>
 									<Link to='/' className={classes.bottomLink}>
 										{t('GUIDE')}
 									</Link>
