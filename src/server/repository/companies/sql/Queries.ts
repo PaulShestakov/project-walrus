@@ -2,6 +2,7 @@ const COMPANIES_TABLE = 'wikipet.companies';
 const COMPANIES_PHONES = 'wikipet.companies_phones';
 const COMPANINES_LOCATION = 'wikipet.companies_location';
 const CODE_VALUES = 'wikipet.code_values';
+const WORKING_TIMES = 'wikipet.companies_working_time';
 
 export default {
 	GET: `
@@ -38,4 +39,6 @@ export default {
 	SAVE_PHONES: `INSERT INTO ${COMPANIES_PHONES} VALUES ?`,
 
 	SAVE_LOCATION: `INSERT INTO ${COMPANINES_LOCATION} set ?`,
+
+	SAVE_WORKING_TIMES: `INSERT INTO ${WORKING_TIMES} VALUES ?`,
 }

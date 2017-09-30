@@ -6,6 +6,11 @@ import { Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, T
 import styles from './styles';
 import {Divider, Typography, Paper} from "material-ui";
 
+import { InputLabel } from 'material-ui/Input';
+import { MenuItem } from 'material-ui/Menu';
+import { FormControl, FormHelperText } from 'material-ui/Form';
+import Select from 'material-ui/Select';
+
 
 @translate(['common'])
 @withStyles(styles)
@@ -17,18 +22,28 @@ export default class NewCompany extends React.Component {
             address: '',
             city: {},
             imageObjects: [],
+            subcatories: [],
             selectedCategory: {},
             selectedSubcategory: {},
             selectedSubway: {},
             selectedCity: {},
-            markers: []
+            markers: [],
+            workingTimes: []
         };
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
             categories: nextProps.common.companiesCategories,
-            subcatories: []
+            subcatories: [],
+            workingTimes:
+                nextProps.common.daysOfWeek.map(item => {
+                    return {
+                        ...item,
+                        from: null,
+                        to: null
+                    }
+                })
         });
     }
 
@@ -36,7 +51,7 @@ export default class NewCompany extends React.Component {
         const category = this.props.common.companiesCategories.find((category) => {
             return category.value === option.value;
         });
-        const subcategories = category.subCategories;
+        const subcategories = category.subcategories;
         this.setState({
             selectedCategory: option,
             subcategories: subcategories,
@@ -44,14 +59,34 @@ export default class NewCompany extends React.Component {
         });
     };
 
+    handleWorkingTimeChange = (event, item, type) => {
+        item[type] = event.target.value;
+        const index = this.state.workingTimes.findIndex(time => {
+            return time.value === item.value;
+        });
+        if (index > -1) {
+            this.state.workingTimes[index] = item;
+            this.setState({ workingTimes: this.state.workingTimes });
+        }
+    };
+
     saveAction = (e) => {
         e.preventDefault();
         const formElements = e.target.elements;
 
-        const phones = _.get(formElements.phones, 'value', null)
-            .split(',')
-            .map(i => i.trim())
-            .filter(i => i.length > 0);
+        let phones = _.get(formElements.phones, 'value', null);
+        if (phones) {
+            phones = phones.split(',').map(i => i.trim()).filter(i => i.length > 0);
+        }
+        let times = this.state.workingTimes.filter(item => {
+            return item.from && item.to;
+        }).map(item => {
+            return {
+                day: item.value,
+                from: item.from,
+                to: item.to
+            }
+        });
 
         let formData = {
             name: _.get(formElements.name, 'value', null),
@@ -67,6 +102,7 @@ export default class NewCompany extends React.Component {
             city: this.state.selectedCity.value,
             subway: this.state.selectedSubway.value,
             address: _.get(formElements.address, 'value', null),
+            workingTimes: times
         };
 
         if (this.state.markers.length > 0) {
@@ -87,24 +123,24 @@ export default class NewCompany extends React.Component {
     };
 
     render() {
-        const {t, classes, ...other} = this.props;
+        const {t, classes, common, ...other} = this.props;
 
         return (
             <form onSubmit={this.saveAction} className="d-flex-column align-items-center my-4">
                 <Card raised>
                     <Grid container justify="center">
 
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Typography type="headline" component="h1" className="mt-4">
                                     Основная информация
                             </Typography>
                         </Grid>
 
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Title>Название</Title>
                             <Input name="name" placeholder="Название компании" fullWidth className="mt-2"/>
                         </Grid>
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Title>Категория</Title>
                             <Dropdown name="companyCategoryId"
                                       value={this.state.selectedCategory.label}
@@ -112,7 +148,7 @@ export default class NewCompany extends React.Component {
                                       options={this.state.categories}
                                       className="mt-2"/>
                         </Grid>
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Title>Подкатегория</Title>
                             <Dropdown name="companySubcategoryId"
                                       onChange={(option) => this.setState({  selectedSubcategory : option })}
@@ -121,12 +157,12 @@ export default class NewCompany extends React.Component {
                                       className="mt-2"/>
                         </Grid>
 
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Title>Ссылка на лого</Title>
                             <Input name="logo" placeholder="Лого" fullWidth className="mt-2"/>
                         </Grid>
 
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Title>Картинка лого</Title>
                             <ImageUploader className="mt-4"
                                 imageObjects={this.state.imageObjects}
@@ -134,7 +170,7 @@ export default class NewCompany extends React.Component {
                                 onImageDelete={() => this.setState({ imageObjects: [] })}/>
                         </Grid>
                         
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Title>Описание</Title>
                             <TextField name="description"
                                        multiline
@@ -143,25 +179,25 @@ export default class NewCompany extends React.Component {
                                        fullWidth
                                        className="mt-2"/>
                         </Grid>
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Title>Сайт компании</Title>
                             <Input name="url" placeholder="Сайт" fullWidth className="mt-2"/>
                         </Grid>
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Title>Email</Title>
                             <Input name="email" placeholder="Email" fullWidth className="mt-2"/>
                         </Grid>
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Title>Телефоны</Title>
                             <Input name="phones" placeholder="Телефоны" fullWidth className="mt-2"/>
                         </Grid>
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Typography type="headline" component="h1" className="mt-4">
                                     Местоположение
                             </Typography>
                         </Grid>
                         
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Title>Город</Title>
                             <Dropdown name="city"
                                       onChange={(option) => this.setState({  selectedCity: option })}
@@ -170,7 +206,7 @@ export default class NewCompany extends React.Component {
                                       className="mt-2"/>
                         </Grid>
 
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Title>Метро</Title>
                             <Dropdown name="subway"
                                       onChange={(option) => this.setState({  selectedSubway: option })}
@@ -179,12 +215,12 @@ export default class NewCompany extends React.Component {
                                       className="mt-2"/>
                         </Grid>
 
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Title>Адрес</Title>
                             <Input name="address" placeholder="Адрес" fullWidth className="mt-2" onChange={(event) => this.setState({ address: event.target.value })}/>
                         </Grid>
 
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Title>Карта</Title>
                             <Map search
                                  markers={this.state.markers}
@@ -193,19 +229,69 @@ export default class NewCompany extends React.Component {
                                  className="mt-2"/>
                         </Grid>
 
-                        <Grid item md={8}>
+                        <Grid item xs={8}>
                             <Typography type="headline" component="h1" className="mt-4">
-                                    Время работы
+                                Время работы
                             </Typography>
                         </Grid>
 
+                        {
+                            this.state.workingTimes.map((item, index) => {
+                                return (
+                                    <Grid item xs={8}>
+                                        <Grid container>
+                                            <Grid item xs={6}>
+                                                <Title>{item.label}</Title>
+                                            </Grid>
+                                            <Grid item xs={3}>
+                                                <FormControl className={classes.formControl}>
+                                                    <InputLabel htmlFor="from">From</InputLabel>
+                                                    <Select
+                                                        value={item.from}
+                                                        onChange={(event) => this.handleWorkingTimeChange(event, item, 'from')}
+                                                        input={<Input id="from" />}>
+                                                        <MenuItem value="">
+                                                            <em>None</em>
+                                                        </MenuItem>
+                                                        {
+                                                            [...new Array(24)].map((x, i) => (
+                                                                <MenuItem value={i + 1}>{i + 1}</MenuItem>
+                                                            ))
+                                                        }
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                            <Grid item xs={3}>
+                                                <FormControl className={classes.formControl}>
+                                                    <InputLabel htmlFor="to">To</InputLabel>
+                                                    <Select
+                                                        value={item.to}
+                                                        onChange={(event) => this.handleWorkingTimeChange(event, item, 'to')}
+                                                        input={<Input id="to" />}>
+                                                        <MenuItem value="">
+                                                            <em>None</em>
+                                                        </MenuItem>
+                                                        {
+                                                            [...new Array(24)].map((x, i) => (
+                                                                <MenuItem value={i + 1}>{i + 1}</MenuItem>
+                                                            ))
+                                                        }
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                )
+                            })
+                        }
+
                         <Grid container justify="center" className="my-3">
-                            <Grid item md={4} className="text-center">
+                            <Grid item xs={4} className="text-center">
                                 <Button type="submit" className="my-4 text-white w-100" accent="blue">
                                     {t('Сохранить')}
                                 </Button>
                             </Grid>
-                            <Grid item md={4} className="text-center">
+                            <Grid item xs={4} className="text-center">
                                 <Button className="my-4 text-white w-100" accent="red">
                                     {t('Отмена')}
                                 </Button>

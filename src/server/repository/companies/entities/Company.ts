@@ -5,11 +5,13 @@ class Company {
 	description: string;
 	email: string;
 	url: string;
+	image: object;
 	phones: Array<string>;
 	lat: number;
 	lng: number;
     companyCategoryId: string;
     companySubcategoryId: string;
     companyCategoryName: string;
-    companySubcategoryName: string;
+	companySubcategoryName: string;
+	workingTimes: Array<object>;
 }

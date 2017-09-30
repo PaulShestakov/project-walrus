@@ -41,9 +41,9 @@ export default class Companies extends BaseCRUD  {
 	}
 
 	static postCompany(company: Company, callback) {
-		let phones: Array<string> = company.phones;
 		company.companyId = uuid();
 	    const savePhones = (connection, done) => {
+			let phones: Array<string> = company.phones;
 	        if (phones && phones.length > 0) {
                 connection.query(Queries.SAVE_PHONES,
 					[phones.map(item => Companies.internalizePhone(company.companyId, item))], (error, result) => {
@@ -57,13 +57,21 @@ export default class Companies extends BaseCRUD  {
 	        connection.query(Queries.SAVE_LOCATION, [Companies.internalizeLocation(company)], (error, result) => {
 				done(error, result);
 			});
+		};
+		const saveWorkingTimes = (connection, done) => {
+			let times = company.workingTimes;
+			if (times && times.length > 0) {
+				connection.query(Queries.SAVE_WORKING_TIMES, [times.map(item => Companies.internalizeTime(company, item))], (error, result) => {
+					done(error, result);
+				});
+			}
         };
 	    const saveCompany = (connection, done) => {
             connection.query(Queries.SAVE, [Companies.internalizeCompany(company)], (error, result) => {
                 done(error, result);
             });
         };
-        executeSeries([saveCompany, saveLocation, savePhones], (error, result) => {
+        executeSeries([saveCompany, saveLocation, savePhones, saveWorkingTimes], (error, result) => {
             if (error) {
                 Util.handleError(error, callback);
             } else {
@@ -96,6 +104,7 @@ export default class Companies extends BaseCRUD  {
 		const sql = squel
 			.select()
 				.field('c.COMPANY_ID')
+				.field('c.NAME')
 				.field('c.COMPANY_CATEGORY_ID')
 				.field('c.COMPANY_SUBCATEGORY_ID')
 				.field('c.LOGO')
@@ -194,8 +203,10 @@ export default class Companies extends BaseCRUD  {
 	}
 
     static internalizeCompany(company: Company) {
-		const image =
-			(company.image ?  _.get(company.image, ['0', 'path'], null) : company.logo).split('\\').join('\/');
+		let image = (company.image ?  _.get(company.image, ['0', 'path'], null) : company.logo);
+		if (image) {
+			image = image.split('\\').join('\/');
+		}
         return {
             COMPANY_ID: company.companyId,
             NAME: company.name,
@@ -207,6 +218,15 @@ export default class Companies extends BaseCRUD  {
             COMPANY_CATEGORY_ID: company.companyCategoryId,
             COMPANY_SUBCATEGORY_ID: company.companySubcategoryId
         };
+	}
+
+	static internalizeTime(company: Company, workingTime) {
+		return [
+			company.companyId,
+			workingTime.day,
+			`${workingTime.from}:00:00`,
+			`${workingTime.to}:00:00`
+		]
 	}
 	
 	static internalizeLocation(company) {

@@ -4,6 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import FontAwesome from 'react-fontawesome';
 import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Map } from "components";
 import styles from './styles';
+import classNames from 'classnames';
 
 import { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card';
 import {Divider, Typography, Paper} from "material-ui";
@@ -18,7 +19,7 @@ export default class CompanyInfo extends React.Component {
     }
 
     render() {
-        const {t, company, ...other} = this.props;
+        const {t, classes, company, ...other} = this.props;
         const markers = [{
             position: {
                 lat: company.lat,
@@ -28,7 +29,7 @@ export default class CompanyInfo extends React.Component {
 
         return (
             <Grid container >
-                <Grid item md={12} className="mt-4 mb-2">
+                <Grid item md={12} className={classNames(classes.description, 'mt-4', 'mb-2')}>
                     <Typography type="body1" component="p">
                         {company.description}
                     </Typography>
