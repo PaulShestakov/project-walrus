@@ -72,11 +72,6 @@ export default class CompanyItem extends React.Component {
 						<Text>{company.phones ? company.phones.map(item => item.phone).join(', ') : 'Телефонов нет'}</Text>
 					</div>
 
-					{/*<div className={classNames(classes.flexRow, 'mt-1')}>*/}
-						{/*<FontAwesome name="clock-o" className={classes.icon} />*/}
-						{/*<Text>Working time</Text>*/}
-					{/*</div>*/}
-
 					<div className={classes.buttonsBlock}>
 						<Button className="mr-2 text-white" onClick={this.handleOpenWorkingTimeDialog} bsSize="large" accent="white">
 							{t('WORKING_TIME')}

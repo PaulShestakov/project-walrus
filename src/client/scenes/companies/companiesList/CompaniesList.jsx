@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
 import {Title, Grid, Card, Label, Text, TextField} from "components";
@@ -6,13 +7,9 @@ import CompanyItem from './companyItem/CompanyItem'
 import Sidebar from './sidebar/Sidebar';
 import classNames from 'classnames';
 import styles from './styles';
-
 import Autosuggest from 'react-autosuggest';
 import Paper from 'material-ui/Paper';
 import { MenuItem } from 'material-ui/Menu';
-
-
-
 
 
 function renderInput(inputProps) {
@@ -47,11 +44,16 @@ function renderSuggestionsContainer(options) {
 function renderSuggestion(classes, company, { query, isHighlighted }) {
 	return (
 		<MenuItem component="div" className="p-3" classes={{root: classes.suggestionMenuItem}}>
-			<img src={company.logo} className={classes.suggestionImage}/>
-			<div>
-				<Label uppercase bold fontSize="1.5rem">{company.name}</Label>
-				<Text className="mt-1" maxLines={2}>{company.description}</Text>
-			</div>
+			<Link to={`/company/${company.companyId}`} className={classes.suggestionItemLink}>
+				<Paper>
+					<img src={company.logo} className={classes.suggestionImage}/>
+				</Paper>
+
+				<div className="ml-2">
+					<Label uppercase bold fontSize="1.5rem">{company.name}</Label>
+					<Text className="mt-1" maxLines={2}>{company.description}</Text>
+				</div>
+			</Link>
 		</MenuItem>
 	);
 }

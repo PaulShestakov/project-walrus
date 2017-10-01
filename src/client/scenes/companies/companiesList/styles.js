@@ -39,5 +39,11 @@ export default {
 	suggestionImage: {
 		width: '6rem',
 		height: '6rem'
+	},
+
+	suggestionItemLink: {
+		display: 'flex',
+		flexDirection: 'row',
+		textDecoration: 'none'
 	}
 }
