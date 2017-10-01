@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import ImagePreview from "./ImagePreview";
 import FontAwesome from 'react-fontawesome';
-
 import { withStyles } from 'material-ui/styles';
-
+// import {Card} from "material-ui";
 import styles from './styles';
+import {Title, Grid, Card, Label, Text, TextField} from "components";
+
+import Button from 'material-ui/Button';
+import AddIcon from 'material-ui-icons/Add';
 
 
 @translate(['components'])
@@ -42,20 +45,32 @@ export default class ImageUploader extends React.Component {
 	};
 
 	render() {
-		const {t, classes, imageObjects, ...other} = this.props;
+		const {t, classes, className, imageObjects, ...other} = this.props;
 
 		return (
-			<div className={["d-flex", this.props.className].join(' ')} {...other}>
-				<input id="file" multiple="multiple" name={this.props.name} className={classes.addImageInput} type="file" onChange={this.handleAddImage}/>
+			<div className={classes.main}>
+				<input id="file"
+					multiple="multiple"
+					name={this.props.name}
+					className={classes.addImageInput}
+					type="file"
+					onChange={this.handleAddImage}/>
 
-				<label htmlFor="file" className={classes.addImageLabel}>
-					<FontAwesome name="camera" className={classes.cameraIcon} />
-					<span>{t('ADD_PHOTO')}</span>
-				</label>
+				<Card className="mt-3 mr-3">
+					<label htmlFor="file" className={classes.addImageLabel}>
+						<FontAwesome name="camera" className={classes.cameraIcon} />
+						<Label fontSize="1.25rem" className="mt-1">{t('ADD_PHOTO')}</Label>
+					</label>
+				</Card>
+
+
 				{
 					imageObjects.map((imageObject, index) => {
 						return (
-							<ImagePreview key={index} imageUrl={imageObject.imageUrl} onDelete={this.handleDeleteImage.bind(null, index)} className="ml-3"/>
+							<ImagePreview key={index}
+								imageUrl={imageObject.imageUrl}
+								onDelete={this.handleDeleteImage.bind(null, index)}
+								className="mr-3 mt-3"/>
 						);
 					})
 				}

@@ -73,7 +73,7 @@ export default class Companies extends BaseCRUD  {
                 done(error, result);
             });
         };
-        executeSeries([saveCompany, saveLocation, savePhones, saveWorkingTimes], (error, result) => {
+        executeSeries([saveCompany, saveLocation, savePhones, saveWorkingTimes], (error) => {
             if (error) {
                 Util.handleError(error, callback);
             } else {

@@ -1,5 +1,4 @@
-
-
+import globalStyles from '../../../style';
 
 export default {
 	imagePreview: {
@@ -7,9 +6,8 @@ export default {
 	},
 
     image: {
-        width: '10rem',
-        height: '10rem',
-        borderRadius: '1rem'
+        width: '8rem',
+        height: '6rem',
     },
 
     deleteButton: {
@@ -21,7 +19,7 @@ export default {
 
 		border: 0,
 		borderRadius: '50%',
-		backgroundColor: 'red',
+		backgroundColor: globalStyles.ACCENT_RED,
 
 		outline: 'none',
 		boxShadow: 'none',

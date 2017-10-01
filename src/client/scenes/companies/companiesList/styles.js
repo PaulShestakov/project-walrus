@@ -12,6 +12,7 @@ export default {
 
 
 	container: {
+		zIndex: 0,
 		flexGrow: 1,
 		position: 'relative',
 	},
