@@ -64,6 +64,8 @@ export default class Companies extends BaseCRUD  {
 				connection.query(Queries.SAVE_WORKING_TIMES, [times.map(item => Companies.internalizeTime(company, item))], (error, result) => {
 					done(error, result);
 				});
+			} else {
+				done(null, null);
 			}
         };
 	    const saveCompany = (connection, done) => {
@@ -219,6 +221,7 @@ export default class Companies extends BaseCRUD  {
 		if (image) {
 			image = image.split('\\').join('\/');
 		}
+		console.log(image);
         return {
             COMPANY_ID: company.companyId,
             NAME: company.name,
