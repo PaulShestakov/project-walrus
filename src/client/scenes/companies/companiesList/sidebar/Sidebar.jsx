@@ -2,11 +2,10 @@ import React from 'react';
 import FontAwesome from 'react-fontawesome';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Dropdown, Button, Label, Grid, ImageUploader, TextField, Tabs, Tab, Card, Popover, Checkbox} from "components";
+import {Dropdown, Button, Label, Grid, ImageUploader, TextField, Tabs, Tab, Card, Popover, Checkbox, Separator} from "components";
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import classNames from 'classnames';
 import styles from './styles';
-import Separator from "../../../../components/Separator/index";
 import CheckboxesBlock from "./checkboxesBlock/CheckboxesBlock";
 
 import Input, { InputLabel } from 'material-ui/Input';
@@ -14,6 +13,7 @@ import { MenuItem } from 'material-ui/Menu';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 import Select from 'material-ui/Select';
 import {Link} from "react-router-dom";
+import {Switch} from "material-ui";
 
 
 @translate(['companiesList'])
@@ -62,8 +62,10 @@ export default class Sidebar extends React.Component {
 		this.props.loadCompanies();
 	};
 
-	handleChange = () => {
-
+	handleIsWorkingNowChange = (event, checked) => {
+		this.props.setIsWorkingNow(checked);
+		this.props.updateUrlWithStateSource(this.props.history);
+		this.props.loadCompanies();
 	};
 
 
@@ -93,59 +95,19 @@ export default class Sidebar extends React.Component {
 						handleCheckboxPressed={this.handleCheckboxPressed}
 					/>
 
-					<CheckboxesBlock
-						formGroupName="daysOfWeek"
-						title={t('WORKING_TIME')}
-						showMoreLabel={t('DAYS_OF_WORK')}
+					<div>
+						<Label uppercase bold fontSize="1.5rem" className="m-3 mt-4">{t('WORKING_TIME')}</Label>
+						<Separator />
 
-						numberOfItemsToShowDefault={0}
-
-						items={this.props.daysOfWeek}
-						selectedIds={this.props.filter.selectedDaysOfWeekIds}
-
-						handleCheckboxPressed={this.handleCheckboxPressed}
-					/>
-
-					<div className={classNames(classes.timeSelectionContainer, 'p-3')}>
-						<Label>{t('FROM') + ':'}</Label>
-
-						<FormControl className={classes.formControl}>
-							<InputLabel htmlFor="from">From</InputLabel>
-							<Select
-								value={9}
-								onChange={this.handleChange('age')}
-								input={<Input id="from" />}
-							>
-								<MenuItem value="">
-									<em>None</em>
-								</MenuItem>
-								{
-									[...new Array(24)].map((x, i) => (
-										<MenuItem value={i + 1}>{i + 1}</MenuItem>
-									))
-								}
-							</Select>
-						</FormControl>
-
-						<Label>{t('TO') + ':'}</Label>
-
-						<FormControl className={classes.formControl}>
-							<InputLabel htmlFor="to">To</InputLabel>
-							<Select
-								value={24}
-								onChange={this.handleChange('age')}
-								input={<Input id="to" />}
-							>
-								<MenuItem value="">
-									<em>None</em>
-								</MenuItem>
-								{
-									[...new Array(24)].map((x, i) => (
-										<MenuItem value={i + 1}>{i + 1}</MenuItem>
-									))
-								}
-							</Select>
-						</FormControl>
+						<FormControlLabel className={classNames(classes.switchFormControlWrapper, "m-3")}
+							control={
+								<Switch
+									checked={this.props.filter.isWorkingNow}
+									onChange={this.handleIsWorkingNowChange}
+								/>
+							}
+							label={t('WORKING_NOW')}
+						/>
 					</div>
 				</Card>
 			</div>

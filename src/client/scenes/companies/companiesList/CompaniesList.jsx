@@ -157,9 +157,7 @@ export default class CompaniesList extends React.Component {
 						addCity={this.props.addCity}
 						removeCity={this.props.removeCity}
 
-						daysOfWeek={this.props.common.daysOfWeek}
-						addDayOfWeek={this.props.addDayOfWeek}
-						removeDayOfWeek={this.props.removeDayOfWeek}
+						setIsWorkingNow={this.props.setIsWorkingNow}
 
 						updateUrlWithStateSource={this.props.updateUrlWithStateSource}
 

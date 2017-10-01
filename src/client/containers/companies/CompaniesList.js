@@ -18,8 +18,7 @@ import {
 	addCity,
 	removeCity,
 
-	addDayOfWeek,
-	removeDayOfWeek,
+	setIsWorkingNow,
 } from "../../actionCreators/companiesList/filter";
 
 const CompaniesList = connect(
@@ -45,8 +44,7 @@ const CompaniesList = connect(
 		addCity,
 		removeCity,
 
-		addDayOfWeek,
-		removeDayOfWeek,
+		setIsWorkingNow,
 	}
 )(CompaniesListComponent);
 

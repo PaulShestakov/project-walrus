@@ -7,26 +7,6 @@ export default {
 		// TODO: Check again this thing
 		paddingTop: '1px'
 	},
-	checkboxesContainer: {
-		display: 'flex',
-		flexDirection: 'column'
-	},
-
-	checkboxWrapper: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		margin: '0',
-
-		'& > span': {
-			order: 2
-		},
-
-		'& p': {
-			order: 1,
-			fontSize: '1.25rem',
-			fontFamily: globalStyles.BEBAS_FONT
-		}
-	},
 
 	separator: {
 		width: '100%'
@@ -46,5 +26,22 @@ export default {
 	flexColumn: {
 		display: 'flex',
 		flexDirection: 'column'
-	}
+	},
+
+
+	switchFormControlWrapper: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		margin: '0',
+
+		'& > div': {
+			order: 2
+		},
+
+		'& p': {
+			order: 1,
+			fontSize: '1.25rem',
+			fontFamily: globalStyles.BEBAS_FONT
+		}
+	},
 }

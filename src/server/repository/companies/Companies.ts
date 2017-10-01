@@ -86,7 +86,7 @@ export default class Companies extends BaseCRUD  {
 		const companyCategoryId = params.companyCategoryId;
 		const companySubcategoryId = params.companySubcategoryId;
 		const citiesIds = Util.ensureArray(params.cityId);
-		const daysOfWeekIds = Util.ensureArray(params.dayOfWeek);
+		const isWorkingNow = params.isWorkingNow;
 
 		let filter = squel.expr();
 
@@ -98,9 +98,6 @@ export default class Companies extends BaseCRUD  {
 		}
 		if (citiesIds.length > 0) {
 			filter = filter.and('l.CITY_ID IN ?', citiesIds);
-		}
-		if (daysOfWeekIds.length > 0) {
-			filter = filter.and('t.DAY_OF_WEEK IN ?', daysOfWeekIds);
 		}
 
 		const sql = squel

@@ -3,8 +3,7 @@ import {
 	COMPANIES_LIST_ADD_CITY,
 	COMPANIES_LIST_REMOVE_CITY,
 
-	COMPANIES_LIST_ADD_DAY_OF_WEEK,
-	COMPANIES_LIST_REMOVE_DAY_OF_WEEK,
+	COMPANIES_LIST_SET_IS_WORKING_NOW,
 
 	COMPANIES_LIST_UPDATE_URL_WITH_STATE_SOURCE,
 
@@ -14,8 +13,7 @@ import {
 const defaultState = {
 	companyCategoryId: undefined,
 	companySubcategoryId: undefined,
-	selectedCitiesIds: [],
-	selectedDaysOfWeekIds: []
+	isWorkingNow: false
 };
 
 
@@ -34,16 +32,10 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 			}
 		}
 
-		case COMPANIES_LIST_ADD_DAY_OF_WEEK: {
+		case COMPANIES_LIST_SET_IS_WORKING_NOW: {
 			return {
 				...state,
-				selectedDaysOfWeekIds: state.selectedDaysOfWeekIds.concat([action.payload])
-			}
-		}
-		case COMPANIES_LIST_REMOVE_DAY_OF_WEEK: {
-			return {
-				...state,
-				selectedDaysOfWeekIds: state.selectedDaysOfWeekIds.filter(x => x !== action.payload)
+				isWorkingNow: action.payload
 			}
 		}
 
@@ -70,7 +62,7 @@ export function stateDataToUrlQuery(state) {
 		companyCategoryId: state.companyCategoryId,
 		companySubcategoryId: state.companySubcategoryId,
 		cityId: state.selectedCitiesIds,
-		dayOfWeek: state.selectedDaysOfWeekIds
+		isWorkingNow: state.isWorkingNow
 	};
 
 	return Util.objectToUrlQuery(filterData);
@@ -90,6 +82,6 @@ function urlParamsToStateData(searchParams) {
 		companyCategoryId: urlData.companyCategoryId || defaultState.companyCategoryId,
 		companySubcategoryId: urlData.companySubcategoryId  || defaultState.companySubcategoryId,
 		selectedCitiesIds: Util.ensureArray(urlData.cityId),
-		selectedDaysOfWeekIds: Util.ensureArray(urlData.dayOfWeek),
+		isWorkingNow: urlData.isWorkingNow
 	};
 }
