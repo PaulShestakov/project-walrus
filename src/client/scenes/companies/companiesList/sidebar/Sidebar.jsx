@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import styles from './styles';
 import Separator from "../../../../components/Separator/index";
 import CheckboxesBlock from "./checkboxesBlock/CheckboxesBlock";
+import Authorized from '../../../../containers/Authorized';
 
 import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
@@ -72,12 +73,15 @@ export default class Sidebar extends React.Component {
 
 		return (
 			<div className={classes.flexColumn}>
-				<Link to="/company/new" className={classNames(classes.link, 'mb-2')}>
-					<Button accent="red" disableRipple={true} className="w-100">
-						<FontAwesome name="plus" className="mr-1" />
-						Добавить компанию
-					</Button>
-				</Link>
+
+				<Authorized {...other} allowedRoles={[1]}>
+					<Link to="/company/new" className={classNames(classes.link, 'mb-2')}>
+						<Button accent="red" disableRipple={true} className="w-100">
+							<FontAwesome name="plus" className="mr-1" />
+							Добавить компанию
+						</Button>
+					</Link>
+				</Authorized>
 
 				<Card className={classNames(classes.card, 'mb-3 pb-3')}>
 					<CheckboxesBlock

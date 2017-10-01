@@ -10,6 +10,7 @@ import { Strategy as JWTStrategy } from 'passport-jwt';
 
 import User from "./repository/user/User";
 import Promo from "./controller/Promo";
+import UserController from "./controller/User";
 import Company from "./controller/Companies";
 import CodeValue from "./controller/Codevalues";
 
@@ -36,6 +37,7 @@ export default class App {
 
 	private configureRoutes(): void {
 		this.app.use('/dist/uploads', express.static(path.join(__dirname, '../uploads')));
+		this.app.use('/api/v1/user', UserController);
 		this.app.use('/api/v1/promo', Promo);
 		this.app.use('/api/v1/company', Company);
 		this.app.use('/api/v1/codevalue', CodeValue);

@@ -9,14 +9,25 @@ import Footer from '../footer/Footer.jsx';
 import PromosList from "../../containers/promos/PromosList";
 import NewPromo from "../../containers/promos/NewPromo";
 import PromoPage from "../../containers/promos/PromoPage";
+import Cookies from 'universal-cookie';
+
 
 import CompanyRoute from "../../containers/companies/Company";
 
 import styles from './styles.scss';
 
 export default class Router extends React.Component {
+
+	constructor(props) {
+		super(props);
+	}
+
+	componentWillMount() {
+		//this.props.loadUserInfo();
+	}
+
 	render() {
-		const classes = this.props.classes;
+		const { classes } = this.props;
 
 		return (
 			<div className="appWrapper">

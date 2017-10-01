@@ -15,6 +15,7 @@ class Companies extends BaseController {
 		this.router.get('/filtered', this.getFiltered.bind(this));
 		this.router.get('/fuzzySearch', this.fuzzySearch.bind(this));
 		this.router.get('/:companyId', this.getCompany.bind(this));
+		//this.router.post('/', passport.authenticate('jwt', { session: false }), this.postCompany.bind(this));
 		this.router.post('/', upload.array('image', 1), this.postCompany.bind(this));
 	}
 
