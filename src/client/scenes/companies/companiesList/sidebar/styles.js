@@ -38,7 +38,13 @@ export default {
 		alignItems: 'center'
 	},
 	link: {
+		flexGrow: '1',
 		color: 'white',
 		textDecoration: 'none'
+	},
+
+	flexColumn: {
+		display: 'flex',
+		flexDirection: 'column'
 	}
 }

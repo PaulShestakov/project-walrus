@@ -71,84 +71,84 @@ export default class Sidebar extends React.Component {
 		const {t, classes, ...other} = this.props;
 
 		return (
-			<Card className={classNames(classes.card, 'mb-3 py-3 text-center')}>
-
-				<Link to="/company/new" className={classNames(classes.link)}>
-					<Button accent="red" disableRipple={true} >
+			<div className={classes.flexColumn}>
+				<Link to="/company/new" className={classNames(classes.link, 'mb-2')}>
+					<Button accent="red" disableRipple={true} className="w-100">
 						<FontAwesome name="plus" className="mr-1" />
 						Добавить компанию
 					</Button>
 				</Link>
 
+				<Card className={classNames(classes.card, 'mb-3 pb-3')}>
+					<CheckboxesBlock
+						formGroupName="cities"
+						title={t('LOCATION')}
+						showMoreLabel={t('ALL_CITIES')}
 
-				<CheckboxesBlock
-					formGroupName="cities"
-					title={t('LOCATION')}
-					showMoreLabel={t('ALL_CITIES')}
+						numberOfItemsToShowDefault={4}
 
-					numberOfItemsToShowDefault={4}
+						items={this.props.cities}
+						selectedIds={this.props.filter.selectedCitiesIds}
 
-					items={this.props.cities}
-					selectedIds={this.props.filter.selectedCitiesIds}
+						handleCheckboxPressed={this.handleCheckboxPressed}
+					/>
 
-					handleCheckboxPressed={this.handleCheckboxPressed}
-				/>
+					<CheckboxesBlock
+						formGroupName="daysOfWeek"
+						title={t('WORKING_TIME')}
+						showMoreLabel={t('DAYS_OF_WORK')}
 
-				<CheckboxesBlock
-					formGroupName="daysOfWeek"
-					title={t('WORKING_TIME')}
-					showMoreLabel={t('DAYS_OF_WORK')}
+						numberOfItemsToShowDefault={0}
 
-					numberOfItemsToShowDefault={0}
+						items={this.props.daysOfWeek}
+						selectedIds={this.props.filter.selectedDaysOfWeekIds}
 
-					items={this.props.daysOfWeek}
-					selectedIds={this.props.filter.selectedDaysOfWeekIds}
+						handleCheckboxPressed={this.handleCheckboxPressed}
+					/>
 
-					handleCheckboxPressed={this.handleCheckboxPressed}
-				/>
+					<div className={classNames(classes.timeSelectionContainer, 'p-3')}>
+						<Label>{t('FROM') + ':'}</Label>
 
-				<div className={classNames(classes.timeSelectionContainer, 'p-3')}>
-					<Label>{t('FROM') + ':'}</Label>
+						<FormControl className={classes.formControl}>
+							<InputLabel htmlFor="from">From</InputLabel>
+							<Select
+								value={9}
+								onChange={this.handleChange('age')}
+								input={<Input id="from" />}
+							>
+								<MenuItem value="">
+									<em>None</em>
+								</MenuItem>
+								{
+									[...new Array(24)].map((x, i) => (
+										<MenuItem value={i + 1}>{i + 1}</MenuItem>
+									))
+								}
+							</Select>
+						</FormControl>
 
-					<FormControl className={classes.formControl}>
-						<InputLabel htmlFor="from">From</InputLabel>
-						<Select
-							value={9}
-							onChange={this.handleChange('age')}
-							input={<Input id="from" />}
-						>
-							<MenuItem value="">
-								<em>None</em>
-							</MenuItem>
-							{
-								[...new Array(24)].map((x, i) => (
-									<MenuItem value={i + 1}>{i + 1}</MenuItem>
-								))
-							}
-						</Select>
-					</FormControl>
+						<Label>{t('TO') + ':'}</Label>
 
-					<Label>{t('TO') + ':'}</Label>
-
-					<FormControl className={classes.formControl}>
-						<InputLabel htmlFor="to">To</InputLabel>
-						<Select
-							value={24}
-							onChange={this.handleChange('age')}
-							input={<Input id="to" />}
-						>
-							<MenuItem value="">
-								<em>None</em>
-							</MenuItem>
-							{
-								[...new Array(24)].map((x, i) => (
-									<MenuItem value={i + 1}>{i + 1}</MenuItem>
-								))
-							}
-						</Select>
-					</FormControl>
-				</div>
-			</Card>
+						<FormControl className={classes.formControl}>
+							<InputLabel htmlFor="to">To</InputLabel>
+							<Select
+								value={24}
+								onChange={this.handleChange('age')}
+								input={<Input id="to" />}
+							>
+								<MenuItem value="">
+									<em>None</em>
+								</MenuItem>
+								{
+									[...new Array(24)].map((x, i) => (
+										<MenuItem value={i + 1}>{i + 1}</MenuItem>
+									))
+								}
+							</Select>
+						</FormControl>
+					</div>
+				</Card>
+			</div>
 		);
 	}
 }
