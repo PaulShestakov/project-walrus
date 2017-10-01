@@ -10,7 +10,6 @@ export default {
 		}
 	},
 
-
 	container: {
 		zIndex: 0,
 		flexGrow: 1,
@@ -46,5 +45,16 @@ export default {
 		display: 'flex',
 		flexDirection: 'row',
 		textDecoration: 'none'
+	},
+
+	flexRow: {
+		display: 'flex',
+		justifyContent: 'space-between',
+	},
+
+	flexColumn: {
+		display: 'flex',
+		flexDirection: 'column'
 	}
+
 }

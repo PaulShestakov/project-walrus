@@ -160,6 +160,7 @@ export default class Companies extends BaseCRUD  {
 
 						locations: {},
 						phones: {},
+						daysOfWeekWorkingTime: {}
 					};
 				}
 
@@ -172,8 +173,6 @@ export default class Companies extends BaseCRUD  {
 						subwayId: row.SUBWAY_ID,
 						lat: row.LAT,
 						lng: row.LNG,
-
-						workingDays: []
 					}
 				}
 
@@ -184,12 +183,15 @@ export default class Companies extends BaseCRUD  {
 					}
 				}
 
-				acc[row.COMPANY_ID].locations[row.COMPANY_LOCATION_ID].workingDays.push({
-					dayOfWeek: row.DAY_OF_WEEK,
-					dayOfWeekName: row.DAY_OF_WEEK_NAME,
-					openTime: row.OPEN_TIME,
-					closeTime: row.CLOSE_TIME,
-				});
+				// Now timetable is one to one to the company
+				if (!acc[row.COMPANY_ID].daysOfWeekWorkingTime[row.DAY_OF_WEEK]) {
+					acc[row.COMPANY_ID].daysOfWeekWorkingTime[row.DAY_OF_WEEK] = {
+						dayOfWeek: row.DAY_OF_WEEK,
+						dayOfWeekName: row.DAY_OF_WEEK_NAME,
+						openTime: row.OPEN_TIME,
+						closeTime: row.CLOSE_TIME,
+					}
+				}
 
 				return acc;
 			}, {});
@@ -198,6 +200,7 @@ export default class Companies extends BaseCRUD  {
 				...company,
 				locations: Object.values(company.locations),
 				phones: Object.values(company.phones),
+				daysOfWeekWorkingTime: Object.values(company.daysOfWeekWorkingTime),
 			}));
 
 			callback(null, result);

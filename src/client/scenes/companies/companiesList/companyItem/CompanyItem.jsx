@@ -8,32 +8,11 @@ import classNames from 'classnames';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles';
 import {Paper} from "material-ui";
-import Dialog, {DialogActions, DialogContent, DialogTitle} from 'material-ui/Dialog';
 
 
 @translate(['companiesList'])
 @withStyles(styles)
 export default class CompanyItem extends React.Component {
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			isWorkingTimeDialogOpened: false
-		};
-	}
-
-	handleOpenWorkingTimeDialog = () => {
-		this.setState({
-			isWorkingTimeDialogOpened: true
-		})
-	};
-
-	handleCloseWorkingTimeDialog = () => {
-		this.setState({
-			isWorkingTimeDialogOpened: false
-		})
-	};
-
 	render() {
 		const {t, classes, className, company, ...other} = this.props;
         const imageSrc = company.logo ? company.logo : '';
@@ -73,22 +52,10 @@ export default class CompanyItem extends React.Component {
 					</div>
 
 					<div className={classes.buttonsBlock}>
-						<Button className="mr-2 text-white" onClick={this.handleOpenWorkingTimeDialog} bsSize="large" accent="white">
+						<Button className="mr-2 text-white" bsSize="large" accent="white"
+							onClick={this.props.handleOpenWorkingTimeDialog.bind(null, company.daysOfWeekWorkingTime)}>
 							{t('WORKING_TIME')}
 						</Button>
-						<Dialog open={this.state.isWorkingTimeDialogOpened} onRequestClose={this.handleCloseWorkingTimeDialog}>
-							<DialogTitle>{t('WORKING_TIME')}</DialogTitle>
-							<DialogContent>
-								Working time
-							</DialogContent>
-							<DialogActions>
-								<Button onClick={this.handleCloseWorkingTimeDialog} color="primary">
-									{t('CLOSE')}
-								</Button>
-							</DialogActions>
-						</Dialog>
-
-
 						<Button className="mr-2 text-white" bsSize="large" accent="red">
 							{t('CALL')}
 						</Button>

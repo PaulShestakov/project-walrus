@@ -2,15 +2,15 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Title, Grid, Card, Label, Text, TextField} from "components";
+import {Title, Grid, Card, Label, Text, TextField, Button} from "components";
 import CompanyItem from './companyItem/CompanyItem'
 import Sidebar from './sidebar/Sidebar';
 import classNames from 'classnames';
 import styles from './styles';
 import Autosuggest from 'react-autosuggest';
 import Paper from 'material-ui/Paper';
-import { MenuItem } from 'material-ui/Menu';
-
+import {MenuItem} from 'material-ui/Menu';
+import Dialog, {DialogActions, DialogContent, DialogTitle} from 'material-ui/Dialog';
 
 function renderInput(inputProps) {
 	const { classes, autoFocus, value, ref, ...other } = inputProps;
@@ -66,6 +66,14 @@ function getSuggestionValue(suggestion) {
 @translate(['companiesList'])
 @withStyles(styles)
 export default class CompaniesList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			isWorkingTimeDialogOpened: false,
+			daysOfWeekWorkingTime: []
+		};
+	}
+
 	componentDidMount() {
 		const searchParams = new URLSearchParams(this.props.location.search);
 		this.props.updateStateWithUrlSource(searchParams);
@@ -84,6 +92,21 @@ export default class CompaniesList extends React.Component {
 
 	handleChange = (event, { newValue }) => {
 		this.props.suggestionInputValueChange(newValue);
+	};
+
+
+
+	handleOpenWorkingTimeDialog = (daysOfWeekWorkingTime) => {
+		this.setState({
+			isWorkingTimeDialogOpened: true,
+			daysOfWeekWorkingTime
+		})
+	};
+
+	handleCloseWorkingTimeDialog = () => {
+		this.setState({
+			isWorkingTimeDialogOpened: false
+		})
 	};
 
 	render() {
@@ -119,7 +142,7 @@ export default class CompaniesList extends React.Component {
 					{
                         this.props.main.companies.map((company, index) => {
 							return (
-								<CompanyItem key={index} company={company} />
+								<CompanyItem key={index} company={company} handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}/>
 							);
 						})
 					}
@@ -143,6 +166,28 @@ export default class CompaniesList extends React.Component {
 						loadCompanies={this.props.loadCompanies}
 					/>
 				</Grid>
+
+
+				<Dialog open={this.state.isWorkingTimeDialogOpened} onRequestClose={this.handleCloseWorkingTimeDialog}>
+					<DialogTitle>
+						<Label fontSize="1.5rem">{t('WORKING_TIME')}</Label>
+					</DialogTitle>
+					<DialogContent className={classes.flexColumn}>
+						{
+							this.state.daysOfWeekWorkingTime.map(dayWorkingTime => (
+								<div key={dayWorkingTime.dayOfWeek} className={classNames(classes.flexRow, "mt-2")}>
+									<Label>{dayWorkingTime.dayOfWeekName}</Label>
+									<Label className="ml-3">{`${dayWorkingTime.openTime} - ${dayWorkingTime.closeTime}`}</Label>
+								</div>
+							))
+						}
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={this.handleCloseWorkingTimeDialog} color="primary">
+							{t('CLOSE')}
+						</Button>
+					</DialogActions>
+				</Dialog>
 			</Grid>
 		);
 	}
