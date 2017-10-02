@@ -217,7 +217,7 @@ export default class Companies extends BaseCRUD  {
 	}
 
     static internalizeCompany(company: Company) {
-		let image = (company.image ?  _.get(company.image, ['0', 'path'], null) : company.logo);
+		let image = (company.image ?  '/' + _.get(company.image, ['0', 'path'], null) : company.logo);
 		if (image) {
 			image = image.split('\\').join('\/');
 		}
