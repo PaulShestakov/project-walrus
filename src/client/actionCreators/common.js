@@ -104,7 +104,11 @@ export function loadUserInfo() {
 				credentials: 'include'
 			}).then(
 				response => {
-					if (response.ok) {
+					if (response.status > 400) {
+						return {
+							role: 5
+						}
+					} else if (response.ok) {
 						return response.json();
 					}
 				},

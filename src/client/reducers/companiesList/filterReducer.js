@@ -11,8 +11,11 @@ import {
 } from './../../actionCreators/companiesList/filter';
 
 const defaultState = {
-	companyCategoryId: undefined,
-	companySubcategoryId: undefined,
+	companyCategoryId: null,
+	companySubcategoryId: null,
+
+	selectedCitiesIds: [],
+
 	isWorkingNow: false
 };
 
