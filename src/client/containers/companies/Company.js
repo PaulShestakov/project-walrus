@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import CompanyRoute from "../../scenes/companies/CompanyRoute";
-import {loadCompaniesCodeValues} from "../../actionCreators/common";
+import {loadCompaniesCodeValues, loadUserInfo} from "../../actionCreators/common";
 
 const CompanyContainer = connect(
 	state => {
@@ -11,6 +11,7 @@ const CompanyContainer = connect(
 		};
 	},
 	{
+		loadUserInfo,
 		loadCompaniesCodeValues
 	}
 )(CompanyRoute);

@@ -13,6 +13,7 @@ export default class CompanyRoute extends React.Component {
     }
 
     componentWillMount() {
+        this.props.loadUserInfo();
         this.props.loadCompaniesCodeValues();
     }
 

@@ -53,37 +53,70 @@ export function loadPromoCodeValues() {
 export const LOAD_COMPANIES_CODE_VALUES_SUCCESS = 'LOAD_COMPANIES_CODE_VALUES_SUCCESS';
 
 export function loadCompaniesCodeValues() {
-	return (dispatch) => {
-		const generalCodeValues = fetch('/api/v1/codevalue?type=CITY&type=SUBWAY.MINSK&type=DAY_OF_WEEK');
-        const specificCodeValues = fetch('/api/v1/codevalue/companyCategories');
 
-        Promise.all([generalCodeValues, specificCodeValues]).then(results => {
-            return results.map(result => {
-                if (result.ok) {
-                    return result.json();
-                }
-            });
-        }).then(results => {
-            Promise.all(results).then(values => {
-                dispatch({
-                    type: LOAD_COMPANIES_CODE_VALUES_SUCCESS,
-                    payload: {
-                        ...values[0],
-                        categories: sortCompaniesCategories(values[1])
-                    }
-                });
-            });
-        });
+	function sortCompaniesCategories(categories) {
+		const comparator = (a, b) => a.sort - b.sort;
+
+		categories.forEach(category => {
+			category.subcategories.sort(comparator)
+		});
+		categories.sort(comparator);
+
+		return categories;
+	}
+
+	return (dispatch, getState) => {
+		const { companiesCategories } = getState().common;
+
+		if (!companiesCategories || companiesCategories.length === 0) {
+			const generalCodeValues = fetch('/api/v1/codevalue?type=CITY&type=SUBWAY.MINSK&type=DAY_OF_WEEK');
+			const specificCodeValues = fetch('/api/v1/codevalue/companyCategories');
+
+			Promise.all([generalCodeValues, specificCodeValues]).then(results => {
+				return results.map(result => {
+					if (result.ok) {
+						return result.json();
+					}
+				});
+			}).then(results => {
+				Promise.all(results).then(values => {
+					dispatch({
+						type: LOAD_COMPANIES_CODE_VALUES_SUCCESS,
+						payload: {
+							...values[0],
+							categories: sortCompaniesCategories(values[1])
+						}
+					});
+				});
+			});
+		}		
 	}
 }
 
-function sortCompaniesCategories(categories) {
-	const comparator = (a, b) => a.sort - b.sort;
+export const LOAD_USER_INFO_SUCCESS = 'LOAD_USER_INFO_SUCCESS';
 
-	categories.forEach(category => {
-		category.subcategories.sort(comparator)
-	});
-	categories.sort(comparator);
-
-	return categories;
+export function loadUserInfo() {
+	return (dispatch, getState) => {
+		const { user } = getState();
+		if (!user) {
+			fetch('/api/v1/user/me',{
+				method: 'GET',
+				credentials: 'include'
+			}).then(
+				response => {
+					if (response.ok) {
+						return response.json();
+					}
+				},
+				error => {
+					//user is not authorized or token has expired
+				}
+			).then(json => {
+				dispatch({
+					type: LOAD_USER_INFO_SUCCESS,
+					payload: json
+				});
+			});
+		}
+	};
 }
