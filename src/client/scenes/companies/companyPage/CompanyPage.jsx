@@ -93,12 +93,12 @@ export default class CompanyPage extends React.Component {
 						</Grid>
 						<Grid item md={8}>
 							<Grid container className="d-flex-column h-100">
-								<Grid item className="d-flex align-items-center">
+								{/* <Grid item className="d-flex align-items-center">
 									<Pets className="mr-2"/>
 									<Typography component="p">
 										Empty
 									</Typography>
-								</Grid>
+								</Grid> */}
 								<Grid item className="d-flex align-items-center">
 									<Call className="mr-2"/>
 									<Typography component="p">

@@ -22,11 +22,14 @@ export default class NewFeedback extends React.Component {
         const {t, classes, company, ...other} = this.props;
 
         return (
-            <Grid container className="m">
-                <Grid item >
-                    <Typography component="p">
-                        New feedback
-                    </Typography>
+            <Grid container className="my-5">
+                <Grid item className="w-100" >
+                    <Title>Отзыв</Title>
+                    <Input name="feedback" placeholder="Отзыв" fullWidth className="mt-2"/>
+                </Grid>
+                <Grid item className="w-100" >
+                    <Title>Заголовок</Title>
+                    <Input name="summary" placeholder="Итоговый вердикт" fullWidth className="mt-2"/>
                 </Grid>
             </Grid>
         );

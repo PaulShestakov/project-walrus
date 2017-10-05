@@ -22,7 +22,7 @@ export default class NewCompany extends React.Component {
             address: '',
             city: {},
             imageObjects: [],
-            subcatories: [],
+            subcategories: [],
             selectedCategory: {},
             selectedSubcategory: {},
             selectedSubway: {},
@@ -35,7 +35,7 @@ export default class NewCompany extends React.Component {
     componentWillReceiveProps(nextProps) {
         this.setState({
             categories: nextProps.common.companiesCategories,
-            subcatories: [],
+            subcategories: [],
             workingTimes:
                 nextProps.common.daysOfWeek.map(item => {
                     return {

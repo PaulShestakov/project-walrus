@@ -221,7 +221,6 @@ export default class Companies extends BaseCRUD  {
 		if (image) {
 			image = image.split('\\').join('\/');
 		}
-		console.log(image);
         return {
             COMPANY_ID: company.companyId,
             NAME: company.name,

@@ -4,7 +4,7 @@ export default {
 
     cardImage: {
         backgroundSize: 'contain',
-        width: '12rem',
+        width: '100%',
         height: '12rem'
     },
 

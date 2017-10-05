@@ -76,7 +76,7 @@ export default class Sidebar extends React.Component {
 		return (
 			<div className={classes.flexColumn}>
 
-				<Authorized {...other} allowedRoles={[1]}>
+				<Authorized {...other} allowedRoles={[1, 5]}>
 					<Link to="/company/new" className={classNames(classes.link, 'mb-2')}>
 						<Button accent="red" disableRipple={true} className="w-100">
 							<FontAwesome name="plus" className="mr-1" />
