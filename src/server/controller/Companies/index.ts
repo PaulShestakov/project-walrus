@@ -1,17 +1,40 @@
+import * as Ajv from 'ajv';
 import { Router, Request, Response } from 'express';
-import BaseController from "../BaseController";
-import upload from "../../util/Upload";
-
+import BaseController from '../BaseController';
+import upload from '../../util/Upload';
 import CompaniesRepository from '../../repository/companies/Companies';
-import * as passport from 'passport';
+
+
+const filteredSchema = {
+	"id": "/src/server/controller/companies/index/getFiltered",
+	"type": "object",
+
+	"properties": {
+		"companyCategoryId": {
+			"type": "string"
+		},
+		"companySubcategoryId": {
+			"type": "string"
+		},
+		"isWorkingNowFlag": {
+			"type": "string"
+		}
+	},
+
+
+	"required": ["companyCategoryId", "companySubcategoryId", "isWorkingNowFlag"]
+};
 
 class Companies extends BaseController {
 
 	router: Router;
+	ajv;
 
 	constructor() {
 		super();
 		this.router = Router();
+		this.ajv = new Ajv();
+
 		this.router.get('/filtered', this.getFiltered.bind(this));
 		this.router.get('/fuzzySearch', this.fuzzySearch.bind(this));
 		this.router.get('/:companyId', this.getCompany.bind(this));
@@ -21,12 +44,21 @@ class Companies extends BaseController {
 	}
 
 	private getFiltered(req: Request, res: Response) {
-		CompaniesRepository.getFiltered(req.query, (error, result) => {
-			if (error) {
-				this.errorResponse(res, 500, error);
-			}
-			this.okResponse(res, result);
-		});
+		const valid = this.ajv.validate(filteredSchema, req.query);
+
+		if (!valid) {
+			const errors = this.ajv.errors;
+
+			console.log(errors);
+			this.errorResponse(res, 400, errors);
+		} else {
+			CompaniesRepository.getFiltered(req.query, (error, result) => {
+				if (error) {
+					this.errorResponse(res, 500, error);
+				}
+				this.okResponse(res, result);
+			});
+		}
 	}
 
 	private fuzzySearch(req: Request, res: Response) {

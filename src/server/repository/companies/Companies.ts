@@ -2,10 +2,11 @@ import * as squel from "squel";
 
 import { executeQuery, executeSeries, executeParallel } from '../../database/DBHelper';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 import Queries from './sql/Queries';
-import BaseCRUD from "../BaseCRUD";
-import Util from "../../util/Util";
+import BaseCRUD from '../BaseCRUD';
+import Util from '../../util/Util';
 import * as uuid from 'uuid';
 
 export default class Companies extends BaseCRUD  {
@@ -86,7 +87,7 @@ export default class Companies extends BaseCRUD  {
 		const companyCategoryId = params.companyCategoryId;
 		const companySubcategoryId = params.companySubcategoryId;
 		const citiesIds = Util.ensureArray(params.cityId);
-		const isWorkingNow = params.isWorkingNow;
+		const isWorkingNowFlag = params.isWorkingNow;
 
 		let filter = squel.expr();
 
@@ -98,6 +99,23 @@ export default class Companies extends BaseCRUD  {
 		}
 		if (citiesIds.length > 0) {
 			filter = filter.and('l.CITY_ID IN ?', citiesIds);
+		}
+
+		if (isWorkingNowFlag) {
+			// Belarus timezone is UTC+3
+			const momentNow = moment().utcOffset(3);
+
+			const dayOfWeek = momentNow.day();
+			const time = momentNow.format('HH:mm:ss');
+
+			filter = filter.and(`
+				EXISTS(
+					SELECT * FROM wikipet.companies_working_time
+						WHERE DAY_OF_WEEK = ?
+							AND OPEN_TIME >= ?
+							AND CLOSE_TIME <= ?
+				)`,
+				dayOfWeek, time, time);
 		}
 
 		const sql = squel
