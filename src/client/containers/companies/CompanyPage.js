@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import CompanyPageComponent from '../../scenes/companies/companyPage/CompanyPage';
 
-import {loadCompany} from "../../actionCreators/companyPage/companyPage";
+import {loadCompany, postFeedback, loadFeedbacks} from "../../actionCreators/companyPage/companyPage";
 
 
 const CompanyPage = connect(
@@ -14,7 +14,9 @@ const CompanyPage = connect(
 		}
 	},
 	{
-		loadCompany
+		loadCompany,
+		postFeedback,
+		loadFeedbacks
 	}
 )(CompanyPageComponent);
 

@@ -15,6 +15,7 @@ class Companies extends BaseController {
 		this.router.get('/filtered', this.getFiltered.bind(this));
 		this.router.get('/fuzzySearch', this.fuzzySearch.bind(this));
 		this.router.get('/:companyId', this.getCompany.bind(this));
+		this.router.post('/:companyId/feedback', this.postFeedback.bind(this));
 		//this.router.post('/', passport.authenticate('jwt', { session: false }), this.postCompany.bind(this));
 		this.router.post('/', upload.array('image', 1), this.postCompany.bind(this));
 	}
@@ -60,6 +61,24 @@ class Companies extends BaseController {
 		   }
 		});
 	   }
+	}
+
+	private postFeedback(req: Request, res: Response) {
+		//this.checkRole(req, res, 1)
+		if (true) {
+			const { companyId } = req.params;
+			if (companyId) {
+				CompaniesRepository.postFeedback(req.body, (error) => {
+					if (error) {
+						this.errorResponse(res, 500, error);
+					} else {
+						this.okResponse(res, { result: 'Success' });
+					}
+				});
+			} else {
+				this.errorResponse(res, 400, 'Company id was not provided');
+			}
+		}
 	}
 }
 

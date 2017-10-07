@@ -216,6 +216,27 @@ export default class Companies extends BaseCRUD  {
 		});
 	}
 
+	static postFeedback(feedback: IFeedback, callback) {
+		executeQuery(Queries.SAVE_FEEDBACK, [Companies.internalizeFeedback(feedback)], (error, result) => {
+			if (error) {
+				callback(error);
+				return;
+			}
+			callback(null, 'Success');
+		});
+	}
+
+	static internalizeFeedback(feedback: IFeedback) {
+		return {
+			COMPANY_FEEDBACK_ID: uuid(),
+			COMPANY_ID: feedback.companyId,
+			USER_ID: feedback.user.id,
+			FEEDBACK: feedback.feedback,
+			SUMMARY: feedback.summary,
+			RATING: feedback.rating
+		}
+	}
+
     static internalizeCompany(company: Company) {
 		let image = (company.image ?  '/' + _.get(company.image, ['0', 'path'], null) : company.logo);
 		if (image) {

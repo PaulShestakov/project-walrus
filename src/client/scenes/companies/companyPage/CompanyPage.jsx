@@ -54,10 +54,15 @@ export default class CompanyPage extends React.Component {
 		this.setState({ selectedTab: index });
         this.props.history.push(this.props.match.url + (index === 1 ? '/feedbacks' : ''));
         //load feedbacks
-    };
+	};
+	
+	onPostFeedback = (data) => {
+		data.companyId = this.props.match.params.companyId;
+		this.props.postFeedback(data, this.props.history);
+	};
 
 	render() {
-		const {t, classes, company, ...other} = this.props;
+		const {t, classes, company, common, ...other} = this.props;
 
         const imageSrc = (company.logo ? company.logo : '').split('\\').join('\/');
 
@@ -137,7 +142,7 @@ export default class CompanyPage extends React.Component {
 
 					<Route path={`${this.props.match.url}/feedbacks`} component={Feedbacks}/>
 
-					<Route exact path={`${this.props.match.url}/feedback`} component={NewFeedback}/>
+					<Route exact path={`${this.props.match.url}/feedback`} render={() => <NewFeedback user={ common.user } onPostFeedback={this.onPostFeedback}/>}/>
 
 				</CardContent>
 			</Card>

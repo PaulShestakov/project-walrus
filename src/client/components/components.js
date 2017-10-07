@@ -8,6 +8,7 @@ import Title from './Title';
 import DateTimePicker from './DateTimePicker';
 import Checkbox from './Checkbox';
 import Dropdown from './Dropdown';
+import Rating from './Rating';
 
 import TextField from 		'material-ui/TextField';
 import Grid from 			'material-ui/Grid';
@@ -38,5 +39,6 @@ export {
 
 	Dropdown,
 	Popover,
-	Map
+	Map,
+	Rating
 };
