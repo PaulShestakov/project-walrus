@@ -244,6 +244,34 @@ export default class Companies extends BaseCRUD  {
 		});
 	}
 
+	static getFeedbacks(companyId: string, callback) {
+		executeQuery(Queries.GET_FEEDBACKS, [companyId], (error, result) => {
+			if (error) {
+				callback(error);
+				return;
+			
+			}
+			const feedbacks = result.reduce((acc, row) => {
+				const feedback = {
+					id: row.feedbackId,
+					feedback: row.feedback,
+					summary: row.summary,
+					rating: row.rating,
+					createDate: row.createDate,
+					modificateDate: row.modificateDate,
+					user: {
+						id: row.userId,
+						photo: row.photo,
+						name: row.userName
+					}
+				};
+				acc.push(feedback);
+				return acc;
+			}, []);
+			callback(null, feedbacks);
+		});
+	}
+
 	static internalizeFeedback(feedback: IFeedback) {
 		return {
 			COMPANY_FEEDBACK_ID: uuid(),

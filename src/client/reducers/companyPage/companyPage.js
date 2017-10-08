@@ -1,9 +1,11 @@
 import {
-    LOAD_COMPANY_SUCCESS
+    LOAD_COMPANY_SUCCESS,
+    LOAD_FEEDBACKS_SUCCESS
 } from './../../actionCreators/companyPage/companyPage';
 
 const defaultState = {
-    company: {}
+    company: {},
+    feedbacks: []
 };
 
 const companyPageReducer = (state = defaultState, action) => {
@@ -13,6 +15,13 @@ const companyPageReducer = (state = defaultState, action) => {
             return {
                 ...state,
                 company: action.payload
+            }
+        }
+
+        case LOAD_FEEDBACKS_SUCCESS: {
+            return {
+                ...state,
+                feedbacks: action.payload
             }
         }
 

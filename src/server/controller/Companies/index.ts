@@ -44,6 +44,7 @@ class Companies extends BaseController {
 		this.router.get('/fuzzySearch', this.fuzzySearch.bind(this));
 		this.router.get('/:companyId', this.getCompany.bind(this));
 		this.router.post('/:companyId/feedback', this.postFeedback.bind(this));
+		this.router.get('/:companyId/feedback', this.getFeedbacks.bind(this));
 		//this.router.post('/', passport.authenticate('jwt', { session: false }), this.postCompany.bind(this));
 		this.router.post('/', upload.array('image', 1), this.postCompany.bind(this));
 	}
@@ -114,6 +115,21 @@ class Companies extends BaseController {
 			} else {
 				this.errorResponse(res, 400, 'Company id was not provided');
 			}
+		}
+	}
+
+	private getFeedbacks(req: Request, res: Response) {
+		const { companyId } = req.params;
+		if (companyId) {
+			CompaniesRepository.getFeedbacks(companyId, (error, result) => {
+				if (error) {
+					this.errorResponse(res, 500, error);
+				} else {
+					this.okResponse(res, result);
+				}
+			});
+		} else {
+			this.errorResponse(res, 400, 'Company id was not provided');
 		}
 	}
 }

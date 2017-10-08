@@ -25,7 +25,7 @@ export function loadCompany(companyId) {
     }
 }
 
-export function postFeedback(feedback, history) {
+export function postFeedback(feedback) {
     return (dispatch) => {
 
         fetch('/api/v1/company/' + feedback.companyId + '/feedback', {
@@ -46,14 +46,13 @@ export function postFeedback(feedback, history) {
                 //dispatch()
             }
         ).then(json => {
-            history.push('/company/' + feedback.companyId + '/feedbacks');
             //dispatch({});
         });
 
     }
 }
 
-export function loadFeedbacks(companyId) {
+export function loadFeedbacks(companyId, history) {
     return (dispatch) => {
 
         fetch('/api/v1/company/' + companyId + '/feedback').then(
@@ -66,7 +65,11 @@ export function loadFeedbacks(companyId) {
                 //dispatch(loadPromoError())
             }
         ).then(json => {
-            dispatch(loadCompanySuccess(json));
+			history.push('/company/' + companyId + '/feedbacks');
+            dispatch({
+                type: LOAD_FEEDBACKS_SUCCESS,
+                payload: json
+            });
         });
 
     }

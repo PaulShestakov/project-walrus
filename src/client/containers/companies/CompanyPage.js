@@ -16,7 +16,7 @@ const CompanyPage = connect(
 	{
 		loadCompany,
 		postFeedback,
-		loadFeedbacks
+		loadFeedbacks,
 	}
 )(CompanyPageComponent);
 

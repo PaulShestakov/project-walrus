@@ -32,16 +32,20 @@ export default class CompanyPage extends React.Component {
         const companyId = this.props.match.params.companyId;
 
         if (companyId) {
-            this.props.loadCompany(companyId);
+			this.props.loadCompany(companyId);
         }
     }
 
     componentWillReceiveProps(newProps) {
         let feedbacks = newProps.location.pathname.indexOf("/feedbacks");
         let feedback = newProps.location.pathname.indexOf("/feedback");
-        let index;
+		let index;
+		const { loadFeedbacks, match, history } = this.props;
         if (feedbacks !== -1) {
-        	index = 1;
+			index = 1;
+			if (this.state.selectedTab !== index) {
+				loadFeedbacks(match.params.companyId, history);
+			}
 		} else if (feedback !== -1) {
         	index = 2;
 		} else {
@@ -52,13 +56,22 @@ export default class CompanyPage extends React.Component {
 
     handleTabPress = (event, index) => {
 		this.setState({ selectedTab: index });
-        this.props.history.push(this.props.match.url + (index === 1 ? '/feedbacks' : ''));
-        //load feedbacks
+		const { match, history, loadFeedbacks } = this.props;
+		const isFeedbacks = (index === 1);
+		if (isFeedbacks) {
+			loadFeedbacks(match.params.companyId, history);
+		} else {
+			history.push('/company/' + match.params.companyId);
+		}
 	};
 	
 	onPostFeedback = (data) => {
-		data.companyId = this.props.match.params.companyId;
-		this.props.postFeedback(data, this.props.history);
+		const { companyId } = this.props.match.params;
+		if (companyId) {
+			data.companyId = companyId;
+			this.props.postFeedback(data);
+			this.props.loadFeedbacks(companyId, this.props.history);
+		}
 	};
 
 	render() {
@@ -138,11 +151,12 @@ export default class CompanyPage extends React.Component {
 					</Tabs>
 					<Divider />
 
-					<Route exact path={`${this.props.match.url}/`} render={(props) => <CompanyInfo company={company} /> }/>
+					<Route exact path={`${this.props.match.url}`} render={(props) => <CompanyInfo company={company} /> }/>
 
-					<Route path={`${this.props.match.url}/feedbacks`} component={Feedbacks}/>
+					<Route exact path={`${this.props.match.url}/feedbacks`} 
+						component={(props) => <Feedbacks feedbacks={this.props.feedbacks}/>}/>
 
-					<Route exact path={`${this.props.match.url}/feedback`} render={() => <NewFeedback user={ common.user } onPostFeedback={this.onPostFeedback}/>}/>
+					<Route path={`${this.props.match.url}/feedback`} render={() => <NewFeedback user={ common.user } onPostFeedback={this.onPostFeedback}/>}/>
 
 				</CardContent>
 			</Card>

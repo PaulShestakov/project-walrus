@@ -25,6 +25,7 @@ class User extends BaseController {
             name: user.name,
             role: user.user_group,
             email: user.email,
+            photo: user.foto,
         });
     }
 }

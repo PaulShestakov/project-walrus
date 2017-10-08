@@ -29,7 +29,7 @@ export default class CompanyInfo extends React.Component {
 
         return (
             <Grid container >
-                <Grid item md={12} className={classNames(classes.description, 'mt-4', 'mb-2')}>
+                <Grid item md={12} className="mt-4 mb-2 text-wrap">
                     <Typography type="body1" component="p">
                         {company.description}
                     </Typography>

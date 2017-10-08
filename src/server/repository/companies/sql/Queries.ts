@@ -4,6 +4,7 @@ const COMPANINES_LOCATION = 'wikipet.companies_location';
 const CODE_VALUES = 'wikipet.code_values';
 const WORKING_TIMES = 'wikipet.companies_working_time';
 const FEEDBACK = 'wikipet.companies_feedback';
+const USERS = 'wikipet.dle_users';
 
 export default {
 	GET: `
@@ -53,5 +54,24 @@ export default {
 
 	SAVE_WORKING_TIMES: `INSERT INTO ${WORKING_TIMES} VALUES ?`,
 
-	SAVE_FEEDBACK: `INSERT INTO ${FEEDBACK} set ?`
+	SAVE_FEEDBACK: `INSERT INTO ${FEEDBACK} set ?`,
+
+	GET_FEEDBACKS: `SELECT
+			f.COMPANY_FEEDBACK_ID feedbackId,
+			f.COMPANY_ID companyId,
+			f.FEEDBACK feedback,
+			f.SUMMARY summary,
+			f.RATING rating,
+			f.creation_date createDate,
+			f.modification_date modificateDate,
+
+			u.user_id userId,
+			u.foto photo,
+			u.name userName
+
+		FROM ${FEEDBACK} f
+		LEFT JOIN ${USERS} u
+			ON f.USER_ID = u.user_id
+		WHERE f.COMPANY_ID = ?
+		ORDER BY f.creation_date desc`
 }
