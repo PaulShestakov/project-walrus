@@ -85,6 +85,6 @@ function urlParamsToStateData(searchParams) {
 		companyCategoryId: urlData.companyCategoryId || defaultState.companyCategoryId,
 		companySubcategoryId: urlData.companySubcategoryId  || defaultState.companySubcategoryId,
 		selectedCitiesIds: Util.ensureArray(urlData.cityId),
-		isWorkingNow: urlData.isWorkingNow
+		isWorkingNow: urlData.isWorkingNow === 'true'
 	};
 }

@@ -16,13 +16,18 @@ const filteredSchema = {
 		"companySubcategoryId": {
 			"type": "string"
 		},
-		"isWorkingNowFlag": {
-			"type": "string"
+		"isWorkingNow": {
+			"enum": ["true", "false"]
+		},
+		"cityId": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
 		}
 	},
 
-
-	"required": ["companyCategoryId", "companySubcategoryId", "isWorkingNowFlag"]
+	"required": ["companyCategoryId", "companySubcategoryId", "isWorkingNow"]
 };
 
 class Companies extends BaseController {
@@ -48,9 +53,8 @@ class Companies extends BaseController {
 
 		if (!valid) {
 			const errors = this.ajv.errors;
-
-			console.log(errors);
 			this.errorResponse(res, 400, errors);
+
 		} else {
 			CompaniesRepository.getFiltered(req.query, (error, result) => {
 				if (error) {

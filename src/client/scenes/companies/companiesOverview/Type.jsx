@@ -20,7 +20,11 @@ export default class Type extends React.Component {
                             <div className={classes.exactTypeLinkWrapper}>
                                 <Link key={index}
                                     className={classes.exactTypeLink}
-                                    to={'/company/list' + location.search + "&companySubcategoryId=" + subcategory.value}>
+                                    to={
+                                        '/company/list' + location.search +
+                                            '&companySubcategoryId=' + subcategory.value +
+                                            '&isWorkingNow=false'
+                                    }>
                                     {subcategory.label}
                                 </Link>
                             </div>

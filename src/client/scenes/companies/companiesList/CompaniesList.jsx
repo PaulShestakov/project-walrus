@@ -131,7 +131,7 @@ export default class CompaniesList extends React.Component {
 							getSuggestionValue={getSuggestionValue}
 							renderSuggestion={renderSuggestion.bind(null, classes)}
 							inputProps={{
-								autoFocus: true,
+								autoFocus: false,
 								classes,
 								placeholder: t('SECTION_SEARCH'),
 								value: this.props.main.suggestionInputValue,

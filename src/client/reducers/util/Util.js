@@ -5,6 +5,7 @@ export default class Util {
 		const baseUrl = '?';
 
 		const urlQuery = Object.keys(object).reduce((acc, key) => {
+
 			const property = object[key];
 
 			if (property === null || property === undefined) {
@@ -13,7 +14,7 @@ export default class Util {
 			else if (Array.isArray(property)) {
 
 				if (property.length > 0) {
-					acc += property.map(wrapQueryParam.bind(null, key)).join('');
+					acc += property.map(wrapQueryParam.bind(null, key + '[]')).join('');
 				}
 				else {
 					// Skip
@@ -37,15 +38,19 @@ export default class Util {
 			let key = param[0];
 			let value = param[1];
 
-			if (object[key]) {
-				if (Array.isArray(object[key])) {
-					object[key].push(value);
+			const arrayItemMatch = key.match(/(.*)\[.*\]/);
+
+			// Test for array item
+			if (arrayItemMatch) {
+				const arrayName = arrayItemMatch[1];
+
+				if (object[arrayName]) {
+					object[arrayName].push(value);
+				} else {
+					object[arrayName] = [value];
 				}
-				else {
-					object[key] = [object[key]].concat(value);
-				}
-			}
-			else {
+			} else {
+
 				object[key] = value;
 			}
 		}

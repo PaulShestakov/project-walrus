@@ -18,7 +18,7 @@ class Header extends React.Component {
 		return (
 			<header className={this.props.className} itemType="http://schema.org/Header" itemScope>
 				<Card>
-					<Grid container justify="center" className="py-3">
+					<Grid container justify="center" className="py-3" spacing={0}>
 						<Grid item xs={9}>
 							<Grid container className='my-2'>
 								<Grid item xs={2}>

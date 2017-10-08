@@ -27,7 +27,7 @@ export default class Router extends React.Component {
 				<Header />
 
 				<main>
-					<Grid container justify="center">
+					<Grid container justify="center" spacing={0}>
 						<Grid item md={9} className="flexGrowFull">
 							<Switch>
 								<Route path="/promoPage/:promoId" component={PromoPage} />

@@ -87,7 +87,7 @@ export default class Companies extends BaseCRUD  {
 		const companyCategoryId = params.companyCategoryId;
 		const companySubcategoryId = params.companySubcategoryId;
 		const citiesIds = Util.ensureArray(params.cityId);
-		const isWorkingNowFlag = params.isWorkingNow;
+		const isWorkingNow = params.isWorkingNow === 'true';
 
 		let filter = squel.expr();
 
@@ -101,7 +101,7 @@ export default class Companies extends BaseCRUD  {
 			filter = filter.and('l.CITY_ID IN ?', citiesIds);
 		}
 
-		if (isWorkingNowFlag) {
+		if (isWorkingNow) {
 			// Belarus timezone is UTC+3
 			const momentNow = moment().utcOffset(3);
 
