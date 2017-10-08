@@ -50,8 +50,7 @@ class Button extends React.Component {
 						[classes.blueAccent]: accent === 'blue'
 					},
 					className
-				)}
-				{ ...other }>
+				)}>
 				{this.props.children}
 			</MaterialButton>
 		);

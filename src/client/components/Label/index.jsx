@@ -22,8 +22,7 @@ export default class Label extends React.Component {
 						classes.label,
 						className
 					)
-				}
-			  	{...other}>
+				}>
 				{this.props.children}
 			</span>
 		);

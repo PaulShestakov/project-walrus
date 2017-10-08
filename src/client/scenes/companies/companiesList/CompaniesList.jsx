@@ -142,7 +142,7 @@ export default class CompaniesList extends React.Component {
 					{
                         this.props.main.companies.map((company, index) => {
 							return (
-								<CompanyItem key={index} company={company} handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}/>
+								<CompanyItem key={company.companyId} company={company} handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog} />
 							);
 						})
 					}

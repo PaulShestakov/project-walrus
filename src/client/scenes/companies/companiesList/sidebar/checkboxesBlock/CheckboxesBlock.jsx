@@ -1,7 +1,7 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Button, Label, Grid, Card, Popover, Checkbox, Separator, ButtonMore} from "components";
+import {Button, Title, Label, Grid, Card, Popover, Checkbox, Separator, ButtonMore} from "components";
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import classNames from 'classnames';
 import styles from './styles';

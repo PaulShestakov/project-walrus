@@ -32,7 +32,7 @@ export default class CompanyItem extends React.Component {
 						{
 							company.locations.map(location => {
 								return (
-									<div className={classes.flexRow}>
+									<div key={location.companyLocationId} className={classes.flexRow}>
 										<FontAwesome name="map-marker" className={classes.icon} />
 										<Text>{location.cityName + ': ' + location.address}</Text>
 									</div>
