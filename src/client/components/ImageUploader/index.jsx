@@ -13,8 +13,7 @@ import AddIcon from 'material-ui-icons/Add';
 
 
 @translate(['components'])
-@withStyles(styles)
-export default class ImageUploader extends React.Component {
+class ImageUploader extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -78,6 +77,8 @@ export default class ImageUploader extends React.Component {
 		);
 	}
 }
+
+export default withStyles(styles)(ImageUploader);
 
 ImageUploader.propTypes = {
 	imageObjects: PropTypes.any,

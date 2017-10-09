@@ -38,44 +38,38 @@ export default class NewFeedback extends React.Component {
 
         return (
             <form onSubmit={this.saveAction} className="my-5">
-                <Grid container xs={10} className="mx-auto">
-                    <Grid item className="my-2" >
-                        <Title>Ваше имя</Title>
-                        <Input 
-                            name="user"
-                            value={ this.state.user.enteredName }
-                            onChange={(event) => this.setState({ user: {...this.state.user, enteredName: event.target.value } })}
-                            placeholder="Заголовок"
-                            fullWidth
-                            className="mt-2"/>
-                    </Grid>
-                    <Grid item className="w-100 my-2" >
-                        <Title>Заголовок</Title>
-                        <Input 
-                            name="summary" 
-                            onChange={(event) => this.setState({ summary: event.target.value })} 
-                            placeholder="Заголовок" 
-                            fullWidth
-                            className="mt-2"/>
-                    </Grid>
-                    <Grid item className="w-100 my-2" >
-                        <Title>Оценка компании</Title>
-                        <Rating value={this.state.rating} onChange={(i) => this.setState({ rating: i })}/>
-                    </Grid>
-                    <Grid item className="w-100 my-2" >
-                        <Title>Отзыв</Title>
-                        <Input name="feedback" 
-                                multiline
-                                rowsMax="10" 
-                                onChange={(event) => this.setState({ feedback: event.target.value })} 
-                                placeholder="Отзыв" 
-                                fullWidth 
-                                className="mt-2"/>
-                    </Grid>
-                    <Grid item className="w-100 text-center my-4">
-                        <Button type="submit" className="text-white" accent="red">
-                            {t('Отправить')}
-                        </Button>
+                <Grid container>
+                    <Grid item xs={10} className="mx-auto">
+                        <Grid container spacing={24}>
+                            <Grid item className="w-100" >
+                                <Title>Заголовок</Title>
+                                <Input 
+                                    name="summary" 
+                                    onChange={(event) => this.setState({ summary: event.target.value })} 
+                                    placeholder="Заголовок" 
+                                    fullWidth
+                                    className="mt-2"/>
+                            </Grid>
+                            <Grid item className="w-100" >
+                                <Title>Оценка компании</Title>
+                                <Rating value={this.state.rating} onChange={(i) => this.setState({ rating: i })}/>
+                            </Grid>
+                            <Grid item className="w-100" >
+                                <Title>Отзыв</Title>
+                                <Input name="feedback" 
+                                        multiline
+                                        rowsMax="10" 
+                                        onChange={(event) => this.setState({ feedback: event.target.value })} 
+                                        placeholder="Отзыв" 
+                                        fullWidth 
+                                        className="mt-2"/>
+                            </Grid>
+                            <Grid item className="w-100 text-center">
+                                <Button type="submit" className="text-white" accent="red">
+                                    {t('Отправить')}
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
             </form>

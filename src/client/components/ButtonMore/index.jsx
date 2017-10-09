@@ -6,9 +6,7 @@ import Button from 'material-ui/Button';
 import classNames from 'classnames';
 import styles from './styles';
 
-
-@withStyles(styles)
-export default class ButtonMore extends React.Component {
+class ButtonMore extends React.Component {
 	render() {
 		const {classes, className, label, ...other} = this.props;
 
@@ -28,3 +26,5 @@ export default class ButtonMore extends React.Component {
 		);
 	}
 }
+
+export default withStyles(styles)(ButtonMore);

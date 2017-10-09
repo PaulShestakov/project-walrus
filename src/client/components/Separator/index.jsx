@@ -4,8 +4,7 @@ import classNames from 'classnames';
 
 import styles from './styles';
 
-@withStyles(styles)
-export default class Separator extends React.Component {
+class Separator extends React.Component {
 	render() {
 		const {classes, className, ...other} = this.props;
 
@@ -14,3 +13,5 @@ export default class Separator extends React.Component {
 		);
 	}
 }
+
+export default withStyles(styles)(Separator);

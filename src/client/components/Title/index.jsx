@@ -5,8 +5,7 @@ import classNames from 'classnames';
 
 import styles from './styles';
 
-@withStyles(styles)
-export default class Title extends React.Component {
+class Title extends React.Component {
 	render() {
 		const {classes, tag, fontSize, bold, uppercase, color, className, ...other} = this.props;
 
@@ -26,6 +25,8 @@ export default class Title extends React.Component {
 		);
 	}
 };
+
+export default withStyles(styles)(Title);
 
 Title.defaultProps = {
 	text: '',

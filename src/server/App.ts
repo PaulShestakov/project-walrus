@@ -3,7 +3,6 @@ import * as compression from 'compression';
 import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import * as helmet from 'helmet';
-import * as expressValidator from 'express-validator';
 import * as cookieParser from "cookie-parser";
 import * as passport from 'passport';
 import { Strategy as JWTStrategy } from 'passport-jwt';
@@ -28,7 +27,6 @@ export default class App {
 		this.app.use(compression());
 		this.app.use(cookieParser());
 		this.app.use(helmet());
-		this.app.use(expressValidator());
 		this.app.use(bodyParser.json());
 		this.app.use(bodyParser.urlencoded({ extended: true }));
 		this.jwtMiddleware();

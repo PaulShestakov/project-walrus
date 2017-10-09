@@ -51,7 +51,8 @@ class CodeValues extends BaseCRUD {
                 accum[row.categoryId].subcategories.push({
                     value: row.subcategoryId,
                     label: row.subcategoryName,
-                    sort: row.subcategorySort
+                    sort: row.subcategorySort,
+                    count: row.number ? row.number : 0
                 });
                 return accum;
             }, {});

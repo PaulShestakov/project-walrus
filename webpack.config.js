@@ -56,7 +56,6 @@ let clientConfig = {
 				loader: 'file-loader',
 				query: {
 					name: '/images/[name].[ext]',
-					publicPath: 'http://localhost:8080/'
 				}
 			}
 		]

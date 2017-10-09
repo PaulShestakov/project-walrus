@@ -6,9 +6,7 @@ import classNames from 'classnames';
 import globalStyles from '../../style';
 import styles from './styles';
 
-
-@withStyles(styles)
-export default class Text extends React.Component {
+class Text extends React.Component {
 	render() {
 		const {classes, className, fontSize, color, maxLines, ...other} = this.props;
 
@@ -38,6 +36,8 @@ export default class Text extends React.Component {
 		);
 	}
 };
+
+export default withStyles(styles)(Text);
 
 Text.defaultProps = {
 	fontSize: '1rem',

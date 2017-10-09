@@ -25,7 +25,7 @@ export default class Type extends React.Component {
                                             '&companySubcategoryId=' + subcategory.value +
                                             '&isWorkingNow=false'
                                     }>
-                                    {subcategory.label}
+                                    {`${subcategory.label} (${subcategory.count})`}
                                 </Link>
                             </div>
                         );

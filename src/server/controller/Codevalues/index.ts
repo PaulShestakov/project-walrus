@@ -3,9 +3,6 @@ import async from 'async';
 import Util from "../../util/Util";
 import repo from "../../repository/codevalues";
 
-const { check, oneOf, validationResult } = require('express-validator/check');
-
-
 import BaseController from "../BaseController";
 
 

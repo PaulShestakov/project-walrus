@@ -5,8 +5,7 @@ import classNames from 'classnames';
 
 import styles from './styles';
 
-@withStyles(styles)
-export default class Label extends React.Component {
+class Label extends React.Component {
 	render() {
 		const {classes, className, ...other} = this.props;
 
@@ -28,6 +27,8 @@ export default class Label extends React.Component {
 		);
 	}
 };
+
+export default withStyles(styles)(Label);
 
 Label.defaultProps = {
 	fontSize: '1.25rem',
