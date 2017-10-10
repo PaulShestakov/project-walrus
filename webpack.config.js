@@ -55,7 +55,7 @@ let clientConfig = {
 				test: /\.(svg|ico|png)$/,
 				loader: 'file-loader',
 				query: {
-					name: '/images/[name].[ext]',
+					name: 'images/[name].[ext]',
 				}
 			}
 		]
