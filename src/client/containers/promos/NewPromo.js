@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import NewPromoComponent from '../../scenes/promos/newPromo/NewPromo';
+import NewPromoComponent from '../../scenes/promos/NewPromo';
 
-import {savePromo} from '../../actionCreators/newPromo/index';
+import {savePromo} from '../../actionCreators/newPromo';
 import {fetchBreed} from "../../actionCreators/promosList/promosList";
 import {loadPromoCodeValues} from "../../actionCreators/common";
 

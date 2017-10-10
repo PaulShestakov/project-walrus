@@ -7,7 +7,7 @@ import createHistory from 'history/createBrowserHistory';
 import configureStore from './store/configStore.js';
 import configI18n from './i18n/configI18n.js';
 
-import Router from './scenes/router/Router';
+import Router from './scenes/Router';
 
 import './style.global.scss';
 

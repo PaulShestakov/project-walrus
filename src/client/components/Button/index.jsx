@@ -34,13 +34,15 @@ const styleSheet = {
 	}
 };
 
-class Button extends React.Component {
 
+@withStyles(styleSheet)
+class Button extends React.Component {
 	render() {
 		const { accent, classes, className, raised, ...other } = this.props;
 
 		return (
-			<MaterialButton raised={raised} className={classNames(
+			<MaterialButton raised={raised}
+				className={classNames(
 					classes.button,
 					{
 						[classes.whiteAccent]: accent === 'white',
@@ -48,7 +50,8 @@ class Button extends React.Component {
 						[classes.blueAccent]: accent === 'blue'
 					},
 					className
-				)} { ...other }>
+				)}
+				{...other}>
 				{this.props.children}
 			</MaterialButton>
 		);
@@ -65,4 +68,4 @@ Button.propTypes = {
 	accent: PropTypes.oneOf(['white', 'blue', 'red'])
 };
 
-export default withStyles(styleSheet)(Button);
+export default Button;

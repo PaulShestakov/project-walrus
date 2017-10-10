@@ -13,12 +13,16 @@ import companiesListReducer from './companiesList/companiesListReducer';
 import {companiesFilterReducer} from './companiesList/filterReducer';
 
 import commonReducer from './common/common';
+import editCompanyReducer from "./editCompany/editCompany";
 
 const rootReducer = combineReducers({
 	common: commonReducer,
+
 	newPromo: newPromoReducer,
-	newCompany: newCompanyReducer,
 	promoPage: promoPageReducer,
+
+	newCompany: newCompanyReducer,
+	editCompany: editCompanyReducer,
 	companyPage : companyPageReducer,
 
 	promosList: combineReducers({

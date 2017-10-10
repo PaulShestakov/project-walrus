@@ -26,3 +26,4 @@ export default {
 
 	STANDART_BORDER_RADIUS
 }
+

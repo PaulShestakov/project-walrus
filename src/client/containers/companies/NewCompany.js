@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import NewCompanyComponent from '../../scenes/companies/newCompany/NewCompany';
+import NewCompanyComponent from '../../scenes/Companies/NewCompany';
 
-import {postCompany} from "../../actionCreators/newCompany/index";
+import {postCompany} from "../../actionCreators/newCompany";
 import {loadCompanyCategories} from "../../actionCreators/common";
 import {loadCompaniesCodeValues} from "../../actionCreators/common";
 

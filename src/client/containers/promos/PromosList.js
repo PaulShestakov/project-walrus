@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PromosListComponent from '../../scenes/promos/promosList/PromosList.jsx';
+import PromosListComponent from '../../scenes/promos/PromosList';
 import {loadPromos} from '../../actionCreators/promosList/promosList';
 import {loadBreeds} from "../../actionCreators/promosList/filter";
 import {loadPromoCodeValues} from "../../actionCreators/common";
