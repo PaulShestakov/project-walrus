@@ -69,10 +69,11 @@ export function loadCompaniesCodeValues() {
 		const { companiesCategories } = getState().common;
 
 		if (!companiesCategories || companiesCategories.length === 0) {
-			const generalCodeValues = fetch('/api/v1/codevalue?type=CITY&type=SUBWAY.MINSK&type=DAY_OF_WEEK');
+			const generalCodeValues = fetch('/api/v1/codevalue?type=DAY_OF_WEEK');
+			const citiesCodeValues = fetch('/api/v1/codevalue/cities');
 			const specificCodeValues = fetch('/api/v1/codevalue/companyCategories');
 
-			Promise.all([generalCodeValues, specificCodeValues]).then(results => {
+			Promise.all([generalCodeValues, citiesCodeValues, specificCodeValues]).then(results => {
 				return results.map(result => {
 					if (result.ok) {
 						return result.json();
@@ -84,7 +85,8 @@ export function loadCompaniesCodeValues() {
 						type: LOAD_COMPANIES_CODE_VALUES_SUCCESS,
 						payload: {
 							...values[0],
-							categories: sortCompaniesCategories(values[1])
+							cities: values[1],
+							categories: sortCompaniesCategories(values[2])
 						}
 					});
 				});

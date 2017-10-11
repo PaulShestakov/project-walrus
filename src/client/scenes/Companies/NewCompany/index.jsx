@@ -21,6 +21,7 @@ export default class NewCompany extends React.Component {
         this.state = {
             address: '',
             city: {},
+            subways: [],
             imageObjects: [],
             subcategories: [],
             selectedCategory: {},
@@ -200,7 +201,8 @@ export default class NewCompany extends React.Component {
                         <Grid item xs={8}>
                             <Title>Город</Title>
                             <Dropdown name="city"
-                                      onChange={(option) => this.setState({  selectedCity: option })}
+                                      onChange={(option) => 
+                                      this.setState({  selectedCity: option, subways: this.props.common.cities.find(i => i.value === option.value).subways })}
                                       value={this.state.selectedCity.label}
                                       options={this.props.common.cities}
                                       className="mt-2"/>
@@ -211,7 +213,7 @@ export default class NewCompany extends React.Component {
                             <Dropdown name="subway"
                                       onChange={(option) => this.setState({  selectedSubway: option })}
                                       value={this.state.selectedSubway.label}
-                                      options={this.props.common.subway}
+                                      options={this.state.subways}
                                       className="mt-2"/>
                         </Grid>
 

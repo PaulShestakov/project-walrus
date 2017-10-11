@@ -33,5 +33,30 @@ export default {
             ON cv2.ID = t0.COMPANY_SUBCATEGORY_ID
 
         WHERE cv1.GROUP = 'COMPANY_CATEGORY'
-    `
+    `,
+
+    GET_CITIES: `
+        SELECT
+            cv1.ID AS cityId,
+            cv1.NAME AS cityName,
+            cv1.SORT AS citySort,
+
+            cv2.ID AS subCityId,
+            cv2.NAME AS subCityName,
+            cv2.SORT AS subCitySort,
+
+            cv3.ID AS citySubwayId,
+            cv3.NAME AS citySubwayName,
+            cv3.SORT AS citySubwaySort
+
+        FROM ${CODE_VALUE_TABLE} AS cv1
+
+        LEFT JOIN ${CODE_VALUE_TABLE} AS cv2
+            ON cv2.GROUP LIKE CONCAT('CITY.', cv1.ID, '%')
+
+        LEFT JOIN ${CODE_VALUE_TABLE} AS cv3
+            ON cv3.GROUP LIKE CONCAT('SUBWAY.', cv1.ID, '%')
+
+        WHERE cv1.GROUP = 'CITY'
+    `,
 };

@@ -60,6 +60,49 @@ class CodeValues extends BaseCRUD {
             callback(error, Object.values(reducedRows));
         });
     }
+
+    public getCities(callback) {
+        executeQuery(codeValuesSQL.GET_CITIES, [], (error, rows) => {
+            if (error) {
+                return callback(error);
+            }
+
+            const reducedRows = rows.reduce((accum, row) => {
+                if (!accum[row.cityId]) {
+                    accum[row.cityId] = {
+                        value: row.cityId,
+                        label: row.cityName,
+                        sort: row.citySort,
+                        subCities: {},
+                        subways: {}
+                    }
+                }
+                if (!accum[row.cityId].subCities[row.subCityId]) {
+                    accum[row.cityId].subCities[row.subCityId] = {
+                        value: row.subCityId,
+                        label: row.subCityName,
+                        sort: row.subCitySort,
+                    };
+                }
+                if (!accum[row.cityId].subways[row.citySubwayId]) {
+                    accum[row.cityId].subways[row.citySubwayId] = {
+                        value: row.citySubwayId,
+                        label: row.citySubwayName,
+                        sort: row.subCitySort,
+                    };
+                }
+                return accum;
+            }, {});
+
+            const result = Object.values(reducedRows).map(entry => ({
+                ...entry,
+                subways: Object.values(entry.subways).filter(e => e.value !== null),
+                subCities: Object.values(entry.subCities).filter(e => e.value !== null),
+            }));
+    
+            callback(error, result);
+        });        
+    }
 }
 
 export default new CodeValues();

@@ -13,6 +13,7 @@ class Codevalues extends BaseController {
         super();
         this.router = Router();
 
+		this.router.get('/cities', this.getCities.bind(this));
 		this.router.get('/companyCategories', this.getCompanyCategories.bind(this));
 		this.router.get('/', this.getByTypes.bind(this));
     }
@@ -21,18 +22,9 @@ class Codevalues extends BaseController {
     	const types = Util.ensureArray(req.query.type);
 
 		const validGroups = ['ANIMAL',
-							'CITY',
-							'COMPANY_CATEGORY',
-							'COMPANY_SUBCATEGORY.BREEDING',
-							'COMPANY_SUBCATEGORY.GOODS',
-							'COMPANY_SUBCATEGORY.HEALTH',
-							'COMPANY_SUBCATEGORY.OTHER',
-							'COMPANY_SUBCATEGORY.SERVICES',
-							'COMPANY_SUBCATEGORY.TRAINING',
 							'BREED.DOG',
 							'BREED.CAT',
-							'DAY_OF_WEEK',
-							'SUBWAY.MINSK'];
+							'DAY_OF_WEEK'];
 
 		const validationPassed: boolean = types.every(type => {
 			if (validGroups.indexOf(type) === -1) {
@@ -43,25 +35,17 @@ class Codevalues extends BaseController {
 		});
 
 		if (validationPassed) {
-			repo.getByTypes(types, (error, data) => {
-				if (error) {
-					this.errorResponse(res, 500, error);
-					return;
-				}
-				this.okResponse(res, data);
-			});
+			repo.getByTypes(types, this.getOrdinalResponseCallback(res));
 		}
 
 	}
+
+	getCities(req: Request, res: Response) {
+		repo.getCities(this.getOrdinalResponseCallback(res));
+	}
 	
 	getCompanyCategories(req: Request, res: Response) {
-		repo.getCompanyCategories((error, data) => {
-			if (error) {
-				this.errorResponse(res, 500, error);
-				return;
-			}
-			this.okResponse(res, data);
-		});
+		repo.getCompanyCategories(this.getOrdinalResponseCallback(res));
 	}
 }
 

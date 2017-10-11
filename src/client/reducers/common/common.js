@@ -38,9 +38,8 @@ const commonReducer = (state = defaultState, action) => {
 		case LOAD_COMPANIES_CODE_VALUES_SUCCESS:
             return {
                 ...state,
-				cities: action.payload.CITY,
+				cities: action.payload.cities,
 				daysOfWeek: action.payload.DAY_OF_WEEK,
-                subway: action.payload['SUBWAY.MINSK'],
                 companiesCategories: action.payload.categories
 			};
 

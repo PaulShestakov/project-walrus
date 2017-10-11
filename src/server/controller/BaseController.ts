@@ -17,4 +17,14 @@ export default class BaseController {
         res.status(401).send({ message: "You don't have an appropriate permission for access"});
         return false;
     }
+
+    protected getOrdinalResponseCallback(res: Response) {
+        return (error, data) => {
+            if (error) {
+                this.errorResponse(res, 500, error);
+                return;
+            }
+            this.okResponse(res, data);
+        };
+    }
 }

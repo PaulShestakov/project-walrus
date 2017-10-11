@@ -70,6 +70,7 @@ export default class CompaniesList extends React.Component {
 		super(props);
 		this.state = {
 			isWorkingTimeDialogOpened: false,
+			cities: [],
 			daysOfWeekWorkingTime: []
 		};
 	}
@@ -78,6 +79,20 @@ export default class CompaniesList extends React.Component {
 		const searchParams = new URLSearchParams(this.props.location.search);
 		this.props.updateStateWithUrlSource(searchParams);
 		this.props.loadCompanies();
+	}
+
+	componentWillReceiveProps(nextProps) {
+		const { common } = nextProps;
+		if (common && common.cities) {
+			const cities = common.cities.reduce((acc, item) => {
+				acc.push({ value: item.value, label: item.label });
+				item.subCities.forEach(i => {
+					acc.push({ value: i.value, label: i.label });
+				});
+				return acc;
+			}, []);
+			this.setState({ cities });
+		}
 	}
 
 	handleSuggestionsFetchRequested = (change) => {
@@ -93,8 +108,6 @@ export default class CompaniesList extends React.Component {
 	handleChange = (event, { newValue }) => {
 		this.props.suggestionInputValueChange(newValue);
 	};
-
-
 
 	handleOpenWorkingTimeDialog = (daysOfWeekWorkingTime) => {
 		this.setState({
@@ -153,7 +166,7 @@ export default class CompaniesList extends React.Component {
 						history={this.props.history}
 						filter={this.props.filter}
 
-						cities={this.props.common.cities}
+						cities={this.state.cities}
 						addCity={this.props.addCity}
 						removeCity={this.props.removeCity}
 
