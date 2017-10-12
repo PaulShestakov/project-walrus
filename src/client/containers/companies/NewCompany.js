@@ -9,12 +9,10 @@ import {loadCompaniesCodeValues} from "../../actionCreators/common";
 
 
 const CompanyPage = connect(
-    state => {
-        return {
-            common: state.common,
-            new: state.newCompany
-        };
-    },
+    state => ({
+        common: state.common,
+        new: state.newCompany
+    }),
     {
         postCompany
     }

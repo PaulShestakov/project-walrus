@@ -8,7 +8,10 @@ import {
 
 
 const EditCompany = connect(
-	state => state.editCompany,
+	state => ({
+		common: state.common,
+		edit: state.editCompany
+	}),
 	{
 		loadCompany
 	}
