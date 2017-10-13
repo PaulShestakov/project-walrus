@@ -6,6 +6,9 @@ html {
 body {
   margin: 0;
   background-color: #f5f5f5;
+
+  // Material ui select fix(it's adding extra padding to body) ???
+  padding-right: 0 !important;
 }
 
 

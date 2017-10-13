@@ -333,9 +333,10 @@ export default class Companies extends BaseCRUD  {
 	static externalizeCompany(company) {
 		return {
 			companyId: company.companyId,
-			category: company.catId,
-			subcategoryId: company.subCatId,
-			subcategoryName: company.subcatName,
+			categoryId: company.categoryId,
+			categoryName: company.categoryName,
+			subcategoryId: company.subcategoryId,
+			subcategoryName: company.subcategoryName,
 			name: company.name,
 			logo: company.logo,
 			description: company.description,

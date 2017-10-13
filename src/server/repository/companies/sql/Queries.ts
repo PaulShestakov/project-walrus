@@ -10,9 +10,10 @@ export default {
 	GET: `
 		SELECT
 			c.COMPANY_ID companyId,
-			(SELECT cv.NAME FROM wikipet.code_values cv WHERE cv.ID = c.COMPANY_SUBCATEGORY_ID) as subcatName,
-			c.COMPANY_CATEGORY_ID catId,
-			c.COMPANY_SUBCATEGORY_ID subCatId,
+			c.COMPANY_CATEGORY_ID categoryId,
+			(SELECT NAME FROM wikipet.code_values WHERE ID = c.COMPANY_CATEGORY_ID) as categoryName,
+			c.COMPANY_SUBCATEGORY_ID subcategoryId,
+			(SELECT NAME FROM wikipet.code_values WHERE ID = c.COMPANY_SUBCATEGORY_ID) as subcategoryName,
 			c.NAME name,
 			c.LOGO logo,
 			c.DESCRIPTION description,
@@ -26,7 +27,7 @@ export default {
 			cl.LNG lng
 
 		FROM ${COMPANIES_TABLE} c
-		JOIN ${COMPANINES_LOCATION} cl
+		LEFT JOIN ${COMPANINES_LOCATION} cl
 			ON c.COMPANY_ID = cl.COMPANY_ID
 		WHERE c.COMPANY_ID = ?
 	`,

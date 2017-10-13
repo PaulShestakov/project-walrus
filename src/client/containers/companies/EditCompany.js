@@ -1,16 +1,16 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import EditCompanyComponent from '../../scenes/Companies/EditCompany';
+import EditCompanyComponent from '../../scenes/companies/EditCompany/index';
 import {
 	loadCompany
-} from "../../actionCreators/companyPage/companyPage";
+} from "../../actionCreators/editCompany";
 
 
 const EditCompany = connect(
 	state => ({
 		common: state.common,
-		edit: state.editCompany
+		editCompany: state.editCompany
 	}),
 	{
 		loadCompany

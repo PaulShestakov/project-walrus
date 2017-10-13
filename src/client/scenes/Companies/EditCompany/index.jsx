@@ -4,6 +4,10 @@ import { withStyles } from 'material-ui/styles';
 import { Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Map } from "components";
 import styles from './styles';
 import {Divider, Typography, Paper} from "material-ui";
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
+import { CircularProgress } from 'material-ui/Progress';
+
 
 
 @translate(['common'])
@@ -14,7 +18,12 @@ export default class EditCompany extends React.Component {
 		super(props);
 
 		this.state = {
+			companyDataLoaded: false,
+
 			name: '',
+			subcategories: [],
+
+			imageObjects: []
 		}
 	}
 
@@ -25,21 +34,60 @@ export default class EditCompany extends React.Component {
 		}
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.editCompany.company) {
+			this.setState({
+				companyDataLoaded: true,
+				...nextProps.editCompany.company
+			});
+		}
+	}
+
 	handleInputChange = (event) => {
 		this.setState({
 			[event.target.name]: event.target.value
 		});
 	};
 
-	handleCategoryChange = (option) => {
-		const category = this.props.common.companiesCategories.find((category) => {
-			return category.value === option.value;
-		});
-		const subcategories = category.subcategories;
+	handleCategoriesDropdownChange = (event) => {
+		const category = this.props.common.companiesCategories.find(category => category.value === event.target.value);
 		this.setState({
-			selectedCategory: option,
-			subcategories: subcategories,
-			selectedSubcategory: subcategories[0]
+			categoryId: event.target.value,
+			subcategories: category.subcategories
+		});
+	};
+
+	handleSubcategoriesDropdownChange = (option) => {
+		const subcategory = this.state.subcategories.find(subcategory => subcategory.value === option.value);
+		this.setState({
+			subcategoryId: subcategory.value,
+			subcategoryName: subcategory.label,
+		});
+	};
+
+	handleAddImage = (object) => {
+		this.setState({
+			imageObjects: [this.state.imageObjects]
+		})
+	};
+
+	handleRemoveImage = (object) => {
+
+	};
+
+	handleCitiesDropdownChange = (option) => {
+		const city = this.state.commom.cities.find(city => city.value === option.value);
+		this.setState({
+			cityId: city.value,
+			cityName: city.label,
+		});
+	};
+
+	handleSubwayDropdownChange = (option) => {
+		const subway = this.state.commom.subway.find(subway => subway.value === option.value);
+		this.setState({
+			subwayId: subway.value,
+			subwayName: subway.label,
 		});
 	};
 
@@ -49,102 +97,143 @@ export default class EditCompany extends React.Component {
 		return (
 			<Grid container justify="center" spacing={0} className="my-4">
 				<Grid item xs={9}>
-					<Card className="py-4 px-3">
-						<Grid container direction="column" spacing={24}>
-							<Grid item>
-								<Typography type="headline" component="h1" className="mt-4">
-									Основная информация
-								</Typography>
-							</Grid>
+					<Card className="p-5">
+						{
+							!this.state.companyDataLoaded ? (
+								<Grid container justify="center">
+									<Grid item>
+										<CircularProgress className={classes.progress} />
+									</Grid>
+								</Grid>
+							) : (
+								<Grid container direction="column" spacing={24}>
+									{JSON.stringify(this.props.editCompany.company)}
+									<Grid item>
+										<Typography type="headline" component="h1" className="mt-4">
+											Основная информация
+										</Typography>
+									</Grid>
 
-							<Grid item>
-								<Title>Название</Title>
-								<Input fullWidth name="companyName"
-									   placeholder="Название компании"
-									   className="mt-2"
-									   value={this.state.value}
-									   onChange={this.handleInputChange} />
-							</Grid>
-							<Grid item>
-								<Title>Категория</Title>
-								<Dropdown name="companyCategoryId"
-									value={this.state.selectedCategory.label}
-									onChange={this.handleCategoryChange}
-									options={this.state.categories}
-									className="mt-2"/>
-							</Grid>
-						</Grid>
-						{/*<Grid item xs={8}>*/}
-							{/*<Title>Подкатегория</Title>*/}
-							{/*<Dropdown name="companySubcategoryId"*/}
-									  {/*onChange={(option) => this.setState({  selectedSubcategory : option })}*/}
-									  {/*value={this.state.selectedSubcategory.label}*/}
-									  {/*options={this.state.subcategories}*/}
-									  {/*className="mt-2"/>*/}
-						{/*</Grid>*/}
+									<Grid item>
+										<Title>Название</Title>
+										<Input name="companyName"
+											   value={this.state.name}
+											   onChange={this.handleInputChange}
+											   fullWidth
+											   placeholder="Название компании"
+											   className="mt-2"/>
+									</Grid>
+									<Grid item className={classes.flexColumn}>
+										<Title>Категория</Title>
+										<Select
+											value={this.state.categoryId}
+											onChange={this.handleCategoriesDropdownChange}
+											input={<Input id="age-simple" />}
+										>
+											{
+												this.props.common.companiesCategories.map(category => (
+													<MenuItem key={category.value} value={category.value}>{category.label}</MenuItem>
+												))
+											}
+										</Select>
+									</Grid>
 
-						{/*<Grid item xs={8}>*/}
-							{/*<Title>Ссылка на лого</Title>*/}
-							{/*<Input name="logo" placeholder="Лого" fullWidth className="mt-2"/>*/}
-						{/*</Grid>*/}
+									<Grid item>
+										<Title>Подкатегория</Title>
+										<Dropdown value={this.state.subcategoryName}
+											  onChange={this.handleSubcategoriesDropdownChange}
+											  options={this.state.subcategories}
+											  className="mt-2"/>
+									</Grid>
 
-						{/*<Grid item xs={8}>*/}
-							{/*<Title>Картинка лого</Title>*/}
-							{/*<ImageUploader className="mt-4"*/}
-										   {/*imageObjects={this.state.imageObjects}*/}
-										   {/*onImageAdd={(object) => this.setState({ imageObjects: [object] })}*/}
-										   {/*onImageDelete={() => this.setState({ imageObjects: [] })}/>*/}
-						{/*</Grid>*/}
+									<Grid item>
+										<Title>Ссылка на лого</Title>
+										<Input name="logo"
+											   onChange={this.handleInputChange}
+											   value={this.state.logo}
+											   placeholder="Лого" fullWidth className="mt-2"/>
+									</Grid>
 
-						{/*<Grid item xs={8}>*/}
-							{/*<Title>Описание</Title>*/}
-							{/*<TextField name="description"*/}
-									   {/*multiline*/}
-									   {/*rowsMax="10"*/}
-									   {/*placeholder="Описание"*/}
-									   {/*fullWidth*/}
-									   {/*className="mt-2"/>*/}
-						{/*</Grid>*/}
-						{/*<Grid item xs={8}>*/}
-							{/*<Title>Сайт компании</Title>*/}
-							{/*<Input name="url" placeholder="Сайт" fullWidth className="mt-2"/>*/}
-						{/*</Grid>*/}
-						{/*<Grid item xs={8}>*/}
-							{/*<Title>Email</Title>*/}
-							{/*<Input name="email" placeholder="Email" fullWidth className="mt-2"/>*/}
-						{/*</Grid>*/}
-						{/*<Grid item xs={8}>*/}
-							{/*<Title>Телефоны</Title>*/}
-							{/*<Input name="phones" placeholder="Телефоны" fullWidth className="mt-2"/>*/}
-						{/*</Grid>*/}
-						{/*<Grid item xs={8}>*/}
-							{/*<Typography type="headline" component="h1" className="mt-4">*/}
-								{/*Местоположение*/}
-							{/*</Typography>*/}
-						{/*</Grid>*/}
+									<Grid item>
+										<Title>Картинка лого</Title>
+										<ImageUploader className="mt-4"
+											   imageObjects={this.state.imageObjects}
+											   onImageAdd={this.handleAddImage}
+											   onImageDelete={this.handleRemoveImage}/>
+									</Grid>
 
-						{/*<Grid item xs={8}>*/}
-							{/*<Title>Город</Title>*/}
-							{/*<Dropdown name="city"*/}
-									  {/*onChange={(option) => this.setState({  selectedCity: option })}*/}
-									  {/*value={this.state.selectedCity.label}*/}
-									  {/*options={this.props.common.cities}*/}
-									  {/*className="mt-2"/>*/}
-						{/*</Grid>*/}
+									{/*<Grid item>*/}
+										{/*<Title>Описание</Title>*/}
+										{/*<TextField*/}
+											{/*name="description"*/}
+											{/*value={this.state.description}*/}
+											{/*onChange={this.handleInputChange}*/}
+											{/*multiline*/}
+											{/*rowsMax="10"*/}
+											{/*placeholder="Описание"*/}
+											{/*fullWidth*/}
+											{/*className="mt-2"/>*/}
+									{/*</Grid>*/}
 
-						{/*<Grid item xs={8}>*/}
-							{/*<Title>Метро</Title>*/}
-							{/*<Dropdown name="subway"*/}
-									  {/*onChange={(option) => this.setState({  selectedSubway: option })}*/}
-									  {/*value={this.state.selectedSubway.label}*/}
-									  {/*options={this.props.common.subway}*/}
-									  {/*className="mt-2"/>*/}
-						{/*</Grid>*/}
+									{/*<Grid item>*/}
+										{/*<Title>Сайт компании</Title>*/}
+										{/*<Input name="websiteUrl"*/}
+											   {/*value={this.state.websiteUrl}*/}
+											   {/*onChange={this.handleInputChange}*/}
+											   {/*placeholder="Сайт"*/}
+											   {/*fullWidth className="mt-2"/>*/}
+									{/*</Grid>*/}
 
-						{/*<Grid item xs={8}>*/}
-							{/*<Title>Адрес</Title>*/}
-							{/*<Input name="address" placeholder="Адрес" fullWidth className="mt-2" onChange={(event) => this.setState({ address: event.target.value })}/>*/}
-						{/*</Grid>*/}
+
+									{/*<Grid item>*/}
+										{/*<Title>Email</Title>*/}
+										{/*<Input*/}
+											{/*name="email"*/}
+											{/*value={this.state.email}*/}
+											{/*onChange={this.handleInputChange}*/}
+											{/*placeholder="Email"*/}
+											{/*fullWidth className="mt-2"/>*/}
+									{/*</Grid>*/}
+
+
+									{/*<Grid item>*/}
+										{/*<Title>Телефоны</Title>*/}
+										{/*<Input name="phones" placeholder="Телефоны" fullWidth className="mt-2"/>*/}
+									{/*</Grid>*/}
+
+
+									{/*<Grid item>*/}
+										{/*<Typography type="headline" component="h1" className="mt-4">*/}
+											{/*Местоположение*/}
+										{/*</Typography>*/}
+									{/*</Grid>*/}
+
+									{/*<Grid item>*/}
+										{/*<Title>Город</Title>*/}
+										{/*<Dropdown name="city"*/}
+											  {/*onChange={this.handleCitiesDropdownChange}*/}
+											  {/*value={this.state.cityName}*/}
+											  {/*options={this.props.common.cities}*/}
+											  {/*className="mt-2"/>*/}
+									{/*</Grid>*/}
+
+									{/*<Grid item>*/}
+										{/*<Title>Метро</Title>*/}
+										{/*<Dropdown name="subway"*/}
+											  {/*onChange={this.handleSubwayDropdownChange}*/}
+											  {/*value={this.state.subwayName}*/}
+											  {/*options={this.props.common.subway}*/}
+											  {/*className="mt-2"/>*/}
+									{/*</Grid>*/}
+
+									{/*<Grid item>*/}
+										{/*<Title>Адрес</Title>*/}
+										{/*<Input name="address" placeholder="Адрес" fullWidth className="mt-2"*/}
+											   {/*onChange={this.handleInputChange}/>*/}
+									{/*</Grid>*/}
+								</Grid>
+							)
+						}
 
 						{/*<Grid item xs={8}>*/}
 							{/*<Title>Карта</Title>*/}
