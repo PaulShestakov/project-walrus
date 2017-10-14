@@ -72,7 +72,7 @@ export default class CompaniesOverview extends React.Component {
 						fullWidth>
                         {
                             common.companiesCategories.map((category, index) => (
-								<Tab key={index}
+								<Tab key={category.value}
 									 className={classes.tab}
 									 classes={{label: classes.tabLabel, labelContainer: classes.tabLabelContainer}}
 									 label={category.label}
@@ -83,9 +83,9 @@ export default class CompaniesOverview extends React.Component {
 				</Paper>
 				<SwipeableViews index={this.state.selectedTabIndex} onChangeIndex={this.handleChangeIndex}>
 				{
-                    common.companiesCategories.map((category, index) => {
+                    common.companiesCategories.map(category => {
 						return (
-							<Category key={index} type={category} location={location}/>
+							<Category key={category.value} type={category} location={location}/>
 						);
                     })
 				}
