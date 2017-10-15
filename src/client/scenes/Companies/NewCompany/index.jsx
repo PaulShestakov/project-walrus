@@ -1,15 +1,21 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
-import { Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Map } from "components";
+
+import { Dropdown, Button, Title, Input, Grid, ImageUploader,
+        TextField, Tabs, Tab, Card, Map }
+from "components";
+
+import SwipeableViews from 'react-swipeable-views';
+
 import styles from './styles';
 import {Divider, Typography, Paper} from "material-ui";
 
 import { Field, reduxForm } from 'redux-form'
+import Location from "./Location/index";
 
 
 @translate(['common'])
-@withStyles(styles)
 class NewCompany extends React.Component {
 
     constructor(props) {
@@ -18,6 +24,8 @@ class NewCompany extends React.Component {
             imageObjects: [],
             categories: [],
             subcategories: [],
+            addresses: ["Адрес 1", "Адрес 2"],
+            selectedAddress: 0,
         };
     }
 
@@ -26,6 +34,10 @@ class NewCompany extends React.Component {
             categories: nextProps.common.companiesCategories
         });
     }
+
+    handleTabPress = (event, index) => {
+        this.setState({ selectedAddress: index });
+    };
 
     handleCategoryChange = (selected) => {
         const category = this.state.categories.find((category) => {
@@ -37,16 +49,16 @@ class NewCompany extends React.Component {
         });
     };
 
-    handleWorkingTimeChange = (event, item, type) => {
-        item[type] = event.target.value;
-        const index = this.state.workingTimes.findIndex(time => {
-            return time.value === item.value;
-        });
-        if (index > -1) {
-            this.state.workingTimes[index] = item;
-            this.setState({ workingTimes: this.state.workingTimes });
-        }
-    };
+    // handleWorkingTimeChange = (event, item, type) => {
+    //     item[type] = event.target.value;
+    //     const index = this.state.workingTimes.findIndex(time => {
+    //         return time.value === item.value;
+    //     });
+    //     if (index > -1) {
+    //         this.state.workingTimes[index] = item;
+    //         this.setState({ workingTimes: this.state.workingTimes });
+    //     }
+    // };
 
     saveAction = (values) => {
         const { imageObjects } = this.state;
@@ -55,7 +67,7 @@ class NewCompany extends React.Component {
     };
 
     render() {
-        const {t, classes, common, handleSubmit, ...other} = this.props;
+        const { t, classes, common : {companiesCategories}, handleSubmit } = this.props;
 
         return (
             <form onSubmit={handleSubmit(this.saveAction)}
@@ -138,32 +150,33 @@ class NewCompany extends React.Component {
                             </Typography>
                         </Grid>
 
-                        {/*<Paper>*/}
-                            {/*<Tabs indicatorColor="primary"*/}
-                                  {/*textColor="primary"*/}
-                                  {/*value={this.state.selectedTabIndex}*/}
-                                  {/*onChange={this.handleTabPress}*/}
-                                  {/*fullWidth>*/}
-                                {/*{*/}
-                                    {/*common.companiesCategories.map((category, index) => (*/}
-                                        {/*<Tab key={category.value}*/}
-                                             {/*className={classes.tab}*/}
-                                             {/*classes={{label: classes.tabLabel, labelContainer: classes.tabLabelContainer}}*/}
-                                             {/*label={category.label}*/}
-                                             {/*icon={icons[index]} />*/}
-                                    {/*))*/}
-                                {/*}*/}
-                            {/*</Tabs>*/}
-                        {/*</Paper>*/}
-                        {/*<SwipeableViews index={this.state.selectedTabIndex} onChangeIndex={this.handleChangeIndex}>*/}
-                            {/*{*/}
-                                {/*common.companiesCategories.map(category => {*/}
-                                    {/*return (*/}
-                                        {/*<Category key={category.value} type={category} location={location}/>*/}
-                                    {/*);*/}
-                                {/*})*/}
-                            {/*}*/}
-                        {/*</SwipeableViews>*/}
+                        <Grid item xs={8}>
+                            <Tabs
+                                indicatorColor="primary"
+                                textColor="primary"
+                                value={this.state.selectedAddress}
+                                onChange={this.handleTabPress}
+                                fullWidth>
+                                {
+                                    this.state.addresses.map((address, index) => (
+                                        <Tab
+                                            className={classes.tab}
+                                            key={address}
+                                            label={address}
+                                            value={index}/>
+                                    ))
+                                }
+                            </Tabs>
+                            <SwipeableViews index={this.state.selectedAddress} onChangeIndex={this.handleTabPress}>
+                                {
+                                    this.state.addresses.map((address, index) => {
+                                        return (
+                                            <Location key={address} number={index}/>
+                                        );
+                                    })
+                                }
+                            </SwipeableViews>
+                        </Grid>
 
                         <Grid container justify="center" className="my-3">
                             <Grid item xs={4} className="text-center">
@@ -184,6 +197,6 @@ class NewCompany extends React.Component {
     }
 }
 
-export default reduxForm({
+export default withStyles(styles)(reduxForm({
     form: 'company',
-})(NewCompany);
+})(NewCompany));

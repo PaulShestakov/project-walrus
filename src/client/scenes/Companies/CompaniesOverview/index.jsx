@@ -81,7 +81,7 @@ export default class CompaniesOverview extends React.Component {
                         }
 					</Tabs>
 				</Paper>
-				<SwipeableViews index={this.state.selectedTabIndex} onChangeIndex={this.handleChangeIndex}>
+				<SwipeableViews index={this.state.selectedTabIndex} onChangeIndex={this.handleTabPress}>
 				{
                     common.companiesCategories.map(category => {
 						return (

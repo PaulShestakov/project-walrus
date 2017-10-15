@@ -10,11 +10,12 @@ import Checkbox from './Checkbox';
 import Dropdown from './Dropdown';
 import Rating from './Rating';
 import Input from './Input';
+import Tabs from './Tabs';
+import Tab from './Tab';
 
 import TextField from 		'material-ui/TextField';
 import Grid from 			'material-ui/Grid';
 import Card from  			'material-ui/Card';
-import Tabs, { Tab } from 	'material-ui/Tabs';
 
 import Popover from 		'react-popover';
 import Map from	'./Map';
