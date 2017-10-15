@@ -15,12 +15,12 @@ const saveCompanySuccess = (response) => ({
     response
 });
 
-const postCompany = (data, history) => {
+const postCompany = (values, history) => {
 
     let form = new FormData();
-    form.append('company', JSON.stringify(data));
-    if (data.image) {
-        form.append('image', data.image)
+    form.append('company', JSON.stringify(values));
+    if (values.image) {
+        form.append('image', values.image)
     }
 
     return dispatch => {
@@ -42,7 +42,7 @@ const postCompany = (data, history) => {
                 console.log('An error occurred.', error);
             }
         ).then(json => {
-            history.push("/company/overview?companyCategoryId=HEALTH");
+            history.push("/company/overview");
             dispatch(saveCompanySuccess(json));
         }).catch(error => {
             dispatch(saveCompanyFailed(error))

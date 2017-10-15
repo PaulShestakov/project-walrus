@@ -47,7 +47,7 @@ export default class Companies extends BaseCRUD  {
 			let phones: Array<string> = company.phones;
 	        if (phones && phones.length > 0) {
                 connection.query(Queries.SAVE_PHONES,
-					[phones.map(item => Companies.internalizePhone(company.companyId, item))], (error, result) => {
+					[Util.ensureArray(phones).map(item => Companies.internalizePhone(company.companyId, item))], (error, result) => {
                     done(error, result);
                 });
             } else {
@@ -284,7 +284,7 @@ export default class Companies extends BaseCRUD  {
 	}
 
     static internalizeCompany(company: Company) {
-		let image = (company.image ?  '/' + _.get(company.image, ['0', 'path'], null) : company.logo);
+		let image = '/' + _.get(company.image, ['0', 'path'], null);
 		if (image) {
 			image = image.split('\\').join('\/');
 		}
@@ -296,8 +296,8 @@ export default class Companies extends BaseCRUD  {
             EMAIL: company.email,
             WEBSITE_URL: company.url,
 
-            COMPANY_CATEGORY_ID: company.companyCategoryId,
-            COMPANY_SUBCATEGORY_ID: company.companySubcategoryId
+            COMPANY_CATEGORY_ID: company.companyCategoryId.value,
+            COMPANY_SUBCATEGORY_ID: company.companySubcategoryId.value
         };
 	}
 

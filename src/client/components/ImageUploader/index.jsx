@@ -44,11 +44,12 @@ class ImageUploader extends React.Component {
 	};
 
 	render() {
-		const {t, classes, className, imageObjects, ...other} = this.props;
-
+		const {t, classes, className, imageObjects, input,...other} = this.props;
+		delete input.value;
 		return (
 			<div className={classes.main}>
 				<input id="file"
+					   {...input}
 					multiple="multiple"
 					name={this.props.name}
 					className={classes.addImageInput}

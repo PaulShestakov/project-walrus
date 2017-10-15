@@ -9,11 +9,11 @@ import DateTimePicker from './DateTimePicker';
 import Checkbox from './Checkbox';
 import Dropdown from './Dropdown';
 import Rating from './Rating';
+import Input from './Input';
 
 import TextField from 		'material-ui/TextField';
 import Grid from 			'material-ui/Grid';
 import Card from  			'material-ui/Card';
-import Input from  			'material-ui/Input';
 import Tabs, { Tab } from 	'material-ui/Tabs';
 
 import Popover from 		'react-popover';

@@ -6,11 +6,11 @@ import './styles.scss';
 class Dropdown extends React.Component {
 
     render() {
-		const {className, ...other} = this.props;
+		const {className, meta, input, ...other} = this.props;
 
         return (
             <div className={className}>
-                <ReactDropdown {...other} />
+                <ReactDropdown {...input} {...other} />
             </div>
         );
     }
