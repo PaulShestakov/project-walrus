@@ -14,8 +14,10 @@ import {companiesFilterReducer} from './companiesList/filterReducer';
 
 import commonReducer from './common/common';
 import editCompanyReducer from "./editCompany/editCompany";
+import { reducer as formReducer } from 'redux-form'
 
 const rootReducer = combineReducers({
+    form: formReducer,
 	common: commonReducer,
 
 	newPromo: newPromoReducer,

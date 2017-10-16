@@ -1,13 +1,14 @@
 import React from 'react';
+import { withStyles } from 'material-ui/styles';
+import {Input as MaterialInput} from 'material-ui';
 
 import styles from './styles';
 
 class Input extends React.Component {
 	render() {
+        const { classes, meta, input, ...other } = this.props;
 		return (
-			<Input placeholder={t('SECTION_SEARCH')} className={classNames(classes.searchInput, 'w-100')} />
-
-
+			<MaterialInput {...input} {...other} />
 		);
 	}
 }
