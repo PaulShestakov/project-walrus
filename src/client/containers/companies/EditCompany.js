@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import EditCompanyComponent from '../../scenes/companies/EditCompany/index';
+import EditCompanyComponent from '../../scenes/Companies/EditCompany';
 import {
 	loadCompany
 } from "../../actionCreators/editCompany";
