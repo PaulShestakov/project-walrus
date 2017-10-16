@@ -11,7 +11,24 @@ import {loadCompaniesCodeValues} from "../../actionCreators/common";
 const CompanyPage = connect(
     state => ({
         common: state.common,
-        new: state.newCompany
+        new: state.newCompany,
+        initialValues: {
+            locations: [
+                {
+                    label: 'Aдрес 1',
+                    workingTimes: state.common.daysOfWeek
+                },
+                {
+                    label: 'Aдрес 2',
+                    workingTimes: state.common.daysOfWeek
+                },
+                {
+                    label: 'Aдрес 3',
+                    workingTimes: state.common.daysOfWeek
+                }
+            ]
+
+        }
     }),
     {
         postCompany

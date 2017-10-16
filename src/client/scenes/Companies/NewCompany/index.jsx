@@ -11,7 +11,7 @@ import SwipeableViews from 'react-swipeable-views';
 import styles from './styles';
 import {Divider, Typography, Paper} from "material-ui";
 
-import { Field, reduxForm } from 'redux-form'
+import { Field, FieldArray, reduxForm } from 'redux-form'
 import Location from "./Location/index";
 
 
@@ -24,20 +24,17 @@ class NewCompany extends React.Component {
             imageObjects: [],
             categories: [],
             subcategories: [],
-            addresses: ["Адрес 1", "Адрес 2"],
+            //addresses: ["Адрес 1", "Адрес 2", "Адрес 3"],
             selectedAddress: 0,
         };
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            categories: nextProps.common.companiesCategories
+            categories: nextProps.common.companiesCategories,
+            cities: nextProps.common.cities
         });
     }
-
-    handleTabPress = (event, index) => {
-        this.setState({ selectedAddress: index });
-    };
 
     handleCategoryChange = (selected) => {
         const category = this.state.categories.find((category) => {
@@ -67,7 +64,7 @@ class NewCompany extends React.Component {
     };
 
     render() {
-        const { t, classes, common : {companiesCategories}, handleSubmit } = this.props;
+        const { t, classes, common, handleSubmit } = this.props;
 
         return (
             <form onSubmit={handleSubmit(this.saveAction)}
@@ -150,32 +147,45 @@ class NewCompany extends React.Component {
                             </Typography>
                         </Grid>
 
-                        <Grid item xs={8}>
-                            <Tabs
-                                indicatorColor="primary"
-                                textColor="primary"
-                                value={this.state.selectedAddress}
-                                onChange={this.handleTabPress}
-                                fullWidth>
-                                {
-                                    this.state.addresses.map((address, index) => (
-                                        <Tab
-                                            className={classes.tab}
-                                            key={address}
-                                            label={address}
-                                            value={index}/>
-                                    ))
-                                }
-                            </Tabs>
-                            <SwipeableViews index={this.state.selectedAddress} onChangeIndex={this.handleTabPress}>
-                                {
-                                    this.state.addresses.map((address, index) => {
-                                        return (
-                                            <Location key={address} number={index}/>
-                                        );
-                                    })
-                                }
-                            </SwipeableViews>
+                        <Grid item xs={11}>
+                            <FieldArray
+                                name="locations"
+                                //addresses={this.state.addresses}
+                               // {...common}
+                                component={Location}/>
+                            {/*<Tabs*/}
+                                {/*indicatorColor="primary"*/}
+                                {/*textColor="primary"*/}
+                                {/*value={this.state.selectedAddress}*/}
+                                {/*onChange={this.handleTabPress}*/}
+                                {/*fullWidth>*/}
+                                {/*{*/}
+                                    {/*this.state.addresses.map((address, index) => (*/}
+                                        {/*<Tab*/}
+                                            {/*className={classes.tab}*/}
+                                            {/*key={address}*/}
+                                            {/*label={address}*/}
+                                            {/*value={index}/>*/}
+                                    {/*))*/}
+                                {/*}*/}
+                            {/*</Tabs>*/}
+                            {/*<SwipeableViews*/}
+                                {/*index={this.state.selectedAddress}*/}
+                                {/*onChangeIndex={this.handleTabPress}>*/}
+                                {/*{*/}
+                                    {/*// this.state.addresses.map(address => {*/}
+                                    {/*//     return (*/}
+                                    {/*//         <FieldArray*/}
+                                    {/*//             name="locations"*/}
+                                    {/*//             component={Location}/>*/}
+                                    {/*//     );*/}
+                                    {/*// })*/}
+                                    {/*<FieldArray*/}
+                                        {/*name="locations"*/}
+                                        {/*addresses={this.state.addresses}*/}
+                                        {/*component={Location}/>*/}
+                                {/*}*/}
+                            {/*</SwipeableViews>*/}
                         </Grid>
 
                         <Grid container justify="center" className="my-3">
@@ -196,6 +206,8 @@ class NewCompany extends React.Component {
         );
     }
 }
+
+
 
 export default withStyles(styles)(reduxForm({
     form: 'company',
