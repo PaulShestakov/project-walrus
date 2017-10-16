@@ -13,7 +13,7 @@
   "out_file": "./dist/devLog/log.txt",
 
   "env": {
-    "PORT": 8080,
+    "PORT": 3000,
     "NODE_ENV": "development"
   },
 
