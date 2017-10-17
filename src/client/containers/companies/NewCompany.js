@@ -16,18 +16,9 @@ const CompanyPage = connect(
             locations: [
                 {
                     label: 'Aдрес 1',
-                    workingTimes: state.common.daysOfWeek
+                    phones: [{}]
                 },
-                {
-                    label: 'Aдрес 2',
-                    workingTimes: state.common.daysOfWeek
-                },
-                {
-                    label: 'Aдрес 3',
-                    workingTimes: state.common.daysOfWeek
-                }
             ]
-
         }
     }),
     {

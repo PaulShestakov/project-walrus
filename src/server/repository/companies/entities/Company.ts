@@ -6,14 +6,9 @@ interface Company {
 	email: string,
 	url: string,
 	image: object,
-	phones: Array<string>,
-	lat: number,
-	lng: number,
     companyCategoryId: string,
     companySubcategoryId: string,
-    companyCategoryName: string,
-	companySubcategoryName: string,
-	workingTimes: Array<object>,
+	locations: Array<object>,
 }
 
 interface IFeedback {

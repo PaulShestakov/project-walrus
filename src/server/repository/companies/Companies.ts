@@ -43,11 +43,20 @@ export default class Companies extends BaseCRUD  {
 
 	static postCompany(company: Company, callback) {
 		company.companyId = uuid();
+		const locations = company.locations.map(item => Companies.internalizeLocation(company.companyId, item));
+
 	    const savePhones = (connection, done) => {
-			let phones: Array<string> = company.phones;
-	        if (phones && phones.length > 0) {
-                connection.query(Queries.SAVE_PHONES,
-					[Util.ensureArray(phones).map(item => Companies.internalizePhone(company.companyId, item))], (error, result) => {
+			const phones = company.locations.reduce((acc, item, index) => {
+				item.phones.forEach(phone => {
+					acc.push(Companies.internalizePhone({
+						locationId: locations[index][0],
+						phone: phone.phone,
+					}));
+				});
+				return acc;
+			}, []);
+            if (phones && phones.length > 0) {
+                connection.query(Queries.SAVE_PHONES, [phones], (error, result) => {
                     done(error, result);
                 });
             } else {
@@ -55,14 +64,25 @@ export default class Companies extends BaseCRUD  {
             }
 		};
 		const saveLocation = (connection, done) => {
-	        connection.query(Queries.SAVE_LOCATION, [Companies.internalizeLocation(company)], (error, result) => {
+	        connection.query(Queries.SAVE_LOCATION, [locations], (error, result) => {
 				done(error, result);
 			});
 		};
 		const saveWorkingTimes = (connection, done) => {
-			let times = company.workingTimes;
+			const times = company.locations.reduce((acc, item, index) => {
+				item.workingTimes.filter(i => i.from && i.to && i.day)
+					.forEach(time => {
+						acc.push(Companies.internalizeTime({
+							locationId: locations[index][0],
+							day: time.day.value,
+							from: time.from,
+							to: time.to,
+						}));
+					});
+				return acc;
+			}, []);
 			if (times && times.length > 0) {
-				connection.query(Queries.SAVE_WORKING_TIMES, [times.map(item => Companies.internalizeTime(company, item))], (error, result) => {
+				connection.query(Queries.SAVE_WORKING_TIMES, [times], (error, result) => {
 					done(error, result);
 				});
 			} else {
@@ -290,43 +310,46 @@ export default class Companies extends BaseCRUD  {
 		}
         return {
             COMPANY_ID: company.companyId,
+			COMPANY_CATEGORY_ID: company.companyCategoryId ?
+				company.companyCategoryId.value : null,
+			COMPANY_SUBCATEGORY_ID: company.companySubcategoryId ?
+				company.companySubcategoryId.value : null,
             NAME: company.name,
             LOGO: image,
             DESCRIPTION: company.description,
             EMAIL: company.email,
             WEBSITE_URL: company.url,
-
-            COMPANY_CATEGORY_ID: company.companyCategoryId.value,
-            COMPANY_SUBCATEGORY_ID: company.companySubcategoryId.value
         };
 	}
 
-	static internalizeTime(company: Company, workingTime) {
+	static internalizeTime(workingTime) {
 		return [
-			company.companyId,
+			workingTime.locationId,
 			workingTime.day,
 			`${workingTime.from}:00:00`,
 			`${workingTime.to}:00:00`
 		]
 	}
 	
-	static internalizeLocation(company) {
-		return {
-			COMPANY_LOCATION_ID: uuid(),
-			SUBWAY_ID: company.subway,
-			COMPANY_ID: company.companyId,
-			CITY_ID: company.city,
-			ADDRESS: company.address,
-			LAT: company.lat,
-			LNG: company.lng
-		}
+	static internalizeLocation(companyId, location) {
+		return [
+			uuid(),
+			location.subway ? location.subway.value : null,
+			companyId,
+			location.city ? location.city.value : null,
+			location.address,
+			location.location ? location.location.lat : null,
+			location.location ? location.location.lng : null,
+			null,
+			null,
+		]
 	}
 
-    static internalizePhone(companyId, phone) {
+    static internalizePhone(phone) {
 	    return [
 	        uuid(),
-	        companyId,
-            phone
+			phone.locationId,
+            phone.phone
         ];
     }
 
