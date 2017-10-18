@@ -12,38 +12,76 @@ import * as uuid from 'uuid';
 export default class Companies extends BaseCRUD  {
 
 	static getCompany(companyId: string, callback) {
-        const getCompany = (connection, done) => {
-            connection.query(Queries.GET, [companyId], (error, result) => {
-                if (result && result.length > 0) {
-                    result = Companies.externalizeCompany(result[0]);
-                }
-                done(error, result);
-            });
-		};
-		const getPhones = (connection, done) => {
-			connection.query(Queries.GET_PHONES, [companyId], (error, result) => {
-				let res = [];
-				if (result && result.length > 0) {
-					result.forEach(item => {
-						res.push(item.PHONE);
-					});
+		executeQuery(Queries.GET, [companyId], (error, result) => {
+			if (error) {
+				Util.handleError(error, callback);
+			} else {
+				if (result) {
+					const reducedResult = result.reduce((acc, item) => {
+						if (!acc[item.companyId]) {
+							acc[item.companyId] = {
+								id: item.companyId,
+								categoryId: item.categoryId,
+								subcategoryId: item.subcategoryId,
+								name: item.name,
+								logo: item.logo,
+								description: item.description,
+								email: item.email,
+								url: item.url,
+								locations: []
+							};
+						}
+
+						if (!acc[item.companyId].locations[item.locationId]) {
+							acc[item.companyId].locations[item.locationId] = {
+								subwayId: item.subwayId,
+								cityId: item.cityId,
+								address: item.address,
+								lat: item.lat,
+								lng: item.lng,
+								workingTimes: [],
+								phones: []
+							};
+						}
+
+						if (!acc[item.companyId].locations[item.locationId].workingTimes[item.DAY_OF_WEEK]) {
+							acc[item.companyId].locations[item.locationId].workingTimes[item.DAY_OF_WEEK] = {
+								day: item.dayOfWeek,
+								open: item.open,
+								close: item.close
+							};
+						}
+
+						if (!acc[item.companyId].locations[item.locationId].phones[item.phoneId]) {
+							acc[item.companyId].locations[item.locationId].phones[item.phoneId] = {
+								phone: item.phone
+							};
+						}
+						return acc;
+					}, {});
+
+					const response = Object.values(reducedResult).map(company => ({
+						...company,
+						locations: Object.values(company.locations).map(location => ({
+							...location,
+							workingTimes: Object.values(location.workingTimes),
+							phones: Object.values(location.phones).map(i => i.phone)
+						})),
+					}));
+
+					callback(null, response);
+				} else {
+					callback(null, null);
 				}
-				done(error, res);
-			});
-		};
-        executeParallel([getCompany, getPhones], (error, result) => {
-            if (error) {
-                Util.handleError(error, callback);
-            } else {
-                result[0].phones = result[1];
-                callback(null, result[0]);
-            }
-        });
+			}
+		});
 	}
 
 	static postCompany(company: Company, callback) {
 		company.companyId = uuid();
-		const locations = company.locations.map(item => Companies.internalizeLocation(company.companyId, item));
+		const locations = company.locations
+			.filter(i => i.city.value && i.address)
+			.map(item => Companies.internalizeLocation(company.companyId, item));
 
 	    const savePhones = (connection, done) => {
 			const phones = company.locations.reduce((acc, item, index) => {
