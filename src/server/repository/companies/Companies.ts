@@ -23,6 +23,7 @@ export default class Companies extends BaseCRUD  {
 								id: item.companyId,
 								categoryId: item.categoryId,
 								subcategoryId: item.subcategoryId,
+								subcategoryName: item.subcategoryName,
 								name: item.name,
 								logo: item.logo,
 								description: item.description,
@@ -34,18 +35,21 @@ export default class Companies extends BaseCRUD  {
 
 						if (!acc[item.companyId].locations[item.locationId]) {
 							acc[item.companyId].locations[item.locationId] = {
+								id: item.locationId,
 								subwayId: item.subwayId,
 								cityId: item.cityId,
 								address: item.address,
-								lat: item.lat,
-								lng: item.lng,
+								position: {
+									lat: item.lat,
+									lng: item.lng,
+								},
 								workingTimes: [],
 								phones: []
 							};
 						}
 
-						if (!acc[item.companyId].locations[item.locationId].workingTimes[item.DAY_OF_WEEK]) {
-							acc[item.companyId].locations[item.locationId].workingTimes[item.DAY_OF_WEEK] = {
+						if (!acc[item.companyId].locations[item.locationId].workingTimes[item.dayOfWeek]) {
+							acc[item.companyId].locations[item.locationId].workingTimes[item.dayOfWeek] = {
 								day: item.dayOfWeek,
 								open: item.open,
 								close: item.close
@@ -54,6 +58,7 @@ export default class Companies extends BaseCRUD  {
 
 						if (!acc[item.companyId].locations[item.locationId].phones[item.phoneId]) {
 							acc[item.companyId].locations[item.locationId].phones[item.phoneId] = {
+								id: item.phoneId,
 								phone: item.phone
 							};
 						}
@@ -65,11 +70,11 @@ export default class Companies extends BaseCRUD  {
 						locations: Object.values(company.locations).map(location => ({
 							...location,
 							workingTimes: Object.values(location.workingTimes),
-							phones: Object.values(location.phones).map(i => i.phone)
+							phones: Object.values(location.phones)
 						})),
 					}));
 
-					callback(null, response);
+					callback(null, response[0]);
 				} else {
 					callback(null, null);
 				}
