@@ -1,6 +1,6 @@
 const COMPANIES_TABLE = 'wikipet.companies';
 const COMPANIES_PHONES = 'wikipet.companies_phones';
-const COMPANINES_LOCATION = 'wikipet.companies_location';
+const COMPANIES_LOCATION = 'wikipet.companies_location';
 const CODE_VALUES = 'wikipet.code_values';
 const WORKING_TIMES = 'wikipet.companies_working_time';
 const FEEDBACK = 'wikipet.companies_feedback';
@@ -20,15 +20,31 @@ export default {
 			c.EMAIL email,
 			c.WEBSITE_URL url,
 
+			cl.COMPANY_LOCATION_ID locationId,
 			cl.SUBWAY_ID subwayId,
 			cl.CITY_ID cityId,
 			cl.ADDRESS address,
 			cl.LAT lat,
-			cl.LNG lng
+			cl.LNG lng,
+			
+			wt.DAY_OF_WEEK dayOfWeek,
+			wt.OPEN_TIME open,
+			wt.CLOSE_TIME close,
+			
+			ph.COMPANY_PHONE_ID phoneId,
+			ph.PHONE phone
 
 		FROM ${COMPANIES_TABLE} c
-		LEFT JOIN ${COMPANINES_LOCATION} cl
+		
+		LEFT JOIN ${COMPANIES_LOCATION} cl
 			ON c.COMPANY_ID = cl.COMPANY_ID
+		
+		LEFT JOIN ${WORKING_TIMES} wt
+			ON cl.COMPANY_LOCATION_ID = wt.COMPANY_LOCATION_ID
+			
+		LEFT JOIN ${COMPANIES_PHONES} ph
+			ON cl.COMPANY_LOCATION_ID = ph.COMPANY_LOCATION_ID
+			
 		WHERE c.COMPANY_ID = ?
 	`,
 
@@ -47,11 +63,9 @@ export default {
 
 	SAVE: `INSERT INTO ${COMPANIES_TABLE} set ?`,
 
-	GET_PHONES: `SELECT PHONE FROM ${COMPANIES_PHONES} WHERE COMPANY_ID = ?`,
-
 	SAVE_PHONES: `INSERT INTO ${COMPANIES_PHONES} VALUES ?`,
 
-	SAVE_LOCATION: `INSERT INTO ${COMPANINES_LOCATION} set ?`,
+	SAVE_LOCATION: `INSERT INTO ${COMPANIES_LOCATION} VALUES ?`,
 
 	SAVE_WORKING_TIMES: `INSERT INTO ${WORKING_TIMES} VALUES ?`,
 

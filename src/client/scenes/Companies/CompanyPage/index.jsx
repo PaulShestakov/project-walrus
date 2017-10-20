@@ -12,6 +12,7 @@ import Feedbacks from "./Feedback";
 
 import {Route, Link} from 'react-router-dom'
 import NewFeedback from "./Feedback/NewFeedback";
+import Contacts from "./Contacts/index";
 
 
 @translate(['common'])
@@ -34,8 +35,9 @@ export default class CompanyPage extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        let feedbacks = newProps.location.pathname.indexOf("/feedbacks");
-        let feedback = newProps.location.pathname.indexOf("/feedback");
+        const feedbacks = newProps.location.pathname.indexOf("/feedbacks");
+        const feedback = newProps.location.pathname.indexOf("/feedback");
+        const contacts = newProps.location.pathname.indexOf("/contacts");
 		let index;
 		const { loadFeedbacks, match, history } = this.props;
         if (feedbacks !== -1) {
@@ -44,7 +46,9 @@ export default class CompanyPage extends React.Component {
 				loadFeedbacks(match.params.companyId, history);
 			}
 		} else if (feedback !== -1) {
-        	index = 2;
+        	index = -1;
+		} else if (contacts !== -1) {
+            index = 2;
 		} else {
         	index = 0;
 		}
@@ -54,9 +58,10 @@ export default class CompanyPage extends React.Component {
     handleTabPress = (event, index) => {
 		this.setState({ selectedTab: index });
 		const { match, history, loadFeedbacks } = this.props;
-		const isFeedbacks = (index === 1);
-		if (isFeedbacks) {
+		if (index === 1) {
 			loadFeedbacks(match.params.companyId, history);
+		} else if (index === 2) {
+            history.push('/company/' + match.params.companyId + '/contacts');
 		} else {
 			history.push('/company/' + match.params.companyId);
 		}
@@ -80,7 +85,7 @@ export default class CompanyPage extends React.Component {
 			<Card raised className="my-4">
 				<CardContent>
 					<Grid container>
-						<Grid item md={8}>
+						<Grid item xs={8}>
 							<Typography type="headline" component="h2">
                                 {company.name}
 							</Typography>
@@ -88,7 +93,7 @@ export default class CompanyPage extends React.Component {
                                 {company.subcategoryName}
 							</Typography>
 						</Grid>
-						<Grid item md={4}>
+						<Grid item xs={4}>
 							<Link to={`${this.props.match.url}/feedback`} className={classes.link}>
 								<Button accent="red" className='w-100'>
                                     {t('Оставить отзыв')}
@@ -98,7 +103,7 @@ export default class CompanyPage extends React.Component {
 					</Grid>
 					<Divider className="mt-4 mb-2" />
 					<Grid container>
-						<Grid item md={4}>
+						<Grid item xs={4}>
 							<Paper className="d-flex justify-content-center">
 								<CardMedia
 									className={classes.cardImage}
@@ -106,20 +111,14 @@ export default class CompanyPage extends React.Component {
 								/>
 							</Paper>
 						</Grid>
-						<Grid item md={8}>
+						<Grid item xs={8}>
 							<Grid container className="d-flex-column h-100">
-								{/* <Grid item className="d-flex align-items-center">
-									<Pets className="mr-2"/>
-									<Typography component="p">
-										Empty
-									</Typography>
-								</Grid> */}
-								<Grid item className="d-flex align-items-center">
-									<Call className="mr-2"/>
-									<Typography component="p">
-										{company.phones ? company.phones.join(', ') : "Телефонов нет"}						
-									</Typography>
-								</Grid>
+								{/*<Grid item className="d-flex align-items-center">*/}
+									{/*<Call className="mr-2"/>*/}
+									{/*<Typography component="p">*/}
+										{/*{company.phones ? company.phones.join(', ') : "Телефонов нет"}						*/}
+									{/*</Typography>*/}
+								{/*</Grid>*/}
 								<Grid item className="d-flex align-items-center">
 									<Mail className="mr-2"/>
 									<Typography component="p">
@@ -129,7 +128,9 @@ export default class CompanyPage extends React.Component {
 								<Grid item className="d-flex align-items-center">
 									<Public className="mr-2"/>
 									<Typography component="p">
-                                        {company.websiteUrl}
+										<a href={company.url} target="_blank">
+                                            {company.url}
+										</a>
 									</Typography>
 								</Grid>
 							</Grid>
@@ -145,6 +146,7 @@ export default class CompanyPage extends React.Component {
                           }}>
 						<Tab label={t('Инфо')}/>
 						<Tab label={t('Отзывы')}/>
+						<Tab label={t('Адреса и контакты')}/>
 					</Tabs>
 					<Divider />
 
@@ -154,6 +156,8 @@ export default class CompanyPage extends React.Component {
 						component={(props) => <Feedbacks feedbacks={this.props.feedbacks}/>}/>
 
 					<Route path={`${this.props.match.url}/feedback`} render={() => <NewFeedback user={ common.user } onPostFeedback={this.onPostFeedback}/>}/>
+
+					<Route path={`${this.props.match.url}/contacts`} render={() => <Contacts locations={ company.locations } />}/>
 
 				</CardContent>
 			</Card>

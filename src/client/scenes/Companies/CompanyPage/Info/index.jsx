@@ -29,14 +29,14 @@ export default class CompanyInfo extends React.Component {
 
         return (
             <Grid container >
-                <Grid item md={12} className="mt-4 mb-2 text-wrap">
+                <Grid item xs={12} className="mt-4 mb-2 text-wrap">
                     <Typography type="body1" component="p">
                         {company.description}
                     </Typography>
                 </Grid>
-                <Grid item md={12}>
-                    <Map markers={markers} center={markers[0].position}/>
-                </Grid>
+                {/*<Grid item xs={12}>*/}
+                    {/*<Map markers={markers} center={markers[0].position}/>*/}
+                {/*</Grid>*/}
             </Grid>
         );
     }

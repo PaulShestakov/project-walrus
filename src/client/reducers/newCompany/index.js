@@ -10,7 +10,7 @@ const newCompanyReducer = (state = defaultState, action) => {
     switch (action.type) {
 
         case POST_COMPANY_SUCCESS: {
-            action.history.push('/companiesOverview?category=HEALTH');
+            action.history.push('/company/overview');
             return {
                 ...state
             }

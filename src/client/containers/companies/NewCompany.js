@@ -11,7 +11,15 @@ import {loadCompaniesCodeValues} from "../../actionCreators/common";
 const CompanyPage = connect(
     state => ({
         common: state.common,
-        new: state.newCompany
+        new: state.newCompany,
+        initialValues: {
+            locations: [
+                {
+                    label: 'Aдрес 1',
+                    phones: [{}]
+                },
+            ]
+        }
     }),
     {
         postCompany
