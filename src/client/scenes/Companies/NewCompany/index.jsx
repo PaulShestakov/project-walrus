@@ -130,7 +130,7 @@ class NewCompany extends React.Component {
 
                         <Grid container justify="center" className="my-3">
                             <Grid item xs={4} className="text-center">
-                                <Button type="submit" className="my-4 text-white w-100" accent="blue">
+                                <Button type="button" className="my-4 text-white w-100" accent="blue">
                                     {t('Сохранить')}
                                 </Button>
                             </Grid>

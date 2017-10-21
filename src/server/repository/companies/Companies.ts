@@ -90,12 +90,14 @@ export default class Companies extends BaseCRUD  {
 
 	    const savePhones = (connection, done) => {
 			const phones = company.locations.reduce((acc, item, index) => {
-				item.phones.forEach(phone => {
-					acc.push(Companies.internalizePhone({
-						locationId: locations[index][0],
-						phone: phone.phone,
-					}));
-				});
+				if (item.phones) {
+					item.phones.forEach(phone => {
+						acc.push(Companies.internalizePhone({
+							locationId: locations[index][0],
+							phone: phone.phone,
+						}));
+					});
+				}
 				return acc;
 			}, []);
             if (phones && phones.length > 0) {
@@ -113,15 +115,17 @@ export default class Companies extends BaseCRUD  {
 		};
 		const saveWorkingTimes = (connection, done) => {
 			const times = company.locations.reduce((acc, item, index) => {
-				item.workingTimes.filter(i => i.from && i.to && i.day)
-					.forEach(time => {
-						acc.push(Companies.internalizeTime({
-							locationId: locations[index][0],
-							day: time.day.value,
-							from: time.from,
-							to: time.to,
-						}));
-					});
+				if (item.workingTimes) {
+					item.workingTimes.filter(i => i.from && i.to && i.day)
+                        .forEach(time => {
+							acc.push(Companies.internalizeTime({
+								locationId: locations[index][0],
+								day: time.day.value,
+								from: time.from,
+								to: time.to,
+							}));
+						});
+				}
 				return acc;
 			}, []);
 			if (times && times.length > 0) {
@@ -210,11 +214,11 @@ export default class Companies extends BaseCRUD  {
 
 			.from('wikipet.companies', 'c')
 			.left_join('wikipet.companies_location', 'l', 'l.COMPANY_ID = c.COMPANY_ID')
-			.left_join('wikipet.companies_working_time', 't', 't.COMPANY_ID = c.COMPANY_ID')
+			.left_join('wikipet.companies_working_time', 't', 't.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
 			.left_join('wikipet.code_values', 'cv1', "cv1.GROUP = 'CITY' AND cv1.ID = l.CITY_ID")
 			.left_join('wikipet.code_values', 'cv2', "cv2.GROUP = 'DAY_OF_WEEK' AND cv2.ID = t.DAY_OF_WEEK")
 
-			.left_join('wikipet.companies_phones', 'p', 'p.COMPANY_ID = c.COMPANY_ID')
+			.left_join('wikipet.companies_phones', 'p', 'p.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
 
 			.where(filter)
 			.toParam();
