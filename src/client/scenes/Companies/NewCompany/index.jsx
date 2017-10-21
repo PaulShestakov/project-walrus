@@ -66,20 +66,20 @@ class NewCompany extends React.Component {
                 <Card raised>
                     <Grid container justify="center" spacing={24}>
 
-                        <Grid item xs={8}>
+                        <Grid item xs={11}>
                             <Typography type="headline" component="h1" className="mt-4">
                                 Основная информация
                             </Typography>
                         </Grid>
 
-                        <Grid item xs={8}>
+                        <Grid item xs={11}>
                             <Title>Название</Title>
                             <Field name="name"
                                    component={Input}
                                    fullWidth
                                    placeholder="Название компании"/>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={11}>
                             <Title>Категория</Title>
                             <Field name="companyCategoryId"
                                    component={Dropdown}
@@ -87,7 +87,7 @@ class NewCompany extends React.Component {
                                    onChange={this.handleCategoryChange}
                             />
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={11}>
                             <Title>Подкатегория</Title>
                             <Field name="companySubcategoryId"
                                    component={Dropdown}
@@ -95,7 +95,7 @@ class NewCompany extends React.Component {
                             />
                         </Grid>
 
-                        <Grid item xs={8}>
+                        <Grid item xs={11}>
                             <Title>Картинка лого</Title>
                             <Field name="image"
                                    type="file"
@@ -105,7 +105,7 @@ class NewCompany extends React.Component {
                                    onImageDelete={() => this.setState({ imageObjects: [] })}/>
                         </Grid>
 
-                        <Grid item xs={8}>
+                        <Grid item xs={11}>
                             <Title>Описание</Title>
                             <Field name="description"
                                    component={Input}
@@ -114,14 +114,14 @@ class NewCompany extends React.Component {
                                    placeholder="Описание"
                                    fullWidth/>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={11}>
                             <Title>Сайт компании</Title>
                             <Field name="url"
                                    component={Input}
                                    placeholder="Сайт"
                                    fullWidth/>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={11}>
                             <Title>Email</Title>
                             <Field name="email"
                                    component={Input}

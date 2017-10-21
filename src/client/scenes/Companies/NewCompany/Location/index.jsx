@@ -2,7 +2,7 @@ import React from 'react';
 import { Add } from 'material-ui-icons';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
-import { Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Map } from "components";
+import { Dropdown, Button, Title, Switch, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Map } from "components";
 import styles from './styles';
 import { PlusOne } from 'material-ui-icons';
 import SwipeableViews from 'react-swipeable-views';
@@ -92,6 +92,14 @@ export default class Location extends React.Component {
                     {
                         fields.map((member, index) => (
                             <Grid container spacing={0} className="p-2">
+                                <Grid item xs={12} className="my-2">
+                                    <Title>Главный офис</Title>
+                                    <Field
+                                        name={`${member}.isMain`}
+                                        component={Switch}
+                                        fullWidth
+                                    />
+                                </Grid>
                                 <Grid item xs={12} className="my-2">
                                     <Title>Город</Title>
                                     <Field name={`${member}.city`}
