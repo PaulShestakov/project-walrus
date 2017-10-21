@@ -39,6 +39,7 @@ export default class Companies extends BaseCRUD  {
 								subwayId: item.subwayId,
 								cityId: item.cityId,
 								address: item.address,
+								isMain: item.isMain,
 								position: {
 									lat: item.lat,
 									lng: item.lng,
@@ -85,7 +86,7 @@ export default class Companies extends BaseCRUD  {
 	static postCompany(company: Company, callback) {
 		company.companyId = uuid();
 		const locations = company.locations
-			.filter(i => i.city.value && i.address)
+			.filter(i => i.city && i.address)
 			.map(item => Companies.internalizeLocation(company.companyId, item));
 
 	    const savePhones = (connection, done) => {
@@ -145,7 +146,7 @@ export default class Companies extends BaseCRUD  {
             if (error) {
                 Util.handleError(error, callback);
             } else {
-                callback(null, { message : 'Success'});
+                callback(null, { uuid : company.companyId });
             }
         });
 	}
@@ -201,6 +202,7 @@ export default class Companies extends BaseCRUD  {
 				.field('cv1.NAME', 'CITY_NAME')
 				.field('l.ADDRESS')
 				.field('l.SUBWAY_ID')
+				.field('l.IS_MAIN')
 				.field('l.LAT')
 				.field('l.LNG')
 
@@ -253,6 +255,7 @@ export default class Companies extends BaseCRUD  {
 						cityName: row.CITY_NAME,
 						address: row.ADDRESS,
 						subwayId: row.SUBWAY_ID,
+						isMain: row.IS_MAIN,
 						lat: row.LAT,
 						lng: row.LNG,
 					}
@@ -384,9 +387,10 @@ export default class Companies extends BaseCRUD  {
 			location.subway ? location.subway.value : null,
 			companyId,
 			location.city ? location.city.value : null,
-			location.address,
+			location.address ? location.address : '',
 			location.location ? location.location.lat : null,
 			location.location ? location.location.lng : null,
+			!!location.isMain,
 			null,
 			null,
 		]
@@ -399,30 +403,4 @@ export default class Companies extends BaseCRUD  {
             phone.phone
         ];
     }
-
-	static externalizeCompany(company) {
-		return {
-			companyId: company.companyId,
-			categoryId: company.categoryId,
-			categoryName: company.categoryName,
-			subcategoryId: company.subcategoryId,
-			subcategoryName: company.subcategoryName,
-			name: company.name,
-			logo: company.logo,
-			description: company.description,
-			email: company.email,
-			websiteUrl: company.url,
-
-			cityId: company.cityId,
-			address: company.address,
-			subwayId: company.subwayId,
-			lat: company.lat,
-			lng: company.lng,
-
-			dayOfWeek: company.DAY_OF_WEEK,
-			dayOfWeekName: company.DAY_OF_WEEK_NAME,
-			openTime: company.OPEN_TIME,
-			closeTime: company.CLOSE_TIME,
-		};
-	}
 }

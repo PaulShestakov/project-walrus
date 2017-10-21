@@ -13,6 +13,7 @@ import Input from './Input';
 import Tabs from './Tabs';
 import Tab from './Tab';
 import ConfirmDialog from './Dialog/Confirm';
+import Switch from './Switch';
 
 import TextField from 		'material-ui/TextField';
 import Grid from 			'material-ui/Grid';
@@ -44,4 +45,5 @@ export {
 	Map,
 	Rating,
     ConfirmDialog,
+	Switch
 };

@@ -42,7 +42,7 @@ const postCompany = (values, history) => {
                 console.log('An error occurred.', error);
             }
         ).then(json => {
-            history.push("/company/overview");
+            history.push("/company/" + json.uuid);
             dispatch(saveCompanySuccess(json));
         }).catch(error => {
             dispatch(saveCompanyFailed(error))
