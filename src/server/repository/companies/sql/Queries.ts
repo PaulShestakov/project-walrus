@@ -24,7 +24,7 @@ export default {
 			cl.SUBWAY_ID subwayId,
 			cl.CITY_ID cityId,
 			cl.ADDRESS address,
-			cl.IS_MAIN main,
+			cl.IS_MAIN isMain,
 			cl.LAT lat,
 			cl.LNG lng,
 			
