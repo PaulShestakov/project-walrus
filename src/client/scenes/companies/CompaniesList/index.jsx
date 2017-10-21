@@ -128,7 +128,7 @@ export default class CompaniesList extends React.Component {
 		return (
 			<Grid container className="my-4">
 				<Grid item md={9}>
-					<Card className={classes.inputWrapper}>
+					<Card className={classNames(classes.inputWrapper)}>
 						<Autosuggest
 							theme={{
 								container: classNames(classes.container, 'p-3'),
@@ -152,13 +152,15 @@ export default class CompaniesList extends React.Component {
 							}}
 						/>
 					</Card>
-					{
-                        this.props.main.companies.map((company, index) => {
-							return (
-								<CompanyItem key={company.companyId} company={company} handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog} />
-							);
-						})
-					}
+					<div>
+						{
+							this.props.main.companies.map(company => {
+								return (
+									<CompanyItem key={company.companyId} company={company} handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog} />
+								);
+							})
+						}
+					</div>
 				</Grid>
 
 				<Grid item md={3}>

@@ -11,12 +11,12 @@ export default {
 	},
 
 	container: {
-		zIndex: 0,
 		flexGrow: 1,
-		position: 'relative',
+		position: 'relative'
 	},
 	suggestionsContainerOpen: {
 		position: 'absolute',
+		zIndex: 1,
 		left: 0,
 		right: 0,
 	},
@@ -30,6 +30,10 @@ export default {
 	},
 	textField: {
 		width: '100%',
+	},
+	makeStackingContext: {
+		position: 'relative',
+		zIndex: 1
 	},
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import CompaniesListComponent from '../../scenes/Companies/СompaniesList';
+import CompaniesListComponent from '../../scenes/companies/CompaniesList';
 
 import {
 	loadCompanies,

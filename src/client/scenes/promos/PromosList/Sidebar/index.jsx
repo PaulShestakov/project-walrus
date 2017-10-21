@@ -9,7 +9,7 @@ import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 
 import styles from './styles';
-import CheckboxesBlock from "../../../Companies/СompaniesList/Sidebar/CheckboxesBlock/index";
+import CheckboxesBlock from "../../../companies/CompaniesList/Sidebar/CheckboxesBlock/index";
 
 
 import Input, { InputLabel } from 'material-ui/Input';
