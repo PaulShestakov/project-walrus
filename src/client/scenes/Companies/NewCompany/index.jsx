@@ -3,7 +3,7 @@ import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
 
 import { Dropdown, Button, Title, Input, Grid, ImageUploader,
-        TextField, Tabs, Tab, Card, Map }
+        TextField, Tabs, Tab, Card, Map, ConfirmDialog }
 from "components";
 
 import styles from './styles';
@@ -23,6 +23,7 @@ class NewCompany extends React.Component {
             categories: [],
             subcategories: [],
             selectedAddress: 0,
+            showConfirm: false,
         };
     }
 
@@ -43,6 +44,14 @@ class NewCompany extends React.Component {
         });
     };
 
+    onCancelPressed = () => {
+      this.props.history.goBack();
+    };
+
+    openConfirmDialog = () => {
+        this.setState({ showConfirm: true });
+    };
+
     saveAction = (values) => {
         const { imageObjects } = this.state;
         values.image = imageObjects && imageObjects.length > 0 ? this.state.imageObjects[0].file : null;
@@ -53,8 +62,7 @@ class NewCompany extends React.Component {
         const { t, classes, common, handleSubmit } = this.props;
 
         return (
-            <form onSubmit={handleSubmit(this.saveAction)}
-                  className="d-flex-column align-items-center my-4">
+            <form className="d-flex-column align-items-center my-4">
                 <Card raised>
                     <Grid container justify="center" spacing={24}>
 
@@ -130,18 +138,28 @@ class NewCompany extends React.Component {
 
                         <Grid container justify="center" className="my-3">
                             <Grid item xs={4} className="text-center">
-                                <Button type="button" className="my-4 text-white w-100" accent="blue">
+                                <Button type="button"
+                                        onClick={this.openConfirmDialog}
+                                        className="my-4 text-white w-100"
+                                        accent="blue">
                                     {t('Сохранить')}
                                 </Button>
                             </Grid>
                             <Grid item xs={4} className="text-center">
-                                <Button className="my-4 text-white w-100" accent="red">
+                                <Button className="my-4 text-white w-100"
+                                        onClick={this.onCancelPressed}
+                                        accent="red">
                                     {t('Отмена')}
                                 </Button>
                             </Grid>
                         </Grid>
                     </Grid>
                 </Card>
+                <ConfirmDialog
+                    open={this.state.showConfirm}
+                    message="Вы действительно хотите сохранить введенные данные?"
+                    title="Сохранение компании"
+                    okCallback={handleSubmit(this.saveAction)}/>
             </form>
         );
     }

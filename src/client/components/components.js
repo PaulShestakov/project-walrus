@@ -12,6 +12,7 @@ import Rating from './Rating';
 import Input from './Input';
 import Tabs from './Tabs';
 import Tab from './Tab';
+import ConfirmDialog from './Dialog/Confirm';
 
 import TextField from 		'material-ui/TextField';
 import Grid from 			'material-ui/Grid';
@@ -41,5 +42,6 @@ export {
 	Dropdown,
 	Popover,
 	Map,
-	Rating
+	Rating,
+    ConfirmDialog,
 };
