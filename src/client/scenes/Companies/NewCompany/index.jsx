@@ -2,19 +2,19 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
 
-import { Dropdown, Button, Title, Input, Grid, ImageUploader,
-        TextField, Tabs, Tab, Card, Map, ConfirmDialog }
-from "components";
+import { Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Map, ConfirmDialog } from "components";
 
 import styles from './styles';
-import {Divider, Typography, Paper} from "material-ui";
+import {Typography} from "material-ui";
 
 import { Field, FieldArray, reduxForm } from 'redux-form'
 import Location from "./Location/index";
 
 
 @translate(['common'])
-class NewCompany extends React.Component {
+@withStyles(styles)
+@reduxForm({form: 'company'})
+export default class NewCompany extends React.Component {
 
     constructor(props) {
         super(props);
@@ -45,7 +45,7 @@ class NewCompany extends React.Component {
     };
 
     onCancelPressed = () => {
-      this.props.history.goBack();
+        this.props.history.goBack();
     };
 
     openConfirmDialog = () => {
@@ -164,9 +164,3 @@ class NewCompany extends React.Component {
         );
     }
 }
-
-
-
-export default withStyles(styles)(reduxForm({
-    form: 'company',
-})(NewCompany));

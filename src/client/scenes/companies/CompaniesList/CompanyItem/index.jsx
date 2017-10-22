@@ -20,7 +20,7 @@ export default class CompanyItem extends React.Component {
 
 		return (
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>
-				<Link to={`/company/${company.companyId}`}>
+				<Link to={`/company/${company.id}`}>
 					<Paper>
 						<CardMedia className={classes.cardImage} image={imageSrc} />
 					</Paper>
@@ -29,8 +29,9 @@ export default class CompanyItem extends React.Component {
 				<CardContent className={classNames(classes.cardContent, 'p-0', 'pl-4')}>
 					<div className={classNames(classes.flexRow, classes.spaceBetween)}>
 						<Label uppercase bold fontSize="2rem">{company.name}</Label>
+
 						<Button fab className={classes.editButton}>
-							<Link to={`/company/edit/${company.companyId}`}>
+							<Link to={`/company/edit/${company.id}`}>
 								<ModeEditIcon className={classes.editIcon} />
 							</Link>
 						</Button>
@@ -40,7 +41,7 @@ export default class CompanyItem extends React.Component {
 						{
 							company.locations.map(location => {
 								return (
-									<div key={location.companyLocationId} className={classes.flexRow}>
+									<div key={location.id} className={classes.flexRow}>
 										<FontAwesome name="map-marker" className={classes.icon} />
 										<Text>{location.cityName + ': ' + location.address}</Text>
 									</div>
