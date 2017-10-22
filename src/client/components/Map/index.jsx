@@ -1,13 +1,16 @@
 import React from 'react';
 
-import { compose, withProps, lifecycle } from "recompose";
+import { compose, withProps, lifecycle, withHandlers, withState  } from "recompose";
+import markerImg from '../../assets/img/marker2.png';
 import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
   Marker,
+  InfoWindow,
 } from "react-google-maps";
 import SearchBox from "react-google-maps/lib/components/places/SearchBox";
+import * as _ from "lodash";
 
 const MapWithASearchBox = compose(
   withProps({
@@ -18,10 +21,13 @@ const MapWithASearchBox = compose(
   }),
   lifecycle({
     componentWillMount() {
-      const refs = {}
+      const refs = {};
 
       this.setState({
+
         bounds: null,
+        fitted: false,
+
         onMapMounted: ref => {
           refs.map = ref;
         },
@@ -33,6 +39,16 @@ const MapWithASearchBox = compose(
         },
         onSearchBoxMounted: ref => {
           refs.searchBox = ref;
+        },
+        fitMapBounds: () => {
+          if (!this.state.fitted && this.props.extMarkers.length > 0) {
+              const bounds = new google.maps.LatLngBounds();
+              this.props.extMarkers.forEach(marker => {
+                  bounds.extend(new google.maps.LatLng(marker.position));
+              });
+              this.state.fitted = true;
+              refs.map.fitBounds(bounds);
+          }
         },
         onPlacesChanged: () => {
           const places = refs.searchBox.getPlaces();
@@ -65,10 +81,12 @@ const MapWithASearchBox = compose(
   }),
   withScriptjs,
   withGoogleMap
-)(props =>
+)(props => (
   <GoogleMap
-    defaultZoom={8}
-    center={props.center}
+    defaultZoom={5}
+    ref={props.onMapMounted}
+    defaultCenter={props.mapCenter ? props.mapCenter : {lat:0,lng:0}}
+    onTilesLoaded={props.fitMapBounds}
   >
     {
       props.search &&
@@ -98,11 +116,26 @@ const MapWithASearchBox = compose(
       </SearchBox>
     }
     {
-      props.markers.map((marker, index) =>
-        <Marker key={index} position={marker.position} />
+      props.extMarkers.map((marker, index) =>
+        <Marker key={index}
+                position={marker.position}
+                icon={{
+                    url: markerImg,
+                    scaledSize: new google.maps.Size(40, 60)
+                }}
+                onClick={() => props.onMarkerClick(index)}>
+        {
+          marker.isOpen &&
+          <InfoWindow onCloseClick={() => props.onMarkerClick(index)}>
+            <div>
+              Телефоны
+            </div>
+          </InfoWindow>
+        }
+        </Marker>
       )
     }
   </GoogleMap>
-);
+));
 
 export default MapWithASearchBox;

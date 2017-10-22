@@ -19,7 +19,7 @@ class Header extends React.Component {
 			<header className={this.props.className} itemType="http://schema.org/Header" itemScope>
 				<Card>
 					<Grid container justify="center" className="py-3" spacing={0}>
-						<Grid item xs={9}>
+						<Grid item xs={11} md={9}>
 							<Grid container className='my-2'>
 								<Grid item xs={2}>
 									<img src={logo} alt="Logo" style={{width: '100%'}} />

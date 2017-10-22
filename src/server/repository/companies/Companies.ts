@@ -36,8 +36,8 @@ export default class Companies extends BaseCRUD  {
 						if (!acc[item.companyId].locations[item.locationId]) {
 							acc[item.companyId].locations[item.locationId] = {
 								id: item.locationId,
-								subwayId: item.subwayId,
-								cityId: item.cityId,
+								subway: item.subway,
+								city: item.city,
 								address: item.address,
 								isMain: item.isMain,
 								position: {

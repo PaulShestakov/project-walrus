@@ -20,12 +20,6 @@ export default class CompanyInfo extends React.Component {
 
     render() {
         const {t, classes, company, ...other} = this.props;
-        const markers = [{
-            position: {
-                lat: company.lat,
-                lng: company.lng
-            }
-        }];
 
         return (
             <Grid container >
@@ -34,9 +28,6 @@ export default class CompanyInfo extends React.Component {
                         {company.description}
                     </Typography>
                 </Grid>
-                {/*<Grid item xs={12}>*/}
-                    {/*<Map markers={markers} center={markers[0].position}/>*/}
-                {/*</Grid>*/}
             </Grid>
         );
     }
