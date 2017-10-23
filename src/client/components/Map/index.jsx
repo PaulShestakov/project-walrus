@@ -41,13 +41,16 @@ const MapWithASearchBox = compose(
           refs.searchBox = ref;
         },
         fitMapBounds: () => {
+          const bounds = new google.maps.LatLngBounds();
+          this.props.extMarkers.forEach(marker => {
+              bounds.extend(new google.maps.LatLng(marker.position));
+          });
+          refs.map.fitBounds(bounds);
+        },
+        onTilesLoaded: () => {
           if (!this.state.fitted && this.props.extMarkers.length > 0) {
-              const bounds = new google.maps.LatLngBounds();
-              this.props.extMarkers.forEach(marker => {
-                  bounds.extend(new google.maps.LatLng(marker.position));
-              });
-              this.state.fitted = true;
-              refs.map.fitBounds(bounds);
+            this.state.fitMapBounds();
+            this.state.fitted = true;
           }
         },
         onPlacesChanged: () => {
@@ -70,11 +73,11 @@ const MapWithASearchBox = compose(
               this.props.onMarkersChanged(nextMarkers);
           }
 
+          this.state.fitMapBounds();
           this.setState({
             center: nextCenter,
             markers: nextMarkers,
           });
-          // refs.map.fitBounds(bounds);
         },
       })
     },
@@ -86,7 +89,7 @@ const MapWithASearchBox = compose(
     defaultZoom={5}
     ref={props.onMapMounted}
     defaultCenter={props.mapCenter ? props.mapCenter : {lat:0,lng:0}}
-    onTilesLoaded={props.fitMapBounds}
+    onTilesLoaded={props.onTilesLoaded}
   >
     {
       props.search &&

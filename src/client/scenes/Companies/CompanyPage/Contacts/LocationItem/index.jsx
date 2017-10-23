@@ -24,11 +24,12 @@ export default class LocationItem extends React.Component {
         const { item, classes } = this.props;
         const today = moment().isoWeekday() - 1;
         let todayWorking;
-        if (item.workingTimes) {
+        if (item.workingTimes && item.workingTimes.length > 0) {
             todayWorking = item.workingTimes.find(time => {
                 return time.day === today;
             });
         }
+        todayWorking = todayWorking ? `до ${todayWorking.close}` : 'не работает';
         return (
             <Card className="w-100">
                 <Grid container spacing={0}
@@ -40,22 +41,19 @@ export default class LocationItem extends React.Component {
                     <Grid item xs={12} className="my-2">
                         Адрес : {item.address}
                     </Grid>
+                    {
+                        <Grid item xs={12}>
+                            Сегодня {todayWorking}
+                        </Grid>
+                    }
                     <Button className="mt-2 text-white"
                             accent="white"
                             onClick={this.props.onLocationClick}>
                         Телефоны
                     </Button>
-                    {
-                        todayWorking && (
-                            <Grid item xs={12}>
-                                Сегодня todayWorking ? до {todayWorking.close} : не работает
-                            </Grid>
-                        )
-                    }
                     <Divider className="mt-4 mb-1"/>
                 </Grid>
             </Card>
-
         )
     }
 }

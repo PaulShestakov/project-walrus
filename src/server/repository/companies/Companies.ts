@@ -49,7 +49,7 @@ export default class Companies extends BaseCRUD  {
 							};
 						}
 
-						if (!acc[item.companyId].locations[item.locationId].workingTimes[item.dayOfWeek]) {
+						if (!acc[item.companyId].locations[item.locationId].workingTimes[item.dayOfWeek] && item.dayOfWeek != null) {
 							acc[item.companyId].locations[item.locationId].workingTimes[item.dayOfWeek] = {
 								day: item.dayOfWeek,
 								open: item.open,
@@ -57,7 +57,7 @@ export default class Companies extends BaseCRUD  {
 							};
 						}
 
-						if (!acc[item.companyId].locations[item.locationId].phones[item.phoneId]) {
+						if (!acc[item.companyId].locations[item.locationId].phones[item.phoneId] && item.phoneId != null) {
 							acc[item.companyId].locations[item.locationId].phones[item.phoneId] = {
 								id: item.phoneId,
 								phone: item.phone

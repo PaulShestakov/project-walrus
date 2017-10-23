@@ -39,8 +39,9 @@ export default class Location extends React.Component {
 
     handleMapLocation = (location) => {
         if (location) {
-            this.state.markers.splice(0, 1, location[0]);
-            this.props.fields.get(this.state.selectedAddress).location = location[0].position;
+            const loc = location[0].position.toJSON();
+            this.props.fields.get(this.state.selectedAddress).location = loc;
+            this.setState({ markers: [{position: loc}] });
         }
     };
 
@@ -126,8 +127,8 @@ export default class Location extends React.Component {
                                 <Grid item xs={12} className="my-2">
                                     <Title className="mb-2">Карта</Title>
                                     <Map search
-                                         markers={this.state.markers}
-                                         center={{lat: 53.9, lng: 27.5 }}
+                                         extMarkers={this.state.markers}
+                                         mapCenter={{lat: 53.9, lng: 27.5 }}
                                          onMarkersChanged={this.handleMapLocation}/>
                                 </Grid>
 
