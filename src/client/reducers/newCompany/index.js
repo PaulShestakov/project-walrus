@@ -1,9 +1,21 @@
 import {
-    POST_COMPANY_SUCCESS
-} from '../../actionCreators/newCompany/index';
+    POST_COMPANY_SUCCESS,
+	LOAD_COMPANY_SUCCESS
+} from '../../actionCreators/newCompany';
+
+
+const defaultCompany = {
+    name: 42,
+    locations: [
+        {
+            label: 'Aдрес 1',
+            phones: [{}]
+        },
+    ]
+}
 
 const defaultState = {
-    company: {}
+    company: defaultCompany
 };
 
 const newCompanyReducer = (state = defaultState, action) => {
@@ -11,10 +23,15 @@ const newCompanyReducer = (state = defaultState, action) => {
 
         case POST_COMPANY_SUCCESS: {
             action.history.push('/company/overview');
-            return {
-                ...state
-            }
+            return state;
         }
+
+		case LOAD_COMPANY_SUCCESS: {
+			return {
+				...state,
+				company: action.payload
+			}
+		}
 
         default: {
             return state;

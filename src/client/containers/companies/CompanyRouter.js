@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import CompanyRouterComponent from "../../scenes/Companies/index";
+import CompanyRouterComponent from "../../scenes/companies";
 import {
 	loadCompaniesCodeValues,
 	loadUserInfo

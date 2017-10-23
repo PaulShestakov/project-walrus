@@ -89,5 +89,7 @@ export default {
 		LEFT JOIN ${USERS} u
 			ON f.USER_ID = u.user_id
 		WHERE f.COMPANY_ID = ?
-		ORDER BY f.creation_date desc`
+		ORDER BY f.creation_date desc`,
+
+	UPDATE_COMPANY: `UPDATE ${COMPANIES_TABLE} SET ? WHERE COMPANY_ID = ?`
 }

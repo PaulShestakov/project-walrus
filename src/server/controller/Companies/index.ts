@@ -46,7 +46,8 @@ class Companies extends BaseController {
 		this.router.post('/:companyId/feedback', this.postFeedback.bind(this));
 		this.router.get('/:companyId/feedback', this.getFeedbacks.bind(this));
 		//this.router.post('/', passport.authenticate('jwt', { session: false }), this.postCompany.bind(this));
-		this.router.post('/', upload.array('image', 1), this.postCompany.bind(this));
+		this.router.post('/', upload.array('image', 1), this.saveCompany.bind(this));
+		this.router.put('/:companyId', upload.array('image', 1), this.updateCompany.bind(this));
 	}
 
 	private getFiltered(req: Request, res: Response) {
@@ -85,12 +86,12 @@ class Companies extends BaseController {
 		});
 	}
 
-	private postCompany(req: Request, res: Response) {
+	private saveCompany(req: Request, res: Response) {
 		//this.checkRole(req, res, 1)
        if (true) {
 		let company = JSON.parse(req.body.company);
 	   	company.image = req.files;
-		CompaniesRepository.postCompany(company, (error, result) => {
+		CompaniesRepository.saveCompany(company, (error, result) => {
 		   if (error) {
 			   this.errorResponse(res, 500, error);
 		   } else {
@@ -100,10 +101,25 @@ class Companies extends BaseController {
 	   }
 	}
 
+	private updateCompany(req: Request, res: Response) {
+		const companyId = req.params.companyId;
+
+		let company = JSON.parse(req.body.company);
+		company.image = req.files;
+
+		CompaniesRepository.updateCompany(companyId, company, (error, result) => {
+			if (error) {
+				this.errorResponse(res, 500, error);
+			} else {
+				this.okResponse(res, result);
+			}
+		});
+	}
+
 	private postFeedback(req: Request, res: Response) {
 		//this.checkRole(req, res, 1)
 		if (true) {
-			const { companyId } = req.params;
+			const companyId = req.params.companyId;
 			if (companyId) {
 				CompaniesRepository.postFeedback(req.body, (error) => {
 					if (error) {

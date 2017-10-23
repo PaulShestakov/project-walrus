@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import CompaniesOverviewComponent from '../../scenes/Companies/CompaniesOverview';
+import CompaniesOverviewComponent from '../../scenes/companies/CompaniesOverview';
 
 const CompaniesOverview = connect(
 	state => {
@@ -10,7 +10,7 @@ const CompaniesOverview = connect(
 		};
 	},
 	{
-		
+
 	}
 )(CompaniesOverviewComponent);
 

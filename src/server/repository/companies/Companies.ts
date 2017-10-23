@@ -83,7 +83,7 @@ export default class Companies extends BaseCRUD  {
 		});
 	}
 
-	static postCompany(company: Company, callback) {
+	static saveCompany(company: Company, callback) {
 		company.companyId = uuid();
 		const locations = company.locations
 			.filter(i => i.city && i.address)
@@ -102,17 +102,13 @@ export default class Companies extends BaseCRUD  {
 				return acc;
 			}, []);
             if (phones && phones.length > 0) {
-                connection.query(Queries.SAVE_PHONES, [phones], (error, result) => {
-                    done(error, result);
-                });
+                connection.query(Queries.SAVE_PHONES, [phones], done);
             } else {
 	            done(null, null);
             }
 		};
 		const saveLocation = (connection, done) => {
-	        connection.query(Queries.SAVE_LOCATION, [locations], (error, result) => {
-				done(error, result);
-			});
+	        connection.query(Queries.SAVE_LOCATION, [locations], done);
 		};
 		const saveWorkingTimes = (connection, done) => {
 			const times = company.locations.reduce((acc, item, index) => {
@@ -130,17 +126,13 @@ export default class Companies extends BaseCRUD  {
 				return acc;
 			}, []);
 			if (times && times.length > 0) {
-				connection.query(Queries.SAVE_WORKING_TIMES, [times], (error, result) => {
-					done(error, result);
-				});
+				connection.query(Queries.SAVE_WORKING_TIMES, [times], done);
 			} else {
 				done(null, null);
 			}
         };
 	    const saveCompany = (connection, done) => {
-            connection.query(Queries.SAVE, [Companies.internalizeCompany(company)], (error, result) => {
-                done(error, result);
-            });
+            connection.query(Queries.SAVE, [Companies.internalizeCompany(company)], done);
         };
         executeSeries([saveCompany, saveLocation, savePhones, saveWorkingTimes], (error) => {
             if (error) {
@@ -149,6 +141,24 @@ export default class Companies extends BaseCRUD  {
                 callback(null, { uuid : company.companyId });
             }
         });
+	}
+
+	static updateCompany(companyId, company, callback) {
+
+		const internalizedCompany = this.internalizeCompany(company);
+		internalizedCompany.COMPANY_ID = companyId;
+
+		function updateCompany(connection, done) {
+			connection.query(Queries.UPDATE_COMPANY, [internalizedCompany, companyId], done);
+		}
+
+		executeParallel([updateCompany], (error) => {
+			if (error) {
+				Util.handleError(error, callback);
+			} else {
+				callback(null, { uuid : companyId });
+			}
+		})
 	}
 
 	static getFiltered(params, callback): void {
@@ -320,17 +330,15 @@ export default class Companies extends BaseCRUD  {
 		}
 	}
 
-    static internalizeCompany(company: Company) {
+    static internalizeCompany(company) {
 		let image = '/' + _.get(company.image, ['0', 'path'], null);
 		if (image) {
 			image = image.split('\\').join('\/');
 		}
         return {
             COMPANY_ID: company.companyId,
-			COMPANY_CATEGORY_ID: company.companyCategoryId ?
-				company.companyCategoryId.value : null,
-			COMPANY_SUBCATEGORY_ID: company.companySubcategoryId ?
-				company.companySubcategoryId.value : null,
+			COMPANY_CATEGORY_ID: company.categoryId || null,
+			COMPANY_SUBCATEGORY_ID: company.subcategoryId || null,
             NAME: company.name,
             LOGO: image,
             DESCRIPTION: company.description,
