@@ -24,10 +24,10 @@ class ConfirmDialog extends React.Component {
 
     handleOk = () => {
         const { okCallback } = this.props;
+        this.setState({ open: false });
         if (okCallback) {
             okCallback();
         }
-        this.setState({ open: false });
     };
 
     handleRequestClose = () => {

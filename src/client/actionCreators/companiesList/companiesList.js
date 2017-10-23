@@ -68,9 +68,7 @@ export const removeCompany = (companyId) => {
 				dispatch(loadCompaniesError(error))
 			}
 		).then(json => {
-			dispatch({
-				type: DELETE_COMPANY_SUCCESS
-			});
+			dispatch(loadCompanies());
 		}).catch(error => {
 			// dispatch(loadCompaniesError(error));
 		})

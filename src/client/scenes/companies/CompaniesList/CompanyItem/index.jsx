@@ -8,17 +8,18 @@ import classNames from 'classnames';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles';
 import {Paper} from "material-ui";
-import {ModeEdit as ModeEditIcon, DeleteForever as Delete} from 'material-ui-icons';
+import {ModeEdit as ModeEditIcon, DeleteForever as Delete, Block} from 'material-ui-icons';
 
 
 @translate(['companiesList'])
 @withStyles(styles)
 export default class CompanyItem extends React.Component {
 
-	handleDelete = (company) => {
-		this.props.handleDelete({
+	handleAction = (company, action) => {
+		this.props.handleAction({
 			id: company.companyId,
 			name: company.name,
+			action,
 		});
 	};
 
@@ -43,7 +44,14 @@ export default class CompanyItem extends React.Component {
 									<ModeEditIcon className={classes.editIcon} />
 								</Link>
 							</Button>
-							<Button fab className={classes.editButton} onClick={this.handleDelete.bind(null, company)}>
+							<Button fab
+									className={classNames(classes.editButton, 'mr-3')}
+									onClick={this.handleAction.bind(null, company, 'block')}>
+								<Block className={classes.editIcon} />
+							</Button>
+							<Button fab
+									className={classes.editButton}
+									onClick={this.handleAction.bind(null, company, 'delete')}>
 								<Delete className={classes.editIcon} />
 							</Button>
 						</div>

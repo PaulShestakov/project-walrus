@@ -70,6 +70,7 @@ export default class CompaniesList extends React.Component {
 		super(props);
 		this.state = {
 			isWorkingTimeDialogOpened: false,
+            openConfirm: false,
 			cities: [],
 			daysOfWeekWorkingTime: [],
 			company: {},
@@ -117,21 +118,23 @@ export default class CompaniesList extends React.Component {
 		})
 	};
 
-	handleDelete = (company) => {
-		this.setState({
-			company
-		});
-	}
-
-	deleteCompany = () => {
-		console.log('delete ' + this.state.company.id);
-		//this.props.deleteCompany(this.state.company.id);
-	}
+    handleAction = (company) => {
+		this.setState({ openConfirm: true, company });
+	};
 
 	handleCloseWorkingTimeDialog = () => {
 		this.setState({
 			isWorkingTimeDialogOpened: false
 		})
+	};
+
+	deleteCompany = () => {
+		this.setState({ openConfirm: false });
+		this.props.removeCompany(this.state.company.id);
+	};
+
+	blockCompany = () => {
+
 	};
 
 	render() {
@@ -172,7 +175,7 @@ export default class CompaniesList extends React.Component {
 										key={company.companyId}
 										company={company}
 										handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}
-										handleDelete={this.handleDelete}/>
+										handleAction={this.handleAction}/>
 								);
 							})
 						}
@@ -219,10 +222,13 @@ export default class CompaniesList extends React.Component {
 				</Dialog>
 
 				<ConfirmDialog
-                    open={!!this.state.company.id}
-                    message={`Вы действительно хотите удалить ${this.state.company.name}?`}
-                    title="Удаление компании"
-                    okCallback={this.deleteCompany}/>
+					open={this.state.openConfirm}
+					message={`Вы действительно хотите
+							${this.state.company.action === 'block' ? 'заблокировать ' : 'удалить'}
+							${this.state.company.name}?`
+					}
+					title={`${this.state.company.action === 'block' ? 'Блокировка' : 'Удаление'} компании`}
+					okCallback={this.state.company.action === 'block' ? this.blockCompany : this.deleteCompany}/>
 			</Grid>
 		);
 	}
