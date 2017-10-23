@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Title, Grid, Card, Label, Text, TextField, Button} from "components";
+import {Title, Grid, Card, Label, Text, TextField, Button, ConfirmDialog} from "components";
 import CompanyItem from './CompanyItem'
 import Sidebar from './Sidebar';
 import classNames from 'classnames';
@@ -71,7 +71,8 @@ export default class CompaniesList extends React.Component {
 		this.state = {
 			isWorkingTimeDialogOpened: false,
 			cities: [],
-			daysOfWeekWorkingTime: []
+			daysOfWeekWorkingTime: [],
+			company: {},
 		};
 	}
 
@@ -116,6 +117,17 @@ export default class CompaniesList extends React.Component {
 		})
 	};
 
+	handleDelete = (company) => {
+		this.setState({
+			company
+		});
+	}
+
+	deleteCompany = () => {
+		console.log('delete ' + this.state.company.id);
+		//this.props.deleteCompany(this.state.company.id);
+	}
+
 	handleCloseWorkingTimeDialog = () => {
 		this.setState({
 			isWorkingTimeDialogOpened: false
@@ -156,7 +168,11 @@ export default class CompaniesList extends React.Component {
 						{
 							this.props.main.companies.map(company => {
 								return (
-									<CompanyItem key={company.companyId} company={company} handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog} />
+									<CompanyItem 
+										key={company.companyId}
+										company={company}
+										handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}
+										handleDelete={this.handleDelete}/>
 								);
 							})
 						}
@@ -201,6 +217,12 @@ export default class CompaniesList extends React.Component {
 						</Button>
 					</DialogActions>
 				</Dialog>
+
+				<ConfirmDialog
+                    open={!!this.state.company.id}
+                    message={`Вы действительно хотите удалить ${this.state.company.name}?`}
+                    title="Удаление компании"
+                    okCallback={this.deleteCompany}/>
 			</Grid>
 		);
 	}

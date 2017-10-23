@@ -8,12 +8,20 @@ import classNames from 'classnames';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles';
 import {Paper} from "material-ui";
-import ModeEditIcon from 'material-ui-icons/ModeEdit';
+import {ModeEdit as ModeEditIcon, DeleteForever as Delete} from 'material-ui-icons';
 
 
 @translate(['companiesList'])
 @withStyles(styles)
 export default class CompanyItem extends React.Component {
+
+	handleDelete = (company) => {
+		this.props.handleDelete({
+			id: company.companyId,
+			name: company.name,
+		});
+	};
+
 	render() {
 		const {t, classes, className, company, ...other} = this.props;
         const imageSrc = company.logo ? company.logo : '';
@@ -29,11 +37,16 @@ export default class CompanyItem extends React.Component {
 				<CardContent className={classNames(classes.cardContent, 'p-0', 'pl-4')}>
 					<div className={classNames(classes.flexRow, classes.spaceBetween)}>
 						<Label uppercase bold fontSize="2rem">{company.name}</Label>
-						<Button fab className={classes.editButton}>
-							<Link to={`/company/edit/${company.companyId}`}>
-								<ModeEditIcon className={classes.editIcon} />
-							</Link>
-						</Button>
+						<div>
+							<Button fab className={classNames(classes.editButton, 'mr-3')}>
+								<Link to={`/company/edit/${company.companyId}`}>
+									<ModeEditIcon className={classes.editIcon} />
+								</Link>
+							</Button>
+							<Button fab className={classes.editButton} onClick={this.handleDelete.bind(null, company)}>
+								<Delete className={classes.editIcon} />
+							</Button>
+						</div>
 					</div>
 
 					<div className={classNames(classes.flexRow, 'mt-2')}>
