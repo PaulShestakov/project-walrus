@@ -14,7 +14,9 @@ import Location from "./Location/index";
 
 
 @translate(['common'])
-class NewCompany extends React.Component {
+@withStyles(styles)
+@reduxForm({form: 'company', enableReinitialize: true})
+export default class NewCompany extends React.Component {
 
     constructor(props) {
         super(props);
@@ -25,6 +27,13 @@ class NewCompany extends React.Component {
             selectedAddress: 0,
             showConfirm: false,
         };
+    }
+
+    componentDidMount() {
+        if (this.props.editMode) {
+            const companyId = this.props.match.params.companyId;
+            this.props.loadCompany(companyId);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -38,7 +47,7 @@ class NewCompany extends React.Component {
         const category = this.state.categories.find((category) => {
             return category.value === selected.value;
         });
-        this.props.change('companySubcategoryId', null);
+        this.props.change('subcategoryId', null);
         this.setState({
             subcategories: category.subcategories
         });
@@ -55,7 +64,12 @@ class NewCompany extends React.Component {
     saveAction = (values) => {
         const { imageObjects } = this.state;
         values.image = imageObjects && imageObjects.length > 0 ? this.state.imageObjects[0].file : null;
-        this.props.postCompany(values, this.props.history);
+
+        if (this.props.editMode) {
+			this.props.updateCompany(this.props.match.params.companyId, values, this.props.history);
+        } else {
+			this.props.postCompany(values, this.props.history);
+		}
     };
 
     render() {
@@ -63,6 +77,8 @@ class NewCompany extends React.Component {
 
         return (
             <form className="d-flex-column align-items-center my-4">
+                {JSON.stringify(this.props.company)}
+
                 <Card raised>
                     <Grid container justify="center" spacing={24}>
 
@@ -81,17 +97,21 @@ class NewCompany extends React.Component {
                         </Grid>
                         <Grid item xs={11}>
                             <Title>Категория</Title>
-                            <Field name="companyCategoryId"
+                            <Field name="categoryId"
                                    component={Dropdown}
                                    options={this.state.categories}
                                    onChange={this.handleCategoryChange}
+                                   format={value => this.state.categories.find(x => x.value === value)}
+                                   normalize={value => value.value}
                             />
                         </Grid>
                         <Grid item xs={11}>
                             <Title>Подкатегория</Title>
-                            <Field name="companySubcategoryId"
+                            <Field name="subcategoryId"
                                    component={Dropdown}
                                    options={this.state.subcategories}
+                                   format={value => this.state.subcategories.find(x => x.value === value)}
+                                   normalize={value => value.value}
                             />
                         </Grid>
 
@@ -102,7 +122,7 @@ class NewCompany extends React.Component {
                                    component={ImageUploader}
                                    imageObjects={this.state.imageObjects}
                                    onImageAdd={(object) => this.setState({ imageObjects: [object] })}
-                                   onImageDelete={() => this.setState({ imageObjects: [] })}/>
+                                   onImageDelete={() => this.setState({ imageObjects: [] })} />
                         </Grid>
 
                         <Grid item xs={11}>
@@ -165,9 +185,3 @@ class NewCompany extends React.Component {
         );
     }
 }
-
-
-
-export default withStyles(styles)(reduxForm({
-    form: 'company',
-})(NewCompany));

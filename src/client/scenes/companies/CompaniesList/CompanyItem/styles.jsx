@@ -15,8 +15,11 @@ export default {
 		flexGrow: '1',
 	},
 	editButton: {
-		width: '3rem',
-		height: '3rem'
+		flexShrink: 0,
+		alignSelf: 'flex-start',
+		marginLeft: '1rem',
+		width: '2.5rem',
+		height: '2.5rem'
 	},
 	editIcon: {
 		color: 'white'

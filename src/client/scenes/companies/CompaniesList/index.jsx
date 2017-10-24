@@ -44,7 +44,7 @@ function renderSuggestionsContainer(options) {
 function renderSuggestion(classes, company, { query, isHighlighted }) {
 	return (
 		<MenuItem component="div" className="p-3" classes={{root: classes.suggestionMenuItem}}>
-			<Link to={`/company/${company.companyId}`} className={classes.suggestionItemLink}>
+			<Link to={`/company/${company.id}`} className={classes.suggestionItemLink}>
 				<Paper>
 					<img src={company.logo} className={classes.suggestionImage}/>
 				</Paper>
@@ -137,7 +137,7 @@ export default class CompaniesList extends React.Component {
 	};
 
 	render() {
-		const {t, classes, ...other} = this.props;
+		const {t, classes} = this.props;
 
 		return (
 			<Grid container className="my-4">
