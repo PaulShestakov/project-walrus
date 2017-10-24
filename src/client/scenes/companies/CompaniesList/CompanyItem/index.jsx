@@ -16,11 +16,23 @@ import {ModeEdit as ModeEditIcon, DeleteForever as Delete, Block} from 'material
 export default class CompanyItem extends React.Component {
 
 	handleAction = (company, action) => {
-		this.props.handleAction({
-			id: company.companyId,
-			name: company.name,
-			action,
-		});
+		let value = undefined;
+		if (action === 'delete') {
+			value = {
+                companyId: company.companyId,
+				action: this.props.deleteAction,
+				title: 'Удаление компании',
+				message: `Вы действительно хотите удалить ${company.name}?`,
+			}
+		} else {
+			value = {
+                companyId: company.companyId,
+				action: this.props.blockAction,
+				title: 'Блокировка компании',
+				message: `Вы действительно хотите заблокировать ${company.name}?`,
+			}
+		}
+		this.props.handleAction(value);
 	};
 
 	render() {
@@ -84,9 +96,6 @@ export default class CompanyItem extends React.Component {
 						<Button className="mr-2 text-white" accent="white"
 							onClick={this.props.handleOpenWorkingTimeDialog.bind(null, company.daysOfWeekWorkingTime)}>
 							{t('WORKING_TIME')}
-						</Button>
-						<Button className="mr-2 text-white" accent="red">
-							{t('CALL')}
 						</Button>
 					</div>
 				</CardContent>

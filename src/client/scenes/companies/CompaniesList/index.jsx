@@ -70,8 +70,8 @@ export default class CompaniesList extends React.Component {
 		super(props);
 		this.state = {
 			isWorkingTimeDialogOpened: false,
-            openConfirm: false,
 			cities: [],
+			openConfirm: false,
 			daysOfWeekWorkingTime: [],
 			company: {},
 		};
@@ -93,7 +93,7 @@ export default class CompaniesList extends React.Component {
 				});
 				return acc;
 			}, []);
-			this.setState({ cities });
+			this.setState({ cities, openConfirm: false });
 		}
 	}
 
@@ -129,12 +129,11 @@ export default class CompaniesList extends React.Component {
 	};
 
 	deleteCompany = () => {
-		this.setState({ openConfirm: false });
-		this.props.removeCompany(this.state.company.id);
+		this.props.removeCompany(this.state.company.companyId);
 	};
 
 	blockCompany = () => {
-
+		// action to block company
 	};
 
 	render() {
@@ -174,6 +173,8 @@ export default class CompaniesList extends React.Component {
 									<CompanyItem 
 										key={company.companyId}
 										company={company}
+										deleteAction={this.deleteCompany}
+										blockAction={this.blockCompany}
 										handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}
 										handleAction={this.handleAction}/>
 								);
@@ -223,12 +224,10 @@ export default class CompaniesList extends React.Component {
 
 				<ConfirmDialog
 					open={this.state.openConfirm}
-					message={`Вы действительно хотите
-							${this.state.company.action === 'block' ? 'заблокировать ' : 'удалить'}
-							${this.state.company.name}?`
-					}
-					title={`${this.state.company.action === 'block' ? 'Блокировка' : 'Удаление'} компании`}
-					okCallback={this.state.company.action === 'block' ? this.blockCompany : this.deleteCompany}/>
+					message={this.state.company.message}
+					title={this.state.company.title}
+					okCallback={this.state.company.action}
+					closeCallback={() => this.setState({ openConfirm: false })}/>
 			</Grid>
 		);
 	}
