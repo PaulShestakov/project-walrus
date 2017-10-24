@@ -25,7 +25,7 @@ export function loadCompany(companyId) {
     }
 }
 
-export function postFeedback(feedback) {
+export function postFeedback(feedback, history) {
     return (dispatch) => {
 
         fetch('/api/v1/company/' + feedback.companyId + '/feedback', {
@@ -43,7 +43,7 @@ export function postFeedback(feedback) {
                 }
             },
             error => {
-                //dispatch()
+                dispatch(loadFeedbacks(feedback.companyId, history));
             }
         ).then(json => {
             //dispatch({});

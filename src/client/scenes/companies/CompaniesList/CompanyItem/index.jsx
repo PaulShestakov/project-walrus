@@ -41,7 +41,7 @@ export default class CompanyItem extends React.Component {
 
 		return (
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>
-				<Link to={`/company/${company.id}`}>
+				<Link to={`/company/${company.companyId}`}>
 					<Paper>
 						<CardMedia className={classes.cardImage} image={imageSrc} />
 					</Paper>

@@ -21,7 +21,7 @@ export default class NewFeedback extends React.Component {
 
     saveAction = (event) => {
         event.preventDefault();
-        this.props.onPostFeedback({ ...this.state });
+        this.props.onPostFeedback({ ...this.state }, this.props.history);
     };
 
     render() {

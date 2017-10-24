@@ -12,7 +12,7 @@ import * as uuid from 'uuid';
 export default class Companies extends BaseCRUD  {
 
 	static mapCompany = (item) => ({
-		id: item.companyId,
+		companyId: item.companyId,
 		categoryId: item.categoryId,
 		subcategoryId: item.subcategoryId,
 		subcategoryName: item.subcategoryName,
@@ -24,9 +24,10 @@ export default class Companies extends BaseCRUD  {
 	});
 
 	static mapLocation = (item) => ({
-		id: item.locationId,
+		locationId: item.locationId,
 		subwayId: item.subwayId,
 		cityId: item.cityId,
+		cityName: item.cityName,
 		address: item.address,
 		isMain: item.isMain,
 		position: {
@@ -36,7 +37,7 @@ export default class Companies extends BaseCRUD  {
 	});
 
 	static mapPhone = (item) => ({
-		id: item.phoneId,
+		phoneId: item.phoneId,
 		phone: item.phone
 	});
 
@@ -68,7 +69,7 @@ export default class Companies extends BaseCRUD  {
 									},
 									{
 										name: 'phones',
-										idName: 'proneId',
+										idName: 'phoneId',
 										map: Companies.mapPhone
 									}
 								]
@@ -268,7 +269,7 @@ export default class Companies extends BaseCRUD  {
 							},
 							{
 								name: 'phones',
-								idName: 'proneId',
+								idName: 'phoneId',
 								map: Companies.mapPhone
 							}
 						]
