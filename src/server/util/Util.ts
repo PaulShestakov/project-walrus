@@ -19,7 +19,11 @@ export default class Util {
 
     static reduceFlatData(rows, shape) {
 
-	    function reduceRow(target, row, shape) {
+    	if (rows.length === 0) {
+    		return {};
+		}
+
+		function reduceRow(target, row, shape) {
 
 			if (!target[shape.name]) {
 				target[shape.name] = {};
@@ -36,16 +40,16 @@ export default class Util {
 
 			if (shape.children && shape.children.length > 0) {
 				shape.children.forEach(reduceRow.bind(null, newTarget, row));
-            }
+			}
 		}
 
-        const accumulatedObject = rows.reduce((acc, row) => {
+		const accumulatedObject = rows.reduce((acc, row) => {
 			reduceRow(acc, row, shape);
-            return acc;
-        }, {});
+			return acc;
+		}, {});
 
 
-	    function mapsToArrays(accLevel, shapeLevel) {
+		function mapsToArrays(accLevel, shapeLevel) {
 			accLevel[shapeLevel.name] = Object.values(accLevel[shapeLevel.name]);
 
 			if (shapeLevel.children && shapeLevel.children.length > 0) {
@@ -54,12 +58,12 @@ export default class Util {
 						mapsToArrays(newAccLevel, newShapeLevel)
 					});
 				});
-            }
+			}
 
-        }
+		}
 
 		mapsToArrays(accumulatedObject, shape);
 
-	    return accumulatedObject;
+		return accumulatedObject;
     }
 }

@@ -5,7 +5,7 @@ import {
 
 
 const defaultCompany = {
-    name: 42,
+    name: '',
     locations: [
         {
             label: 'Aдрес 1',
