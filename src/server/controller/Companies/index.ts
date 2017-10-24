@@ -43,6 +43,7 @@ class Companies extends BaseController {
 		this.router.get('/filtered', this.getFiltered.bind(this));
 		this.router.get('/fuzzySearch', this.fuzzySearch.bind(this));
 		this.router.get('/:companyId', this.getCompany.bind(this));
+		this.router.delete('/:companyId', this.deleteCompany.bind(this));
 		this.router.post('/:companyId/feedback', this.postFeedback.bind(this));
 		this.router.get('/:companyId/feedback', this.getFeedbacks.bind(this));
 		//this.router.post('/', passport.authenticate('jwt', { session: false }), this.postCompany.bind(this));
@@ -86,6 +87,16 @@ class Companies extends BaseController {
 		});
 	}
 
+	private deleteCompany(req: Request, res: Response) {
+		CompaniesRepository.deleteCompany(req.params.companyId, (error, result) => {
+			if (error) {
+				this.errorResponse(res, 500, error);
+			} else {
+				this.okResponse(res, result);
+			}
+		});
+	}
+  
 	private saveCompany(req: Request, res: Response) {
 		//this.checkRole(req, res, 1)
        if (true) {

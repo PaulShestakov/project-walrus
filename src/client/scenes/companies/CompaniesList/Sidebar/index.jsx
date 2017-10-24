@@ -95,9 +95,6 @@ export default class Sidebar extends React.Component {
 					/>
 
 					<div>
-						<Label uppercase bold fontSize="1.5rem" className="m-3 mt-4">{t('WORKING_TIME')}</Label>
-						<Separator />
-
 						<FormControlLabel className={classNames(classes.switchFormControlWrapper, "m-3")}
 							control={
 								<Switch

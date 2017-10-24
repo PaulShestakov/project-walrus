@@ -4,6 +4,7 @@ import {stateDataToUrlQuery} from '../../reducers/companiesList/filterReducer';
 export const LOAD_COMPANIES_START = 'LOAD_COMPANIES_START';
 export const LOAD_COMPANIES_SUCCESS = 'LOAD_COMPANIES_SUCCESS';
 export const LOAD_COMPANIES_ERROR = 'LOAD_COMPANIES_ERROR';
+export const DELETE_COMPANY_SUCCESS = 'DELETE_COMPANY_SUCCESS';
 
 const baseUrl = '/api/v1';
 
@@ -46,6 +47,30 @@ export const loadCompanies = () => {
 			dispatch(loadCompaniesSuccess(json));
 		}).catch(error => {
 			dispatch(loadCompaniesError(error));
+		})
+	};
+};
+
+export const removeCompany = (companyId) => {
+	return dispatch => {
+		return fetch(baseUrl + '/company/' + companyId, {
+            method: 'DELETE',
+            credentials: 'include'
+        }).then(
+			response => {
+				if (response.ok) {
+					return response.json();
+				} else {
+					throw new Error('Network response was not ok.');
+				}
+			},
+			error => {
+				dispatch(loadCompaniesError(error))
+			}
+		).then(json => {
+			dispatch(loadCompanies());
+		}).catch(error => {
+			// dispatch(loadCompaniesError(error));
 		})
 	};
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Title, Grid, Card, Label, Text, TextField, Button} from "components";
+import {Title, Grid, Card, Label, Text, TextField, Button, ConfirmDialog} from "components";
 import CompanyItem from './CompanyItem'
 import Sidebar from './Sidebar';
 import classNames from 'classnames';
@@ -71,7 +71,9 @@ export default class CompaniesList extends React.Component {
 		this.state = {
 			isWorkingTimeDialogOpened: false,
 			cities: [],
-			daysOfWeekWorkingTime: []
+			openConfirm: false,
+			daysOfWeekWorkingTime: [],
+			company: {},
 		};
 	}
 
@@ -91,7 +93,7 @@ export default class CompaniesList extends React.Component {
 				});
 				return acc;
 			}, []);
-			this.setState({ cities });
+			this.setState({ cities, openConfirm: false });
 		}
 	}
 
@@ -116,10 +118,22 @@ export default class CompaniesList extends React.Component {
 		})
 	};
 
+    handleAction = (company) => {
+		this.setState({ openConfirm: true, company });
+	};
+
 	handleCloseWorkingTimeDialog = () => {
 		this.setState({
 			isWorkingTimeDialogOpened: false
 		})
+	};
+
+	deleteCompany = () => {
+		this.props.removeCompany(this.state.company.companyId);
+	};
+
+	blockCompany = () => {
+		// action to block company
 	};
 
 	render() {
@@ -156,7 +170,13 @@ export default class CompaniesList extends React.Component {
 						{
 							this.props.main.companies.map(company => {
 								return (
-									<CompanyItem key={company.id} company={company} handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog} />
+									<CompanyItem 
+										key={company.companyId}
+										company={company}
+										deleteAction={this.deleteCompany}
+										blockAction={this.blockCompany}
+										handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}
+										handleAction={this.handleAction}/>
 								);
 							})
 						}
@@ -201,6 +221,13 @@ export default class CompaniesList extends React.Component {
 						</Button>
 					</DialogActions>
 				</Dialog>
+
+				<ConfirmDialog
+					open={this.state.openConfirm}
+					message={this.state.company.message}
+					title={this.state.company.title}
+					okCallback={this.state.company.action}
+					closeCallback={() => this.setState({ openConfirm: false })}/>
 			</Grid>
 		);
 	}

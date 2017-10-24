@@ -179,7 +179,8 @@ export default class NewCompany extends React.Component {
                     open={this.state.showConfirm}
                     message="Вы действительно хотите сохранить введенные данные?"
                     title="Сохранение компании"
-                    okCallback={handleSubmit(this.saveAction)}/>
+                    okCallback={handleSubmit(this.saveAction)}
+                    closeCallback={() => this.setState({ showConfirm: false })}/>
             </form>
         );
     }

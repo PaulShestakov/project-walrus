@@ -8,12 +8,33 @@ import classNames from 'classnames';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles';
 import {Paper} from "material-ui";
-import ModeEditIcon from 'material-ui-icons/ModeEdit';
+import {ModeEdit as ModeEditIcon, DeleteForever as Delete, Block} from 'material-ui-icons';
 
 
 @translate(['companiesList'])
 @withStyles(styles)
 export default class CompanyItem extends React.Component {
+
+	handleAction = (company, action) => {
+		let value = undefined;
+		if (action === 'delete') {
+			value = {
+                companyId: company.companyId,
+				action: this.props.deleteAction,
+				title: 'Удаление компании',
+				message: `Вы действительно хотите удалить ${company.name}?`,
+			}
+		} else {
+			value = {
+                companyId: company.companyId,
+				action: this.props.blockAction,
+				title: 'Блокировка компании',
+				message: `Вы действительно хотите заблокировать ${company.name}?`,
+			}
+		}
+		this.props.handleAction(value);
+	};
+
 	render() {
 		const {t, classes, className, company, ...other} = this.props;
         const imageSrc = company.logo ? company.logo : '';
@@ -29,12 +50,23 @@ export default class CompanyItem extends React.Component {
 				<CardContent className={classNames(classes.cardContent, 'p-0', 'pl-4')}>
 					<div className={classNames(classes.flexRow, classes.spaceBetween)}>
 						<Label uppercase bold fontSize="2rem">{company.name}</Label>
-
-						<Button fab className={classes.editButton}>
-							<Link to={`/company/edit/${company.id}`}>
-								<ModeEditIcon className={classes.editIcon} />
-							</Link>
-						</Button>
+						<div>
+							<Button fab className={classNames(classes.editButton, 'mr-3')}>
+								<Link to={`/company/edit/${company.companyId}`}>
+									<ModeEditIcon className={classes.editIcon} />
+								</Link>
+							</Button>
+							<Button fab
+									className={classNames(classes.editButton, 'mr-3')}
+									onClick={this.handleAction.bind(null, company, 'block')}>
+								<Block className={classes.editIcon} />
+							</Button>
+							<Button fab
+									className={classes.editButton}
+									onClick={this.handleAction.bind(null, company, 'delete')}>
+								<Delete className={classes.editIcon} />
+							</Button>
+						</div>
 					</div>
 
 					<div className={classNames(classes.flexRow, 'mt-2')}>
@@ -64,9 +96,6 @@ export default class CompanyItem extends React.Component {
 						<Button className="mr-2 text-white" accent="white"
 							onClick={this.props.handleOpenWorkingTimeDialog.bind(null, company.daysOfWeekWorkingTime)}>
 							{t('WORKING_TIME')}
-						</Button>
-						<Button className="mr-2 text-white" accent="red">
-							{t('CALL')}
 						</Button>
 					</div>
 				</CardContent>

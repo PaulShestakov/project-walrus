@@ -8,7 +8,8 @@ import {
 
 	fuzzySearchLoadCompanies,
 	clearFuzzySearchLoadedCompanies,
-	suggestionInputValueChange
+	suggestionInputValueChange,
+	removeCompany,
 } from "../../actionCreators/companiesList/companiesList";
 
 import {
@@ -43,6 +44,7 @@ const CompaniesList = connect(
 
 		addCity,
 		removeCity,
+		removeCompany,
 
 		setIsWorkingNow,
 	}

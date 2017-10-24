@@ -83,6 +83,16 @@ export default class Companies extends BaseCRUD  {
 		});
 	}
 
+	static deleteCompany(companyId: string, callback) {
+		executeQuery(Queries.DELETE, [companyId], (error) => {
+			if (error) {
+				Util.handleError(error, callback);
+			} else {
+				callback(null, { uuid: companyId });
+			}
+		});
+	}
+  
 	static saveCompany(company: Company, callback) {
 		company.companyId = uuid();
 		const locations = company.locations
@@ -90,7 +100,7 @@ export default class Companies extends BaseCRUD  {
 			.map(item => Companies.internalizeLocation(company.companyId, item));
 
 	    const savePhones = (connection, done) => {
-			const phones = company.locations.reduce((acc, item, index) => {
+			const phones: Array<object> = company.locations.reduce((acc, item, index) => {
 				if (item.phones) {
 					item.phones.forEach(phone => {
 						acc.push(Companies.internalizePhone({
@@ -111,7 +121,7 @@ export default class Companies extends BaseCRUD  {
 	        connection.query(Queries.SAVE_LOCATION, [locations], done);
 		};
 		const saveWorkingTimes = (connection, done) => {
-			const times = company.locations.reduce((acc, item, index) => {
+			const times: Array<object> = company.locations.reduce((acc, item, index) => {
 				if (item.workingTimes) {
 					item.workingTimes.filter(i => i.from && i.to && i.day)
                         .forEach(time => {

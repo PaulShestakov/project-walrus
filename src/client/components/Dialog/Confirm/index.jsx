@@ -17,7 +17,7 @@ class ConfirmDialog extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.open) {
+        if (typeof nextProps.open === 'boolean') {
             this.setState({ open: nextProps.open });
         }
     }
@@ -27,11 +27,13 @@ class ConfirmDialog extends React.Component {
         if (okCallback) {
             okCallback();
         }
-        this.setState({ open: false });
     };
 
-    handleRequestClose = () => {
-        this.setState({ open: false });
+    handleClose = () => {
+        const { closeCallback } = this.props;
+        if (closeCallback) {
+            closeCallback();
+        }
     };
 
     render() {
@@ -39,7 +41,7 @@ class ConfirmDialog extends React.Component {
 
         return (
             <div>
-                <Dialog open={this.state.open} onRequestClose={this.handleRequestClose}>
+                <Dialog open={this.state.open} onRequestClose={this.handleClose}>
                     <DialogTitle>{ title }</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
@@ -50,7 +52,7 @@ class ConfirmDialog extends React.Component {
                         <Button onClick={this.handleOk} color="primary">
                             Да
                         </Button>
-                        <Button onClick={this.handleRequestClose} color="primary">
+                        <Button onClick={this.handleClose} color="primary">
                             Отменить
                         </Button>
                     </DialogActions>
