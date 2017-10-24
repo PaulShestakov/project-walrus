@@ -13,7 +13,6 @@ import companiesListReducer from './companiesList/companiesListReducer';
 import {companiesFilterReducer} from './companiesList/filterReducer';
 
 import commonReducer from './common/common';
-import editCompanyReducer from "./editCompany/editCompany";
 import { reducer as formReducer } from 'redux-form'
 
 const rootReducer = combineReducers({
@@ -24,7 +23,6 @@ const rootReducer = combineReducers({
 	promoPage: promoPageReducer,
 
 	newCompany: newCompanyReducer,
-	editCompany: editCompanyReducer,
 	companyPage : companyPageReducer,
 
 	promosList: combineReducers({

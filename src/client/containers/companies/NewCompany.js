@@ -1,29 +1,22 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import NewCompanyComponent from '../../scenes/Companies/NewCompany';
+import NewCompanyComponent from '../../scenes/companies/NewCompany';
 
-import {postCompany} from "../../actionCreators/newCompany";
-import {loadCompanyCategories} from "../../actionCreators/common";
-import {loadCompaniesCodeValues} from "../../actionCreators/common";
+import {postCompany, updateCompany, loadCompany} from "../../actionCreators/newCompany";
 
 
-const CompanyPage = connect(
+const NewCompanyPage = connect(
     state => ({
         common: state.common,
-        new: state.newCompany,
-        initialValues: {
-            locations: [
-                {
-                    label: 'Aдрес 1',
-                    phones: [{}]
-                },
-            ]
-        }
+        // new: state.newCompany,
+        initialValues: state.newCompany.company
     }),
     {
-        postCompany
+        postCompany,
+        updateCompany,
+        loadCompany
     }
 )(NewCompanyComponent);
 
-export default CompanyPage;
+export default NewCompanyPage;

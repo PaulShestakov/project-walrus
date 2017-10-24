@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import CompanyPageComponent from '../../scenes/Companies/CompanyPage';
+import CompanyPageComponent from '../../scenes/companies/CompanyPage';
 
 import {loadCompany, postFeedback, loadFeedbacks} from "../../actionCreators/companyPage/companyPage";
 
