@@ -6,6 +6,8 @@ import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import classNames from 'classnames';
 import styles from './styles';
 
+import { GridList, GridListTile } from 'material-ui/GridList';
+
 
 @translate(['companiesList'])
 @withStyles(styles)
@@ -35,22 +37,25 @@ export default class CheckboxesBlock extends React.Component {
 
 		const otherItemsPopover = (
 			<Card className={classes.popoverCard}>
-			{
-				items.map((item, index) => (
-					<FormControlLabel
-						key={index}
-						label={item.label}
-						className={classNames(classes.checkboxWrapper, 'mt-2')}
-						control={
-							<Checkbox name={formGroupName}
-								className="ml-3"
-								value={item.value}
-								checked={selectedIds.indexOf(item.value) !== -1}
-								onChange={this.props.handleCheckboxPressed}
-							/>
-						} />
-				))
-			}
+				<GridList cellHeight={36} className={''} cols={4}>
+					{
+						items.map(item => (
+							<GridListTile key={item.value} cols={1}>
+								<FormControlLabel
+									label={item.label}
+									className={classNames(classes.checkboxWrapper, 'mt-1')}
+									control={
+										<Checkbox name={formGroupName}
+												  className="ml-3"
+												  value={item.value}
+												  checked={selectedIds.indexOf(item.value) !== -1}
+												  onChange={this.props.handleCheckboxPressed}
+										/>
+									} />
+							</GridListTile>
+						))
+					}
+				</GridList>
 			</Card>
 		);
 
@@ -90,10 +95,9 @@ export default class CheckboxesBlock extends React.Component {
 					}
 				</div>
 				<Popover isOpen={this.state.isPopoverOpened}
-					 body={otherItemsPopover}
-					 preferPlace="left"
-					 onOuterAction={this.handlePopoverOuterAction}>
-
+					body={otherItemsPopover}
+					preferPlace="left"
+					onOuterAction={this.handlePopoverOuterAction}>
 					<ButtonMore onClick={this.handleOpenPopover} label={showMoreLabel} />
 				</Popover>
 				<Separator />
