@@ -73,7 +73,7 @@ export default class CompaniesList extends React.Component {
 			cities: [],
 			openConfirm: false,
 			daysOfWeekWorkingTime: [],
-			company: {},
+			company: {}
 		};
 	}
 
@@ -81,20 +81,6 @@ export default class CompaniesList extends React.Component {
 		const searchParams = new URLSearchParams(this.props.location.search);
 		this.props.updateStateWithUrlSource(searchParams);
 		this.props.loadCompanies();
-	}
-
-	componentWillReceiveProps(nextProps) {
-		const { common } = nextProps;
-		if (common && common.cities) {
-			const cities = common.cities.reduce((acc, item) => {
-				acc.push({ value: item.value, label: item.label });
-				item.subCities.forEach(i => {
-					acc.push({ value: i.value, label: i.label });
-				});
-				return acc;
-			}, []);
-			this.setState({ cities, openConfirm: false });
-		}
 	}
 
 	handleSuggestionsFetchRequested = (change) => {
@@ -188,7 +174,7 @@ export default class CompaniesList extends React.Component {
 						history={this.props.history}
 						filter={this.props.filter}
 
-						cities={this.state.cities}
+						cities={this.props.cities}
 						addCity={this.props.addCity}
 						removeCity={this.props.removeCity}
 

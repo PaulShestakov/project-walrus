@@ -86,7 +86,7 @@ export default class Sidebar extends React.Component {
 						title={t('LOCATION')}
 						showMoreLabel={t('ALL_CITIES')}
 
-						numberOfItemsToShowDefault={4}
+						numberOfItemsToShowDefault={6}
 
 						items={this.props.cities}
 						selectedIds={this.props.filter.selectedCitiesIds}
