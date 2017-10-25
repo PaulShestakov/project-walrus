@@ -1,16 +1,16 @@
 import { combineReducers } from 'redux';
 
-import newPromoReducer from './newPromo/newPromo';
-import newCompanyReducer from './newCompany'
+import newPromoReducer from './promos/newPromo/newPromo';
+import newCompanyReducer from './companies/newCompany'
 
-import promoPageReducer from './promoPage/promoPage';
-import companyPageReducer from './companyPage/companyPage';
+import promoPageReducer from './promos/promoPage/promoPage';
+import companyPageReducer from './companies/companyPage/companyPage';
 
-import promosListReducer from './promosList/promosListReducer';
-import {promosFilterReducer} from './promosList/filterReducer';
+import promosListReducer from './promos/promosList/promosListReducer';
+import {promosFilterReducer} from './promos/promosList/filterReducer';
 
-import companiesListReducer from './companiesList/companiesListReducer';
-import {companiesFilterReducer} from './companiesList/filterReducer';
+import companiesListReducer from './companies/companiesList/companiesListReducer';
+import {companiesFilterReducer} from './companies/companiesList/filterReducer';
 
 import commonReducer from './common/common';
 import { reducer as formReducer } from 'redux-form'

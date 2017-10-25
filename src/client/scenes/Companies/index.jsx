@@ -1,16 +1,16 @@
 import React from 'react';
 import {Route, Switch} from "react-router-dom";
 
-import NewCompany from "../../containers/companies/NewCompany";
-import CompaniesList from "../../containers/companies/CompaniesList";
-import CompaniesOverview from "../../containers/companies/CompaniesOverview";
-import CompanyPage from "../../containers/companies/CompanyPage";
+import NewCompany from "../../containers/companies/newCompany/NewCompany";
+import CompaniesList from "../../containers/companies/companiesList/CompaniesList";
+import CompaniesOverview from "../../containers/companies/companiesOverview/CompaniesOverview";
+import CompanyPage from "../../containers/companies/companyPage/CompanyPage";
 
 
 
 const EditComponent = (props) => {
     return <NewCompany editMode={true} {...props} />;
-}
+};
 
 export default class CompanyRouter extends React.Component {
 

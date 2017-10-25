@@ -2,7 +2,7 @@ import {
 	LOAD_PROMO_CODE_VALUES_SUCCESS,
 	LOAD_COMPANIES_CODE_VALUES_SUCCESS,
 	LOAD_USER_INFO_SUCCESS
-} from '../../actionCreators/common';
+} from '../../actionCreators/common/common.js';
 
 const defaultState = {
 	animals: [],

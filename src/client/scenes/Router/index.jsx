@@ -6,10 +6,10 @@ import {Grid} from 'material-ui';
 import Header from '../Header';
 import Footer from '../Footer';
 
-import PromosList from "../../containers/promos/PromosList";
-import NewPromo from "../../containers/promos/NewPromo";
-import PromoPage from "../../containers/promos/PromoPage";
-import CompanyRouter from "../../containers/companies/CompanyRouter";
+import PromosList from "../../containers/promos/promosList/PromosList";
+import NewPromo from "../../containers/promos/newPromo/NewPromo";
+import PromoPage from "../../containers/promos/promoPage/PromoPage";
+import CompanyRouter from "../../containers/companies/companyRouter/CompanyRouter";
 
 export default class Router extends React.Component {
 

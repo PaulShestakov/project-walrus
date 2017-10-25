@@ -1,0 +1,23 @@
+import React from 'react';
+import {connect} from 'react-redux';
+
+import CompanyPageComponent from '../../../scenes/companies/CompanyPage';
+
+import {loadCompany, postFeedback, loadFeedbacks} from "../../../actionCreators/companies/companyPage/companyPage";
+
+
+const CompanyPage = connect(
+	state => {
+		return {
+			...state,
+			...state.companyPage
+		}
+	},
+	{
+		loadCompany,
+		postFeedback,
+		loadFeedbacks,
+	}
+)(CompanyPageComponent);
+
+export default CompanyPage;
