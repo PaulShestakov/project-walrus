@@ -11,6 +11,9 @@ import NewPromo from "../../containers/promos/newPromo/NewPromo";
 import PromoPage from "../../containers/promos/promoPage/PromoPage";
 import CompanyRouter from "../../containers/companies/companyRouter/CompanyRouter";
 
+import './styles.scss';
+
+
 export default class Router extends React.Component {
 
 	constructor(props) {

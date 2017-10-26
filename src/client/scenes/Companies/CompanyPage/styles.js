@@ -2,6 +2,16 @@ import globalStyle from '../../../style';
 
 export default {
 
+	mainCardWrapper: {
+	    height: '100%',
+	    display: 'flex',
+        flexDirection: 'column',
+    },
+
+	mainCard: {
+	    flexGrow: 1,
+    },
+
     cardImage: {
         backgroundSize: 'contain',
         width: '100%',
