@@ -14,6 +14,7 @@ import defaultCompanyImage from '../../../assets/img/company-default.png';
 import {Route, Link} from 'react-router-dom'
 import NewFeedback from "./Feedback/NewFeedback";
 import Contacts from "./Contacts/index";
+import Authorized from "../../../containers/Authorized";
 
 
 @translate(['common'])
@@ -67,18 +68,24 @@ export default class CompanyPage extends React.Component {
 			history.push('/company/' + match.params.companyId);
 		}
 	};
+
+	deleteFeedback = (feedbackId) => {
+		this.props.deleteFeedback({
+			companyId: this.props.match.params.companyId,
+			feedbackId
+		}, this.props.history);
+	};
 	
 	onPostFeedback = (data) => {
 		const { companyId } = this.props.match.params;
 		if (companyId) {
 			data.companyId = companyId;
-			this.props.postFeedback(data);
-			this.props.loadFeedbacks(companyId, this.props.history);
+			this.props.postFeedback(data, this.props.history);
 		}
 	};
 
 	render() {
-		const {t, classes, company, common, ...other} = this.props;
+		const {t, classes, company, feedbacks, common, ...other} = this.props;
 
         const imageSrc = (company.logo ? company.logo : defaultCompanyImage).split('\\').join('\/');
 
@@ -151,14 +158,19 @@ export default class CompanyPage extends React.Component {
 					</Tabs>
 					<Divider />
 
-					<Route exact path={`${this.props.match.url}`} render={(props) => <CompanyInfo company={company} /> }/>
+					<Route exact path={`${this.props.match.url}`}
+						   render={() => <CompanyInfo company={ company } /> }/>
 
-					<Route exact path={`${this.props.match.url}/feedbacks`} 
-						component={(props) => <Feedbacks feedbacks={this.props.feedbacks}/>}/>
+					<Route exact path={`${this.props.match.url}/feedbacks`}
+						   render={() => <Feedbacks feedbacks={ feedbacks }
+						   							deleteFeedback={ this.deleteFeedback }/>}/>
 
-					<Route path={`${this.props.match.url}/feedback`} render={() => <NewFeedback user={ common.user } onPostFeedback={this.onPostFeedback}/>}/>
+					<Route path={`${this.props.match.url}/feedback`}
+						   render={() => <NewFeedback user={ common.user }
+													  onPostFeedback={this.onPostFeedback}/>}/>
 
-					<Route path={`${this.props.match.url}/contacts`} render={() => <Contacts locations={ company.locations } />}/>
+					<Route path={`${this.props.match.url}/contacts`}
+						   render={() => <Contacts locations={ company.locations } />}/>
 
 				</CardContent>
 			</Card>

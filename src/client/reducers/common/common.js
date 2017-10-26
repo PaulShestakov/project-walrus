@@ -19,7 +19,7 @@ const defaultState = {
 
 	companiesCategories: [],
 	companiesCategoriesAreLoaded: false,
-	unathorizedError: false,
+    unauthorizedError: false,
 
 	daysOfWeek: []
 };
@@ -48,17 +48,19 @@ const commonReducer = (state = defaultState, action) => {
 
 		case LOAD_USER_INFO_SUCCESS:
 			return {
-				...state,
+                ...state,
 				user: action.payload
 			};
 		
 		case UNAUTHORIZED_ERROR:
 			return {
-				unathorizedError: true
+                ...state,
+				unauthorizedError: true
 			};
 		case CLOSE_UNAUTHORIZED_DIALOG:
 			return {
-				unathorizedError: false
+                ...state,
+				unauthorizedError: false
 			};
 		default:
 			return state;

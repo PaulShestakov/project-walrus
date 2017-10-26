@@ -20,7 +20,7 @@ export default class NewFeedback extends React.Component {
 
     handleSubmit = (values) => {
         values.rating = this.state.rating;
-        this.props.onPostFeedback(values, this.props.history);
+        this.props.onPostFeedback(values);
     };
 
     render() {

@@ -1,13 +1,14 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
-import FontAwesome from 'react-fontawesome';
-import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Rating } from "components";
+import { Dropdown, Button, Title, Label, Input,
+    Grid, ImageUploader, TextField, Tabs, Tab, Card, Rating, ConfirmDialog } from "components";
 import styles from './styles';
 
 import {Divider, Typography, Paper, Avatar} from "material-ui";
-import { Link } from 'react-router-dom';
 import moment from 'moment';
+import {Delete} from "material-ui-icons";
+import Authorized from "../../../../containers/Authorized";
 
 
 @translate(['common'])
@@ -16,7 +17,16 @@ export default class Feedbacks extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            isConfirmDialogOpened: false,
+            feedback: {}
+        };
     }
+
+    deleteFeedback = () => {
+        this.setState({ isConfirmDialogOpened: false });
+        this.props.deleteFeedback(this.state.feedback.id);
+    };
 
     render() {
         const { feedbacks, classes } = this.props;
@@ -43,7 +53,18 @@ export default class Feedbacks extends React.Component {
                                         </div>
                                     </Grid>
                                     <Grid item xs={4} className="ml-auto text-right">
-                                        {moment(feedback.modificateDate).format('LLL')}
+                                        <div>
+                                            {moment(feedback.modificateDate).format('LLL')}
+                                        </div>
+                                        <div>
+                                            <Authorized allowedRoles={[1]}>
+                                                <Button fab
+                                                        onClick={() => this.setState({ isConfirmDialogOpened: true, feedback })}>
+                                                    <Delete />
+                                                </Button>
+                                            </Authorized>
+
+                                        </div>
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -64,6 +85,12 @@ export default class Feedbacks extends React.Component {
                     )
                 })
             }
+            <ConfirmDialog
+                open={this.state.isConfirmDialogOpened}
+                message={`Вы действительно хотите удалить отзыв ${this.state.feedback.summary}`}
+                title="Удаление комментария"
+                okCallback={this.deleteFeedback}
+                closeCallback={() => this.setState({ isConfirmDialogOpened: false })}/>
             </div>
         );
     }

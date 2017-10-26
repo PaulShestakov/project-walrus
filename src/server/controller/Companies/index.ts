@@ -44,8 +44,11 @@ class Companies extends BaseController {
 		this.router.get('/filtered', this.getFiltered.bind(this));
 		this.router.get('/fuzzySearch', this.fuzzySearch.bind(this));
 
-		this.router.post('/:companyId/feedback', passport.authenticate('jwt', { session: false }), this.postFeedback.bind(this));
+		this.router.post('/:companyId/feedback',
+			passport.authenticate('jwt', { session: false }), this.postFeedback.bind(this));
 		this.router.get('/:companyId/feedback', this.getFeedbacks.bind(this));
+		this.router.delete('/:companyId/feedback/:feedbackId',
+			passport.authenticate('jwt', { session: false }), this.deleteFeedback.bind(this));
 
 		//this.router.post('/', passport.authenticate('jwt', { session: false }), this.postCompany.bind(this));
 		this.router.post('/', upload.array('image', 1), this.saveCompany.bind(this));
@@ -163,6 +166,21 @@ class Companies extends BaseController {
 			});
 		} else {
 			this.errorResponse(res, 400, 'Company id was not provided');
+		}
+	}
+
+	private deleteFeedback(req: Request, res: Response) {
+		const { feedbackId } = req.params;
+		if (feedbackId) {
+			CompaniesRepository.deleteFeedback(feedbackId, (error, result) => {
+				if (error) {
+					this.errorResponse(res, 500, error);
+				} else {
+					this.okResponse(res, result);
+				}
+			});
+		} else {
+			this.errorResponse(res, 400, 'Feedback id was not provided');
 		}
 	}
 }

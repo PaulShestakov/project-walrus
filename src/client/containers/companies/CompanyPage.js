@@ -3,20 +3,22 @@ import {connect} from 'react-redux';
 
 import CompanyPageComponent from '../../scenes/companies/CompanyPage';
 
-import {loadCompany, postFeedback, loadFeedbacks} from "../../actionCreators/companyPage/companyPage";
+import {loadCompany, postFeedback, loadFeedbacks, deleteFeedback} from "../../actionCreators/companyPage/companyPage";
 
 
 const CompanyPage = connect(
 	state => {
 		return {
-			...state,
-			...state.companyPage
+			common: state.common,
+			company: state.companyPage.company,
+			feedbacks: state.companyPage.feedbacks
 		}
 	},
 	{
 		loadCompany,
 		postFeedback,
 		loadFeedbacks,
+        deleteFeedback,
 	}
 )(CompanyPageComponent);
 

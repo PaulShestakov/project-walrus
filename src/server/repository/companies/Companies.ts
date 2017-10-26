@@ -43,6 +43,7 @@ export default class Companies extends BaseCRUD  {
 
 	static mapDayOfWeek = (item) => ({
 		dayOfWeek: item.dayOfWeek,
+		dayOfWeekName: item.dayOfWeekName,
 		open: item.open,
 		close: item.close,
 	});
@@ -230,8 +231,8 @@ export default class Companies extends BaseCRUD  {
 
 				.field('t.DAY_OF_WEEK as dayOfWeek')
 				.field('cv2.NAME as dayOfWeekName')
-				.field('t.OPEN_TIME as openTime')
-				.field('t.CLOSE_TIME as closeTime')
+				.field('t.OPEN_TIME as open')
+				.field('t.CLOSE_TIME as close')
 
 				.field('p.COMPANY_PHONE_ID as phoneId')
 				.field('p.PHONE as phone')
@@ -329,6 +330,16 @@ export default class Companies extends BaseCRUD  {
 				return acc;
 			}, []);
 			callback(null, feedbacks);
+		});
+	}
+
+	static deleteFeedback(feedbackId, callback) {
+		executeQuery(Queries.DELETE_FEEDBACK, [feedbackId], (error, result) => {
+			if (error) {
+				callback(error);
+				return;
+			}
+			callback(null, { status: 'Success'});
 		});
 	}
 

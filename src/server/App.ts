@@ -52,7 +52,7 @@ export default class App {
             jwtFromRequest: (req) => req.cookies.jwt,
             algorithms: ['HS512'],
             ignoreExpiration: true,
-            issuer: 'https://wikipet.by/'
+            //issuer: 'https://wikipet.by/'
 		};
         passport.use(new JWTStrategy(opts, function(jwt_payload, done) {
             User.getById(jwt_payload.data.id, function(err, user) {
