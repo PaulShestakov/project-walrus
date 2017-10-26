@@ -1,7 +1,9 @@
 import {
 	LOAD_PROMO_CODE_VALUES_SUCCESS,
 	LOAD_COMPANIES_CODE_VALUES_SUCCESS,
-	LOAD_USER_INFO_SUCCESS
+	LOAD_USER_INFO_SUCCESS,
+	UNAUTHORIZED_ERROR,
+	CLOSE_UNAUTHORIZED_DIALOG
 } from '../../actionCreators/common';
 
 const defaultState = {
@@ -17,6 +19,7 @@ const defaultState = {
 
 	companiesCategories: [],
 	companiesCategoriesAreLoaded: false,
+	unathorizedError: false,
 
 	daysOfWeek: []
 };
@@ -48,7 +51,15 @@ const commonReducer = (state = defaultState, action) => {
 				...state,
 				user: action.payload
 			};
-
+		
+		case UNAUTHORIZED_ERROR:
+			return {
+				unathorizedError: true
+			};
+		case CLOSE_UNAUTHORIZED_DIALOG:
+			return {
+				unathorizedError: false
+			};
 		default:
 			return state;
 	}

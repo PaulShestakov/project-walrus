@@ -1,3 +1,5 @@
+import { unauthorizedError } from '../common';
+
 export const LOAD_COMPANY_SUCCESS = 'LOAD_COMPANY_SUCCESS';
 export const LOAD_FEEDBACKS_SUCCESS = 'LOAD_FEEDBACKS_SUCCESS';
 export const POST_FEEDBACK_SUCCESS = 'POST_FEEDBACK_SUCCESS';
@@ -38,15 +40,18 @@ export function postFeedback(feedback, history) {
             credentials: 'include'
         }).then(
             response => {
+                if (response.status === 401) {
+                    dispatch(unauthorizedError());
+                }
                 if (response.ok) {
                     return response.json();
                 }
             },
             error => {
-                dispatch(loadFeedbacks(feedback.companyId, history));
+                
             }
         ).then(json => {
-            //dispatch({});
+            dispatch(loadFeedbacks(feedback.companyId, history));
         });
 
     }

@@ -9,6 +9,7 @@ import {Divider, Typography, Paper} from "material-ui";
 import { Pets, Call, Mail, Public } from 'material-ui-icons';
 import CompanyInfo from "./Info";
 import Feedbacks from "./Feedback";
+import defaultCompanyImage from '../../../assets/img/company-default.png';
 
 import {Route, Link} from 'react-router-dom'
 import NewFeedback from "./Feedback/NewFeedback";
@@ -79,7 +80,7 @@ export default class CompanyPage extends React.Component {
 	render() {
 		const {t, classes, company, common, ...other} = this.props;
 
-        const imageSrc = (company.logo ? company.logo : '').split('\\').join('\/');
+        const imageSrc = (company.logo ? company.logo : defaultCompanyImage).split('\\').join('\/');
 
 		return (
 			<Card raised className="my-4">

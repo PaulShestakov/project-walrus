@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 import CompanyRouterComponent from "../../scenes/companies";
 import {
 	loadCompaniesCodeValues,
-	loadUserInfo
+	loadUserInfo,
+	closeUnauthorizedDialog
 } from "../../actionCreators/common";
 
 const CompanyRouter = connect(
@@ -15,7 +16,8 @@ const CompanyRouter = connect(
 	},
 	{
 		loadUserInfo,
-		loadCompaniesCodeValues
+		loadCompaniesCodeValues,
+		closeUnauthorizedDialog,
 	}
 )(CompanyRouterComponent);
 

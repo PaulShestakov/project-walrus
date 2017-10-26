@@ -1,62 +1,72 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Rating } from "components";
+import { Field, FieldArray, reduxForm } from 'redux-form'
 
 @translate(['common'])
+@reduxForm({form: 'feedback', enableReinitialize: true})
 export default class NewFeedback extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            feedback: '',
-            summary: '',
             rating: 0,
-            user : { ... props.user },
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({ user: { ... nextProps.user,  enteredName: nextProps.user.name } });
-    }
+    changeRating = (rating) => {
+        this.setState({ rating });
+    };
 
-    saveAction = (event) => {
-        event.preventDefault();
-        this.props.onPostFeedback({ ...this.state }, this.props.history);
+    handleSubmit = (values) => {
+        values.rating = this.state.rating;
+        this.props.onPostFeedback(values, this.props.history);
     };
 
     render() {
-        const {t} = this.props;
+        const {t, handleSubmit} = this.props;
 
         return (
-            <form onSubmit={this.saveAction} className="my-5">
+            <form className="my-5">
                 <Grid container>
                     <Grid item xs={10} className="mx-auto">
                         <Grid container spacing={24}>
-                            <Grid item className="w-100" >
-                                <Title>Заголовок</Title>
-                                <Input 
-                                    name="summary" 
-                                    onChange={(event) => this.setState({ summary: event.target.value })} 
-                                    placeholder="Заголовок" 
+                            <Grid item xs={12}>
+                                <div>
+                                    <Title>Заголовок</Title>
+                                </div>
+                                <Field
+                                    name="summary"
+                                    component={Input}
                                     fullWidth
-                                    className="mt-2"/>
+                                    className="mt-2"
+                                    placeholder="Заголовок" 
+                                />
                             </Grid>
-                            <Grid item className="w-100" >
+                            <Grid item xs={12}>
                                 <Title>Оценка компании</Title>
-                                <Rating value={this.state.rating} onChange={(i) => this.setState({ rating: i })}/>
+                                <Rating value={this.state.rating}
+                                onChange={this.changeRating}/>
                             </Grid>
-                            <Grid item className="w-100" >
-                                <Title>Отзыв</Title>
-                                <Input name="feedback" 
-                                        multiline
-                                        rowsMax="10" 
-                                        onChange={(event) => this.setState({ feedback: event.target.value })} 
-                                        placeholder="Отзыв" 
-                                        fullWidth 
-                                        className="mt-2"/>
+                            <Grid item xs={12}>
+                                <div>
+                                    <Title>Отзыв</Title>
+                                </div>
+                                <Field
+                                    name="feedback"
+                                    component={Input}
+                                    multiline
+                                    rowsMax="10"
+                                    fullWidth
+                                    className="mt-2"
+                                    placeholder="Отзыв" 
+                                />
                             </Grid>
-                            <Grid item className="w-100 text-center">
-                                <Button type="submit" className="text-white" accent="red">
+                            <Grid item xs={12} className="text-center">
+                                <Button type="button"
+                                        className="text-white"
+                                        accent="red"
+                                        onClick={handleSubmit(this.handleSubmit)}>
                                     {t('Отправить')}
                                 </Button>
                             </Grid>

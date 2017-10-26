@@ -5,6 +5,7 @@ import NewCompany from "../../containers/companies/NewCompany";
 import CompaniesList from "../../containers/companies/CompaniesList";
 import CompaniesOverview from "../../containers/companies/CompaniesOverview";
 import CompanyPage from "../../containers/companies/CompanyPage";
+import { ConfirmDialog } from "components";
 
 
 
@@ -23,15 +24,25 @@ export default class CompanyRouter extends React.Component {
         this.props.loadCompaniesCodeValues();
     }
 
+    closeCallback = () => {
+        this.props.closeUnauthorizedDialog();
+    };
+
     render() {
         return (
-            <Switch>
-                <Route path="/company/new" component={NewCompany} />
-                <Route path="/company/list" component={CompaniesList} />
-                <Route path="/company/overview" component={CompaniesOverview} />
-                <Route path="/company/edit/:companyId" component={EditComponent} />
-                <Route path="/company/:companyId" component={CompanyPage} />
-            </Switch>
+            <div>
+                <Switch>
+                    <Route path="/company/new" component={NewCompany} />
+                    <Route path="/company/list" component={CompaniesList} />
+                    <Route path="/company/overview" component={CompaniesOverview} />
+                    <Route path="/company/edit/:companyId" component={EditComponent} />
+                    <Route path="/company/:companyId" component={CompanyPage} />
+                </Switch>
+                <ConfirmDialog
+                    open={this.props.common.unauthorized}
+                    closeCallback={this.closeCallback}/>
+            </div>
+            
         );
     }
 }

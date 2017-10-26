@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles';
 import {Paper} from "material-ui";
+import defaultImage from '../../../../assets/img/company-default.png';
 import {ModeEdit as ModeEditIcon, DeleteForever as Delete, Block} from 'material-ui-icons';
 
 
@@ -37,7 +38,7 @@ export default class CompanyItem extends React.Component {
 
 	render() {
 		const {t, classes, className, company, ...other} = this.props;
-        const imageSrc = company.logo ? company.logo : '';
+		const imageSrc = company.logo ? company.logo : defaultImage;
 
 		return (
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>

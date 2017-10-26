@@ -129,6 +129,7 @@ export default class CompaniesList extends React.Component {
 	};
 
 	deleteCompany = () => {
+		this.setState({ openConfirm: false });
 		this.props.removeCompany(this.state.company.companyId);
 	};
 
