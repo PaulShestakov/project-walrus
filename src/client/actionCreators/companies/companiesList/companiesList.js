@@ -14,12 +14,6 @@ const loadCompaniesStart = () => ({
 	isFetching: true
 });
 
-const loadCompaniesSuccess = (data) => ({
-	type: LOAD_COMPANIES_SUCCESS,
-	isFetching: false,
-	payload: data
-});
-
 const loadCompaniesError = (error) => ({
 	type: LOAD_COMPANIES_ERROR,
 	isFetching: false,
@@ -44,7 +38,11 @@ export const loadCompanies = () => {
 				dispatch(loadCompaniesError(error))
 			}
 		).then(json => {
-			dispatch(loadCompaniesSuccess(json));
+			dispatch({
+				type: LOAD_COMPANIES_SUCCESS,
+				isFetching: false,
+				payload: json
+			});
 		}).catch(error => {
 			dispatch(loadCompaniesError(error));
 		})

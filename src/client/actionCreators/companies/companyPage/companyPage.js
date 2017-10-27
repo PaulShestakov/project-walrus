@@ -1,6 +1,9 @@
+import { unauthorizedError } from '../../common/common';
+
 export const LOAD_COMPANY_SUCCESS = 'LOAD_COMPANY_SUCCESS';
 export const LOAD_FEEDBACKS_SUCCESS = 'LOAD_FEEDBACKS_SUCCESS';
 export const POST_FEEDBACK_SUCCESS = 'POST_FEEDBACK_SUCCESS';
+export const DELETE_FEEDBACK_SUCCESS = 'DELETE_FEEDBACK_SUCCESS';
 
 export function loadCompany(companyId) {
     return (dispatch) => {
@@ -38,15 +41,20 @@ export function postFeedback(feedback, history) {
             credentials: 'include'
         }).then(
             response => {
+                if (response.status === 401) {
+                    throw new Error();
+                }
                 if (response.ok) {
                     return response.json();
                 }
             },
             error => {
-                dispatch(loadFeedbacks(feedback.companyId, history));
+                
             }
         ).then(json => {
-            //dispatch({});
+            dispatch(loadFeedbacks(feedback.companyId, history));
+        }).catch(error => {
+            dispatch(unauthorizedError());
         });
 
     }
@@ -70,6 +78,28 @@ export function loadFeedbacks(companyId, history) {
                 type: LOAD_FEEDBACKS_SUCCESS,
                 payload: json
             });
+        });
+
+    }
+}
+
+export function deleteFeedback(data, history) {
+    return (dispatch) => {
+
+        fetch('/api/v1/company/' + data.companyId + '/feedback/' + data.feedbackId, {
+            method: 'DELETE',
+            credentials: 'include'
+        }).then(
+            response => {
+                if (response.ok) {
+                    return response.json();
+                }
+            },
+            error => {
+                //dispatch(loadPromoError())
+            }
+        ).then(json => {
+            dispatch(loadFeedbacks(data.companyId, history));
         });
 
     }

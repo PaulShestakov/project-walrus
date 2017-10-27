@@ -40,24 +40,22 @@ class ConfirmDialog extends React.Component {
         const { title = '', message = '', ...other } = this.props;
 
         return (
-            <div>
-                <Dialog open={this.state.open} onRequestClose={this.handleClose}>
-                    <DialogTitle>{ title }</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            { message }
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleOk} color="primary">
-                            Да
-                        </Button>
-                        <Button onClick={this.handleClose} color="primary">
-                            Отменить
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </div>
+            <Dialog open={this.state.open} onRequestClose={this.handleClose}>
+                <DialogTitle>{ title }</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        { message }
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.handleOk} color="primary">
+                        Да
+                    </Button>
+                    <Button onClick={this.handleClose} color="primary">
+                        Отменить
+                    </Button>
+                </DialogActions>
+            </Dialog>
         );
     }
 }

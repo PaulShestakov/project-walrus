@@ -25,13 +25,16 @@ export default class CompanyRouter extends React.Component {
 
     render() {
         return (
-            <Switch>
-                <Route path="/company/new" component={NewCompany} />
-                <Route path="/company/list" component={CompaniesList} />
-                <Route path="/company/overview" component={CompaniesOverview} />
-                <Route path="/company/edit/:companyId" component={EditComponent} />
-                <Route path="/company/:companyId" component={CompanyPage} />
-            </Switch>
+            <div>
+                <Switch>
+                    <Route path="/company/new" component={NewCompany} />
+                    <Route path="/company/list" component={CompaniesList} />
+                    <Route path="/company/overview" component={CompaniesOverview} />
+                    <Route path="/company/edit/:companyId" component={EditComponent} />
+                    <Route path="/company/:companyId" component={CompanyPage} />
+                </Switch>
+            </div>
+            
         );
     }
 }

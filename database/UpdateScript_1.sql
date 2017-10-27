@@ -24,8 +24,13 @@ ADD CONSTRAINT `Working_Time_Location`
 
   
 ALTER TABLE `wikipet`.`companies_feedback` 
+DROP FOREIGN KEY `Company_Feedback_Location`;
+ALTER TABLE `wikipet`.`companies_feedback` 
+ADD INDEX `Company_Feedback_Location_idx` (`COMPANY_ID` ASC),
+DROP PRIMARY KEY;
+ALTER TABLE `wikipet`.`companies_feedback` 
 ADD CONSTRAINT `Company_Feedback_Location`
-  FOREIGN KEY (`COMPANY_FEEDBACK_ID`)
-  REFERENCES `wikipet`.`companies_location` (`COMPANY_LOCATION_ID`)
+  FOREIGN KEY (`COMPANY_ID`)
+  REFERENCES `wikipet`.`companies` (`COMPANY_ID`)
   ON DELETE CASCADE
   ON UPDATE NO ACTION;

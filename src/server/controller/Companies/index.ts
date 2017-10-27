@@ -3,6 +3,7 @@ import { Router, Request, Response } from 'express';
 import BaseController from '../BaseController';
 import upload from '../../util/Upload';
 import CompaniesRepository from '../../repository/companies/Companies';
+import * as passport from 'passport';
 
 
 const filteredSchema = {
@@ -42,13 +43,18 @@ class Companies extends BaseController {
 
 		this.router.get('/filtered', this.getFiltered.bind(this));
 		this.router.get('/fuzzySearch', this.fuzzySearch.bind(this));
-		this.router.get('/:companyId', this.getCompany.bind(this));
-		this.router.delete('/:companyId', this.deleteCompany.bind(this));
-		this.router.post('/:companyId/feedback', this.postFeedback.bind(this));
+
+		this.router.post('/:companyId/feedback',
+			passport.authenticate('jwt', { session: false }), this.postFeedback.bind(this));
 		this.router.get('/:companyId/feedback', this.getFeedbacks.bind(this));
+		this.router.delete('/:companyId/feedback/:feedbackId',
+			passport.authenticate('jwt', { session: false }), this.deleteFeedback.bind(this));
+
 		//this.router.post('/', passport.authenticate('jwt', { session: false }), this.postCompany.bind(this));
 		this.router.post('/', upload.array('image', 1), this.saveCompany.bind(this));
 		this.router.put('/:companyId', upload.array('image', 1), this.updateCompany.bind(this));
+		this.router.get('/:companyId', this.getCompany.bind(this));
+		this.router.delete('/:companyId', this.deleteCompany.bind(this));
 	}
 
 	private getFiltered(req: Request, res: Response) {
@@ -132,6 +138,9 @@ class Companies extends BaseController {
 		if (true) {
 			const companyId = req.params.companyId;
 			if (companyId) {
+				const feedback = req.body;
+				feedback.companyId = companyId;
+				feedback.user = req.user.id;
 				CompaniesRepository.postFeedback(req.body, (error) => {
 					if (error) {
 						this.errorResponse(res, 500, error);
@@ -157,6 +166,21 @@ class Companies extends BaseController {
 			});
 		} else {
 			this.errorResponse(res, 400, 'Company id was not provided');
+		}
+	}
+
+	private deleteFeedback(req: Request, res: Response) {
+		const { feedbackId } = req.params;
+		if (feedbackId) {
+			CompaniesRepository.deleteFeedback(feedbackId, (error, result) => {
+				if (error) {
+					this.errorResponse(res, 500, error);
+				} else {
+					this.okResponse(res, result);
+				}
+			});
+		} else {
+			this.errorResponse(res, 400, 'Feedback id was not provided');
 		}
 	}
 }

@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles';
 import {Paper} from "material-ui";
+import defaultImage from '../../../../assets/img/company-default.png';
 import {ModeEdit as ModeEditIcon, DeleteForever as Delete, Block} from 'material-ui-icons';
 
 
@@ -36,8 +37,12 @@ export default class CompanyItem extends React.Component {
 	};
 
 	render() {
-		const {t, classes, className, company, ...other} = this.props;
-        const imageSrc = company.logo ? company.logo : '';
+		const {t, classes, className, company } = this.props;
+		let mainLocation = company.locations.find(item => (item.isMain === 1));
+		if (!mainLocation) {
+			mainLocation = company.locations[0];
+		}
+		const imageSrc = company.logo ? company.logo : defaultImage;
 
 		return (
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>
@@ -70,16 +75,10 @@ export default class CompanyItem extends React.Component {
 					</div>
 
 					<div className={classNames(classes.flexRow, 'mt-2')}>
-						{
-							company.locations.map(location => {
-								return (
-									<div key={location.id} className={classes.flexRow}>
-										<FontAwesome name="map-marker" className={classes.icon} />
-										<Text>{location.cityName + ': ' + location.address}</Text>
-									</div>
-								);
-							})
-						}
+						<div key={mainLocation.id} className={classes.flexRow}>
+							<FontAwesome name="map-marker" className={classes.icon} />
+							<Text>{mainLocation.cityName + ': ' + mainLocation.address}</Text>
+						</div>
 					</div>
 
 					<div className={classNames(classes.flexRow, 'mt-2')}>
@@ -89,13 +88,17 @@ export default class CompanyItem extends React.Component {
 
 					<div className={classNames(classes.flexRow, 'mt-2')}>
 						<FontAwesome name="phone" className={classes.icon} />
-						<Text>{company.phones ? company.phones.map(item => item.phone).join(', ') : 'Телефонов нет'}</Text>
+						<Text>{mainLocation.phones ? mainLocation.phones.map(item => item.phone).join(', ') : 'Телефонов нет'}</Text>
 					</div>
 
 					<div className={classes.buttonsBlock}>
 						<Button className="mr-2 text-white" accent="white"
-							onClick={this.props.handleOpenWorkingTimeDialog.bind(null, company.daysOfWeekWorkingTime)}>
+							onClick={this.props.handleOpenWorkingTimeDialog.bind(null, mainLocation.workingTimes)}>
 							{t('WORKING_TIME')}
+						</Button>
+						<Button className="mr-2 text-white" accent="white"
+								onClick={this.props.handleOpenPhonesDialog.bind(null, mainLocation.phones)}>
+                            Телефоны
 						</Button>
 					</div>
 				</CardContent>

@@ -42,8 +42,10 @@ export default class Companies extends BaseCRUD  {
 	});
 
 	static mapDayOfWeek = (item) => ({
-		id: item.phoneId,
-		phone: item.phone
+		dayOfWeek: item.dayOfWeek,
+		dayOfWeekName: item.dayOfWeekName,
+		open: item.open,
+		close: item.close,
 	});
 
 	static getCompany(companyId: string, callback) {
@@ -229,8 +231,8 @@ export default class Companies extends BaseCRUD  {
 
 				.field('t.DAY_OF_WEEK as dayOfWeek')
 				.field('cv2.NAME as dayOfWeekName')
-				.field('t.OPEN_TIME as openTime')
-				.field('t.CLOSE_TIME as closeTime')
+				.field('t.OPEN_TIME as open')
+				.field('t.CLOSE_TIME as close')
 
 				.field('p.COMPANY_PHONE_ID as phoneId')
 				.field('p.PHONE as phone')
@@ -276,7 +278,8 @@ export default class Companies extends BaseCRUD  {
 					}
 				]
 			};
-			callback(null, Util.reduceFlatData(rows, shape).companies);
+			const companies = Util.reduceFlatData(rows, shape).companies;
+			callback(null, Util.ensureArray(companies));
 		});
 	}
 
@@ -330,11 +333,21 @@ export default class Companies extends BaseCRUD  {
 		});
 	}
 
+	static deleteFeedback(feedbackId, callback) {
+		executeQuery(Queries.DELETE_FEEDBACK, [feedbackId], (error, result) => {
+			if (error) {
+				callback(error);
+				return;
+			}
+			callback(null, { status: 'Success'});
+		});
+	}
+
 	static internalizeFeedback(feedback: IFeedback) {
 		return {
 			COMPANY_FEEDBACK_ID: uuid(),
 			COMPANY_ID: feedback.companyId,
-			USER_ID: feedback.user.id,
+			USER_ID: feedback.user,
 			FEEDBACK: feedback.feedback,
 			SUMMARY: feedback.summary,
 			RATING: feedback.rating
@@ -342,9 +355,9 @@ export default class Companies extends BaseCRUD  {
 	}
 
     static internalizeCompany(company) {
-		let image = '/' + _.get(company.image, ['0', 'path'], null);
+		let image = _.get(company.image, ['0', 'path'], null);
 		if (image) {
-			image = image.split('\\').join('\/');
+			image = '/' + image.split('\\').join('\/');
 		}
         return {
             COMPANY_ID: company.companyId,

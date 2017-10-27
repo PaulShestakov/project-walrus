@@ -1,8 +1,11 @@
 import {
 	LOAD_PROMO_CODE_VALUES_SUCCESS,
 	LOAD_COMPANIES_CODE_VALUES_SUCCESS,
-	LOAD_USER_INFO_SUCCESS
-} from '../../actionCreators/common/common.js';
+	LOAD_USER_INFO_SUCCESS,
+	UNAUTHORIZED_ERROR,
+	CLOSE_UNAUTHORIZED_DIALOG
+} from '../../actionCreators/common/common';
+
 
 const defaultState = {
 	animals: [],
@@ -17,6 +20,7 @@ const defaultState = {
 
 	companiesCategories: [],
 	companiesCategoriesAreLoaded: false,
+    unauthorizedError: false,
 
 	daysOfWeek: []
 };
@@ -45,10 +49,20 @@ const commonReducer = (state = defaultState, action) => {
 
 		case LOAD_USER_INFO_SUCCESS:
 			return {
-				...state,
+                ...state,
 				user: action.payload
 			};
-
+		
+		case UNAUTHORIZED_ERROR:
+			return {
+                ...state,
+				unauthorizedError: true
+			};
+		case CLOSE_UNAUTHORIZED_DIALOG:
+			return {
+                ...state,
+				unauthorizedError: false
+			};
 		default:
 			return state;
 	}

@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Title, Grid, Card, Label, Text, TextField, Button, ConfirmDialog} from "components";
+import {Title, Grid, Card, Label, Text, TextField, Button, ConfirmDialog, InfoDialog } from "components";
 import CompanyItem from './CompanyItem'
 import Sidebar from './Sidebar';
 import classNames from 'classnames';
@@ -10,7 +10,6 @@ import styles from './styles';
 import Autosuggest from 'react-autosuggest';
 import Paper from 'material-ui/Paper';
 import {MenuItem} from 'material-ui/Menu';
-import Dialog, {DialogActions, DialogContent, DialogTitle} from 'material-ui/Dialog';
 
 function renderInput(inputProps) {
 	const { classes, autoFocus, value, ref, ...other } = inputProps;
@@ -70,10 +69,12 @@ export default class CompaniesList extends React.Component {
 		super(props);
 		this.state = {
 			isWorkingTimeDialogOpened: false,
+            isConfirmDialogOpened: false,
+			isPhonesDialogOpened: false,
 			cities: [],
-			openConfirm: false,
 			daysOfWeekWorkingTime: [],
-			company: {}
+			company: {},
+			phones: []
 		};
 	}
 
@@ -104,17 +105,19 @@ export default class CompaniesList extends React.Component {
 		})
 	};
 
-    handleAction = (company) => {
-		this.setState({ openConfirm: true, company });
+    handleOpenPhonesDialog = (phones) => {
+    	this.setState({
+			isPhonesDialogOpened: true,
+            phones
+		});
 	};
 
-	handleCloseWorkingTimeDialog = () => {
-		this.setState({
-			isWorkingTimeDialogOpened: false
-		})
+    handleAction = (company) => {
+		this.setState({ isConfirmDialogOpened: true, company });
 	};
 
 	deleteCompany = () => {
+		this.setState({ isConfirmDialogOpened: false });
 		this.props.removeCompany(this.state.company.companyId);
 	};
 
@@ -162,6 +165,7 @@ export default class CompaniesList extends React.Component {
 										deleteAction={this.deleteCompany}
 										blockAction={this.blockCompany}
 										handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}
+										handleOpenPhonesDialog={this.handleOpenPhonesDialog}
 										handleAction={this.handleAction}/>
 								);
 							})
@@ -186,34 +190,39 @@ export default class CompaniesList extends React.Component {
 					/>
 				</Grid>
 
-
-				<Dialog open={this.state.isWorkingTimeDialogOpened} onRequestClose={this.handleCloseWorkingTimeDialog}>
-					<DialogTitle>
-						<Label fontSize="1.5rem">{t('WORKING_TIME')}</Label>
-					</DialogTitle>
-					<DialogContent className={classes.flexColumn}>
-						{
-							this.state.daysOfWeekWorkingTime.map(dayWorkingTime => (
-								<div key={dayWorkingTime.dayOfWeek} className={classNames(classes.flexRow, "mt-2")}>
-									<Label>{dayWorkingTime.dayOfWeekName}</Label>
-									<Label className="ml-3">{`${dayWorkingTime.openTime} - ${dayWorkingTime.closeTime}`}</Label>
-								</div>
-							))
-						}
-					</DialogContent>
-					<DialogActions>
-						<Button onClick={this.handleCloseWorkingTimeDialog} color="primary">
-							{t('CLOSE')}
-						</Button>
-					</DialogActions>
-				</Dialog>
+				<InfoDialog
+					open={this.state.isPhonesDialogOpened}
+					title="Телефоны"
+					message="Message"
+					closeCallback={() => this.setState({ isPhonesDialogOpened: false })}>
+					{
+						this.state.phones && this.state.phones.map(item => (
+							<div>
+								{item.phone}
+							</div>
+						))
+					}
+				</InfoDialog>
+				<InfoDialog
+					open={this.state.isWorkingTimeDialogOpened}
+					title="Время работы"
+					closeCallback={() => this.setState({ isWorkingTimeDialogOpened: false })}>
+					{
+                        this.state.daysOfWeekWorkingTime.map(dayWorkingTime => (
+							<div key={dayWorkingTime.dayOfWeek} className={classNames(classes.flexRow, "mt-2")}>
+								<Label>{dayWorkingTime.dayOfWeekName}</Label>
+								<Label className="ml-3">{`${dayWorkingTime.open} - ${dayWorkingTime.close}`}</Label>
+							</div>
+                        ))
+					}
+				</InfoDialog>
 
 				<ConfirmDialog
-					open={this.state.openConfirm}
+					open={this.state.isConfirmDialogOpened}
 					message={this.state.company.message}
 					title={this.state.company.title}
 					okCallback={this.state.company.action}
-					closeCallback={() => this.setState({ openConfirm: false })}/>
+					closeCallback={() => this.setState({ isConfirmDialogOpened: false })}/>
 			</Grid>
 		);
 	}

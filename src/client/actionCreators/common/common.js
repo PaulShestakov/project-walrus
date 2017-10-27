@@ -1,25 +1,18 @@
 export const LOAD_PROMO_CODE_VALUES_START = 'LOAD_PROMO_CODE_VALUES_START';
 export const LOAD_PROMO_CODE_VALUES_SUCCESS = 'LOAD_PROMO_CODE_VALUES_SUCCESS';
 export const LOAD_PROMO_CODE_VALUES_ERROR = 'LOAD_PROMO_CODE_VALUES_ERROR';
+export const UNAUTHORIZED_ERROR = 'UNAUTHORIZED_ERROR';
 
-
-const loadPromoCodeValuesStart = () => {
+export const unauthorizedError = () => {
 	return {
-		type: LOAD_PROMO_CODE_VALUES_START,
-		isFetching: true
+		type: UNAUTHORIZED_ERROR
 	};
 };
+
 const loadPromoCodeValuesSuccess = (data) => {
 	return {
 		type: LOAD_PROMO_CODE_VALUES_SUCCESS,
 		payload: data,
-		isFetching: false
-	};
-};
-const loadPromoCodeValuesError = (error) => {
-	return {
-		type: LOAD_PROMO_CODE_VALUES_ERROR,
-		payload: error,
 		isFetching: false
 	};
 };
@@ -29,7 +22,10 @@ export function loadPromoCodeValues() {
 		const { common } = getState();
 
 		if (!common.animalsAreLoaded || !common.citiesAreLoaded) {
-			dispatch(loadPromoCodeValuesStart());
+			dispatch({
+				type: LOAD_PROMO_CODE_VALUES_START,
+				isFetching: true
+			});
 
 			fetch('/api/v1/codevalue?type=ANIMAL&type=CITY').then(
 				response => {
@@ -38,7 +34,11 @@ export function loadPromoCodeValues() {
 					}
 				},
 				error => {
-					dispatch(loadPromoCodeValuesError())
+					dispatch({
+						type: LOAD_PROMO_CODE_VALUES_ERROR,
+						payload: error,
+						isFetching: false
+					})
 				}
 			).then(json => {
 				dispatch(loadPromoCodeValuesSuccess({
@@ -51,7 +51,6 @@ export function loadPromoCodeValues() {
 }
 
 export const LOAD_COMPANIES_CODE_VALUES_SUCCESS = 'LOAD_COMPANIES_CODE_VALUES_SUCCESS';
-
 export function loadCompaniesCodeValues() {
 
 	function sortCompaniesCategories(categories) {
@@ -96,7 +95,6 @@ export function loadCompaniesCodeValues() {
 }
 
 export const LOAD_USER_INFO_SUCCESS = 'LOAD_USER_INFO_SUCCESS';
-
 export function loadUserInfo() {
 	return (dispatch, getState) => {
 		const { user } = getState();
@@ -124,5 +122,14 @@ export function loadUserInfo() {
 				});
 			});
 		}
+	};
+}
+
+export const CLOSE_UNAUTHORIZED_DIALOG = 'CLOSE_UNAUTHORIZED_DIALOG';
+export function closeUnauthorizedDialog() {
+	return (dispatch) => {
+		dispatch({
+			type: CLOSE_UNAUTHORIZED_DIALOG
+		});
 	};
 }
