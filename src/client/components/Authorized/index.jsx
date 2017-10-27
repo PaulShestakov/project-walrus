@@ -11,8 +11,9 @@ export default class Authorized extends React.Component {
     };
 
     render() {
-        const { user, allowedRoles } = this.props;
-        if (allowedRoles.includes(user.role)) {
+        const { user, allowedRoles = [] } = this.props;
+        const allowed = allowedRoles.find(role => (role >= user.role));
+        if (allowed) {
             return (
                 <div>
                     {

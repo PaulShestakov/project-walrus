@@ -165,9 +165,12 @@ export default class CompanyPage extends React.Component {
 						   render={() => <Feedbacks feedbacks={ feedbacks }
 						   							deleteFeedback={ this.deleteFeedback }/>}/>
 
-					<Route path={`${this.props.match.url}/feedback`}
-						   render={() => <NewFeedback user={ common.user }
-													  onPostFeedback={this.onPostFeedback}/>}/>
+					<Authorized allowedRoles={[1]}>
+						<Route path={`${this.props.match.url}/feedback`}
+							render={() => <NewFeedback user={ common.user }
+														onPostFeedback={this.onPostFeedback}/>}/>
+					</Authorized>
+					
 
 					<Route path={`${this.props.match.url}/contacts`}
 						   render={() => <Contacts locations={ company.locations } />}/>

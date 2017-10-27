@@ -57,7 +57,7 @@ export default class Feedbacks extends React.Component {
                                             {moment(feedback.modificateDate).format('LLL')}
                                         </div>
                                         <div>
-                                            <Authorized allowedRoles={[1]}>
+                                            <Authorized allowedRoles={[5]}>
                                                 <Button fab
                                                         onClick={() => this.setState({ isConfirmDialogOpened: true, feedback })}>
                                                     <Delete />
