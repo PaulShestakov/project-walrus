@@ -8,8 +8,7 @@ const defaultCompany = {
     name: '',
     locations: [
         {
-            label: 'Aдрес 1',
-            phones: [{}]
+            label: 'Aдрес 1'
         },
     ]
 };

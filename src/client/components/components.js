@@ -15,6 +15,7 @@ import Tab from './Tab';
 import ConfirmDialog from './Dialog/Confirm';
 import InfoDialog from './Dialog/Information';
 import Switch from './Switch';
+import CheckboxesBlock from './CheckboxesBlock';
 
 import TextField from 		'material-ui/TextField';
 import Grid from 			'material-ui/Grid';
@@ -47,5 +48,6 @@ export {
 	Rating,
     ConfirmDialog,
     InfoDialog,
-	Switch
+	Switch,
+    CheckboxesBlock
 };

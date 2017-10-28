@@ -42,10 +42,12 @@ const MapWithASearchBox = compose(
         },
         fitMapBounds: () => {
           const bounds = new google.maps.LatLngBounds();
-          this.props.extMarkers.forEach(marker => {
-              bounds.extend(new google.maps.LatLng(marker.position));
-          });
-          refs.map.fitBounds(bounds);
+          if (this.props.extMarkers && this.props.extMarkers.length > 0) {
+              this.props.extMarkers.forEach(marker => {
+                  bounds.extend(new google.maps.LatLng(marker.position));
+              });
+              refs.map.fitBounds(bounds);
+          }
         },
         onTilesLoaded: () => {
           if (!this.state.fitted && this.props.extMarkers.length > 0) {

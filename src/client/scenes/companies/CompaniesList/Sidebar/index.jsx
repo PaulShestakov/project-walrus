@@ -2,12 +2,10 @@ import React from 'react';
 import FontAwesome from 'react-fontawesome';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Dropdown, Button, Label, Grid, ImageUploader, TextField, Tabs, Tab, Card, Popover, Checkbox, Separator} from "components";
-import { FormGroup, FormControlLabel } from 'material-ui/Form';
+import {Dropdown, Button, Label, Grid, ImageUploader, TextField, Tabs, Tab, Card, Popover, Checkbox, Separator, CheckboxesBlock} from "components";
+import { FormControlLabel } from 'material-ui/Form';
 import classNames from 'classnames';
 import styles from './styles';
-import CheckboxesBlock from "./CheckboxesBlock/index";
-import Authorized from '../../../../containers/Authorized';
 import {Link} from "react-router-dom";
 import {Switch} from "material-ui";
 
@@ -17,23 +15,7 @@ import {Switch} from "material-ui";
 export default class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			isLocationPopoverOpened: false,
-		};
 	}
-
-	handleOpenLocationPopover = () => {
-		this.setState({
-			isLocationPopoverOpened: !this.state.isLocationPopoverOpened
-		});
-	};
-
-	handleLocationPopoverOuterAction = () => {
-		this.setState({
-			isLocationPopoverOpened: false
-		});
-	};
 
 	handleCheckboxPressed = (event) => {
 		switch(event.target.name) {
@@ -42,14 +24,6 @@ export default class Sidebar extends React.Component {
 					this.props.addCity(event.target.value);
 				} else {
 					this.props.removeCity(event.target.value);
-				}
-				break;
-			}
-			case 'daysOfWeek': {
-				if (event.target.checked) {
-					this.props.addDayOfWeek(event.target.value);
-				} else {
-					this.props.removeDayOfWeek(event.target.value);
 				}
 				break;
 			}
@@ -66,7 +40,7 @@ export default class Sidebar extends React.Component {
 
 
 	render() {
-		const {t, classes, ...other} = this.props;
+		const {t, classes} = this.props;
 
 		return (
 			<div className={classes.flexColumn}>
@@ -82,12 +56,9 @@ export default class Sidebar extends React.Component {
 						formGroupName="cities"
 						title={t('LOCATION')}
 						showMoreLabel={t('ALL_CITIES')}
-
 						numberOfItemsToShowDefault={6}
-
 						items={this.props.cities}
 						selectedIds={this.props.filter.selectedCitiesIds}
-
 						handleCheckboxPressed={this.handleCheckboxPressed}
 					/>
 

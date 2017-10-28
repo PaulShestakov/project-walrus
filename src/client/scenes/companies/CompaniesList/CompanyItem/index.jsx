@@ -86,11 +86,6 @@ export default class CompanyItem extends React.Component {
 						<Text>{company.websiteUrl}</Text>
 					</div>
 
-					<div className={classNames(classes.flexRow, 'mt-2')}>
-						<FontAwesome name="phone" className={classes.icon} />
-						<Text>{mainLocation.phones ? mainLocation.phones.map(item => item.phone).join(', ') : 'Телефонов нет'}</Text>
-					</div>
-
 					<div className={classes.buttonsBlock}>
 						<Button className="mr-2 text-white" accent="white"
 							onClick={this.props.handleOpenWorkingTimeDialog.bind(null, mainLocation.workingTimes)}>

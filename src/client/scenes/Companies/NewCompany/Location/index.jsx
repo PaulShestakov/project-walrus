@@ -37,6 +37,12 @@ export default class Location extends React.Component {
         this.setState({ selectedAddress: index });
     };
 
+    handleOnAddAddressPress = () => {
+        const { fields } = this.props;
+        fields.push({label: `Адрес ${fields.length + 1}`});
+        this.setState({ selectedAddress: fields.length });
+    };
+
     handleMapLocation = (location) => {
         if (location) {
             const loc = location[0].position.toJSON();
@@ -60,7 +66,7 @@ export default class Location extends React.Component {
                         <Typography type="headline" component="h1" className="mt-4 mr-4">
                             Местоположение
                         </Typography>
-                        <Button fab onClick={() => fields.push({label: `Адрес ${fields.length + 1}`})}
+                        <Button fab onClick={this.handleOnAddAddressPress}
                                 color="primary" aria-label="add">
                             <Add />
                         </Button>
@@ -71,16 +77,15 @@ export default class Location extends React.Component {
                     value={this.state.selectedAddress}
                     indicatorColor="primary"
                     textColor="primary"
-                    scrollable
+                    centered
                     onChange={this.handleTabPress}
-                    fullWidth>
+                >
                     {
                         fields.map((field, index, fields) => {
                             const curField = fields.get(index);
                             return (
                                 <Tab
                                     className={classes.tab}
-                                    key={field}
                                     label={curField.label}
                                     value={index}/>
                             );

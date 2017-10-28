@@ -41,6 +41,7 @@ export default class Contacts extends React.Component {
     render() {
         const {t, classes, locations = [], ...other} = this.props;
         const { markers } = this.state;
+        console.log(markers);
         return (
             <div className="my-4">
             {
@@ -64,9 +65,15 @@ export default class Contacts extends React.Component {
                                 </List>
                             </Grid>
                             <Grid item xs={8}>
-                                <Map extMarkers={markers}
-                                     onMarkerClick={(index) => this.handleMarkerClick(index)}
-                                    />
+                                {
+                                    markers.length > 0 && <Map extMarkers={markers}
+                                                               onMarkerClick={(index) => this.handleMarkerClick(index)}
+                                    /> ||
+                                        <div>
+                                            Положение не задано
+                                        </div>
+                                }
+
                             </Grid>
                         </Grid>
                     </Paper>

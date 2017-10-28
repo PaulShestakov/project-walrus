@@ -52,7 +52,6 @@ const getFlatCitiesList = createSelector(
 const CompaniesList = connect(
 	state => {
 		return {
-			...state,
 			main: state.companiesList.main,
 			filter: state.companiesList.filter,
 			cities: getFlatCitiesList(state)
