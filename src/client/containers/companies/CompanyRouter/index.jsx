@@ -5,7 +5,7 @@ import {
 	loadCompaniesCodeValues,
 	loadUserInfo,
 	closeUnauthorizedDialog
-} from "../../../actionCreators/common/common";
+} from "../../common/actions";
 
 import {Route, Switch} from "react-router-dom";
 

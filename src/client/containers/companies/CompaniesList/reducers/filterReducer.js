@@ -1,4 +1,4 @@
-import Util from '../../../../reducers/util/Util';
+import Util from '../../../util/index';
 import {
 	COMPANIES_LIST_ADD_CITY,
 	COMPANIES_LIST_REMOVE_CITY,

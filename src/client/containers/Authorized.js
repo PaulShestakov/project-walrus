@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import Authorized from '../components/Authorized';
-import { closeUnauthorizedDialog } from "../actionCreators/common/common";
+import { closeUnauthorizedDialog } from "./common/actions";
 
 export default connect(
     state => {

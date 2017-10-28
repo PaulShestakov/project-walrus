@@ -1,4 +1,4 @@
-import { unauthorizedError } from '../../../actionCreators/common/common';
+import { unauthorizedError } from '../../common/actions';
 
 export const LOAD_COMPANY_SUCCESS = 'LOAD_COMPANY_SUCCESS';
 export const LOAD_FEEDBACKS_SUCCESS = 'LOAD_FEEDBACKS_SUCCESS';

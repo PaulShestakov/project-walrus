@@ -17,6 +17,10 @@ import InfoDialog from './Dialog/Information';
 import Switch from './Switch';
 import CheckboxesBlock from './CheckboxesBlock';
 
+
+import Header from './Header';
+import Footer from './Footer';
+
 import TextField from 		'material-ui/TextField';
 import Grid from 			'material-ui/Grid';
 import Card from  			'material-ui/Card';
@@ -49,5 +53,8 @@ export {
     ConfirmDialog,
     InfoDialog,
 	Switch,
-    CheckboxesBlock
+    CheckboxesBlock,
+
+	Header,
+	Footer
 };
