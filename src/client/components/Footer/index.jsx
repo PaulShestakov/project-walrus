@@ -1,79 +1,93 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-import { translate } from 'react-i18next';
-import { Input, Button, Separator, Grid } from 'components';
-
-
+import {Link} from "react-router-dom";
+import {translate} from 'react-i18next';
+import {Input, Button, Separator, Grid, Card} from 'components';
+import classNames from 'classnames';
+import {withStyles} from 'material-ui/styles';
+import styles from './styles';
 
 @translate(['footer'])
+@withStyles(styles)
 class Footer extends React.Component {
 	render() {
-		const t = this.props.t;
+		const {t, classes} = this.props;
 
 		return (
-			<footer className={this.props.className}>
-				<Grid container justify="center">
-					<Grid item xs={8}>
-						<Grid container>
-							<Grid item xs={3} className="d-flex flex-column">
-								<Link to="/" className="my-2">
-                                    {t('ABOUT_US')}
-								</Link>
-								<Link to="/" className="my-2">
-                                    {t('EDITORIAL_POLICY')}
-								</Link>
-								<Link to="/" className="my-2">
-                                    {t('PUBLIC_OFFER_CONTRACT')}
-								</Link>
-								<Link to="/" className="my-2">
-                                    {t('CONTACTS')}
-								</Link>
-							</Grid>
-							<Grid item xs={3} className="d-flex flex-column">
-								<Link to="/" className="my-2">
-                                    {t('PETS_MEINTENANCE_LEGAL_ISSUES')}
-								</Link>
-								<Separator/>
-								<Link to="/" className="my-2">
-                                    {t('SPECIAL_PROJECTS')}
-								</Link>
-							</Grid>
-							<Grid item xs={3} className="d-flex flex-column">
-								<Link to="/" className="my-2">
-                                    {t('INSTAGRAM')}
-								</Link>
-								<Link to="/" className="my-2">
-                                    {t('VK')}
-								</Link>
-								<Link to="/" className="my-2">
-                                    {t('FB')}
-								</Link>
-								<Link to="/" className="my-2">
-                                    {t('O')}
-								</Link>
-								<Link to="/" className="my-2">
-                                    {t('YOUTUBE')}
-								</Link>
-							</Grid>
-							<Grid item xs={3} className="d-flex flex-column align-items-start">
-								<Link to="/" className="my-2">
-                                    {t('SUBSCRIBE_FOR_NEWSLETTER')}
-								</Link>
-								<Input placeholder={t('ENTER_EMAIL')} className="my-2" />
-								<Button accent="red"
-										className="my-2 text-white">
-                                    {t('SUBSCRIBE')}
-								</Button>
-							</Grid>
-							<Grid item xs={12}>
-								<Separator />
-							</Grid>
-							<Grid item xs={12} className="d-flex justify-content-around my-2">
-                                {t('BOTTOM_INFO')}
+			<footer className={classNames(this.props.className, classes.c, 'mt-4')}>
+				<Card>
+					<Grid container justify="center">
+						<Grid item xs={11} md={9} className="pt-4">
+							<Grid container justify="center" direction="column">
+								<Grid item>
+									<Grid container direction="row">
+										<Grid item xs={3}>
+											<Grid container direction="column">
+												<Grid item>
+													<Link to="/" className={classes.linkStyle}>{t('ABOUT_US')}</Link>
+												</Grid>
+												<Grid item>
+													<Link to="/" className={classes.linkStyle}>{t('EDITORIAL_POLICY')}</Link>
+												</Grid>
+												<Grid item>
+													<Link to="/" className={classes.linkStyle}>{t('PUBLIC_OFFER_CONTRACT')}</Link>
+												</Grid>
+												<Grid item>
+													<Link to="/" className={classes.linkStyle}>{t('CONTACTS')}</Link>
+												</Grid>
+											</Grid>
+										</Grid>
+										<Grid item xs={3}>
+											<Grid container direction="column">
+												<Grid item>
+													<Link to="/" className={classes.linkStyle}>{t('PETS_MEINTENANCE_LEGAL_ISSUES')}</Link>
+												</Grid>
+												<Grid item>
+													<Link to="/" className={classes.linkStyle}>{t('SPECIAL_PROJECTS')}</Link>
+												</Grid>
+											</Grid>
+										</Grid>
+										<Grid item xs={3}>
+											<Grid container direction="column">
+												<Grid item>
+													<Link to="/" className={classes.linkStyle}>{t('INSTAGRAM')}</Link>
+												</Grid>
+												<Grid item>
+													<Link to="/" className={classes.linkStyle}>{t('VK')}</Link>
+												</Grid>
+												<Grid item>
+													<Link to="/" className={classes.linkStyle}>{t('FB')}</Link>
+												</Grid>
+												<Grid item>
+													<Link to="/" className={classes.linkStyle}>{t('O')}</Link>
+												</Grid>
+												<Grid item>
+													<Link to="/" className={classes.linkStyle}>{t('YOUTUBE')}</Link>
+												</Grid>
+											</Grid>
+										</Grid>
+										<Grid item xs={3}>
+											<Grid container direction="column">
+												<Grid item>
+													<Link to="/" className={classes.linkStyle}>{t('SUBSCRIBE_FOR_NEWSLETTER')}</Link>
+												</Grid>
+											</Grid>
+										</Grid>
+									</Grid>
+								</Grid>
+								<Grid item>
+									<Separator />
+								</Grid>
+								<Grid item>
+									<Grid container justify="center">
+										<Grid item>
+											{t('BOTTOM_INFO')}
+										</Grid>
+									</Grid>
+								</Grid>
 							</Grid>
 						</Grid>
 					</Grid>
-				</Grid>
+				</Card>
 			</footer>
 		);
 	}

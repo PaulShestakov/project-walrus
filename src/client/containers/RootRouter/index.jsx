@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 
 import {Grid} from 'material-ui';
 
@@ -42,7 +42,7 @@ export default class Router extends React.Component {
 					</Grid>
 				</main>
 
-				{/*<Footer />*/}
+				<Footer />
 			</div>
 		);
 	}
