@@ -64,7 +64,7 @@ class CompaniesOverviewContainer extends React.Component {
 		];
 
 		return (
-			<Card className="mt-4">
+			<Card className="my-4">
 				<Paper>
 					<Tabs indicatorColor="primary"
 						  textColor="primary"

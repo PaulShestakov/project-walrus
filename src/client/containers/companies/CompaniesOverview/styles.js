@@ -3,7 +3,9 @@ import globalStyle from '../../../style';
 export default {
 	tab: {
 		height: 'auto',
-		padding: '1rem'
+		padding: '1rem',
+		flexGrow: 1,
+		maxWidth: 'none'
 	},
 
 	tabLabelContainer: {

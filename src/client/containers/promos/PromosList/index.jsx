@@ -77,7 +77,7 @@ class PromosListContainer extends React.Component {
 		const {t, classes, ...other} = this.props;
 
 		return (
-			<Grid container className="mt-4" {...other}>
+			<Grid container className="my-4" {...other}>
 				<Grid item md={9}>
 					<Card className={classes.searchHeader}>
 						<Input placeholder={t('SECTION_SEARCH')}

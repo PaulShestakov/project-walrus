@@ -32,8 +32,7 @@ class PromoPageContainer extends React.Component {
 		const imageSrc = promo.image ? `/uploads/${promo.image.split('/').slice(2).join('/')}` : '';
 
 		return (
-
-			<Card className={classNames('mt-4', classes.card)}>
+			<Card className={classNames('my-4', classes.card)}>
 				<CardMedia
 					className={classes.cardImage}
 					image={imageSrc}

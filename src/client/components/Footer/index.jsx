@@ -13,9 +13,9 @@ class Footer extends React.Component {
 		const {t, classes} = this.props;
 
 		return (
-			<footer className={classNames(this.props.className, classes.c, 'mt-4')}>
-				<Card>
-					<Grid container justify="center">
+			<footer className={classNames(this.props.className)}>
+				<Card className="pb-3">
+					<Grid container justify="center" spacing={0}>
 						<Grid item xs={11} md={9} className="pt-4">
 							<Grid container justify="center" direction="column">
 								<Grid item>
@@ -36,7 +36,7 @@ class Footer extends React.Component {
 												</Grid>
 											</Grid>
 										</Grid>
-										<Grid item xs={3}>
+										<Grid item xs={4}>
 											<Grid container direction="column">
 												<Grid item>
 													<Link to="/" className={classes.linkStyle}>{t('PETS_MEINTENANCE_LEGAL_ISSUES')}</Link>
@@ -46,7 +46,7 @@ class Footer extends React.Component {
 												</Grid>
 											</Grid>
 										</Grid>
-										<Grid item xs={3}>
+										<Grid item xs={2}>
 											<Grid container direction="column">
 												<Grid item>
 													<Link to="/" className={classes.linkStyle}>{t('INSTAGRAM')}</Link>
