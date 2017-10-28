@@ -9,7 +9,7 @@ import Footer from '../Footer';
 import PromosList from "../../containers/promos/promosList/PromosList";
 import NewPromo from "../../containers/promos/newPromo/NewPromo";
 import PromoPage from "../../containers/promos/promoPage/PromoPage";
-import CompanyRouter from "../../containers/companies/companyRouter/CompanyRouter";
+import CompanyRouter from "../../containers/companies/CompanyRouter/index";
 
 import './styles.scss';
 
