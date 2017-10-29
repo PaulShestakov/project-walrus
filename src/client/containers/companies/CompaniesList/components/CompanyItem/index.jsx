@@ -31,7 +31,7 @@ export default class CompanyItem extends React.Component {
                 companyId: company.companyId,
 				action: this.props.blockAction,
 				title: 'Блокировка компании',
-				message: `Вы действительно хотите заблокировать ${company.name}?`,
+				message: `Вы действительно хотите заблокировать ${company.name}? (Функция не реализована пока что)`,
 			}
 		}
 		this.props.handleAction(value);

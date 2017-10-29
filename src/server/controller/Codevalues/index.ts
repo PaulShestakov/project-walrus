@@ -1,5 +1,4 @@
 import { Router, Request, Response } from 'express';
-import async from 'async';
 import Util from "../../util/Util";
 import repo from "../../repository/codevalues";
 
@@ -14,6 +13,7 @@ class Codevalues extends BaseController {
         this.router = Router();
 
 		this.router.get('/cities', this.getCities.bind(this));
+		this.router.get('/animals', this.getAnimals.bind(this));
 		this.router.get('/companyCategories', this.getCompanyCategories.bind(this));
 		this.router.get('/', this.getByTypes.bind(this));
     }
@@ -21,10 +21,7 @@ class Codevalues extends BaseController {
     getByTypes(req: Request, res: Response) {
     	const types = Util.ensureArray(req.query.type);
 
-		const validGroups = ['ANIMAL',
-							'BREED.DOG',
-							'BREED.CAT',
-							'DAY_OF_WEEK'];
+		const validGroups = ['DAY_OF_WEEK'];
 
 		const validationPassed: boolean = types.every(type => {
 			if (validGroups.indexOf(type) === -1) {
@@ -42,6 +39,10 @@ class Codevalues extends BaseController {
 
 	getCities(req: Request, res: Response) {
 		repo.getCities(this.getOrdinalResponseCallback(res));
+	}
+
+	getAnimals(req: Request, res: Response) {
+		repo.getAnimals(this.getOrdinalResponseCallback(res));
 	}
 	
 	getCompanyCategories(req: Request, res: Response) {

@@ -11,8 +11,9 @@ import { Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, T
 import styles from './styles';
 import {Divider, Typography, Paper} from "material-ui";
 
-import { Field, FieldArray, reduxForm } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import Location from "./components/Location/index";
+import Animals from "./components/Animals/index";
 
 
 @translate(['common'])
@@ -26,6 +27,8 @@ class NewCompanyContainer extends React.Component {
 			imageObjects: [],
 			categories: [],
 			subcategories: [],
+			renderAnimals: false,
+			renderBreeds: false,
 			selectedAddress: 0,
 			showConfirm: false,
 		};
@@ -41,7 +44,9 @@ class NewCompanyContainer extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		this.setState({
 			categories: nextProps.common.companiesCategories,
-			cities: nextProps.common.cities
+			cities: nextProps.common.cities,
+            renderAnimals: this.isAnimalAvailable(nextProps),
+            renderBreeds: this.isBreedAvailable(nextProps)
 		});
 	}
 
@@ -50,10 +55,15 @@ class NewCompanyContainer extends React.Component {
 			return category.value === selected.value;
 		});
 		this.props.change('subcategoryId', null);
+        this.props.change('animals', []);
 		this.setState({
-			subcategories: category.subcategories
+			subcategories: category.subcategories,
 		});
 	};
+
+	handleSubcategoryChange = () => {
+        this.props.change('animals', []);
+    };
 
 	onCancelPressed = () => {
 		this.props.history.goBack();
@@ -66,6 +76,9 @@ class NewCompanyContainer extends React.Component {
 	saveAction = (values) => {
 		const { imageObjects } = this.state;
 		values.image = imageObjects && imageObjects.length > 0 ? this.state.imageObjects[0].file : null;
+		values.locations.forEach(location => {
+		    delete location.label;
+        });
 
 		if (this.props.editMode) {
 			this.props.updateCompany(this.props.match.params.companyId, values, this.props.history);
@@ -74,13 +87,20 @@ class NewCompanyContainer extends React.Component {
 		}
 	};
 
+	isAnimalAvailable = (props) => {
+	    return ['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(props.selectedSubCategory)
+            || ['SERVICES'].includes(props.selectedCategory);
+    };
+
+	isBreedAvailable = (props) => {
+	    return ['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(props.selectedSubCategory);
+    };
+
 	render() {
 		const { t, classes, common, handleSubmit } = this.props;
 
 		return (
             <form className="d-flex-column align-items-center my-4">
-				{JSON.stringify(this.props.company)}
-
                 <Card raised>
                     <Grid container justify="center" spacing={24}>
 
@@ -112,11 +132,19 @@ class NewCompanyContainer extends React.Component {
                             <Field name="subcategoryId"
                                    component={Dropdown}
                                    options={this.state.subcategories}
+                                   onChange={this.handleSubcategoryChange}
                                    format={value => this.state.subcategories.find(x => x.value === value)}
                                    normalize={value => value.value}
                             />
                         </Grid>
-
+                        <Grid item xs={11}>
+                            <FieldArray
+                                name="animals"
+                                animals={this.props.common.animals}
+                                renderAnimals={this.state.renderAnimals}
+                                renderBreeds={this.state.renderBreeds}
+                                component={Animals}/>
+                        </Grid>
                         <Grid item xs={11}>
                             <Title>Картинка лого</Title>
                             <Field name="image"
@@ -192,7 +220,9 @@ const NewCompany = connect(
     state => ({
         common: state.common,
         // new: state.newCompany,
-        initialValues: state.newCompany.company
+        initialValues: state.newCompany.company,
+        selectedCategory: formValueSelector('company')(state, 'categoryId'),
+        selectedSubCategory: formValueSelector('company')(state, 'subcategoryId'),
     }),
     {
         postCompany,

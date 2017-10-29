@@ -29,6 +29,12 @@ import {
 
 	addCity,
 	removeCity,
+	addSubway,
+	removeSubway,
+	addAnimal,
+	removeAnimal,
+	addBreed,
+	removeBreed,
 
 	setIsWorkingNow,
 } from "./actionCreators/filter";
@@ -150,6 +156,45 @@ class CompaniesListContainer extends React.Component {
 		// action to block company
 	};
 
+	handleCheckboxPressed = (event) => {
+        switch(event.target.name) {
+            case 'cities': {
+                if (event.target.checked) {
+                    this.props.addCity(event.target.value);
+                } else {
+                    this.props.removeCity(event.target.value);
+                }
+                break;
+            }
+            case 'subways': {
+                if (event.target.checked) {
+                    this.props.addSubway(event.target.value);
+                } else {
+                    this.props.removeSubway(event.target.value);
+                }
+                break;
+            }
+            case 'animals': {
+                if (event.target.checked) {
+                    this.props.addAnimal(event.target.value);
+                } else {
+                    this.props.removeAnimal(event.target.value);
+                }
+                break;
+            }
+            case 'breeds': {
+                if (event.target.checked) {
+                    this.props.addBreed(event.target.value);
+                } else {
+                    this.props.removeBreed(event.target.value);
+                }
+                break;
+            }
+        }
+        this.props.updateUrlWithStateSource(this.props.history);
+        this.props.loadCompanies();
+	};
+
 	render() {
 		const {t, classes} = this.props;
 
@@ -203,8 +248,10 @@ class CompaniesListContainer extends React.Component {
 						history={this.props.history}
 						filter={this.props.filter}
 						cities={this.props.cities}
-						addCity={this.props.addCity}
-						removeCity={this.props.removeCity}
+						subways={this.props.subways}
+						animals={this.props.animals}
+						breeds={this.props.breeds}
+						handleCheckboxPressed={this.handleCheckboxPressed}
 						setIsWorkingNow={this.props.setIsWorkingNow}
 						updateUrlWithStateSource={this.props.updateUrlWithStateSource}
 						loadCompanies={this.props.loadCompanies}
@@ -249,10 +296,9 @@ class CompaniesListContainer extends React.Component {
 	}
 }
 
-
-
-
 const getCities = (state) => state.common.cities;
+const getFilter = (state) => state.companiesList.filter;
+const getAnimals = (state) => state.common.animals;
 
 const getFlatCitiesList = createSelector(
 	[getCities],
@@ -277,12 +323,53 @@ const getFlatCitiesList = createSelector(
 	}
 );
 
+const getSubways = createSelector(
+	[getFilter, getCities],
+	(filter, cities) => {
+		const subways = [];
+		cities.forEach(city => {
+			if (filter.selectedCitiesIds.includes(city.value)) {
+				subways.push(...city.subways);
+			}
+		});
+		return subways;
+	}
+);
+
+const getFlatAnimals = createSelector(
+	[getFilter, getAnimals],
+	(filter, animals) => {
+		let result = [];
+		if (['SERVICES'].includes(filter.companyCategoryId) ||
+			['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(filter.companySubcategoryId)) {
+            result = animals;
+		}
+		return result;
+	}
+);
+
+const getBreeds = createSelector(
+	[getFilter, getFlatAnimals],
+	(filter, animals) => {
+		const breeds = [];
+        animals.forEach(animal => {
+            if (filter.selectedAnimalsIds.includes(animal.value)) {
+                breeds.push(...animal.breeds);
+            }
+        });
+		return breeds;
+	}
+);
+
 const CompaniesList = connect(
 	state => {
 		return {
 			main: state.companiesList.main,
 			filter: state.companiesList.filter,
-			cities: getFlatCitiesList(state)
+			cities: getFlatCitiesList(state),
+			subways: getSubways(state),
+			animals: getFlatAnimals(state),
+			breeds: getBreeds(state),
 		};
 	},
 	{
@@ -298,7 +385,13 @@ const CompaniesList = connect(
 
 		addCity,
 		removeCity,
+		addSubway,
+		removeSubway,
 		removeCompany,
+		addAnimal,
+		removeAnimal,
+		addBreed,
+		removeBreed,
 
 		setIsWorkingNow,
 	}

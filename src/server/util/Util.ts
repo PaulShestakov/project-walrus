@@ -31,15 +31,16 @@ export default class Util {
 
 			const accObject = target[shape.name];
 			const reduceId = row[shape.idName];
+			if (reduceId != null) {
+				if (!accObject[reduceId]) {
+					accObject[reduceId] = shape.map(row);
+				}
 
-			if (!accObject[reduceId]) {
-				accObject[reduceId] = shape.map(row);
-			}
+				const newTarget = accObject[reduceId];
 
-			const newTarget = accObject[reduceId];
-
-			if (shape.children && shape.children.length > 0) {
-				shape.children.forEach(reduceRow.bind(null, newTarget, row));
+				if (shape.children && shape.children.length > 0) {
+					shape.children.forEach(reduceRow.bind(null, newTarget, row));
+				}
 			}
 		}
 

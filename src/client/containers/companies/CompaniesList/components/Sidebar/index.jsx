@@ -16,22 +16,43 @@ import Authorized from "../../../../Authorized";
 export default class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			filters: [
+				{
+					name: 'cities',
+					title: 'Местоположение',
+                    showMoreLabel: 'Все города',
+                    numberOfItemsToShowDefault: 6,
+					getItems: (props) => props.cities,
+					getSelectedIds: (props) => props.filter.selectedCitiesIds,
+				},
+				{
+					name: 'subways',
+					title: 'Метро',
+					showMoreLabel: 'Все станции метро',
+                    numberOfItemsToShowDefault: 4,
+                    getItems: (props) => props.subways,
+                    getSelectedIds: (props) => props.filter.selectedSubwaysIds,
+				},
+				{
+                    name: 'animals',
+                    title: 'Животные',
+                    showMoreLabel: 'Все животные',
+                    numberOfItemsToShowDefault: 4,
+                    getItems: (props) => props.animals,
+                    getSelectedIds: (props) => props.filter.selectedAnimalsIds,
+				},
+                {
+                    name: 'breeds',
+                    title: 'Породы',
+                    showMoreLabel: 'Все породы',
+                    numberOfItemsToShowDefault: 4,
+                    getItems: (props) => props.breeds,
+                    getSelectedIds: (props) => props.filter.selectedBreedsIds,
+                }
+			]
+		};
 	}
-
-	handleCheckboxPressed = (event) => {
-		switch(event.target.name) {
-			case 'cities': {
-				if (event.target.checked) {
-					this.props.addCity(event.target.value);
-				} else {
-					this.props.removeCity(event.target.value);
-				}
-				break;
-			}
-		}
-		this.props.updateUrlWithStateSource(this.props.history);
-		this.props.loadCompanies();
-	};
 
 	handleIsWorkingNowChange = (event, checked) => {
 		this.props.setIsWorkingNow(checked);
@@ -41,7 +62,7 @@ export default class Sidebar extends React.Component {
 
 
 	render() {
-		const {t, classes} = this.props;
+		const {t, classes, handleCheckboxPressed} = this.props;
 
 		return (
 			<div className={classes.flexColumn}>
@@ -55,16 +76,23 @@ export default class Sidebar extends React.Component {
 					</Link>
 				</Authorized>
 				<Card className={classNames(classes.card, 'mb-3 pb-3')}>
-					<CheckboxesBlock
-						formGroupName="cities"
-						title={t('LOCATION')}
-						showMoreLabel={t('ALL_CITIES')}
-						numberOfItemsToShowDefault={6}
-						items={this.props.cities}
-						selectedIds={this.props.filter.selectedCitiesIds}
-						handleCheckboxPressed={this.handleCheckboxPressed}
-					/>
-
+					{
+						this.state.filters.map((filter, index) => {
+							const items = filter.getItems(this.props);
+							return (
+								items.length > 0 &&
+								<CheckboxesBlock
+									key={index}
+									formGroupName={filter.name}
+									title={filter.title}
+									showMoreLabel={filter.showMoreLabel}
+									numberOfItemsToShowDefault={filter.numberOfItemsToShowDefault}
+									items={items}
+									selectedIds={filter.getSelectedIds(this.props)}
+									handleCheckboxPressed={handleCheckboxPressed}/>
+							)
+						})
+					}
 					<div>
 						<FormControlLabel className={classNames(classes.switchFormControlWrapper, "m-3")}
 							control={

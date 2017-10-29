@@ -1,6 +1,7 @@
 import BaseCRUD from "../BaseCRUD";
 import {executeQuery} from "../../database/DBHelper";
 import codeValuesSQL from './sql';
+import Util from "../../util/Util";
 
 class CodeValues extends BaseCRUD {
 
@@ -61,6 +62,42 @@ class CodeValues extends BaseCRUD {
         });
     }
 
+    public getAnimals(callback) {
+        function mapAnimal(animal) {
+            return {
+                value: animal.animalId,
+                label: animal.animalName,
+                sort: animal.animalSort
+            }
+        }
+        function mapBreed (breed) {
+            return {
+                value: breed.breedId,
+                label: breed.breedName,
+                sort: breed.breedSort
+            }
+        }
+        executeQuery(codeValuesSQL.GET_ANIMALS, [], (error, rows) => {
+            if (error) {
+                return callback(error);
+            }
+            const shape = {
+                name: 'animals',
+                idName: 'animalId',
+                map: mapAnimal,
+                children: [
+                    {
+                        name: 'breeds',
+                        idName: 'breedId',
+                        map: mapBreed
+                    }
+                ]
+            };
+            const animals = Util.reduceFlatData(rows, shape).animals;
+            callback(null, Util.ensureArray(animals));
+        });
+    }
+
     public getCities(callback) {
         executeQuery(codeValuesSQL.GET_CITIES, [], (error, rows) => {
             if (error) {
@@ -88,7 +125,7 @@ class CodeValues extends BaseCRUD {
                     accum[row.cityId].subways[row.citySubwayId] = {
                         value: row.citySubwayId,
                         label: row.citySubwayName,
-                        sort: row.subCitySort,
+                        sort: row.citySubwaySort,
                     };
                 }
                 return accum;
