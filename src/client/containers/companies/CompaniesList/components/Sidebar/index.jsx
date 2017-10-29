@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import styles from './styles';
 import {Link} from "react-router-dom";
 import {Switch} from "material-ui";
+import Authorized from "../../../../Authorized";
 
 
 @translate(['companiesList'])
@@ -44,13 +45,15 @@ export default class Sidebar extends React.Component {
 
 		return (
 			<div className={classes.flexColumn}>
-				<Link to="/company/new" className={classNames(classes.link, 'mb-2')}>
-					<Button accent="red" disableRipple={true} className="w-100">
-						<FontAwesome name="plus" className="mr-1" />
-						Добавить компанию
-					</Button>
-				</Link>
-
+				<Authorized
+					allowedRoles={[3]}>
+					<Link to="/company/new" className={classNames(classes.link, 'mb-2')}>
+						<Button accent="red" disableRipple={true} className="w-100">
+							<FontAwesome name="plus" className="mr-1" />
+							Добавить компанию
+						</Button>
+					</Link>
+				</Authorized>
 				<Card className={classNames(classes.card, 'mb-3 pb-3')}>
 					<CheckboxesBlock
 						formGroupName="cities"

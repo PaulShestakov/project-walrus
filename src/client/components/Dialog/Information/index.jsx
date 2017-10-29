@@ -44,7 +44,7 @@ export default class InfoDialog extends React.Component {
                     onRequestClose={this.handleClose}
                     className={classNames(classes.root)}>
                 <Grid container className="d-flex-row">
-                    <Grid item>
+                    <Grid item className={classes.closeButton}>
                         <Clear onClick={this.handleClose}
                                className={classNames(classes.closeImg)}/>
                     </Grid>
@@ -53,11 +53,17 @@ export default class InfoDialog extends React.Component {
                     </Grid>
                 </Grid>
                 <Divider />
-                <DialogContent>
+                <DialogContent className={classes.dialogContent}>
                     {
-                        children ? children : (<DialogContentText>{message}</DialogContentText>)
+                        children ? children : (
+                            <DialogContentText>
+                                {
+                                    message
+                                }
+                            </DialogContentText>
+                        )
                     }
-                </DialogContent>
+                    </DialogContent>
             </Dialog>
         );
     }

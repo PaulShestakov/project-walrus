@@ -2,6 +2,7 @@ import React from 'react';
 
 import { compose, withProps, lifecycle, withHandlers, withState  } from "recompose";
 import markerImg from '../../assets/img/marker2.png';
+import markerMain from '../../assets/img/marker_main.png';
 import {
   withScriptjs,
   withGoogleMap,
@@ -121,23 +122,40 @@ const MapWithASearchBox = compose(
       </SearchBox>
     }
     {
-      props.extMarkers.map((marker, index) =>
-        <Marker key={index}
-                position={marker.position}
-                icon={{
-                    url: markerImg,
-                    scaledSize: new google.maps.Size(40, 60)
-                }}
-                onClick={() => props.onMarkerClick(index)}>
-        {
-          marker.isOpen &&
-          <InfoWindow onCloseClick={() => props.onMarkerClick(index)}>
-            <div>
-              Телефоны
-            </div>
-          </InfoWindow>
+      props.extMarkers.map((marker, index) =>  {
+        let markerProps;
+        if (marker.isMain) {
+          markerProps = {
+              url: markerMain,
+              width: 50,
+              height: 75
+          };
+        } else {
+          markerProps = {
+              url: markerImg,
+              width: 40,
+              height: 60
+          }
         }
-        </Marker>
+        return (
+            <Marker key={index}
+                    position={marker.position}
+                    icon={{
+                        url: markerProps.url,
+                        scaledSize: new google.maps.Size(markerProps.width, markerProps.height)
+                    }}
+                    onClick={() => props.onMarkerClick(index)}>
+                {
+                    marker.isOpen &&
+                    <InfoWindow onCloseClick={() => props.onMarkerClick(index)}>
+                        {
+                            props.markerInfo
+                        }
+                    </InfoWindow>
+                }
+            </Marker>
+          );
+        }
       )
     }
   </GoogleMap>

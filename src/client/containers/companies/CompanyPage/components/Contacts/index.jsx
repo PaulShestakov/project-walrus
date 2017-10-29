@@ -14,7 +14,8 @@ export default class Contacts extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            markers: []
+            markers: [],
+            selectedMarker: 0
         }
     }
 
@@ -24,7 +25,8 @@ export default class Contacts extends React.Component {
                 markers: nextProps.locations.reduce((acc, item) => {
                     acc.push({
                         position: item.position,
-                        isOpen: false
+                        isOpen: false,
+                        isMain: item.isMain,
                     });
                     return acc;
                 }, [])
@@ -39,11 +41,22 @@ export default class Contacts extends React.Component {
     };
 
     render() {
-        const {t, classes, locations = [], ...other} = this.props;
+        const { t, classes, locations = [] } = this.props;
         const { markers } = this.state;
-        console.log(markers);
+        const markerInfo = (
+            <div>
+                {
+                    locations[this.state.selectedMarker] &&
+                    locations[this.state.selectedMarker].phones.map(phone => (
+                        <div>
+                            {phone.phone}
+                        </div>
+                    ))
+                }
+            </div>
+        );
         return (
-            <div className="my-4">
+            <div>
             {
                 locations.length > 0 && (
                     <Paper>
@@ -51,11 +64,12 @@ export default class Contacts extends React.Component {
                             <Grid item xs={4}>
                                 <List className={classes.list}
                                       subheader
-                                      disablePadding
-                                      dense>
+                                      disablePadding>
                                     {
                                         locations.map((item, index) => (
-                                            <ListItem>
+                                            <ListItem
+                                                disableGutters
+                                                divider>
                                                 <LocationItem
                                                     item={item}
                                                     onLocationClick={() => this.handleMarkerClick(index)}/>
@@ -65,15 +79,10 @@ export default class Contacts extends React.Component {
                                 </List>
                             </Grid>
                             <Grid item xs={8}>
-                                {
-                                    markers.length > 0 && <Map extMarkers={markers}
-                                                               onMarkerClick={(index) => this.handleMarkerClick(index)}
-                                    /> ||
-                                        <div>
-                                            Положение не задано
-                                        </div>
-                                }
-
+                                <Map extMarkers={markers}
+                                     onMarkerClick={(index) => this.handleMarkerClick(index)}
+                                     markerInfo={markerInfo}
+                                />
                             </Grid>
                         </Grid>
                     </Paper>

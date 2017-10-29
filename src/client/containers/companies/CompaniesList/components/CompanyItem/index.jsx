@@ -10,6 +10,7 @@ import styles from './styles';
 import {Paper} from "material-ui";
 import defaultImage from '../../../../../assets/img/company-default.png';
 import {ModeEdit as ModeEditIcon, DeleteForever as Delete, Block} from 'material-ui-icons';
+import Authorized from "../../../../Authorized";
 
 
 @translate(['companiesList'])
@@ -54,36 +55,45 @@ export default class CompanyItem extends React.Component {
 
 				<CardContent className={classNames(classes.cardContent, 'p-0', 'pl-4')}>
 					<div className={classNames(classes.flexRow, classes.spaceBetween)}>
-						<Label uppercase bold fontSize="2rem">{company.name}</Label>
-						<div>
-							<Button fab className={classNames(classes.editButton, 'mr-3')}>
-								<Link to={`/company/edit/${company.companyId}`}>
-									<ModeEditIcon className={classes.editIcon} />
-								</Link>
-							</Button>
-							<Button fab
-									className={classNames(classes.editButton, 'mr-3')}
-									onClick={this.handleAction.bind(null, company, 'block')}>
-								<Block className={classes.editIcon} />
-							</Button>
-							<Button fab
-									className={classes.editButton}
-									onClick={this.handleAction.bind(null, company, 'delete')}>
-								<Delete className={classes.editIcon} />
-							</Button>
-						</div>
+						<Link to={`/company/${company.companyId}`}>
+							<Label uppercase bold fontSize="2rem">
+								{company.name}
+							</Label>
+						</Link>
+						<Authorized allowedRoles={[3]}>
+							<div>
+								<Button fab className={classNames(classes.editButton, 'mr-3')}>
+									<Link to={`/company/edit/${company.companyId}`}>
+										<ModeEditIcon className={classes.editIcon} />
+									</Link>
+								</Button>
+								<Button fab
+										className={classNames(classes.editButton, 'mr-3')}
+										onClick={this.handleAction.bind(null, company, 'block')}>
+									<Block className={classes.editIcon} />
+								</Button>
+								<Button fab
+										className={classes.editButton}
+										onClick={this.handleAction.bind(null, company, 'delete')}>
+									<Delete className={classes.editIcon} />
+								</Button>
+							</div>
+						</Authorized>
 					</div>
 
 					<div className={classNames(classes.flexRow, 'mt-2')}>
-						<div key={mainLocation.id} className={classes.flexRow}>
-							<FontAwesome name="map-marker" className={classes.icon} />
+						<div className={classes.flexRow}>
+							<FontAwesome name="map-marker"
+										 className={classes.icon} />
 							<Text>{mainLocation.cityName + ': ' + mainLocation.address}</Text>
 						</div>
 					</div>
 
 					<div className={classNames(classes.flexRow, 'mt-2')}>
-						<FontAwesome name="globe" className={classes.icon} />
-						<Text>{company.websiteUrl}</Text>
+						<div className={classes.flexRow}>
+							<FontAwesome name="globe" className={classes.icon} />
+							<Text>{company.url}</Text>
+						</div>
 					</div>
 
 					<div className={classes.buttonsBlock}>
@@ -95,6 +105,11 @@ export default class CompanyItem extends React.Component {
 								onClick={this.props.handleOpenPhonesDialog.bind(null, mainLocation.phones)}>
                             Телефоны
 						</Button>
+						<Link to={`/company/${company.companyId}/contacts`}>
+							<Button className="mr-2 text-white" accent="white">
+								Филиалы ({ company.locations.length })
+							</Button>
+						</Link>
 					</div>
 				</CardContent>
 			</Card>

@@ -11,7 +11,7 @@ import styles from './styles';
 
 import { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card';
 import {Divider, Typography, Paper} from "material-ui";
-import { Pets, Call, Mail, Public } from 'material-ui-icons';
+import { Pets, Call, Mail, Public, LocationOn } from 'material-ui-icons';
 import CompanyInfo from "./components/Info/index";
 import Feedbacks from "./components/Feedback/index";
 import defaultCompanyImage from '../../../assets/img/company-default.png';
@@ -94,6 +94,16 @@ class CompanyPageContainer extends React.Component {
 
 		const imageSrc = (company.logo ? company.logo : defaultCompanyImage).split('\\').join('\/');
 
+		let mainLocation;
+		if (company.locations) {
+            mainLocation = company.locations.find(location => (location.isMain === 1));
+		}
+
+		let phonesText;
+		if (mainLocation) {
+            phonesText = mainLocation.phones ? mainLocation.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
+		}
+
 		return (
 			<div className={classes.mainCardWrapper}>
 				<Card raised className={classNames(classes.mainCard, "my-4")}>
@@ -108,11 +118,13 @@ class CompanyPageContainer extends React.Component {
 								</Typography>
 							</Grid>
 							<Grid item xs={4}>
-								<Link to={`${this.props.match.url}/feedback`} className={classes.link}>
-									<Button accent="red" className='w-100'>
-										{t('Оставить отзыв')}
-									</Button>
-								</Link>
+								<Authorized allowedRoles={[4]}>
+									<Link to={`${this.props.match.url}/feedback`} className={classes.link}>
+										<Button accent="red" className='w-100'>
+											{t('Оставить отзыв')}
+										</Button>
+									</Link>
+								</Authorized>
 							</Grid>
 						</Grid>
 						<Divider className="mt-4 mb-2" />
@@ -126,26 +138,50 @@ class CompanyPageContainer extends React.Component {
 								</Paper>
 							</Grid>
 							<Grid item xs={8}>
-								<Grid container className="d-flex-column h-100">
-									{/*<Grid item className="d-flex align-items-center">*/}
-									{/*<Call className="mr-2"/>*/}
-									{/*<Typography component="p">*/}
-									{/*{company.phones ? company.phones.join(', ') : "Телефонов нет"}						*/}
-									{/*</Typography>*/}
-									{/*</Grid>*/}
-									<Grid item className="d-flex align-items-center">
+								<Grid container
+									  spacing={16}>
+									<Grid item xs={12}
+										  className="d-flex align-items-center">
 										<Mail className="mr-2"/>
 										<Typography component="p">
 											{company.email}
 										</Typography>
 									</Grid>
-									<Grid item className="d-flex align-items-center">
+									<Grid item xs={12}
+										  className="d-flex align-items-center">
 										<Public className="mr-2"/>
 										<Typography component="p">
 											<a href={company.url} target="_blank">
 												{company.url}
 											</a>
 										</Typography>
+									</Grid>
+									<Grid item xs={12}>
+									{
+										mainLocation &&
+										<Grid container
+											  spacing={16}>
+											<Grid item xs={12}>
+												<Typography component="p">
+													Контакты главного офиса :
+												</Typography>
+											</Grid>
+											<Grid item xs={12}
+												  className="d-flex align-items-center">
+												<LocationOn className="mr-2"/>
+												<Typography component="p">
+                                                    {mainLocation.address}
+												</Typography>
+											</Grid>
+											<Grid item xs={12}
+												  className="d-flex align-items-center">
+												<Call className="mr-2"/>
+												<Typography component="p">
+                                                    {phonesText}
+												</Typography>
+											</Grid>
+										</Grid>
+									}
 									</Grid>
 								</Grid>
 							</Grid>
@@ -164,23 +200,22 @@ class CompanyPageContainer extends React.Component {
 							<Tab label={t('Адреса и контакты')}/>
 						</Tabs>
 						<Divider />
+						<div className={classes.context}>
+							<Route exact path={`${this.props.match.url}`}
+								   render={() => <CompanyInfo company={ company } /> }/>
 
-						<Route exact path={`${this.props.match.url}`}
-							   render={() => <CompanyInfo company={ company } /> }/>
+							<Route exact path={`${this.props.match.url}/feedbacks`}
+								   render={() => <Feedbacks feedbacks={ feedbacks }
+															deleteFeedback={ this.deleteFeedback }/>}/>
 
-						<Route exact path={`${this.props.match.url}/feedbacks`}
-							   render={() => <Feedbacks feedbacks={ feedbacks }
-														deleteFeedback={ this.deleteFeedback }/>}/>
 
-						<Authorized allowedRoles={[1]}>
 							<Route path={`${this.props.match.url}/feedback`}
 								   render={() => <NewFeedback user={ common.user }
 															  onPostFeedback={this.onPostFeedback}/>}/>
-						</Authorized>
 
-						<Route path={`${this.props.match.url}/contacts`}
-							   render={() => <Contacts locations={ company.locations } />}/>
-
+							<Route path={`${this.props.match.url}/contacts`}
+								   render={() => <Contacts locations={ company.locations } />}/>
+						</div>
 					</CardContent>
 				</Card>
 			</div>

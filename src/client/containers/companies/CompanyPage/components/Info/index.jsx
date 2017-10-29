@@ -22,7 +22,7 @@ export default class CompanyInfo extends React.Component {
         const {t, classes, company, ...other} = this.props;
 
         return (
-            <Grid container >
+            <Grid container>
                 <Grid item xs={12} className="mt-4 mb-2 text-wrap">
                     <Typography type="body1" component="p">
                         {company.description}

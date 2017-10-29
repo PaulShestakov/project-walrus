@@ -42,7 +42,7 @@ function renderInput(inputProps) {
 	return (
 		<TextField
 			autoFocus={autoFocus}
-			className={classes.textField}
+			fullWidth
 			value={value}
 			inputRef={ref}
 			InputProps={{
@@ -68,7 +68,7 @@ function renderSuggestionsContainer(options) {
 function renderSuggestion(classes, company, { query, isHighlighted }) {
 	return (
 		<MenuItem component="div" className="p-3" classes={{root: classes.suggestionMenuItem}}>
-			<Link to={`/company/${company.id}`} className={classes.suggestionItemLink}>
+			<Link to={`/company/${company.companyId}`} className={classes.suggestionItemLink}>
 				<Paper>
 					<img src={company.logo} className={classes.suggestionImage}/>
 				</Paper>
@@ -202,15 +202,11 @@ class CompaniesListContainer extends React.Component {
 					<Sidebar
 						history={this.props.history}
 						filter={this.props.filter}
-
 						cities={this.props.cities}
 						addCity={this.props.addCity}
 						removeCity={this.props.removeCity}
-
 						setIsWorkingNow={this.props.setIsWorkingNow}
-
 						updateUrlWithStateSource={this.props.updateUrlWithStateSource}
-
 						loadCompanies={this.props.loadCompanies}
 					/>
 				</Grid>
@@ -222,8 +218,8 @@ class CompaniesListContainer extends React.Component {
 					closeCallback={() => this.setState({ isPhonesDialogOpened: false })}>
 					{
 						this.state.phones && this.state.phones.map(item => (
-							<div>
-								{item.phone}
+							<div key={item.phoneId} className="mt-2">
+								<Label>{item.phone}</Label>
 							</div>
 						))
 					}
