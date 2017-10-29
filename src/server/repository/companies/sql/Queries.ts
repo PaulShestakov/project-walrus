@@ -1,6 +1,7 @@
 const COMPANIES_TABLE = 'wikipet.companies';
 const COMPANIES_PHONES = 'wikipet.companies_phones';
 const COMPANIES_LOCATION = 'wikipet.companies_location';
+const COMPANIES_ANIMALS = 'wikipet.companies_animals';
 const CODE_VALUES = 'wikipet.code_values';
 const WORKING_TIMES = 'wikipet.companies_working_time';
 const FEEDBACK = 'wikipet.companies_feedback';
@@ -33,7 +34,13 @@ export default {
 			wt.CLOSE_TIME close,
 			
 			ph.COMPANY_PHONE_ID phoneId,
-			ph.PHONE phone
+			ph.PHONE phone,
+			
+			ca.COMPANY_ANIMAL_ID as companyAnimalId,
+			(SELECT NAME FROM wikipet.code_values WHERE ID = ca.ANIMAL_ID) as animalName,
+			(SELECT NAME FROM wikipet.code_values WHERE ID = ca.BREED_ID) as breedName,
+			ca.ANIMAL_ID as animalId,
+			ca.BREED_ID as breedId
 
 		FROM ${COMPANIES_TABLE} c
 		
@@ -45,6 +52,9 @@ export default {
 			
 		LEFT JOIN ${COMPANIES_PHONES} ph
 			ON cl.COMPANY_LOCATION_ID = ph.COMPANY_LOCATION_ID
+			
+		LEFT JOIN ${COMPANIES_ANIMALS} ca
+			ON ca.COMPANY_ID = c.COMPANY_ID
 			
 		WHERE c.COMPANY_ID = ?
 	`,
@@ -95,5 +105,7 @@ export default {
 
 	DELETE_FEEDBACK: `DELETE FROM ${FEEDBACK} WHERE COMPANY_FEEDBACK_ID = ?`,
 
-	UPDATE_COMPANY: `UPDATE ${COMPANIES_TABLE} SET ? WHERE COMPANY_ID = ?`
+	UPDATE_COMPANY: `UPDATE ${COMPANIES_TABLE} SET ? WHERE COMPANY_ID = ?`,
+
+	SAVE_COMPANY_ANIMAL: `INSERT INTO ${COMPANIES_ANIMALS} VALUES ?`,
 }

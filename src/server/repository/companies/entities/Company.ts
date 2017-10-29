@@ -6,6 +6,7 @@ interface Company {
 	email: string,
 	url: string,
 	image: object,
+    animals: Array<object>,
     companyCategoryId: string,
     companySubcategoryId: string,
 	locations: Array<object>,
