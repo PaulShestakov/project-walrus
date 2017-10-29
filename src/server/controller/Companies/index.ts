@@ -3,6 +3,7 @@ import { Router, Request, Response } from 'express';
 import BaseController from '../BaseController';
 import upload from '../../util/Upload';
 import CompaniesRepository from '../../repository/companies/Companies';
+import FeedbacksRepository from '../../repository/companies/Feedbacks';
 import * as passport from 'passport';
 
 
@@ -108,6 +109,7 @@ class Companies extends BaseController {
        if (true) {
 		let company = JSON.parse(req.body.company);
 	   	company.image = req.files;
+
 		CompaniesRepository.saveCompany(company, (error, result) => {
 		   if (error) {
 			   this.errorResponse(res, 500, error);
@@ -141,7 +143,7 @@ class Companies extends BaseController {
 				const feedback = req.body;
 				feedback.companyId = companyId;
 				feedback.user = req.user.id;
-				CompaniesRepository.postFeedback(req.body, (error) => {
+				FeedbacksRepository.postFeedback(req.body, (error) => {
 					if (error) {
 						this.errorResponse(res, 500, error);
 					} else {
@@ -157,7 +159,7 @@ class Companies extends BaseController {
 	private getFeedbacks(req: Request, res: Response) {
 		const { companyId } = req.params;
 		if (companyId) {
-			CompaniesRepository.getFeedbacks(companyId, (error, result) => {
+			FeedbacksRepository.getFeedbacks(companyId, (error, result) => {
 				if (error) {
 					this.errorResponse(res, 500, error);
 				} else {
@@ -172,7 +174,7 @@ class Companies extends BaseController {
 	private deleteFeedback(req: Request, res: Response) {
 		const { feedbackId } = req.params;
 		if (feedbackId) {
-			CompaniesRepository.deleteFeedback(feedbackId, (error, result) => {
+			FeedbacksRepository.deleteFeedback(feedbackId, (error, result) => {
 				if (error) {
 					this.errorResponse(res, 500, error);
 				} else {

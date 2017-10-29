@@ -8,6 +8,9 @@ import Queries from './sql/Queries';
 import BaseCRUD from '../BaseCRUD';
 import Util from '../../util/Util';
 import * as uuid from 'uuid';
+import Locations from "./Locations";
+import Phones from "./Phones";
+import WorkingTimes from "./WorkingTimes";
 
 export default class Companies extends BaseCRUD  {
 
@@ -23,30 +26,22 @@ export default class Companies extends BaseCRUD  {
 		url: item.url
 	});
 
-	static mapLocation = (item) => ({
-		locationId: item.locationId,
-		subwayId: item.subwayId,
-		cityId: item.cityId,
-		cityName: item.cityName,
-		address: item.address,
-		isMain: item.isMain,
-		position: {
-			lat: item.lat,
-			lng: item.lng,
+	static internalizeCompany(company) {
+		let imagePath = _.get(company, ['image', '0', 'path'], null);
+		if (imagePath) {
+			imagePath = '/' + imagePath.split('\\').join('\/');
 		}
-	});
-
-	static mapPhone = (item) => ({
-		phoneId: item.phoneId,
-		phone: item.phone
-	});
-
-	static mapDayOfWeek = (item) => ({
-		dayOfWeek: item.dayOfWeek,
-		dayOfWeekName: item.dayOfWeekName,
-		open: item.open,
-		close: item.close,
-	});
+		return {
+			COMPANY_ID: company.companyId,
+			COMPANY_CATEGORY_ID: company.categoryId || null,
+			COMPANY_SUBCATEGORY_ID: company.subcategoryId || null,
+			NAME: company.name,
+			LOGO: imagePath,
+			DESCRIPTION: company.description,
+			EMAIL: company.email,
+			WEBSITE_URL: company.url,
+		};
+	}
 
 	static getCompany(companyId: string, callback) {
 		executeQuery(Queries.GET, [companyId], (error, rows) => {
@@ -62,17 +57,17 @@ export default class Companies extends BaseCRUD  {
 							{
 								name: 'locations',
 								idName: 'locationId',
-								map: Companies.mapLocation,
+								map: Locations.mapLocation,
 								children: [
 									{
 										name: 'workingTimes',
 										idName: 'dayOfWeek',
-										map: Companies.mapDayOfWeek
+										map: WorkingTimes.mapDayOfWeek
 									},
 									{
 										name: 'phones',
 										idName: 'phoneId',
-										map: Companies.mapPhone
+										map: Phones.mapPhone
 									}
 								]
 							}
@@ -100,13 +95,13 @@ export default class Companies extends BaseCRUD  {
 		company.companyId = uuid();
 		const locations = company.locations
 			.filter(i => i.city && i.address)
-			.map(item => Companies.internalizeLocation(company.companyId, item));
+			.map(item => Locations.internalizeLocation(company.companyId, item));
 
 	    const savePhones = (connection, done) => {
 			const phones: Array<object> = company.locations.reduce((acc, item, index) => {
 				if (item.phones) {
 					item.phones.forEach(phone => {
-						acc.push(Companies.internalizePhone({
+						acc.push(Phones.internalizePhone({
 							locationId: locations[index][0],
 							phone: phone.phone,
 						}));
@@ -128,7 +123,7 @@ export default class Companies extends BaseCRUD  {
 				if (item.workingTimes) {
 					item.workingTimes.filter(i => i.from && i.to && i.day)
                         .forEach(time => {
-							acc.push(Companies.internalizeTime({
+							acc.push(WorkingTimes.internalizeTime({
 								locationId: locations[index][0],
 								day: time.day.value,
 								from: time.from,
@@ -157,7 +152,6 @@ export default class Companies extends BaseCRUD  {
 	}
 
 	static updateCompany(companyId, company, callback) {
-
 		const internalizedCompany = this.internalizeCompany(company);
 		internalizedCompany.COMPANY_ID = companyId;
 
@@ -262,17 +256,17 @@ export default class Companies extends BaseCRUD  {
 					{
 						name: 'locations',
 						idName: 'locationId',
-						map: Companies.mapLocation,
+						map: Locations.mapLocation,
 						children: [
 							{
 								name: 'workingTimes',
 								idName: 'dayOfWeek',
-								map: Companies.mapDayOfWeek
+								map: WorkingTimes.mapDayOfWeek
 							},
 							{
 								name: 'phones',
 								idName: 'phoneId',
-								map: Companies.mapPhone
+								map: Phones.mapPhone
 							}
 						]
 					}
@@ -294,112 +288,4 @@ export default class Companies extends BaseCRUD  {
 			callback(null, data);
 		});
 	}
-
-	static postFeedback(feedback: IFeedback, callback) {
-		executeQuery(Queries.SAVE_FEEDBACK, [Companies.internalizeFeedback(feedback)], (error, result) => {
-			if (error) {
-				callback(error);
-				return;
-			}
-			callback(null, 'Success');
-		});
-	}
-
-	static getFeedbacks(companyId: string, callback) {
-		executeQuery(Queries.GET_FEEDBACKS, [companyId], (error, result) => {
-			if (error) {
-				callback(error);
-				return;
-			
-			}
-			const feedbacks = result.reduce((acc, row) => {
-				const feedback = {
-					id: row.feedbackId,
-					feedback: row.feedback,
-					summary: row.summary,
-					rating: row.rating,
-					createDate: row.createDate,
-					modificateDate: row.modificateDate,
-					user: {
-						id: row.userId,
-						photo: row.photo,
-						name: row.userName
-					}
-				};
-				acc.push(feedback);
-				return acc;
-			}, []);
-			callback(null, feedbacks);
-		});
-	}
-
-	static deleteFeedback(feedbackId, callback) {
-		executeQuery(Queries.DELETE_FEEDBACK, [feedbackId], (error, result) => {
-			if (error) {
-				callback(error);
-				return;
-			}
-			callback(null, { status: 'Success'});
-		});
-	}
-
-	static internalizeFeedback(feedback: IFeedback) {
-		return {
-			COMPANY_FEEDBACK_ID: uuid(),
-			COMPANY_ID: feedback.companyId,
-			USER_ID: feedback.user,
-			FEEDBACK: feedback.feedback,
-			SUMMARY: feedback.summary,
-			RATING: feedback.rating
-		}
-	}
-
-    static internalizeCompany(company) {
-		let image = _.get(company.image, ['0', 'path'], null);
-		if (image) {
-			image = '/' + image.split('\\').join('\/');
-		}
-        return {
-            COMPANY_ID: company.companyId,
-			COMPANY_CATEGORY_ID: company.categoryId || null,
-			COMPANY_SUBCATEGORY_ID: company.subcategoryId || null,
-            NAME: company.name,
-            LOGO: image,
-            DESCRIPTION: company.description,
-            EMAIL: company.email,
-            WEBSITE_URL: company.url,
-        };
-	}
-
-	static internalizeTime(workingTime) {
-		return [
-			workingTime.locationId,
-			workingTime.day,
-			`${workingTime.from}:00:00`,
-			`${workingTime.to}:00:00`
-		]
-	}
-	
-	static internalizeLocation(companyId, location) {
-		return [
-			uuid(),
-			location.subway ? location.subway.value : null,
-			companyId,
-			location.city ? location.city.value : null,
-			location.address ? location.address : 'Не задано',
-			location.location ? location.location.lat : 0,
-			location.location ? location.location.lng : 0,
-			!!location.isMain,
-			null,
-			null,
-		]
-	}
-
-    static internalizePhone(phone) {
-	    return [
-	        uuid(),
-			phone.locationId,
-            phone.phone
-        ];
-    }
 }

@@ -6,10 +6,10 @@ import {postCompany, updateCompany, loadCompany} from "./actions";
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
 
-import { Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Map, ConfirmDialog } from "components";
+import { Dropdown, Button, Title, Input, Grid, ReduxFormsImageUploader, TextField, Tabs, Tab, Card, Map, ConfirmDialog } from "components";
 
 import styles from './styles';
-import {Divider, Typography, Paper} from "material-ui";
+import {Typography} from "material-ui";
 
 import { Field, FieldArray, reduxForm } from 'redux-form'
 import Location from "./components/Location/index";
@@ -20,11 +20,10 @@ import Location from "./components/Location/index";
 @reduxForm({form: 'company', enableReinitialize: true})
 class NewCompanyContainer extends React.Component {
 
-	constructor(props) {
-		super(props);
+	constructor() {
+		super();
+
 		this.state = {
-			imageObjects: [],
-			categories: [],
 			subcategories: [],
 			selectedAddress: 0,
 			showConfirm: false,
@@ -38,16 +37,9 @@ class NewCompanyContainer extends React.Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		this.setState({
-			categories: nextProps.common.companiesCategories,
-			cities: nextProps.common.cities
-		});
-	}
-
-	handleCategoryChange = (selected) => {
-		const category = this.state.categories.find((category) => {
-			return category.value === selected.value;
+	handleCategoryChange = (selectedCategory) => {
+		const category = this.props.common.companiesCategories.find((category) => {
+			return category.value === selectedCategory.value;
 		});
 		this.props.change('subcategoryId', null);
 		this.setState({
@@ -64,13 +56,14 @@ class NewCompanyContainer extends React.Component {
 	};
 
 	saveAction = (values) => {
-		const { imageObjects } = this.state;
-		values.image = imageObjects && imageObjects.length > 0 ? this.state.imageObjects[0].file : null;
+		const companyId = this.props.match.params.companyId;
+		const history = this.props.history;
+		const editMode = this.props.editMode;
 
-		if (this.props.editMode) {
-			this.props.updateCompany(this.props.match.params.companyId, values, this.props.history);
+		if (editMode) {
+			this.props.updateCompany(companyId, values, history);
 		} else {
-			this.props.postCompany(values, this.props.history);
+			this.props.postCompany(values, history);
 		}
 	};
 
@@ -79,8 +72,6 @@ class NewCompanyContainer extends React.Component {
 
 		return (
             <form className="d-flex-column align-items-center my-4">
-				{JSON.stringify(this.props.company)}
-
                 <Card raised>
                     <Grid container justify="center" spacing={24}>
 
@@ -101,9 +92,9 @@ class NewCompanyContainer extends React.Component {
                             <Title>Категория</Title>
                             <Field name="categoryId"
                                    component={Dropdown}
-                                   options={this.state.categories}
+                                   options={this.props.common.companiesCategories}
                                    onChange={this.handleCategoryChange}
-                                   format={value => this.state.categories.find(x => x.value === value)}
+                                   format={value => this.props.common.companiesCategories.find(x => x.value === value)}
                                    normalize={value => value.value}
                             />
                         </Grid>
@@ -119,12 +110,10 @@ class NewCompanyContainer extends React.Component {
 
                         <Grid item xs={11}>
                             <Title>Картинка лого</Title>
-                            <Field name="image"
+                            <Field name="imageObjects"
                                    type="file"
-                                   component={ImageUploader}
-                                   imageObjects={this.state.imageObjects}
-                                   onImageAdd={(object) => this.setState({ imageObjects: [object] })}
-                                   onImageDelete={() => this.setState({ imageObjects: [] })} />
+								   imageObjectsMaxLimit={1}
+                                   component={ReduxFormsImageUploader} />
                         </Grid>
 
                         <Grid item xs={11}>
@@ -191,7 +180,6 @@ class NewCompanyContainer extends React.Component {
 const NewCompany = connect(
     state => ({
         common: state.common,
-        // new: state.newCompany,
         initialValues: state.newCompany.company
     }),
     {
