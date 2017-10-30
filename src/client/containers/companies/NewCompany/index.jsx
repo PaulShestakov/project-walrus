@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {createSelector} from 'reselect'
 
 import {postCompany, updateCompany, loadCompany} from "./actions";
 
@@ -15,6 +16,7 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import Location from "./components/Location/index";
 import Animals from "./components/Animals/index";
 
+import {getFormValues} from 'redux-form'
 
 @translate(['common'])
 @withStyles(styles)
@@ -127,9 +129,9 @@ class NewCompanyContainer extends React.Component {
                             <Title>Подкатегория</Title>
                             <Field name="subcategoryId"
                                    component={Dropdown}
-                                   options={this.state.subcategories}
+                                   options={this.props.subcategories}
                                    onChange={this.handleSubcategoryChange}
-                                   format={value => this.state.subcategories.find(x => x.value === value)}
+                                   format={value => this.props.subcategories.find(x => x.value === value)}
                                    normalize={value => value.value}
                             />
                         </Grid>
@@ -210,12 +212,38 @@ class NewCompanyContainer extends React.Component {
 	}
 }
 
+
+const getSelectedCategory = createSelector(
+	[getFormValues('company')],
+	formValues => {
+		return formValues && formValues.categoryId;
+	}
+);
+
+const getCategories = (state) => state.common.companiesCategories;
+
+const getSubcategories = createSelector(
+	[getSelectedCategory, getCategories],
+	(selectedCategory, categories) => {
+		const selectedCaregory = categories.find(category => category.value === selectedCategory);
+
+		if (selectedCaregory) {
+			return selectedCaregory.subcategories;
+		} else {
+			return [];
+		}
+	}
+);
+
+
 const NewCompany = connect(
     state => ({
-        common: state.common,
-        initialValues: state.newCompany.company,
-        selectedCategory: formValueSelector('company')(state, 'categoryId'),
-        selectedSubCategory: formValueSelector('company')(state, 'subcategoryId'),
+		common: state.common,
+		initialValues: state.newCompany.company,
+		selectedCategory: formValueSelector('company')(state, 'categoryId'),
+		selectedSubCategory: formValueSelector('company')(state, 'subcategoryId'),
+
+		subcategories: getSubcategories(state),
     }),
     {
         postCompany,

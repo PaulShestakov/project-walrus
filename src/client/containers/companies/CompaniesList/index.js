@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { createSelector } from 'reselect'
+import {createSelector} from 'reselect'
 
 import {Link} from 'react-router-dom';
 import {translate} from 'react-i18next';
@@ -38,8 +38,6 @@ import {
 
 	setIsWorkingNow,
 } from "./actionCreators/filter";
-
-
 
 
 function renderInput(inputProps) {
