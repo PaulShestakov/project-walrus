@@ -37,7 +37,7 @@ export default class LocationItem extends React.Component {
                 <Grid item xs={12}>
                     <Button className="text-white"
                             accent="white"
-                            onClick={this.props.onLocationClick}>
+                            onClick={this.props.onPhonesClick}>
                         Телефоны
                     </Button>
                 </Grid>
