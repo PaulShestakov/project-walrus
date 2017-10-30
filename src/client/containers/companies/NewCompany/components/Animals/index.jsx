@@ -34,7 +34,7 @@ export default class Animals extends React.Component {
 
     handleOnAddAddressPress = () => {
         const { fields } = this.props;
-        const result = this.state.result;
+        const { result } = this.state;
         result.push({
             label: `Животное ${fields.length + 1}`,
             breeds: []
@@ -46,7 +46,7 @@ export default class Animals extends React.Component {
     handleAnimalChange = (animal, index) => {
         const foundAnimal = this.state.animals.find(i => i.value === animal.value);
         if (foundAnimal) {
-            const result = this.state.result;
+            const { result } = this.state;
             result[index].breeds = foundAnimal.breeds;
             this.setState({ breeds: foundAnimal.breeds, result });
         }
@@ -113,7 +113,7 @@ export default class Animals extends React.Component {
                                             />
                                         </Grid>
                                         {
-                                            renderBreeds > 0 &&
+                                            renderBreeds &&
                                             <Grid item xs={12}>
                                                 <Title>Порода / Вид</Title>
                                                 <Field name={`${member}.breedId`}

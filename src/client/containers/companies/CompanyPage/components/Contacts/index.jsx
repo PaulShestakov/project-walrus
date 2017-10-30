@@ -27,6 +27,17 @@ export default class Contacts extends React.Component {
                         position: item.position,
                         isOpen: false,
                         isMain: item.isMain,
+                        markerInfo: (
+                            <div>
+                                {
+                                    item.phones.map(phone => (
+                                        <div>
+                                            {phone.phone}
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        )
                     });
                     return acc;
                 }, [])
@@ -37,24 +48,12 @@ export default class Contacts extends React.Component {
     handleMarkerClick = (index) => {
         const { markers } = this.state;
         markers[index].isOpen = !markers[index].isOpen;
-        this.setState({ markers });
+        this.setState({ markers, selectedMarker: index });
     };
 
     render() {
         const { t, classes, locations = [] } = this.props;
         const { markers } = this.state;
-        const markerInfo = (
-            <div>
-                {
-                    locations[this.state.selectedMarker] &&
-                    locations[this.state.selectedMarker].phones.map(phone => (
-                        <div>
-                            {phone.phone}
-                        </div>
-                    ))
-                }
-            </div>
-        );
         return (
             <div>
             {
@@ -81,7 +80,6 @@ export default class Contacts extends React.Component {
                             <Grid item xs={8}>
                                 <Map extMarkers={markers}
                                      onMarkerClick={(index) => this.handleMarkerClick(index)}
-                                     markerInfo={markerInfo}
                                 />
                             </Grid>
                         </Grid>

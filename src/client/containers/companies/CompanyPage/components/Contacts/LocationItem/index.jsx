@@ -29,7 +29,7 @@ export default class LocationItem extends React.Component {
                   className="w-100 px-2 py-1"
                   key={item.id}>
                 <Grid item xs={12}>
-                    {item.address}
+                    {`г. ${item.cityName} : ${item.address}`}
                 </Grid>
                 <Grid item xs={12} className={classes.workingTime}>
                     Сегодня {todayWorking}

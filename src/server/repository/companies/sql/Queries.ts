@@ -22,8 +22,8 @@ export default {
 			c.WEBSITE_URL url,
 
 			cl.COMPANY_LOCATION_ID locationId,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = cl.SUBWAY_ID) as subway,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = cl.CITY_ID) as city,
+			(SELECT NAME FROM wikipet.code_values WHERE ID = cl.SUBWAY_ID) as subwayName,
+			(SELECT NAME FROM wikipet.code_values WHERE ID = cl.CITY_ID) as cityName,
 			cl.ADDRESS address,
 			cl.IS_MAIN isMain,
 			cl.LAT lat,

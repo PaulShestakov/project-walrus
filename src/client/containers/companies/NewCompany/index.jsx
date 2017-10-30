@@ -38,8 +38,16 @@ class NewCompanyContainer extends React.Component {
 			const companyId = this.props.match.params.companyId;
 			this.props.loadCompany(companyId);
 		}
+    }
+    
+    componentWillReceiveProps(nextProps) {
+		this.setState({
+			categories: nextProps.common.companiesCategories,
+			cities: nextProps.common.cities,
+            renderAnimals: this.isAnimalAvailable(nextProps),
+            renderBreeds: this.isBreedAvailable(nextProps)
+		});
 	}
-
 
 	handleCategoryChange = (selectedCategory) => {
 		const category = this.props.common.companiesCategories.find((category) => {

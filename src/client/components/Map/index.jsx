@@ -149,7 +149,7 @@ const MapWithASearchBox = compose(
                     marker.isOpen &&
                     <InfoWindow onCloseClick={() => props.onMarkerClick(index)}>
                         {
-                            props.markerInfo
+                            marker.markerInfo
                         }
                     </InfoWindow>
                 }

@@ -353,7 +353,7 @@ const getBreeds = createSelector(
 	(filter, animals) => {
 		const breeds = [];
         animals.forEach(animal => {
-            if (filter.selectedAnimalsIds.includes(animal.value)) {
+            if (['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(filter.companySubcategoryId) && filter.selectedAnimalsIds.includes(animal.value)) {
                 breeds.push(...animal.breeds);
             }
         });
