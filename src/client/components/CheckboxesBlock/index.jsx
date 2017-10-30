@@ -33,13 +33,13 @@ export default class CheckboxesBlock extends React.Component {
 	};
 
 	render() {
-		const {classes, title, showMoreLabel, formGroupName, items, selectedIds, ...other} = this.props;
+		const {classes, title, showMoreLabel, formGroupName, items, selectedIds, numberOfItemsToShowDefault } = this.props;
 
 		const otherItemsPopover = (
 			<Card className={classes.popoverCard}>
 				<GridList cellHeight={36} className={''} cols={4}>
 					{
-						items.map(item => (
+						items && items.map(item => (
 							<GridListTile key={item.value} cols={1}>
 								<FormControlLabel
 									label={item.label}
@@ -59,9 +59,13 @@ export default class CheckboxesBlock extends React.Component {
 			</Card>
 		);
 
-		const numberOfItemsToShow = this.props.numberOfItemsToShowDefault +
-				items.slice(this.props.numberOfItemsToShowDefault).filter(item => selectedIds.indexOf(item.value) > -1).length;
-
+		let numberOfItemsToShow;
+		if (items) {
+            numberOfItemsToShow = numberOfItemsToShowDefault +
+                items.slice(numberOfItemsToShowDefault).filter(item => selectedIds.indexOf(item.value) > -1).length
+		} else {
+			numberOfItemsToShow = 0;
+		}
 		return (
 			<div>
 				<Label uppercase bold fontSize="1.5rem" className="m-3 mt-4">{title}</Label>
@@ -71,9 +75,9 @@ export default class CheckboxesBlock extends React.Component {
 					numberOfItemsToShow > 0 ? 'm-3 mb-2' : ''
 				)}>
 					{
-						items.slice(0, this.props.numberOfItemsToShowDefault)
+						items && items.slice(0, numberOfItemsToShowDefault)
 							.concat(
-								items.slice(this.props.numberOfItemsToShowDefault).filter(item => selectedIds.indexOf(item.value) > -1)
+								items.slice(numberOfItemsToShowDefault).filter(item => selectedIds.indexOf(item.value) > -1)
 							)
 							.map((item, index) => {
 								const checked = selectedIds.indexOf(item.value) !== -1;
@@ -94,7 +98,8 @@ export default class CheckboxesBlock extends React.Component {
 							})
 					}
 				</div>
-				<Popover isOpen={this.state.isPopoverOpened}
+				<Popover
+					isOpen={this.state.isPopoverOpened}
 					body={otherItemsPopover}
 					preferPlace="left"
 					onOuterAction={this.handlePopoverOuterAction}>

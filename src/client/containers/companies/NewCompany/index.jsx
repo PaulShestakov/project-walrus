@@ -11,8 +11,9 @@ import { Dropdown, Button, Title, Input, Grid, ReduxFormsImageUploader, TextFiel
 import styles from './styles';
 import {Typography} from "material-ui";
 
-import { Field, FieldArray, reduxForm } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import Location from "./components/Location/index";
+import Animals from "./components/Animals/index";
 
 
 @translate(['common'])
@@ -25,6 +26,8 @@ class NewCompanyContainer extends React.Component {
 
 		this.state = {
 			subcategories: [],
+			renderAnimals: false,
+			renderBreeds: false,
 			selectedAddress: 0,
 			showConfirm: false,
 		};
@@ -37,15 +40,21 @@ class NewCompanyContainer extends React.Component {
 		}
 	}
 
+
 	handleCategoryChange = (selectedCategory) => {
 		const category = this.props.common.companiesCategories.find((category) => {
 			return category.value === selectedCategory.value;
 		});
 		this.props.change('subcategoryId', null);
+        this.props.change('animals', []);
 		this.setState({
-			subcategories: category.subcategories
+			subcategories: category.subcategories,
 		});
 	};
+
+	handleSubcategoryChange = () => {
+        this.props.change('animals', []);
+    };
 
 	onCancelPressed = () => {
 		this.props.history.goBack();
@@ -66,6 +75,15 @@ class NewCompanyContainer extends React.Component {
 			this.props.postCompany(values, history);
 		}
 	};
+
+	isAnimalAvailable = (props) => {
+	    return ['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(props.selectedSubCategory)
+            || ['SERVICES'].includes(props.selectedCategory);
+    };
+
+	isBreedAvailable = (props) => {
+	    return ['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(props.selectedSubCategory);
+    };
 
 	render() {
 		const { t, classes, common, handleSubmit } = this.props;
@@ -103,11 +121,19 @@ class NewCompanyContainer extends React.Component {
                             <Field name="subcategoryId"
                                    component={Dropdown}
                                    options={this.state.subcategories}
+                                   onChange={this.handleSubcategoryChange}
                                    format={value => this.state.subcategories.find(x => x.value === value)}
                                    normalize={value => value.value}
                             />
                         </Grid>
-
+                        <Grid item xs={11}>
+                            <FieldArray
+                                name="animals"
+                                animals={this.props.common.animals}
+                                renderAnimals={this.state.renderAnimals}
+                                renderBreeds={this.state.renderBreeds}
+                                component={Animals}/>
+                        </Grid>
                         <Grid item xs={11}>
                             <Title>Картинка лого</Title>
                             <Field name="imageObjects"
@@ -143,7 +169,7 @@ class NewCompanyContainer extends React.Component {
                         <Grid item xs={11}>
                             <FieldArray
                                 name="locations"
-								{...common}
+                                {...common}
                                 component={Location}/>
                         </Grid>
 
@@ -180,7 +206,9 @@ class NewCompanyContainer extends React.Component {
 const NewCompany = connect(
     state => ({
         common: state.common,
-        initialValues: state.newCompany.company
+        initialValues: state.newCompany.company,
+        selectedCategory: formValueSelector('company')(state, 'categoryId'),
+        selectedSubCategory: formValueSelector('company')(state, 'subcategoryId'),
     }),
     {
         postCompany,

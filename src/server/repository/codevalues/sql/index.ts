@@ -59,4 +59,20 @@ export default {
 
         WHERE cv1.GROUP = 'CITY'
     `,
+
+    GET_ANIMALS: `
+        SELECT
+            cv1.ID AS animalId,
+            cv1.NAME AS animalName,
+            cv1.SORT AS animalSort,
+
+            cv2.ID AS breedId,
+            cv2.NAME AS breedName,
+            cv2.SORT AS breedSort
+            
+        FROM ${CODE_VALUE_TABLE} AS cv1
+        LEFT JOIN ${CODE_VALUE_TABLE} AS cv2
+            ON cv2.GROUP LIKE CONCAT('BREED.', cv1.ID, '%')
+        WHERE cv1.GROUP = 'ANIMAL'
+    `,
 };

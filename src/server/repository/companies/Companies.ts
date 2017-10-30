@@ -43,6 +43,13 @@ export default class Companies extends BaseCRUD  {
 		};
 	}
 
+	static mapCompanyAnimal = (item) => ({
+		animalId: item.animalId,
+		breedId: item.breedId,
+		animalName: item.animalName,
+		breedName: item.breedName,
+	});
+
 	static getCompany(companyId: string, callback) {
 		executeQuery(Queries.GET, [companyId], (error, rows) => {
 			if (error) {
@@ -70,6 +77,11 @@ export default class Companies extends BaseCRUD  {
 										map: Phones.mapPhone
 									}
 								]
+							},
+							{
+								name: 'animals',
+								idName: 'companyAnimalId',
+								map: Companies.mapCompanyAnimal
 							}
 						]
 					};
@@ -139,10 +151,18 @@ export default class Companies extends BaseCRUD  {
 				done(null, null);
 			}
         };
+		const saveAnimals = (connection, done) => {
+			if (company.animals && company.animals.length > 0) {
+				connection.query(Queries.SAVE_COMPANY_ANIMAL,
+					[company.animals.map(a => Companies.internalizeCompanyAnimal(a, company.companyId))], done);
+			} else {
+				done(null, null);
+			}
+		};
 	    const saveCompany = (connection, done) => {
             connection.query(Queries.SAVE, [Companies.internalizeCompany(company)], done);
         };
-        executeSeries([saveCompany, saveLocation, savePhones, saveWorkingTimes], (error) => {
+        executeSeries([saveCompany, saveAnimals, saveLocation, savePhones, saveWorkingTimes], (error) => {
             if (error) {
                 Util.handleError(error, callback);
             } else {
@@ -172,6 +192,8 @@ export default class Companies extends BaseCRUD  {
 		const companyCategoryId = params.companyCategoryId;
 		const companySubcategoryId = params.companySubcategoryId;
 		const citiesIds = Util.ensureArray(params.cityId);
+		const animalsIds = Util.ensureArray(params.animalId);
+		const breedsIds = Util.ensureArray(params.breedId);
 		const isWorkingNow = params.isWorkingNow === 'true';
 
 		let filter = squel.expr();
@@ -184,6 +206,12 @@ export default class Companies extends BaseCRUD  {
 		}
 		if (citiesIds.length > 0) {
 			filter = filter.and('l.CITY_ID IN ?', citiesIds);
+		}
+		if (animalsIds.length > 0) {
+			filter = filter.and('ca.ANIMAL_ID IN ?', animalsIds);
+		}
+		if (breedsIds.length > 0) {
+			filter = filter.and('ca.BREED_ID IN ?', breedsIds);
 		}
 
 		if (isWorkingNow) {
@@ -231,11 +259,16 @@ export default class Companies extends BaseCRUD  {
 				.field('p.COMPANY_PHONE_ID as phoneId')
 				.field('p.PHONE as phone')
 
+				.field('ca.COMPANY_ANIMAL_ID as companyAnimalId')
+				.field('ca.ANIMAL_ID as animalId')
+				.field('ca.BREED_ID as breedId')
+
 			.from('wikipet.companies', 'c')
 			.left_join('wikipet.companies_location', 'l', 'l.COMPANY_ID = c.COMPANY_ID')
 			.left_join('wikipet.companies_working_time', 't', 't.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
 			.left_join('wikipet.code_values', 'cv1', "cv1.GROUP = 'CITY' AND cv1.ID = l.CITY_ID")
 			.left_join('wikipet.code_values', 'cv2', "cv2.GROUP = 'DAY_OF_WEEK' AND cv2.ID = t.DAY_OF_WEEK")
+			.left_join('wikipet.companies_animals', 'ca', 'c.COMPANY_ID = ca.COMPANY_ID')
 
 			.left_join('wikipet.companies_phones', 'p', 'p.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
 
@@ -269,6 +302,11 @@ export default class Companies extends BaseCRUD  {
 								map: Phones.mapPhone
 							}
 						]
+					},
+					{
+						name: 'animals',
+						idName: 'companyAnimalId',
+						map: Companies.mapCompanyAnimal
 					}
 				]
 			};
@@ -287,5 +325,14 @@ export default class Companies extends BaseCRUD  {
 			}
 			callback(null, data);
 		});
+	}
+
+	static internalizeCompanyAnimal(animal, companyId) {
+		return [
+			uuid(),
+			companyId,
+			_.get(animal, 'animalId', null),
+			_.get(animal, 'breedId', null)
+		]
 	}
 }

@@ -1,5 +1,7 @@
-import globalStyle from '../../../../../../style';
-
 export default {
+
+    workingTime: {
+        color: 'grey'
+    }
 
 }

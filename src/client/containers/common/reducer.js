@@ -42,6 +42,7 @@ const commonReducer = (state = defaultState, action) => {
 		case LOAD_COMPANIES_CODE_VALUES_SUCCESS:
             return {
                 ...state,
+				animals: action.payload.animals,
 				cities: action.payload.cities,
 				daysOfWeek: action.payload.DAY_OF_WEEK,
                 companiesCategories: action.payload.categories

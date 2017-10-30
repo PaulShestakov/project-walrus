@@ -28,9 +28,6 @@ export default {
 		padding: 0,
 		listStyleType: 'none',
 	},
-	textField: {
-		width: '100%',
-	},
 	makeStackingContext: {
 		position: 'relative',
 		zIndex: 1
@@ -47,6 +44,7 @@ export default {
 
 	suggestionItemLink: {
 		display: 'flex',
+		width: '100%',
 		flexDirection: 'row',
 		textDecoration: 'none'
 	},

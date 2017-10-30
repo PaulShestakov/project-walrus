@@ -20,6 +20,9 @@ export default {
 			order: 1,
 			fontSize: '1.25rem',
 			fontFamily: globalStyles.BEBAS_FONT,
+			overflow: 'hidden',
+			textOverflow: 'ellipsis',
+			whiteSpace: 'nowrap'
 		},
 	},
 

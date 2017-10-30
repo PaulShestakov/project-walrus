@@ -85,6 +85,14 @@ export default class Feedbacks extends React.Component {
                     )
                 })
             }
+            {
+                feedbacks.length === 0 &&
+                <Grid container>
+                    <Grid item xs={12} className={classes.emptyFeedbacks}>
+                        У компании пока что нет отзывов
+                    </Grid>
+                </Grid>
+            }
             <ConfirmDialog
                 open={this.state.isConfirmDialogOpened}
                 message={`Вы действительно хотите удалить отзыв ${this.state.feedback.summary}`}

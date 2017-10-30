@@ -56,8 +56,8 @@ class CompaniesOverviewContainer extends React.Component {
 
 		const icons = [
 			<Healing className={classes.tabIcon} />,
-			<Favorite className={classes.tabIcon} />,
 			<ShoppingCart className={classes.tabIcon} />,
+			<Favorite className={classes.tabIcon} />,
 			<Pets className={classes.tabIcon} />,
 			<Assignment className={classes.tabIcon} />,
 			<Extension className={classes.tabIcon} />

@@ -37,4 +37,8 @@ export default {
         }
     },
 
+    context: {
+	    minHeight: '450px'
+    }
+
 }

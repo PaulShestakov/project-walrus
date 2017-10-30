@@ -70,9 +70,10 @@ export function loadCompaniesCodeValues() {
 		if (!companiesCategories || companiesCategories.length === 0) {
 			const generalCodeValues = fetch('/api/v1/codevalue?type=DAY_OF_WEEK');
 			const citiesCodeValues = fetch('/api/v1/codevalue/cities');
+			const animalsCodeValues = fetch('/api/v1/codevalue/animals');
 			const specificCodeValues = fetch('/api/v1/codevalue/companyCategories');
 
-			Promise.all([generalCodeValues, citiesCodeValues, specificCodeValues]).then(results => {
+			Promise.all([generalCodeValues, animalsCodeValues, citiesCodeValues, specificCodeValues]).then(results => {
 				return results.map(result => {
 					if (result.ok) {
 						return result.json();
@@ -84,8 +85,9 @@ export function loadCompaniesCodeValues() {
 						type: LOAD_COMPANIES_CODE_VALUES_SUCCESS,
 						payload: {
 							...values[0],
-							cities: values[1],
-							categories: sortCompaniesCategories(values[2])
+                            animals: values[1],
+							cities: values[2],
+							categories: sortCompaniesCategories(values[3])
 						}
 					});
 				});
