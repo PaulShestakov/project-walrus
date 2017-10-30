@@ -74,8 +74,7 @@ class NewCompanyContainer extends React.Component {
 
 	saveAction = (values) => {
 		const companyId = this.props.match.params.companyId;
-		const history = this.props.history;
-		const editMode = this.props.editMode;
+		const { history, editMode } = this.props;
 
 		if (editMode) {
 			this.props.updateCompany(companyId, values, history);

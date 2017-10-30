@@ -6,11 +6,7 @@ import {
 
 const defaultCompany = {
     name: '',
-    locations: [
-        {
-            label: 'Aдрес 1'
-        },
-    ],
+    locations: [],
 	imageObjects: []
 };
 

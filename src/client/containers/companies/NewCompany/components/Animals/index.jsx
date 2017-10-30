@@ -1,8 +1,11 @@
 import React from 'react';
 import { Add } from 'material-ui-icons';
 import { translate } from 'react-i18next';
+import { withStyles } from 'material-ui/styles';
 import { Dropdown, Button, Title, Input,
     Grid, ImageUploader, TextField, Tabs, Tab, Card, Map } from "components";
+
+import styles from './styles';
 
 import { Field, FieldArray } from 'redux-form'
 import {Typography} from "material-ui";
@@ -10,22 +13,14 @@ import SwipeableViews from 'react-swipeable-views';
 
 
 @translate(['common'])
+@withStyles(styles)
 export default class Animals extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             selectedAnimal: 0,
-            result: [],
-            animals: [],
-            breeds: []
         }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            animals: nextProps.animals
-        });
     }
 
     handleTabPress = (event, index) => {
@@ -34,27 +29,26 @@ export default class Animals extends React.Component {
 
     handleOnAddAddressPress = () => {
         const { fields } = this.props;
-        const { result } = this.state;
-        result.push({
+        fields.push({
             label: `Животное ${fields.length + 1}`,
-            breeds: []
+            animals: this.props.animals,
+            breeds: [],
+            markers: [],
         });
-        fields.push({});
-        this.setState({ selectedAnimal: fields.length, result });
+        this.setState({ selectedAnimal: fields.length });
     };
 
     handleAnimalChange = (animal, index) => {
-        const foundAnimal = this.state.animals.find(i => i.value === animal.value);
+        const foundAnimal = this.props.animals.find(i => i.value === animal.value);
         if (foundAnimal) {
-            const { result } = this.state;
-            result[index].breeds = foundAnimal.breeds;
-            this.setState({ breeds: foundAnimal.breeds, result });
+            const { fields } = this.props;
+            fields.get(index).breeds = foundAnimal.breeds;
         }
     };
 
     render() {
-        const { renderAnimals, renderBreeds, fields } = this.props;
-        const { result, selectedAnimal } = this.state;
+        const { classes, renderAnimals, renderBreeds, fields } = this.props;
+        const { selectedAnimal } = this.state;
         return (
             <div>
                 {
@@ -62,13 +56,21 @@ export default class Animals extends React.Component {
                     <div>
                         <Grid item xs={8}>
                             <Grid item className="d-flex align-items-center">
-                                <Typography type="headline" component="h1" className="mt-4 mr-4">
-                                    Связь с животными
-                                </Typography>
-                                <Button fab onClick={this.handleOnAddAddressPress}
-                                        color="primary" aria-label="add">
-                                    <Add />
-                                </Button>
+                                <Grid container align="center">
+                                    <Grid item>
+                                        <Typography type="headline" component="h1" className="mr-4">
+                                            Связь с животными
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button fab onClick={this.handleOnAddAddressPress}
+                                                className={classes.addButton}
+                                                color="primary" aria-label="add">
+                                            <Add />
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                                
                             </Grid>
                         </Grid>
                         <Tabs
@@ -79,11 +81,12 @@ export default class Animals extends React.Component {
                             onChange={this.handleTabPress}
                         >
                             {
-                                fields.map((field, index) => {
+                                fields.map((field, index, fields) => {
+                                    const curField = fields.get(index);
                                     return (
                                         <Tab
                                             key={index}
-                                            label={result[index].label}
+                                            label={curField.label}
                                             value={index}/>
                                     );
                                 })
@@ -91,12 +94,13 @@ export default class Animals extends React.Component {
                         </Tabs>
                         <SwipeableViews
                             index={selectedAnimal}
-                            style={{ overflow: 'visible' }}
-                            containerStyle={{ overflow: 'visible' }}
+                            style={{ minHeight: '400px' }}
+                            containerStyle={{ minHeight: '400px' }}
                             slideStyle={{ overflow: 'visible' }}
                             onChangeIndex={this.handleTabPress}>
                             {
-                                fields.map((member, index) => {
+                                fields.map((member, index, fields) => {
+                                    const curField = fields.get(index);
                                     return (
                                         <Grid key={index}
                                               container
@@ -106,9 +110,9 @@ export default class Animals extends React.Component {
                                             <Title>Животное</Title>
                                             <Field name={`${member}.animalId`}
                                                    component={Dropdown}
-                                                   options={this.state.animals}
+                                                   options={curField.animals}
                                                    onChange={(animal) => this.handleAnimalChange(animal, index)}
-                                                   format={value => this.state.animals.find(x => x.value === value)}
+                                                   format={value => curField.animals.find(x => x.value === value)}
                                                    normalize={value => value.value}
                                             />
                                         </Grid>
@@ -118,8 +122,8 @@ export default class Animals extends React.Component {
                                                 <Title>Порода / Вид</Title>
                                                 <Field name={`${member}.breedId`}
                                                        component={Dropdown}
-                                                       options={result[selectedAnimal].breeds}
-                                                       format={value => result[selectedAnimal].breeds.find(x => x.value === value)}
+                                                       options={curField.breeds}
+                                                       format={value => curField.breeds.find(x => x.value === value)}
                                                        normalize={value => value.value}
                                                 />
                                             </Grid>

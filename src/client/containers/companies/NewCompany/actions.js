@@ -143,6 +143,18 @@ function internalizeCompany(company) {
 
 function externalizeCompany(company) {
 	const files = [];
+	const externalizedCompany = {...company};
+	externalizedCompany.locations = externalizedCompany.locations.map(location => {
+		return {
+			position: location.markers[0].position,
+			city: location.city.value,
+			subway: location.subway.value,
+			isMain: location.isMain,
+			address: location.address,
+			phones: location.phones,
+			workingTimes: location.workingTimes,
+		};
+	});
 
 	if (company.imageObjects.length > 0) {
 		const file = company.imageObjects[0].file;
@@ -152,10 +164,11 @@ function externalizeCompany(company) {
 		}
 	}
 
-	delete company.imageObjects;
+	delete externalizedCompany.imageObjects;
+
 
 	const formData = new FormData();
-	formData.append('company', JSON.stringify(company));
+	formData.append('company', JSON.stringify(externalizedCompany));
 
 	files.forEach(file => {
 		formData.append('image', file);

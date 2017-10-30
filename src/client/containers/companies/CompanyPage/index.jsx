@@ -89,6 +89,10 @@ class CompanyPageContainer extends React.Component {
 		}
 	};
 
+	getImageSrc() {
+		return encodeURI((this.props.company.logo || defaultCompanyImage).split('\\').join('\/'));
+	}
+
 	render() {
 		const {t, classes, company, feedbacks, common, ...other} = this.props;
 
@@ -128,12 +132,13 @@ class CompanyPageContainer extends React.Component {
 							</Grid>
 						</Grid>
 						<Divider className="mt-4 mb-2" />
+
 						<Grid container>
 							<Grid item xs={4}>
 								<Paper className="d-flex justify-content-center">
 									<CardMedia
 										className={classes.cardImage}
-										image={imageSrc}
+										image={this.getImageSrc()}
 									/>
 								</Paper>
 							</Grid>
