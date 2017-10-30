@@ -21,10 +21,10 @@ export default class Locations {
 	static internalizeLocation(companyId, location) {
 		return [
 			uuid(),
-			location.subway ? location.subway.value : null,
+			location.subway,
 			companyId,
-			location.city ? location.city.value : null,
-			location.address ? location.address : 'Не задано',
+			location.city,
+			location.address || 'Не задано',
 			location.location ? location.location.lat : 0,
 			location.location ? location.location.lng : 0,
 			!!location.isMain,

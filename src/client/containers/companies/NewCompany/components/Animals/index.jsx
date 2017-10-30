@@ -33,7 +33,6 @@ export default class Animals extends React.Component {
             label: `Животное ${fields.length + 1}`,
             animals: this.props.animals,
             breeds: [],
-            markers: [],
         });
         this.setState({ selectedAnimal: fields.length });
     };

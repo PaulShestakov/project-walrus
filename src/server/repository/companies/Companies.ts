@@ -105,9 +105,7 @@ export default class Companies extends BaseCRUD  {
   
 	static saveCompany(company: Company, callback) {
 		company.companyId = uuid();
-		const locations = company.locations
-			.filter(i => i.city && i.address)
-			.map(item => Locations.internalizeLocation(company.companyId, item));
+		const locations = company.locations.map(item => Locations.internalizeLocation(company.companyId, item));
 
 	    const savePhones = (connection, done) => {
 			const phones: Array<object> = company.locations.reduce((acc, item, index) => {

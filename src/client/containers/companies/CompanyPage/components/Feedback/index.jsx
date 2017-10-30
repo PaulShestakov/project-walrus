@@ -34,7 +34,7 @@ export default class Feedbacks extends React.Component {
             <div>
             {
                 feedbacks && feedbacks.map((feedback) => {
-                    const imgSrc = feedback.photo ? feedback.photo : 'https://wikipet.by/templates/pet/dleimages/noavatar.png';
+                    const imgSrc = feedback.photo || 'https://wikipet.by/templates/pet/dleimages/noavatar.png';
                     return (
                         <Grid key={feedback.id} container className="my-4 py-2 px-5">
                             <Grid item xs={12}>
@@ -54,9 +54,9 @@ export default class Feedbacks extends React.Component {
                                     </Grid>
                                     <Grid item xs={4} className="ml-auto text-right">
                                         <div>
-                                            {moment(feedback.modificateDate).format('LLL')}
+                                            {moment(feedback.modificateDate).lang('ru').format('LLL')}
                                         </div>
-                                        <div>
+                                        <div className="mt-4">
                                             <Authorized allowedRoles={[5]}>
                                                 <Button fab
                                                         onClick={() => this.setState({ isConfirmDialogOpened: true, feedback })}>

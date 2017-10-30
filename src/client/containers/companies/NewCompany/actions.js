@@ -144,17 +144,28 @@ function internalizeCompany(company) {
 function externalizeCompany(company) {
 	const files = [];
 	const externalizedCompany = {...company};
-	externalizedCompany.locations = externalizedCompany.locations.map(location => {
-		return {
-			position: location.markers[0].position,
-			city: location.city.value,
-			subway: location.subway.value,
-			isMain: location.isMain,
-			address: location.address,
-			phones: location.phones,
-			workingTimes: location.workingTimes,
-		};
-	});
+	if (externalizedCompany.locations) {
+        externalizedCompany.locations = externalizedCompany.locations.map(location => {
+            return {
+                location: location.markers[0].position,
+                city: location.city.value,
+                subway: location.subway ? location.subway.value : null,
+                isMain: location.isMain,
+                address: location.address,
+                phones: location.phones,
+                workingTimes: location.workingTimes,
+            };
+        });
+	}
+
+	if (externalizedCompany.animals) {
+        externalizedCompany.animals = externalizedCompany.animals.map(animal => {
+			return {
+				animalId: animal.animalId,
+				breedId: animal.breedId,
+			}
+        });
+	}
 
 	if (company.imageObjects.length > 0) {
 		const file = company.imageObjects[0].file;

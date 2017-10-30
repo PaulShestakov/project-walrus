@@ -7,7 +7,9 @@ export default class BaseController {
     }
 
     protected errorResponse(res: Response, code: number, error: string|Object): void {
-        res.status(code).send({error});
+        // use logger here
+        console.log(error);
+        res.status(code).send({error: 'Server side error'});
     }
 
     protected checkRole(req: any, res: Response, role): boolean {

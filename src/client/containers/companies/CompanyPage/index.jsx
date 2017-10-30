@@ -122,7 +122,7 @@ class CompanyPageContainer extends React.Component {
 								</Typography>
 							</Grid>
 							<Grid item xs={4}>
-								<Authorized allowedRoles={[4]}>
+								<Authorized allowedRoles={[5]}>
 									<Link to={`${this.props.match.url}/feedback`} className={classes.link}>
 										<Button accent="red" className='w-100'>
 											{t('Оставить отзыв')}

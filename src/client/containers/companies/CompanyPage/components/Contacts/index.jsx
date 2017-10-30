@@ -55,7 +55,7 @@ export default class Contacts extends React.Component {
         const { t, classes, locations = [] } = this.props;
         const { markers } = this.state;
         return (
-            <div>
+            <div className="mt-3">
             {
                 locations.length > 0 && (
                     <Paper>

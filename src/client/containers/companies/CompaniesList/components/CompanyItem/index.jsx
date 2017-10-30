@@ -60,9 +60,9 @@ export default class CompanyItem extends React.Component {
 								{company.name}
 							</Label>
 						</Link>
-						<Authorized allowedRoles={[3]}>
+						<Authorized allowedRoles={[5]}>
 							<div>
-								<Button fab className={classNames(classes.editButton, 'mr-3')}>
+								<Button fab className={classNames(classes.editButton, 'mr-3')} style={{display: 'none'}}>
 									<Link to={`/company/edit/${company.companyId}`}>
 										<ModeEditIcon className={classes.editIcon} />
 									</Link>
