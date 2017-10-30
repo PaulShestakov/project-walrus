@@ -11,11 +11,12 @@ export default class Authorized extends React.Component {
     };
 
     render() {
-        const { user, allowedRoles = [] } = this.props;
+        const { user, allowedRoles = [], className } = this.props;
         const allowed = allowedRoles.find(role => (role >= user.role));
+
         if (allowed) {
             return (
-                <div>
+                <div className={className}>
                     {
                         this.props.children
                     }

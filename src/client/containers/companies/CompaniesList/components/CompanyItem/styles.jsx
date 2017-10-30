@@ -14,12 +14,22 @@ export default {
 		flexDirection: 'column',
 		flexGrow: '1',
 	},
+
+	headerWrapper: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'flex-start'
+	},
+	editButtonsBlock: {
+		flexShrink: 0,
+	},
+
 	editButton: {
 		flexShrink: 0,
 		alignSelf: 'flex-start',
-		marginLeft: '1rem',
 		width: '2.5rem',
-		height: '2.5rem'
+		height: '2.5rem',
+		marginLeft: '0.5rem',
 	},
 	editIcon: {
 		color: 'white'
@@ -35,7 +45,9 @@ export default {
 		alignItems: 'flex-end'
 	},
 
-
+	noShrink: {
+		flexShrink: 0,
+	},
 	flexRow: {
 		display: 'flex',
 		alignItems: 'center'

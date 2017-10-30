@@ -38,7 +38,7 @@ export default class CompanyItem extends React.Component {
 	};
 
 	render() {
-		const {t, classes, className, company } = this.props;
+		const {t, classes, company } = this.props;
 		let mainLocation = company.locations.find(item => (item.isMain === 1));
 		if (!mainLocation) {
 			mainLocation = company.locations[0];
@@ -54,30 +54,27 @@ export default class CompanyItem extends React.Component {
 				</Link>
 
 				<CardContent className={classNames(classes.cardContent, 'p-0', 'pl-4')}>
-					<div className={classNames(classes.flexRow, classes.spaceBetween)}>
-						<Link to={`/company/${company.companyId}`}>
+					<div className={classes.headerWrapper}>
+						<Link to={`/company/${company.companyId}`} className={classes.headerLink}>
 							<Label uppercase bold fontSize="2rem">
 								{company.name}
 							</Label>
 						</Link>
-						<Authorized allowedRoles={[5]}>
-							<div>
-								<Button fab className={classNames(classes.editButton, 'mr-3')} style={{display: 'none'}}>
-									<Link to={`/company/edit/${company.companyId}`}>
-										<ModeEditIcon className={classes.editIcon} />
-									</Link>
-								</Button>
-								<Button fab
-										className={classNames(classes.editButton, 'mr-3')}
-										onClick={this.handleAction.bind(null, company, 'block')}>
-									<Block className={classes.editIcon} />
-								</Button>
-								<Button fab
-										className={classes.editButton}
-										onClick={this.handleAction.bind(null, company, 'delete')}>
-									<Delete className={classes.editIcon} />
-								</Button>
-							</div>
+
+						<Authorized allowedRoles={[5]} className={classes.editButtonsBlock}>
+							<Button fab className={classes.editButton}>
+								<Link to={`/company/edit/${company.companyId}`}>
+									<ModeEditIcon className={classes.editIcon} />
+								</Link>
+							</Button>
+							<Button fab className={classes.editButton}
+									onClick={this.handleAction.bind(null, company, 'block')}>
+								<Block className={classes.editIcon} />
+							</Button>
+							<Button fab className={classes.editButton}
+									onClick={this.handleAction.bind(null, company, 'delete')}>
+								<Delete className={classes.editIcon} />
+							</Button>
 						</Authorized>
 					</div>
 
