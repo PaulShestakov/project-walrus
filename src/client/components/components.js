@@ -1,6 +1,7 @@
 import Button from './Button/index';
 import ButtonMore from './ButtonMore';
-import ImageUploader from './ImageUploader';
+import ImageUploader from './ImageUploader/Default';
+import ReduxFormsImageUploader from './ImageUploader/ReduxFormsWrapper';
 import Label from './Label';
 import Separator from './Separator';
 import Text from './Text';
@@ -32,6 +33,7 @@ export {
 	Button,
 	ButtonMore,
 	ImageUploader,
+	ReduxFormsImageUploader,
 	Label,
 	Separator,
 	Text,

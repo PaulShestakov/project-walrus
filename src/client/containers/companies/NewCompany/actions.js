@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 
-export const POST_COMPANY_SUCCESS = 'newCompany/POST_COMPANY_SUCCESS';
-export const POST_COMPANY_FAILURE = 'newCompany/POST_COMPANY_FAILURE';
+export const POST_COMPANY_SUCCESS = 'NewCompany/POST_COMPANY_SUCCESS';
+export const POST_COMPANY_FAILURE = 'NewCompany/POST_COMPANY_FAILURE';
 
 const baseUrl = '/api/v1';
 
@@ -49,9 +49,9 @@ export function postCompany(values, history) {
 
 
 
-export const LOAD_COMPANY_START = 'newCompany/LOAD_COMPANY_START';
-export const LOAD_COMPANY_ERROR = 'newCompany/LOAD_COMPANY_ERROR';
-export const LOAD_COMPANY_SUCCESS = 'newCompany/LOAD_COMPANY_SUCCESS';
+export const LOAD_COMPANY_START = 'NewCompany/LOAD_COMPANY_START';
+export const LOAD_COMPANY_ERROR = 'NewCompany/LOAD_COMPANY_ERROR';
+export const LOAD_COMPANY_SUCCESS = 'NewCompany/LOAD_COMPANY_SUCCESS';
 
 const loadCompanyStart = () => ({
 	type: LOAD_COMPANY_START
@@ -81,7 +81,7 @@ export function loadCompany(companyId) {
 				throw Error(error);
 			}
 		).then(json => {
-			dispatch(loadCompanySuccess(json));
+			dispatch(loadCompanySuccess(internalizeCompany(json)));
 		}).catch(error => {
 			dispatch(loadCompanyError(error));
 		})
@@ -90,9 +90,9 @@ export function loadCompany(companyId) {
 
 
 
-export const UPDATE_COMPANY_START = 'newCompany/UPDATE_COMPANY_START';
-export const UPDATE_COMPANY_ERROR = 'newCompany/UPDATE_COMPANY_ERROR';
-export const UPDATE_COMPANY_SUCCESS = 'newCompany/UPDATE_COMPANY_SUCCESS';
+export const UPDATE_COMPANY_START = 'NewCompany/UPDATE_COMPANY_START';
+export const UPDATE_COMPANY_ERROR = 'NewCompany/UPDATE_COMPANY_ERROR';
+export const UPDATE_COMPANY_SUCCESS = 'NewCompany/UPDATE_COMPANY_SUCCESS';
 
 const updateCompanyStart = () => ({
 	type: LOAD_COMPANY_START
@@ -110,11 +110,7 @@ export function updateCompany(companyId, company, history) {
 	return (dispatch) => {
 		dispatch(updateCompanyStart());
 
-		const formData = new FormData();
-		formData.append('company', JSON.stringify(company));
-		if (company.image) {
-			formData.append('image', company.image)
-		}
+		const formData = externalizeCompany(company);
 
 		fetch(baseUrl + '/company/' + companyId, {
 			method: 'PUT',
@@ -137,4 +133,39 @@ export function updateCompany(companyId, company, history) {
 			dispatch(updateCompanyError(error))
 		})
 	}
+}
+
+function internalizeCompany(company) {
+	return {
+		...company,
+		imageObjects: [
+			{
+				imageUrl: company.logo
+			}
+		]
+	}
+}
+
+function externalizeCompany(company) {
+	const files = [];
+
+	if (company.imageObjects.length > 0) {
+		const file = company.imageObjects[0].file;
+
+		if (file) {
+			files.push(file);
+		}
+	}
+
+	delete company.imageObjects;
+
+	const formData = new FormData();
+	formData.append('company', JSON.stringify(company));
+
+	files.forEach(file => {
+		formData.append('image', file);
+	});
+
+
+	return formData;
 }

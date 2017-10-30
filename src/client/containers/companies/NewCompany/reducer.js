@@ -10,7 +10,8 @@ const defaultCompany = {
         {
             label: 'Aдрес 1'
         },
-    ]
+    ],
+	imageObjects: []
 };
 
 const defaultState = {

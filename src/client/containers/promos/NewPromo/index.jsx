@@ -55,17 +55,9 @@ class NewPromoContainer extends React.Component {
 		this.props.loadPromoCodeValues();
 	}
 
-	handleImageAdd = (imageObject) => {
+	handleImageChange = (newImageObjectsArray) => {
 		this.setState({
-			imageObjects: [...this.state.imageObjects, imageObject]
-		});
-	};
-	handleImageDelete = (imageIndex) => {
-		this.setState({
-			imageObjects: [
-				...this.state.imageObjects.slice(0, imageIndex),
-				...this.state.imageObjects.slice(imageIndex + 1)
-			]
+			imageObjects: newImageObjectsArray
 		});
 	};
 
@@ -224,9 +216,8 @@ class NewPromoContainer extends React.Component {
 
 									<Grid item md={12}>
 										<ImageUploader className="mt-4"
-													   imageObjects={this.state.imageObjects}
-													   onImageAdd={this.handleImageAdd}
-													   onImageDelete={this.handleImageDelete} />
+											value={this.state.imageObjects}
+											onChange={this.handleImageChange}/>
 									</Grid>
 
 									<Grid item md={12} className="mb-1">
