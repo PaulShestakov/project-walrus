@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import { createSelector } from 'reselect'
 
 import {loadCompany, postFeedback, loadFeedbacks, deleteFeedback} from "./actions";
 
@@ -94,9 +95,7 @@ class CompanyPageContainer extends React.Component {
 	}
 
 	render() {
-		const {t, classes, company, feedbacks, common, ...other} = this.props;
-
-		const imageSrc = (company.logo ? company.logo : defaultCompanyImage).split('\\').join('\/');
+		const {t, classes, company, feedbacks, common, markers } = this.props;
 
 		let mainLocation;
 		if (company.locations) {
@@ -219,7 +218,8 @@ class CompanyPageContainer extends React.Component {
 															  onPostFeedback={this.onPostFeedback}/>}/>
 
 							<Route path={`${this.props.match.url}/contacts`}
-								   render={() => <Contacts locations={ company.locations } />}/>
+								   render={() => <Contacts locations={ company.locations }
+														   markers={ markers }/>}/>
 						</div>
 					</CardContent>
 				</Card>
@@ -228,12 +228,30 @@ class CompanyPageContainer extends React.Component {
 	}
 }
 
+const getMarkers = createSelector(
+    [(state) => state.companyPage.company],
+    (company) => {
+    	const markers = [];
+        if (company.locations) {
+        	company.locations.forEach(location => {
+        		markers.push({
+                    position: location.position,
+                    isOpen: false,
+                    isMain: location.isMain,
+				});
+			});
+		}
+        return markers;
+    }
+);
+
 const CompanyPage = connect(
 	state => {
 		return {
 			common: state.common,
 			company: state.companyPage.company,
-			feedbacks: state.companyPage.feedbacks
+			feedbacks: state.companyPage.feedbacks,
+			markers: getMarkers(state),
 		}
 	},
 	{

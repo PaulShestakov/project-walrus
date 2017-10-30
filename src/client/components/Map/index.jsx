@@ -146,7 +146,7 @@ const MapWithASearchBox = compose(
                     }}
                     onClick={() => props.onMarkerClick(index)}>
                 {
-                    marker.isOpen &&
+                    marker.isOpen && marker.markerInfo &&
                     <InfoWindow onCloseClick={() => props.onMarkerClick(index)}>
                         {
                             marker.markerInfo

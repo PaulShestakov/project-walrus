@@ -2,7 +2,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import styles from './styles';
 import { withStyles } from 'material-ui/styles';
-import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Map } from "components";
+import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Map, InfoDialog } from "components";
 import {Divider, Typography, Paper, List, ListSubheader, ListItem} from "material-ui";
 import LocationItem from "./LocationItem/index";
 
@@ -14,46 +14,18 @@ export default class Contacts extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            markers: [],
-            selectedMarker: 0
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.state.markers.length === 0 && nextProps.locations) {
-            this.setState({
-                markers: nextProps.locations.reduce((acc, item) => {
-                    acc.push({
-                        position: item.position,
-                        isOpen: false,
-                        isMain: item.isMain,
-                        markerInfo: (
-                            <div>
-                                {
-                                    item.phones.map(phone => (
-                                        <div>
-                                            {phone.phone}
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                        )
-                    });
-                    return acc;
-                }, [])
-            });
+            selectedMarker: 0,
+            isPhonesDialogOpened: false,
         }
     }
 
     handleMarkerClick = (index) => {
-        const { markers } = this.state;
-        markers[index].isOpen = !markers[index].isOpen;
-        this.setState({ markers, selectedMarker: index });
+        this.setState({ selectedMarker: index, isPhonesDialogOpened: true });
     };
 
     render() {
-        const { t, classes, locations = [] } = this.props;
-        const { markers } = this.state;
+        const { classes, locations = [], markers } = this.props;
+        const { selectedMarker } = this.state;
         return (
             <div className="mt-3">
             {
@@ -71,7 +43,7 @@ export default class Contacts extends React.Component {
                                                 divider>
                                                 <LocationItem
                                                     item={item}
-                                                    onLocationClick={() => this.handleMarkerClick(index)}/>
+                                                    onPhonesClick={() => this.handleMarkerClick(index)}/>
                                             </ListItem>
                                         ))
                                     }
@@ -86,6 +58,19 @@ export default class Contacts extends React.Component {
                     </Paper>
                 )
             }
+            <InfoDialog
+                open={this.state.isPhonesDialogOpened}
+                title="Телефоны"
+                closeCallback={() => this.setState({ isPhonesDialogOpened: false })}>
+                {
+                    locations[selectedMarker] &&
+                    locations[selectedMarker].phones.map(item => (
+                        <div key={item.phoneId} className="mt-2">
+                            <Label>{item.phone}</Label>
+                        </div>
+                    ))
+                }
+            </InfoDialog>
             </div>
         );
     }
