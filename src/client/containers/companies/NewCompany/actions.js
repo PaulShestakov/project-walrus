@@ -15,18 +15,13 @@ const saveCompanySuccess = (response) => ({
     response
 });
 
-export function postCompany(values, history) {
-
-    let form = new FormData();
-    form.append('company', JSON.stringify(values));
-    if (values.image) {
-        form.append('image', values.image)
-    }
+export function postCompany(company, history) {
+    const formData = externalizeCompany(company);
 
     return dispatch => {
         fetch(baseUrl + '/company', {
             method: 'POST',
-            body: form,
+            body: formData,
             credentials: 'include'
         }).then(
             response => {
