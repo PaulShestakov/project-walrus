@@ -23,7 +23,10 @@ export default class Companies extends BaseCRUD  {
 		logo: item.logo,
 		description: item.description,
 		email: item.email,
-		url: item.url
+		url: item.url,
+		numerOfLocations: item.locationsCount,
+		numberOfFeedbacks: item.numberOfFeedbacks || 0,
+		averageRating: item.averageRating,
 	});
 
 	static internalizeCompany(company) {
@@ -191,6 +194,7 @@ export default class Companies extends BaseCRUD  {
 		const companySubcategoryId = params.companySubcategoryId;
 		const citiesIds = Util.ensureArray(params.cityId);
 		const animalsIds = Util.ensureArray(params.animalId);
+		const subwaysIds = Util.ensureArray(params.subwayId);
 		const breedsIds = Util.ensureArray(params.breedId);
 		const isWorkingNow = params.isWorkingNow === 'true';
 
@@ -205,6 +209,9 @@ export default class Companies extends BaseCRUD  {
 		if (citiesIds.length > 0) {
 			filter = filter.and('l.CITY_ID IN ?', citiesIds);
 		}
+		if (subwaysIds.length > 0) {
+			filter = filter.and('l.SUBWAY_ID IN ?', subwaysIds);
+		}
 		if (animalsIds.length > 0) {
 			filter = filter.and('ca.ANIMAL_ID IN ?', animalsIds);
 		}
@@ -212,24 +219,16 @@ export default class Companies extends BaseCRUD  {
 			filter = filter.and('ca.BREED_ID IN ?', breedsIds);
 		}
 
+		let dayOfWeek, timeNow;
 		if (isWorkingNow) {
 			// Belarus timezone is UTC+3
 			const momentNow = moment().utcOffset(3);
-
-			const dayOfWeek = momentNow.day();
-			const time = momentNow.format('HH:mm:ss');
-
-			filter = filter.and(`
-				EXISTS(
-					SELECT * FROM wikipet.companies_working_time
-						WHERE DAY_OF_WEEK = ?
-							AND OPEN_TIME >= ?
-							AND CLOSE_TIME <= ?
-				)`,
-				dayOfWeek, time, time);
+			dayOfWeek = momentNow.day() - 1;
+			timeNow = momentNow.format('HH:mm:ss');
 		}
 
-		const sql = squel
+		
+		let sql = squel
 			.select()
 				.field('c.COMPANY_ID as companyId')
 				.field('c.NAME as name')
@@ -239,6 +238,9 @@ export default class Companies extends BaseCRUD  {
 				.field('c.DESCRIPTION as description')
 				.field('c.EMAIL as email')
 				.field('c.WEBSITE_URL as url')
+				.field('(SELECT COUNT(*) FROM wikipet.companies_location cl1 WHERE cl1.COMPANY_ID = c.COMPANY_ID) as locationsCount')
+				.field('cf1.numberOfFeedbacks')
+				.field('cf1.averageRating')
 
 				.field('l.COMPANY_LOCATION_ID as locationId')
 				.field('l.CITY_ID as cityId')
@@ -260,20 +262,39 @@ export default class Companies extends BaseCRUD  {
 				.field('ca.COMPANY_ANIMAL_ID as companyAnimalId')
 				.field('ca.ANIMAL_ID as animalId')
 				.field('ca.BREED_ID as breedId')
-
 			.from('wikipet.companies', 'c')
+			.left_join(
+				squel.select()
+					.field('cf.COMPANY_ID')
+					.field('COUNT(cf.RATING) as numberOfFeedbacks')
+					.field('AVG(cf.RATING) as averageRating')
+				.from('wikipet.companies_feedback', 'cf')
+				.group('cf.COMPANY_ID'), 'cf1', 'cf1.COMPANY_ID = c.COMPANY_ID'
+			)
 			.left_join('wikipet.companies_location', 'l', 'l.COMPANY_ID = c.COMPANY_ID')
-			.left_join('wikipet.companies_working_time', 't', 't.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
-			.left_join('wikipet.code_values', 'cv1', "cv1.GROUP = 'CITY' AND cv1.ID = l.CITY_ID")
+			.left_join('wikipet.companies_working_time', 't', 't.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID');
+		
+
+		if (isWorkingNow) {
+			sql = sql.join(
+				squel.select()
+					.field('cwt.COMPANY_LOCATION_ID')					
+				.from('wikipet.companies_working_time', 'cwt')
+					.where('cwt.DAY_OF_WEEK = ?', dayOfWeek)
+					.where('cwt.OPEN_TIME <= ?', timeNow)
+					.where('cwt.CLOSE_TIME >= ?', timeNow), 'validLocations', 'l.COMPANY_LOCATION_ID = validLocations.COMPANY_LOCATION_ID'
+			)
+		}
+			
+		sql = sql.left_join('wikipet.code_values', 'cv1', "cv1.GROUP = 'CITY' AND cv1.ID = l.CITY_ID")
 			.left_join('wikipet.code_values', 'cv2', "cv2.GROUP = 'DAY_OF_WEEK' AND cv2.ID = t.DAY_OF_WEEK")
 			.left_join('wikipet.companies_animals', 'ca', 'c.COMPANY_ID = ca.COMPANY_ID')
-
 			.left_join('wikipet.companies_phones', 'p', 'p.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
+			.where(filter);
+			
+		const sqlParams = sql.toParam();
 
-			.where(filter)
-			.toParam();
-
-		executeQuery(sql.text, sql.values, (error, rows) => {
+		executeQuery(sqlParams.text, sqlParams.values, (error, rows) => {
 			if (error) {
 				callback(error);
 				return;
@@ -329,8 +350,8 @@ export default class Companies extends BaseCRUD  {
 		return [
 			uuid(),
 			companyId,
-			_.get(animal, 'animalId', null),
-			_.get(animal, 'breedId', null)
+			animal.animalId,
+			animal.breedId,
 		]
 	}
 }

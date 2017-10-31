@@ -1,7 +1,7 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import {Link} from 'react-router-dom';
-import {Grid, Button, Title, Label, Textarea, TextField, Input, Text} from 'components';
+import {Grid, Button, Title, Label, Textarea, TextField, Input, Text, Rating} from 'components';
 import {withStyles} from 'material-ui/styles';
 import Card, {CardMedia, CardContent} from 'material-ui/Card';
 import classNames from 'classnames';
@@ -37,19 +37,28 @@ export default class CompanyItem extends React.Component {
 		this.props.handleAction(value);
 	};
 
+	getImageSrc() {
+		return encodeURI((this.props.company.logo || defaultImage).split('\\').join('\/'));
+	}
+
 	render() {
-		const {t, classes, company } = this.props;
-		let mainLocation = company.locations.find(item => (item.isMain === 1));
-		if (!mainLocation) {
+		const { t, classes, company } = this.props;
+		const mainLocations = company.locations.filter(item => (item.isMain === 1));
+		let mainLocation;
+		if (mainLocations.length === 0) {
 			mainLocation = company.locations[0];
+		} else {
+			mainLocation = mainLocations[0];
 		}
-		const imageSrc = company.logo ? company.logo : defaultImage;
+		const numerOfBranches = company.numerOfLocations - mainLocations.length;
 
 		return (
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>
 				<Link to={`/company/${company.companyId}`}>
 					<Paper>
-						<CardMedia className={classes.cardImage} image={imageSrc} />
+						<CardMedia
+						className={classes.cardImage}
+						image={this.getImageSrc()} />
 					</Paper>
 				</Link>
 
@@ -92,6 +101,14 @@ export default class CompanyItem extends React.Component {
 							<Text>{company.url}</Text>
 						</div>
 					</div>
+					<div className={classNames(classes.flexRow, 'mt-2')}>
+						<div className={classes.flexRow}>
+							<Rating 
+								readOnly
+								value={company.averageRating}/>
+							<Text>{company.numberOfFeedbacks} отзывов</Text>
+						</div>
+					</div>
 
 					<div className={classes.buttonsBlock}>
 						<Button className="mr-2 text-white" accent="white"
@@ -102,11 +119,15 @@ export default class CompanyItem extends React.Component {
 								onClick={this.props.handleOpenPhonesDialog.bind(null, mainLocation.phones)}>
                             Телефоны
 						</Button>
-						<Link to={`/company/${company.companyId}/contacts`}>
-							<Button className="mr-2 text-white" accent="white">
-								Филиалы ({ company.locations.length })
-							</Button>
-						</Link>
+						{
+							numerOfBranches > 0 &&
+							<Link to={`/company/${company.companyId}/contacts`}>
+								<Button className="mr-2 text-white" accent="white">
+									Филиалы ({ numerOfBranches })
+								</Button>
+							</Link>
+						}
+						
 					</div>
 				</CardContent>
 			</Card>

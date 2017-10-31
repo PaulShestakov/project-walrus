@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { IconButton } from 'material-ui'
 import { colors } from 'material-ui/styles'
-import {StarBorder, Star} from 'material-ui-icons';
+import {StarBorder, Star, StarHalf} from 'material-ui-icons';
 
 const styles = {
   disabled: {
@@ -33,10 +33,14 @@ export default class Rating extends Component {
         index: i
       }) : this.props.iconFilled
     } else {
+      let icon = this.props.iconNormal;
+      if ( i - this.props.value < 1 ) {
+        icon = this.props.iconHalf;
+      }
       return this.props.iconNormalRenderer ? this.props.iconNormalRenderer({
         ...this.props,
         index: i
-      }) : this.props.iconNormal
+      }) : icon
     }
   }
 
@@ -87,6 +91,7 @@ Rating.defaultProps = {
   iconFilled: <Star color={'#edcc6a'} />,
   iconHovered: <StarBorder color={'#edcc6a'} />,
   iconNormal: <StarBorder />,
+  iconHalf: <StarHalf color={'#edcc6a'} />,
   tooltipPosition: 'bottom-center',
   max: 5,
   readOnly: false,
