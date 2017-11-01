@@ -26,7 +26,7 @@ import TextField from 		'material-ui/TextField';
 import Grid from 			'material-ui/Grid';
 import Card from  			'material-ui/Card';
 
-import Popover from 		'react-popover';
+import Popover from 		'material-ui/Popover';
 import Map from	'./Map';
 
 export {

@@ -5,6 +5,7 @@ import {Button, Title, Label, Grid, Card, Popover, Checkbox, Separator, ButtonMo
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import classNames from 'classnames';
 import styles from './styles';
+import { findDOMNode } from 'react-dom';
 
 import { GridList, GridListTile } from 'material-ui/GridList';
 
@@ -20,24 +21,33 @@ export default class CheckboxesBlock extends React.Component {
 		};
 	}
 
-	handleOpenPopover = () => {
-		this.setState({
-			isPopoverOpened: !this.state.isPopoverOpened
-		});
-	};
-
 	handlePopoverOuterAction = () => {
 		this.setState({
 			isPopoverOpened: false
 		});
 	};
 
+	handleClickButton = () => {
+		this.setState({
+			isPopoverOpened: !this.state.isPopoverOpened,
+			anchorEl: findDOMNode(this.button),
+		});
+	};
+
+	handleRequestClose = () => {
+		this.setState({
+			isPopoverOpened: false,
+		});
+	};
+
 	render() {
 		const {classes, title, showMoreLabel, formGroupName, items, selectedIds, numberOfItemsToShowDefault } = this.props;
 
+		const cols = (((items.length || 0) / 6) ^ 0) + 1;
+
 		const otherItemsPopover = (
 			<Card className={classes.popoverCard}>
-				<GridList cellHeight={36} className={''} cols={4}>
+				<GridList cellHeight={36} className={''} cols={Math.min(cols, 4)}>
 					{
 						items && items.map(item => (
 							<GridListTile key={item.value} cols={1}>
@@ -98,13 +108,29 @@ export default class CheckboxesBlock extends React.Component {
 							})
 					}
 				</div>
+
+				<ButtonMore onClick={this.handleClickButton}
+					label={showMoreLabel}
+					ref={node => {
+						this.button = node;
+					}} />
+
 				<Popover
-					isOpen={this.state.isPopoverOpened}
-					body={otherItemsPopover}
-					preferPlace="left"
-					onOuterAction={this.handlePopoverOuterAction}>
-					<ButtonMore onClick={this.handleOpenPopover} label={showMoreLabel} />
+					open={this.state.isPopoverOpened}
+					anchorEl={this.state.anchorEl}
+					onRequestClose={this.handleRequestClose}
+					anchorOrigin={{
+						vertical: 'center',
+						horizontal: 'left',
+					}}
+					transformOrigin={{
+						vertical: 'center',
+						horizontal: 'right',
+					}}
+				>
+					{otherItemsPopover}
 				</Popover>
+
 				<Separator />
 			</div>
 		);
