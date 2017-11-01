@@ -50,7 +50,6 @@ export default class CompanyItem extends React.Component {
 		} else {
 			mainLocation = mainLocations[0];
 		}
-		const numerOfBranches = company.numerOfLocations - mainLocations.length;
 
 		return (
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>
@@ -120,10 +119,10 @@ export default class CompanyItem extends React.Component {
                             Телефоны
 						</Button>
 						{
-							numerOfBranches > 0 &&
+							company.numerOfLocations > 0 &&
 							<Link to={`/company/${company.companyId}/contacts`}>
 								<Button className="mr-2 text-white" accent="white">
-									Филиалы ({ numerOfBranches })
+									Филиалы ({ company.numerOfLocations })
 								</Button>
 							</Link>
 						}

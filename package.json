@@ -4,7 +4,7 @@
   "description": "wikipet",
   "main": "./dist/server/index.js",
   "scripts": {
-    "build-dev": "webpack --profile --progress --colors --watch",
+    "build-dev": "cross-env NODE_ENV=\"development\" webpack --profile --progress --colors --watch",
     "build-prod": "webpack --profile --progress --colors",
     "pm2-start-dev-server": "pm2 startOrReload ./pm2.dev.config.json --update-env",
     "pm2-stop-dev-server": "pm2 stop ./pm2.dev.config.json",
@@ -85,6 +85,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
+    "cross-env": "^5.1.1",
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^0.11.2",

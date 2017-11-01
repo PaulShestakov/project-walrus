@@ -7,7 +7,6 @@ import {
 
 const defaultState = {
 	companies: [],
-
 	suggestionInputValue: '',
 	fuzzySearchCompanies: []
 };

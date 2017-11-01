@@ -230,44 +230,49 @@ export default class Companies extends BaseCRUD  {
 		
 		let sql = squel
 			.select()
-				.field('c.COMPANY_ID as companyId')
-				.field('c.NAME as name')
-				.field('c.COMPANY_CATEGORY_ID as categoryId')
-				.field('c.COMPANY_SUBCATEGORY_ID as subcategoryId')
-				.field('c.LOGO as logo')
-				.field('c.DESCRIPTION as description')
-				.field('c.EMAIL as email')
-				.field('c.WEBSITE_URL as url')
-				.field('(SELECT COUNT(*) FROM wikipet.companies_location cl1 WHERE cl1.COMPANY_ID = c.COMPANY_ID) as locationsCount')
+				.field('c.COMPANY_ID', 'companyId')
+				.field('c.NAME', 'name')
+				.field('c.COMPANY_CATEGORY_ID', 'categoryId')
+				.field('c.COMPANY_SUBCATEGORY_ID', 'subcategoryId')
+				.field('c.LOGO', 'logo')
+				.field('c.DESCRIPTION', 'description')
+				.field('c.EMAIL', 'email')
+				.field('c.WEBSITE_URL', 'url')
+				.field( squel.select()
+								.field('COUNT(*)')
+							.from('wikipet.companies_location', 'cl1')
+							.where('cl1.COMPANY_ID = c.COMPANY_ID')
+							.where('cl1.IS_MAIN = 0'), 'locationsCount'
+				)
 				.field('cf1.numberOfFeedbacks')
 				.field('cf1.averageRating')
 
-				.field('l.COMPANY_LOCATION_ID as locationId')
-				.field('l.CITY_ID as cityId')
-				.field('cv1.NAME as cityName')
-				.field('l.ADDRESS as address')
-				.field('l.SUBWAY_ID as subwayId')
-				.field('l.IS_MAIN as isMain')
-				.field('l.LAT as lat')
-				.field('l.LNG as lng')
+				.field('l.COMPANY_LOCATION_ID', 'locationId')
+				.field('l.CITY_ID', 'cityId')
+				.field('cv1.NAME', 'cityName')
+				.field('l.ADDRESS', 'address')
+				.field('l.SUBWAY_ID', 'subwayId')
+				.field('l.IS_MAIN', 'isMain')
+				.field('l.LAT', 'lat')
+				.field('l.LNG', 'lng')
 
-				.field('t.DAY_OF_WEEK as dayOfWeek')
-				.field('cv2.NAME as dayOfWeekName')
-				.field('t.OPEN_TIME as open')
-				.field('t.CLOSE_TIME as close')
+				.field('t.DAY_OF_WEEK', 'dayOfWeek')
+				.field('cv2.NAME', 'dayOfWeekName')
+				.field('t.OPEN_TIME', 'open')
+				.field('t.CLOSE_TIME', 'close')
 
-				.field('p.COMPANY_PHONE_ID as phoneId')
-				.field('p.PHONE as phone')
+				.field('p.COMPANY_PHONE_ID', 'phoneId')
+				.field('p.PHONE', 'phone')
 
-				.field('ca.COMPANY_ANIMAL_ID as companyAnimalId')
-				.field('ca.ANIMAL_ID as animalId')
-				.field('ca.BREED_ID as breedId')
+				.field('ca.COMPANY_ANIMAL_ID', 'companyAnimalId')
+				.field('ca.ANIMAL_ID', 'animalId')
+				.field('ca.BREED_ID', 'breedId')
 			.from('wikipet.companies', 'c')
 			.left_join(
 				squel.select()
 					.field('cf.COMPANY_ID')
-					.field('COUNT(cf.RATING) as numberOfFeedbacks')
-					.field('AVG(cf.RATING) as averageRating')
+					.field('COUNT(cf.RATING)', 'numberOfFeedbacks')
+					.field('AVG(cf.RATING)', 'averageRating')
 				.from('wikipet.companies_feedback', 'cf')
 				.group('cf.COMPANY_ID'), 'cf1', 'cf1.COMPANY_ID = c.COMPANY_ID'
 			)
@@ -276,7 +281,8 @@ export default class Companies extends BaseCRUD  {
 		
 
 		if (isWorkingNow) {
-			sql = sql.join(
+			sql = sql
+			.join(
 				squel.select()
 					.field('cwt.COMPANY_LOCATION_ID')					
 				.from('wikipet.companies_working_time', 'cwt')
@@ -286,7 +292,8 @@ export default class Companies extends BaseCRUD  {
 			)
 		}
 			
-		sql = sql.left_join('wikipet.code_values', 'cv1', "cv1.GROUP = 'CITY' AND cv1.ID = l.CITY_ID")
+		sql = sql
+			.left_join('wikipet.code_values', 'cv1', "cv1.GROUP = 'CITY' AND cv1.ID = l.CITY_ID")
 			.left_join('wikipet.code_values', 'cv2', "cv2.GROUP = 'DAY_OF_WEEK' AND cv2.ID = t.DAY_OF_WEEK")
 			.left_join('wikipet.companies_animals', 'ca', 'c.COMPANY_ID = ca.COMPANY_ID')
 			.left_join('wikipet.companies_phones', 'p', 'p.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')

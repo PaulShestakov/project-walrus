@@ -23,52 +23,52 @@ class Footer extends React.Component {
 										<Grid item xs={3}>
 											<Grid container direction="column">
 												<Grid item>
-													<Link to="/" className={classes.linkStyle}>{t('ABOUT_US')}</Link>
+													<a href="https://wikipet.by/o-nas/" className={classes.linkStyle}>{t('ABOUT_US')}</a>
 												</Grid>
 												<Grid item>
-													<Link to="/" className={classes.linkStyle}>{t('EDITORIAL_POLICY')}</Link>
+													<a href="https://wikipet.by/reklamodatelyam.html" className={classes.linkStyle}>{t('EDITORIAL_POLICY')}</a>
 												</Grid>
 												<Grid item>
-													<Link to="/" className={classes.linkStyle}>{t('PUBLIC_OFFER_CONTRACT')}</Link>
+													<a href="https://wikipet.by/dogovor-publichnoy-oferti.html" className={classes.linkStyle}>{t('PUBLIC_OFFER_CONTRACT')}</a>
 												</Grid>
 												<Grid item>
-													<Link to="/" className={classes.linkStyle}>{t('CONTACTS')}</Link>
+													<a href="https://wikipet.by/contact.html" className={classes.linkStyle}>{t('CONTACTS')}</a>
 												</Grid>
 											</Grid>
 										</Grid>
 										<Grid item xs={4}>
 											<Grid container direction="column">
 												<Grid item>
-													<Link to="/" className={classes.linkStyle}>{t('PETS_MEINTENANCE_LEGAL_ISSUES')}</Link>
+													<a href="https://wikipet.by/pravovye-voprosy/" className={classes.linkStyle}>{t('PETS_MEINTENANCE_LEGAL_ISSUES')}</a>
 												</Grid>
 												<Grid item>
-													<Link to="/" className={classes.linkStyle}>{t('SPECIAL_PROJECTS')}</Link>
+													<a href="https://wikipet.by/specproekty/" className={classes.linkStyle}>{t('SPECIAL_PROJECTS')}</a>
 												</Grid>
 											</Grid>
 										</Grid>
 										<Grid item xs={2}>
 											<Grid container direction="column">
 												<Grid item>
-													<Link to="/" className={classes.linkStyle}>{t('INSTAGRAM')}</Link>
+													<a href="https://www.instagram.com/wikipet.by/" target="_blank" className={classes.linkStyle}>{t('INSTAGRAM')}</a>
 												</Grid>
 												<Grid item>
-													<Link to="/" className={classes.linkStyle}>{t('VK')}</Link>
+													<a href="https://vk.com/wikipet_by" target="_blank" className={classes.linkStyle}>{t('VK')}</a>
 												</Grid>
 												<Grid item>
-													<Link to="/" className={classes.linkStyle}>{t('FB')}</Link>
+													<a href="https://www.facebook.com/WikiPet.by/" target="_blank" className={classes.linkStyle}>{t('FB')}</a>
 												</Grid>
 												<Grid item>
-													<Link to="/" className={classes.linkStyle}>{t('O')}</Link>
+													<a href="https://ok.ru/group/53392578379999" target="_blank" className={classes.linkStyle}>{t('O')}</a>
 												</Grid>
 												<Grid item>
-													<Link to="/" className={classes.linkStyle}>{t('YOUTUBE')}</Link>
+													<a href="https://www.youtube.com/channel/UCne90hqBQQRD0exJDB7uGTA" target="_blank" className={classes.linkStyle}>{t('YOUTUBE')}</a>
 												</Grid>
 											</Grid>
 										</Grid>
 										<Grid item xs={3}>
 											<Grid container direction="column">
 												<Grid item>
-													<Link to="/" className={classes.linkStyle}>{t('SUBSCRIBE_FOR_NEWSLETTER')}</Link>
+													<a href="/" className={classes.linkStyle}>{t('SUBSCRIBE_FOR_NEWSLETTER')}</a>
 												</Grid>
 											</Grid>
 										</Grid>

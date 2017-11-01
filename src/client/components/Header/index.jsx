@@ -22,58 +22,60 @@ export default class Header extends React.Component {
 						<Grid item xs={11} md={9}>
 							<Grid container className='my-2'>
 								<Grid item xs={2}>
-									<img src={logo} alt="Logo" style={{width: '100%'}} />
+									<a href="https://wikipet.by/">
+										<img src={logo} alt="Logo" style={{width: '100%'}} />
+									</a>
 								</Grid>
 								<Grid item xs={10} className='d-flex align-items-center justify-content-between'>
-									<Link to="/" className={classes.topLink}>
+									<a href="/" className={classes.topLink}>
 										<FontAwesome name="search" className='mr-1' />
 										{t('SEARCH')}
-									</Link>
+									</a>
 
-									<Link to="/promosList" className={classes.topLink}>
+									<a href="https://wikipet.by/developing.html" className={classes.topLink}>
 										<FontAwesome name="bullhorn" className='mr-1' />
 										{t('PROMOS')}
-									</Link>
+									</a>
 
-									<Link to="/" className={classes.topLink}>
+									<a href="https://wikipet.by/blog/" className={classes.topLink}>
 										<FontAwesome name="comments" className='mr-1' />
 										{t('BLOG')}
-									</Link>
+									</a>
 
-									<Link to="/" className={classes.topLink}>
+									<a href="https://wikipet.by/afisha/" className={classes.topLink}>
 										<FontAwesome name="paw" className='mr-1' />
 										{t('AFFICHE')}
-									</Link>
+									</a>
 
-									<Link to="/" className={classes.topLink}>
+									<a href="/" className={classes.topLink}>
 										<FontAwesome name="sign-in" className='mr-1' />
 										{t('ENTER')}
-									</Link>
+									</a>
 								</Grid>
 							</Grid>
 
 							<Grid container className='mb-2'>
 								<Grid item xs={12} className='d-flex align-items-center justify-content-between'>
-									<Link to='/' className={classes.bottomLink}>
+									<a href='https://wikipet.by/enciklopediya/' className={classes.bottomLink}>
 										{t('GUIDE')}
-									</Link>
+									</a>
 
 									<Link to={{ pathname: '/company/overview', search: 'companyCategoryId=HEALTH' }}
 										  className={classes.bottomLink}>
 										{t('CATALOGUES')}
 									</Link>
 
-									<Link to='/' className={classes.bottomLink}>
+									<a href='https://wikipet.by/zdorove-i-pitanie-sobaki/' className={classes.bottomLink}>
 										{t('LIFE_WITH_PET')}
-									</Link>
+									</a>
 
-									<Link to='/' className={classes.bottomLink}>
+									<a href='https://wikipet.by/zdorove-i-pitanie-sobaki/govoryat-specialisti/' className={classes.bottomLink}>
 										{t('SPECIALISTS')}
-									</Link>
+									</a>
 
-									<Link to='/' className={classes.bottomLink}>
+									<a href='https://wikipet.by/positive/' className={classes.bottomLink}>
 										{t('POSITIVE')}
-									</Link>
+									</a>
 								</Grid>
 							</Grid>
 						</Grid>
