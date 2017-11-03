@@ -122,31 +122,35 @@ export default class Companies extends BaseCRUD  {
 				}
 				return acc;
 			}, []);
-            if (phones && phones.length > 0) {
+            if (phones.length > 0) {
                 connection.query(Queries.SAVE_PHONES, [phones], done);
             } else {
 	            done(null, null);
             }
 		};
 		const saveLocation = (connection, done) => {
-	        connection.query(Queries.SAVE_LOCATION, [locations], done);
+			if (locations.length > 0) {
+				connection.query(Queries.SAVE_LOCATION, [locations], done);
+			} else {
+				done(null, null);
+			}
 		};
 		const saveWorkingTimes = (connection, done) => {
 			const times: Array<object> = company.locations.reduce((acc, item, index) => {
 				if (item.workingTimes) {
-					item.workingTimes.filter(i => i.from && i.to && i.day)
+					item.workingTimes.filter(i => i.open && i.close && i.dayOfWeek)
                         .forEach(time => {
 							acc.push(WorkingTimes.internalizeTime({
 								locationId: locations[index][0],
-								day: time.day.value,
-								from: time.from,
-								to: time.to,
+								day: time.dayOfWeek.value,
+								from: time.open,
+								to: time.close,
 							}));
 						});
 				}
 				return acc;
 			}, []);
-			if (times && times.length > 0) {
+			if (times.length > 0) {
 				connection.query(Queries.SAVE_WORKING_TIMES, [times], done);
 			} else {
 				done(null, null);
@@ -162,7 +166,8 @@ export default class Companies extends BaseCRUD  {
 		};
 	    const saveCompany = (connection, done) => {
             connection.query(Queries.SAVE, [Companies.internalizeCompany(company)], done);
-        };
+		};
+
         executeSeries([saveCompany, saveAnimals, saveLocation, savePhones, saveWorkingTimes], (error) => {
             if (error) {
                 Util.handleError(error, callback);
@@ -175,12 +180,20 @@ export default class Companies extends BaseCRUD  {
 	static updateCompany(companyId, company, callback) {
 		const internalizedCompany = this.internalizeCompany(company);
 		internalizedCompany.COMPANY_ID = companyId;
+		if (company.image.length === 0) {
+			delete internalizedCompany.LOGO;
+		}
 
-		function updateCompany(connection, done) {
+		const locations = company.locations.map(Locations.internalizeLocationToObject.bind(null, companyId));
+		const updateLocations = Locations.getLocationsUpdater(locations, company.locations.map(loc => loc.locationId));
+		
+		
+
+		const updateCompany = (connection, done) => {
 			connection.query(Queries.UPDATE_COMPANY, [internalizedCompany, companyId], done);
 		}
 
-		executeParallel([updateCompany], (error) => {
+		executeParallel([updateCompany, updateLocations], (error) => {
 			if (error) {
 				Util.handleError(error, callback);
 			} else {

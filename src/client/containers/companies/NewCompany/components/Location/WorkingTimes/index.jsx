@@ -13,17 +13,8 @@ export default class WorkingTimes extends React.Component {
         super(props);
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { fields, daysOfWeek } = nextProps;
-        if (daysOfWeek && fields.length === 0) {
-            daysOfWeek.forEach(day => {
-                fields.push({day});
-            });
-        }
-    }
-
     render() {
-        const {t, classes, fields, common, ...other} = this.props;
+        const {t, classes, fields, ...other} = this.props;
         return (
             <div>
                 {
@@ -32,23 +23,23 @@ export default class WorkingTimes extends React.Component {
                         return (
                             <Grid container key={index}>
                                 <Grid item xs={6}>
-                                    <Title>{curField.day.label}</Title>
+                                    <Title>{curField.dayOfWeek.label}</Title>
                                 </Grid>
                                 <Grid item xs={3}>
                                     <FormControl>
-                                        <InputLabel htmlFor="from">From</InputLabel>
+                                        <InputLabel htmlFor="open">С</InputLabel>
                                         <Field
                                             component={Input}
-                                            name={`${member}.from`}
+                                            name={`${member}.open`}
                                         />
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={3}>
                                     <FormControl>
-                                        <InputLabel htmlFor="to">To</InputLabel>
+                                        <InputLabel htmlFor="close">По</InputLabel>
                                         <Field
                                             component={Input}
-                                            name={`${member}.to`}
+                                            name={`${member}.close`}
                                         />
                                     </FormControl>
                                 </Grid>

@@ -5,32 +5,7 @@ import upload from '../../util/Upload';
 import CompaniesRepository from '../../repository/companies/Companies';
 import FeedbacksRepository from '../../repository/companies/Feedbacks';
 import * as passport from 'passport';
-
-
-const filteredSchema = {
-	"id": "/src/server/controller/companies/index/getFiltered",
-	"type": "object",
-
-	"properties": {
-		"companyCategoryId": {
-			"type": "string"
-		},
-		"companySubcategoryId": {
-			"type": "string"
-		},
-		"isWorkingNow": {
-			"enum": ["true", "false"]
-		},
-		"cityId": {
-			"type": "array",
-			"items": {
-				"type": "string"
-			}
-		}
-	},
-
-	"required": ["companyCategoryId", "companySubcategoryId", "isWorkingNow"]
-};
+import validators from './validators.js';
 
 class Companies extends BaseController {
 
@@ -62,12 +37,11 @@ class Companies extends BaseController {
 	}
 
 	private getFiltered(req: Request, res: Response) {
-		const valid = this.ajv.validate(filteredSchema, req.query);
+		const valid = this.ajv.validate(validators.filter, req.query);
 
 		if (!valid) {
 			const errors = this.ajv.errors;
 			this.errorResponse(res, 400, errors);
-
 		} else {
 			CompaniesRepository.getFiltered(req.query, (error, result) => {
 				if (error) {

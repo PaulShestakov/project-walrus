@@ -12,6 +12,10 @@ import { Field, Fields, FieldArray } from 'redux-form'
 import WorkingTimes from "./WorkingTimes/index";
 import Phones from "./Phones/index";
 
+import Autosuggest from 'react-autosuggest';
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
+
 
 @translate(['common'])
 @withStyles(styles)
@@ -29,7 +33,7 @@ export default class Location extends React.Component {
     };
 
     handleOnAddAddressPress = () => {
-        const { fields, cities } = this.props;
+        const { fields, cities, daysOfWeek } = this.props;
         fields.push({
             label: `Адрес ${fields.length + 1}`,
             cities,
@@ -40,6 +44,9 @@ export default class Location extends React.Component {
                     lng: 27.5
                 }
             }],
+            workingTimes: daysOfWeek.map(day => ({
+                dayOfWeek: {...day}
+            }))
         });
         this.setState({ selectedAddress: fields.length });
     };
@@ -54,17 +61,18 @@ export default class Location extends React.Component {
         }
     };
 
-    handleCityChange = (item, index) => {
+    handleCityChange = (item, index, member) => {
         const { fields, cities } = this.props;
         const foundCity = cities.find(city => item.value === city.value);
         if (foundCity) {
-            fields.get(index).city = foundCity;
+            fields.get(index).cityId = foundCity;
             fields.get(index).subways = foundCity.subways;
+            this.props.change(`${member}.subwayId`, null);
         }
     };
 
     render() {
-        const {t, classes, fields, daysOfWeek, ...other} = this.props;
+        const {t, classes, fields, cities, workingTimes, ...other} = this.props;
         return (
             <div>
                 <Grid item>
@@ -99,7 +107,7 @@ export default class Location extends React.Component {
                             return (
                                 <Tab
                                     className={classes.tab}
-                                    label={curField.label}
+                                    label={`Адрес ${index + 1}`}
                                     value={index}/>
                             );
                         })
@@ -123,14 +131,16 @@ export default class Location extends React.Component {
                                     </Grid>
                                     <Grid item xs={12} className="my-2">
                                         <Title>Город</Title>
-                                        <Field name={`${member}.city`}
+                                        <Field
+                                            name={`${member}.cityId`}
                                             component={Dropdown}
-                                            onChange={(item) => this.handleCityChange(item, index)}
-                                            options={curField.cities}/>
+                                            onChange={(item) => this.handleCityChange(item, index, member)}
+                                            options={cities}/>
                                     </Grid>
                                     <Grid item xs={12} className="my-2">
                                         <Title>Метро</Title>
-                                        <Field name={`${member}.subway`}
+                                        <Field
+                                            name={`${member}.subwayId`}
                                             component={Dropdown}
                                             options={curField.subways}/>
                                     </Grid>
@@ -142,16 +152,16 @@ export default class Location extends React.Component {
                                             component={Input}
                                             placeholder="Адрес"
                                             fullWidth/>
-                                </Grid>
+                                    </Grid>
 
                                     <Grid item xs={12} className="my-2">
                                         <Title className="mb-2">Карта</Title>
                                         <Field
-                                            name={`${member}.location`}
+                                            name={`${member}.position`}
                                             component={Map}
                                             search
                                             extMarkers={curField.markers}
-                                            mapCenter={curField.markers[0].position}
+                                            mapCenter={{lat: 53.9, lng: 27.5}}
                                             onMarkersChanged={(item) => this.handleMapLocation(item, index)}/>
                                     </Grid>
 
@@ -168,7 +178,6 @@ export default class Location extends React.Component {
 
                                     <FieldArray
                                         name={`${member}.workingTimes`}
-                                        daysOfWeek={daysOfWeek}
                                         component={WorkingTimes}/>
 
                                 </Grid>

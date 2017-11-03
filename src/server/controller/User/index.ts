@@ -18,7 +18,7 @@ class User extends BaseController {
         this.router.get('/me', passport.authenticate('jwt', { session: false }), this.getCurrentUser.bind(this));
     }
 
-    private getCurrentUser(req: Request, res: Response) {
+    private getCurrentUser(req: any, res: Response) {
         const { user } = req;
         this.okResponse(res, {
             id: user.user_id,

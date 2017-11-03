@@ -17,7 +17,7 @@ export default class ImagePreview extends React.Component {
 		const {classes, className, imageUrl, onDelete, ...other} = this.props;
 
 		const backgroundImageStyle = {
-			background: `url(${imageUrl})`,
+			background: `url(${encodeURI(imageUrl)})`,
 			backgroundSize: 'cover'
 		};
 

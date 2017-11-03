@@ -16,7 +16,7 @@ import CompanyPage from "../CompanyPage";
 
 
 const EditComponent = (props) => {
-	return <NewCompany editMode={true} {...props} />;
+	return <NewCompany editMode {...props} />;
 };
 
 class CompanyRouterContainer extends React.Component {

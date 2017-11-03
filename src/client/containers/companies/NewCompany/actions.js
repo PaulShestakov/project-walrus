@@ -62,7 +62,7 @@ const loadCompanySuccess = (data) => ({
 });
 
 export function loadCompany(companyId) {
-	return (dispatch) => {
+	return (dispatch, getState) => {
 		dispatch(loadCompanyStart());
 
 		fetch(baseUrl + '/company/' + companyId).then(
@@ -76,7 +76,7 @@ export function loadCompany(companyId) {
 				throw Error(error);
 			}
 		).then(json => {
-			dispatch(loadCompanySuccess(internalizeCompany(json)));
+			dispatch(loadCompanySuccess(json));
 		}).catch(error => {
 			dispatch(loadCompanyError(error));
 		})
@@ -130,26 +130,16 @@ export function updateCompany(companyId, company, history) {
 	}
 }
 
-function internalizeCompany(company) {
-	return {
-		...company,
-		imageObjects: [
-			{
-				imageUrl: company.logo
-			}
-		]
-	}
-}
-
 function externalizeCompany(company) {
 	const files = [];
 	const externalizedCompany = {...company};
 	if (externalizedCompany.locations) {
         externalizedCompany.locations = externalizedCompany.locations.map(location => {
             return {
+				locationId: location.locationId,
                 location: location.markers[0].position,
-                city: location.city.value,
-                subway: location.subway ? location.subway.value : null,
+                city: location.cityId.value,
+                subway: location.subwayId ? location.subwayId.value : null,
                 isMain: location.isMain,
                 address: location.address,
                 phones: location.phones,
@@ -177,7 +167,6 @@ function externalizeCompany(company) {
 
 	delete externalizedCompany.imageObjects;
 
-
 	const formData = new FormData();
 	formData.append('company', JSON.stringify(externalizedCompany));
 
@@ -188,3 +177,8 @@ function externalizeCompany(company) {
 
 	return formData;
 }
+
+export const RESET_FORM_STATE = 'RESET_FORM_STATE';
+export const resetFormState = () => ({
+	type: RESET_FORM_STATE
+});

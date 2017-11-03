@@ -3,11 +3,14 @@ import { Add } from 'material-ui-icons';
 import { translate } from 'react-i18next';
 import { Dropdown, Button, Title, Input,
 Grid, ImageUploader, TextField, Tabs, Tab, Card, Map } from "components";
+import styles from './styles';
+import { withStyles } from 'material-ui/styles';
 
 import { Field, FieldArray } from 'redux-form'
 
 
 @translate(['common'])
+@withStyles(styles)
 export default class Phones extends React.Component {
 
     constructor(props) {
@@ -22,6 +25,7 @@ export default class Phones extends React.Component {
                     <Grid item className="d-flex align-items-center">
                         <Title className="mr-3">Телефоны</Title>
                         <Button fab onClick={() => fields.push({})}
+                                className={classes.addButton}
                                 color="primary" aria-label="add">
                             <Add />
                         </Button>

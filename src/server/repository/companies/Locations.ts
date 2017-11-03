@@ -33,7 +33,39 @@ export default class Locations {
 		]
 	}
 
-	static saveLocations(locations, connection, done) {
-		connection.query(Queries.SAVE_LOCATION, [locations], done);
+	static internalizeLocationToObject(companyId, location) {
+		return {
+			SUBWAY_ID: location.subway,
+			COMPANY_ID: companyId,
+			CITY_ID: location.city,
+			ADDRESS: location.address,
+			LAT: location.location.lat,
+			LNG: location.location.lng,
+		}
+	}
+
+	static getLocationsUpdater(locations, locationsIds) {
+		return (connection, done) => {
+			if (locations.length > 0) {
+				Promise.all(
+					locations.map((location, index) => {
+						return new Promise((resolve, reject) => {
+							connection.query(Queries.UPDATE_LOCATION, [location, locationsIds[index]], (error, result) => {
+								if (error) {
+									reject(error);
+								} else {
+									resolve(result);
+								}
+
+							});
+						})
+					})
+				).then((results) => {
+					done(null, results);
+				})
+			} else {
+				done(null, null);
+			}
+		}
 	}
 }

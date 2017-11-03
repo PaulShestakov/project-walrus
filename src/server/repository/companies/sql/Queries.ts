@@ -22,7 +22,9 @@ export default {
 			c.WEBSITE_URL url,
 
 			cl.COMPANY_LOCATION_ID locationId,
+			cl.SUBWAY_ID subwayId,
 			(SELECT NAME FROM wikipet.code_values WHERE ID = cl.SUBWAY_ID) as subwayName,
+			cl.CITY_ID cityId,
 			(SELECT NAME FROM wikipet.code_values WHERE ID = cl.CITY_ID) as cityName,
 			cl.ADDRESS address,
 			cl.IS_MAIN isMain,
@@ -106,6 +108,8 @@ export default {
 	DELETE_FEEDBACK: `DELETE FROM ${FEEDBACK} WHERE COMPANY_FEEDBACK_ID = ?`,
 
 	UPDATE_COMPANY: `UPDATE ${COMPANIES_TABLE} SET ? WHERE COMPANY_ID = ?`,
+
+	UPDATE_LOCATION: `UPDATE ${COMPANIES_LOCATION} SET ? WHERE COMPANY_LOCATION_ID = ?`,
 
 	SAVE_COMPANY_ANIMAL: `INSERT INTO ${COMPANIES_ANIMALS} VALUES ?`,
 }

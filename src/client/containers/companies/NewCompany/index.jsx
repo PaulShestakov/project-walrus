@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {createSelector} from 'reselect'
 
-import {postCompany, updateCompany, loadCompany} from "./actions";
+import {postCompany, updateCompany, loadCompany, resetFormState} from "./actions";
 
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
@@ -23,16 +23,15 @@ import {getFormValues} from 'redux-form'
 @reduxForm({form: 'company', enableReinitialize: true})
 class NewCompanyContainer extends React.Component {
 
-	constructor() {
-		super();
-
+	constructor(props) {
+		super(props);
 		this.state = {
 			subcategories: [],
 			renderAnimals: false,
 			renderBreeds: false,
 			selectedAddress: 0,
 			showConfirm: false,
-		};
+        };
 	}
 
 	componentDidMount() {
@@ -49,7 +48,11 @@ class NewCompanyContainer extends React.Component {
             renderAnimals: this.isAnimalAvailable(nextProps),
             renderBreeds: this.isBreedAvailable(nextProps)
 		});
-	}
+    }
+
+    componentWillUnmount() {
+        this.props.resetFormState();
+    }
 
 	handleCategoryChange = (selectedCategory) => {
 		const category = this.props.common.companiesCategories.find((category) => {
@@ -95,7 +98,7 @@ class NewCompanyContainer extends React.Component {
     };
 
 	render() {
-		const { t, classes, common, handleSubmit } = this.props;
+		const { t, classes, common, handleSubmit, workingTimes } = this.props;
 
 		return (
             <form className="d-flex-column align-items-center my-4">
@@ -179,6 +182,8 @@ class NewCompanyContainer extends React.Component {
                             <FieldArray
                                 name="locations"
                                 {...common}
+                                workingTimes={workingTimes}
+                                change={this.props.change}
                                 component={Location}/>
                         </Grid>
 
@@ -225,30 +230,76 @@ const getCategories = (state) => state.common.companiesCategories;
 const getSubcategories = createSelector(
 	[getSelectedCategory, getCategories],
 	(selectedCategory, categories) => {
-		const selectedCaregory = categories.find(category => category.value === selectedCategory);
-
-		if (selectedCaregory) {
-			return selectedCaregory.subcategories;
-		} else {
-			return [];
-		}
+        selectedCategory = categories.find(category => category.value === selectedCategory);
+        return selectedCategory ? selectedCategory.subcategories : [];
 	}
 );
 
+const internalizeCompany = createSelector(
+    [(state) => state.newCompany.company, state => state.common],
+	(company, common) => {
+
+        const workingTimes = common.daysOfWeek.map(day => ({
+            dayOfWeek: {...day}
+        }));
+
+        if (company.companyId) {
+            company = {
+                ...company,
+                locations: company.locations.map(location => {
+                    const city = common.cities.find(city => city.value === location.cityId);
+                    const subway = city.subways.find(subway => subway.value === location.subwayId);
+                    
+                    // Create new base array and write working times
+                    location.workingTimes.forEach(day => {
+                        workingTimes[day.dayOfWeek].open = day.open;
+                        workingTimes[day.dayOfWeek].close = day.close;
+                    });
+
+                    const result = {
+                        ...location,
+                        cityId: {
+                            value: city.value,
+                            label: city.label,
+                        },
+                        subways: city.subways,
+                        markers: [{
+                            position: location.position
+                        }],
+                        workingTimes
+                    };
+                    if (subway) {
+                        result.subwayId = {
+                            value: subway.value,
+                            label: subway.label,
+                        };
+                    }
+                    return result;
+                }),
+                imageObjects: [
+                    {
+                        imageUrl: company.logo
+                    }
+                ]
+            }
+        }
+        return company;
+    }
+);
 
 const NewCompany = connect(
     state => ({
 		common: state.common,
-		initialValues: state.newCompany.company,
+		initialValues: internalizeCompany(state),
 		selectedCategory: formValueSelector('company')(state, 'categoryId'),
 		selectedSubCategory: formValueSelector('company')(state, 'subcategoryId'),
-
-		subcategories: getSubcategories(state),
+        subcategories: getSubcategories(state),
     }),
     {
         postCompany,
         updateCompany,
-        loadCompany
+        loadCompany,
+        resetFormState
     }
 )(NewCompanyContainer);
 
