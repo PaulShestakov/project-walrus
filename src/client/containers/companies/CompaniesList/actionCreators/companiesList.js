@@ -49,7 +49,7 @@ export const loadCompanies = () => {
 	};
 };
 
-export const removeCompany = (companyId) => {
+export const removeCompany = (companyId, history) => {
 	return dispatch => {
 		return fetch(baseUrl + '/company/' + companyId, {
             method: 'DELETE',
@@ -66,6 +66,9 @@ export const removeCompany = (companyId) => {
 				dispatch(loadCompaniesError(error))
 			}
 		).then(json => {
+			if (history) {
+				history.goBack();
+			}
 			dispatch(loadCompanies());
 		}).catch(error => {
 			// dispatch(loadCompaniesError(error));

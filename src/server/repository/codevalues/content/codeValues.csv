@@ -5,10 +5,13 @@
 4,DAY_OF_WEEK,Пятница,40
 5,DAY_OF_WEEK,Суббота,50
 6,DAY_OF_WEEK,Воскресенье,60
-DOG,ANIMAL,Собака,10
-CAT,ANIMAL,Кошка,20
-BIRD,ANIMAL,Птица,30
-FISH,ANIMAL,Рыба,40
+DOG,ANIMAL,Собаки,10
+CAT,ANIMAL,Кошки,20
+BIRD,ANIMAL,Птицы,30
+HORSE,ANIMAL,Лошади,40
+FISH,ANIMAL,Аквариумные,50
+RODENT,ANIMAL,Грызуны,60
+PANGALION,ANIMAL,Террариумные,70
 Maine_Coon,BREED.CAT,Мейн-кун,10
 Toyger,BREED.CAT,Тойгер,20
 Basenji,BREED.DOG,Басенджи,10

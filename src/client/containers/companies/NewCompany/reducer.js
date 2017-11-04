@@ -4,15 +4,12 @@ import {
     RESET_FORM_STATE
 } from './actions';
 
-
-const defaultCompany = {
-    name: '',
-    locations: [],
-	imageObjects: []
-};
-
 const defaultState = {
-    company: defaultCompany
+    company: {
+        name: '',
+        locations: [],
+        imageObjects: []
+    }
 };
 
 const newCompanyReducer = (state = defaultState, action) => {

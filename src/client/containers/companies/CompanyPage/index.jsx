@@ -3,16 +3,17 @@ import {connect} from 'react-redux';
 import { createSelector } from 'reselect'
 
 import {loadCompany, postFeedback, loadFeedbacks, deleteFeedback} from "./actions";
+import { removeCompany } from '../CompaniesList/actionCreators/companiesList';
 
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card } from "components";
+import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, ConfirmDialog } from "components";
 import styles from './styles';
 
 import { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card';
 import {Divider, Typography, Paper} from "material-ui";
-import { Pets, Call, Mail, Public, LocationOn } from 'material-ui-icons';
+import { Pets, Call, Mail, Public, LocationOn, ModeEdit as ModeEditIcon, DeleteForever as Delete, Block } from 'material-ui-icons';
 import CompanyInfo from "./components/Info/index";
 import Feedbacks from "./components/Feedback/index";
 import defaultCompanyImage from '../../../assets/img/company-default.png';
@@ -30,7 +31,9 @@ class CompanyPageContainer extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			selectedTab: 0
+			selectedTab: 0,
+			isConfirmDialogOpened: false,
+			company: {}
 		};
 	}
 
@@ -63,6 +66,19 @@ class CompanyPageContainer extends React.Component {
 		this.setState({selectedTab: index});
 	}
 
+	handleAction = (company, action) => {
+		let value = undefined;
+		if (action === 'delete') {
+			value = {
+                companyId: company.companyId,
+				action: this.delete,
+				title: 'Удаление компании',
+				message: `Вы действительно хотите удалить ${company.name}?`,
+			}
+		}
+		this.setState({ isConfirmDialogOpened: true, company: value});
+	};
+
 	handleTabPress = (event, index) => {
 		this.setState({ selectedTab: index });
 		const { match, history, loadFeedbacks } = this.props;
@@ -90,22 +106,17 @@ class CompanyPageContainer extends React.Component {
 		}
 	};
 
+	delete = () => {
+		this.setState({ isConfirmDialogOpened: false });
+		this.props.removeCompany(this.state.company.companyId, this.props.history);
+	};
+
 	getImageSrc() {
 		return encodeURI((this.props.company.logo || defaultCompanyImage).split('\\').join('\/'));
 	}
 
 	render() {
 		const {t, classes, company, feedbacks, common, markers } = this.props;
-
-		let mainLocation;
-		if (company.locations) {
-            mainLocation = company.locations.find(location => (location.isMain === 1));
-		}
-
-		let phonesText;
-		if (mainLocation) {
-            phonesText = mainLocation.phones ? mainLocation.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
-		}
 
 		return (
 			<div className={classes.mainCardWrapper}>
@@ -127,6 +138,17 @@ class CompanyPageContainer extends React.Component {
 											{t('Оставить отзыв')}
 										</Button>
 									</Link>
+								</Authorized>
+								<Authorized allowedRoles={[5]} className={classes.editButtonsBlock}>
+									<Button fab className={classes.editButton}>
+										<Link to={`/company/edit/${company.companyId}`}>
+											<ModeEditIcon className={classes.editIcon} />
+										</Link>
+									</Button>
+									<Button fab className={classes.editButton}
+											onClick={this.handleAction.bind(null, company, 'delete')}>
+										<Delete className={classes.editIcon} />
+									</Button>
 								</Authorized>
 							</Grid>
 						</Grid>
@@ -161,31 +183,28 @@ class CompanyPageContainer extends React.Component {
 										</Typography>
 									</Grid>
 									<Grid item xs={12}>
-									{
-										mainLocation &&
 										<Grid container
-											  spacing={16}>
+												spacing={16}>
 											<Grid item xs={12}>
 												<Typography component="p">
 													Контакты главного офиса :
 												</Typography>
 											</Grid>
 											<Grid item xs={12}
-												  className="d-flex align-items-center">
+													className="d-flex align-items-center">
 												<LocationOn className="mr-2"/>
 												<Typography component="p">
-                                                    {mainLocation.address}
+													{company.mainLocation.address}
 												</Typography>
 											</Grid>
 											<Grid item xs={12}
-												  className="d-flex align-items-center">
+													className="d-flex align-items-center">
 												<Call className="mr-2"/>
 												<Typography component="p">
-                                                    {phonesText}
+													{company.phonesText}
 												</Typography>
 											</Grid>
 										</Grid>
-									}
 									</Grid>
 								</Grid>
 							</Grid>
@@ -223,6 +242,12 @@ class CompanyPageContainer extends React.Component {
 						</div>
 					</CardContent>
 				</Card>
+				<ConfirmDialog
+					open={this.state.isConfirmDialogOpened}
+					message={this.state.company.message}
+					title={this.state.company.title}
+					okCallback={this.state.company.action}
+					closeCallback={() => this.setState({ isConfirmDialogOpened: false })}/>
 			</div>
 		);
 	}
@@ -245,11 +270,35 @@ const getMarkers = createSelector(
     }
 );
 
+const getCompany = createSelector(
+	[state => state.companyPage.company],
+	(company) => {
+		let mainLocation = company.locations.find(location => (location.isMain === 1));
+		if (!mainLocation) {
+			if (company.locations.length > 0) {
+				mainLocation = company.locations[0];
+			} else {
+				mainLocation = {
+					workingTimes: [],
+					phones: []
+				}
+			}
+		}
+		const phonesText = mainLocation.phones ? mainLocation.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
+
+		return {
+			...company,
+			mainLocation,
+			phonesText
+		}
+	}
+);
+
 const CompanyPage = connect(
 	state => {
 		return {
 			common: state.common,
-			company: state.companyPage.company,
+			company: getCompany(state),
 			feedbacks: state.companyPage.feedbacks,
 			markers: getMarkers(state),
 		}
@@ -258,7 +307,8 @@ const CompanyPage = connect(
 		loadCompany,
 		postFeedback,
 		loadFeedbacks,
-        deleteFeedback,
+		deleteFeedback,
+		removeCompany,
 	}
 )(CompanyPageContainer);
 

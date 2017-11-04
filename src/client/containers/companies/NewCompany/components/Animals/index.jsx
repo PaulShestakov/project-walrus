@@ -58,7 +58,7 @@ export default class Animals extends React.Component {
                                 <Grid container align="center">
                                     <Grid item>
                                         <Typography type="headline" component="h1" className="mr-4">
-                                            Связь с животными
+                                            Специализация
                                         </Typography>
                                     </Grid>
                                     <Grid item>

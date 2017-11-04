@@ -39,6 +39,23 @@ export default {
 
     context: {
 	    minHeight: '450px'
-    }
+    },
+
+    editButtonsBlock: {
+        flexShrink: 0,
+        marginTop: '10px',
+        textAlign: 'right'
+	},
+
+    editButton: {
+		flexShrink: 0,
+		alignSelf: 'flex-start',
+		width: '2.5rem',
+		height: '2.5rem',
+		marginLeft: '0.5rem',
+	},
+	editIcon: {
+		color: 'white'
+	},
 
 }

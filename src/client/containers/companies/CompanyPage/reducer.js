@@ -4,7 +4,9 @@ import {
 } from './actions';
 
 const defaultState = {
-    company: {},
+    company: {
+        locations: [],
+    },
     feedbacks: []
 };
 

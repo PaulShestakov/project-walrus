@@ -6,7 +6,7 @@ import {withStyles} from 'material-ui/styles';
 import Card, {CardMedia, CardContent} from 'material-ui/Card';
 import classNames from 'classnames';
 import FontAwesome from 'react-fontawesome';
-import styles from './styles';
+import styles from './styles.js';
 import {Paper} from "material-ui";
 import defaultImage from '../../../../../assets/img/company-default.png';
 import {ModeEdit as ModeEditIcon, DeleteForever as Delete, Block} from 'material-ui-icons';
@@ -43,13 +43,6 @@ export default class CompanyItem extends React.Component {
 
 	render() {
 		const { t, classes, company } = this.props;
-		const mainLocations = company.locations.filter(item => (item.isMain === 1));
-		let mainLocation;
-		if (mainLocations.length === 0) {
-			mainLocation = company.locations[0];
-		} else {
-			mainLocation = mainLocations[0];
-		}
 
 		return (
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>
@@ -90,7 +83,7 @@ export default class CompanyItem extends React.Component {
 						<div className={classes.flexRow}>
 							<FontAwesome name="map-marker"
 										 className={classes.icon} />
-							<Text>{mainLocation.cityName + ': ' + mainLocation.address}</Text>
+							<Text>{ company.mainLocation.cityName + ': ' + company.mainLocation.address } </Text>
 						</div>
 					</div>
 
@@ -111,11 +104,11 @@ export default class CompanyItem extends React.Component {
 
 					<div className={classes.buttonsBlock}>
 						<Button className="mr-2 text-white" accent="white"
-							onClick={this.props.handleOpenWorkingTimeDialog.bind(null, mainLocation.workingTimes)}>
+							onClick={this.props.handleOpenWorkingTimeDialog.bind(null, company.mainLocation.workingTimes)}>
 							{t('WORKING_TIME')}
 						</Button>
 						<Button className="mr-2 text-white" accent="white"
-								onClick={this.props.handleOpenPhonesDialog.bind(null, mainLocation.phones)}>
+								onClick={this.props.handleOpenPhonesDialog.bind(null, company.mainLocation.phones)}>
                             Телефоны
 						</Button>
 						{

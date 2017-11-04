@@ -194,7 +194,7 @@ class CompaniesListContainer extends React.Component {
 	};
 
 	render() {
-		const {t, classes} = this.props;
+		const {t, companies, classes} = this.props;
 
 		return (
 			<Grid container className="my-4">
@@ -225,7 +225,7 @@ class CompaniesListContainer extends React.Component {
 					</Card>
 					<div>
 						{
-							this.props.main.companies.map(company => {
+							this.props.companies.map(company => {
 								return (
 									<CompanyItem
 										key={company.companyId}
@@ -359,10 +359,37 @@ const getBreeds = createSelector(
 	}
 );
 
+const getCompanies = createSelector(
+	[state => state.companiesList.main.companies],
+	(companies) => {
+		return companies.map(company => {
+			let mainLocation = company.locations.find(location => (location.isMain === 1));
+			if (!mainLocation) {
+				if (company.locations.length > 0) {
+					mainLocation = company.locations[0];
+				} else {
+					mainLocation = {
+						workingTimes: [],
+						phones: []
+					}
+				}
+			}
+			const phonesText = mainLocation.phones ? mainLocation.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
+
+			return {
+				...company,
+				mainLocation,
+				phonesText
+			}
+		});
+	}
+);
+
 const CompaniesList = connect(
 	state => {
 		return {
 			main: state.companiesList.main,
+			companies: getCompanies(state),
 			filter: state.companiesList.filter,
 			cities: getFlatCitiesList(state),
 			subways: getSubways(state),
