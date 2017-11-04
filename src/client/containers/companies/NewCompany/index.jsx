@@ -21,10 +21,11 @@ import Animals from "./components/Animals/index";
 import {getFormValues} from 'redux-form'
 
 
-@withErrorHandling()
+
 @translate(['common'])
 @withStyles(styles)
 @reduxForm({form: 'company', enableReinitialize: true})
+// @withErrorHandling()
 class NewCompanyContainer extends React.Component {
 
 	constructor(props) {
