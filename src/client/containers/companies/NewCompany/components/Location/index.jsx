@@ -72,7 +72,7 @@ export default class Location extends React.Component {
     };
 
     render() {
-        const {t, classes, fields, cities, workingTimes, ...other} = this.props;
+        const {t, classes, fields, allCities, workingTimes, ...other} = this.props;
         return (
             <div>
                 <Grid item>
@@ -135,7 +135,7 @@ export default class Location extends React.Component {
                                             name={`${member}.cityId`}
                                             component={Dropdown}
                                             onChange={(item) => this.handleCityChange(item, index, member)}
-                                            options={cities}/>
+                                            options={allCities}/>
                                     </Grid>
                                     <Grid item xs={12} className="my-2">
                                         <Title>Метро</Title>

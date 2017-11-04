@@ -292,9 +292,28 @@ const internalizeCompany = createSelector(
     }
 );
 
+const extendCodeValues = createSelector(
+    [state => state.common],
+    (common) => {
+        const allCities = common.cities.reduce((acc, item) => {
+            acc.push({
+                value: item.value,
+                label: item.label,
+            });
+            acc.push(...item.subCities);
+            return acc;
+        }, []);
+        allCities.sort((a, b) => a.label.localeCompare(b.label));
+        return {
+            ...common,
+            allCities
+        };
+    }
+);
+
 const NewCompany = connect(
     state => ({
-		common: state.common,
+		common: extendCodeValues(state),
 		initialValues: internalizeCompany(state),
 		selectedCategory: formValueSelector('company')(state, 'categoryId'),
 		selectedSubCategory: formValueSelector('company')(state, 'subcategoryId'),
