@@ -2,12 +2,11 @@ import React from 'react';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
 import {Button, Title, Label, Grid, Card, Popover, Checkbox, Separator, ButtonMore} from "components";
-import { FormGroup, FormControlLabel } from 'material-ui/Form';
+import {FormGroup, FormControlLabel} from 'material-ui/Form';
 import classNames from 'classnames';
 import styles from './styles';
-import { findDOMNode } from 'react-dom';
-
-import { GridList, GridListTile } from 'material-ui/GridList';
+import {findDOMNode} from 'react-dom';
+import {GridList, GridListTile} from 'material-ui/GridList';
 
 
 @translate(['companiesList'])

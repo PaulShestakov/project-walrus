@@ -2,6 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {createSelector} from 'reselect'
 
+import withErrorHandling from './../../../components/decorators/withErrorHandling';
+
 import {postCompany, updateCompany, loadCompany, resetFormState} from "./actions";
 
 import { translate } from 'react-i18next';
@@ -18,6 +20,8 @@ import Animals from "./components/Animals/index";
 
 import {getFormValues} from 'redux-form'
 
+
+@withErrorHandling()
 @translate(['common'])
 @withStyles(styles)
 @reduxForm({form: 'company', enableReinitialize: true})
@@ -122,9 +126,9 @@ class NewCompanyContainer extends React.Component {
                             <Title>Категория</Title>
                             <Field name="categoryId"
                                    component={Dropdown}
-                                   options={this.props.common.companiesCategories}
+                                   options={common.companiesCategories}
                                    onChange={this.handleCategoryChange}
-                                   format={value => this.props.common.companiesCategories.find(x => x.value === value)}
+                                   format={value => common.companiesCategories.find(x => x.value === value)}
                                    normalize={value => value.value}
                             />
                         </Grid>

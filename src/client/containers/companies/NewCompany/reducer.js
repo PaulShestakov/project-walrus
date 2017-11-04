@@ -1,7 +1,8 @@
 import {
     POST_COMPANY_SUCCESS,
     LOAD_COMPANY_SUCCESS,
-    RESET_FORM_STATE
+    RESET_FORM_STATE,
+	UPDATE_COMPANY_SUCCESS
 } from './actions';
 
 const defaultState = {
@@ -25,6 +26,10 @@ const newCompanyReducer = (state = defaultState, action) => {
 				...state,
 				company: action.payload
 			}
+        }
+
+        case UPDATE_COMPANY_SUCCESS: {
+            return state;
         }
         
         case RESET_FORM_STATE: {

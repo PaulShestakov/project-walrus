@@ -90,15 +90,15 @@ export const UPDATE_COMPANY_ERROR = 'NewCompany/UPDATE_COMPANY_ERROR';
 export const UPDATE_COMPANY_SUCCESS = 'NewCompany/UPDATE_COMPANY_SUCCESS';
 
 const updateCompanyStart = () => ({
-	type: LOAD_COMPANY_START
+	type: UPDATE_COMPANY_START
 });
 const updateCompanyError = (error) => ({
-	type: LOAD_COMPANY_ERROR,
+	type: UPDATE_COMPANY_ERROR,
 	error: true,
 	payload: error
 });
 const updateCompanySuccess = (data) => ({
-	type: LOAD_COMPANY_SUCCESS
+	type: UPDATE_COMPANY_SUCCESS
 });
 
 export function updateCompany(companyId, company, history) {
