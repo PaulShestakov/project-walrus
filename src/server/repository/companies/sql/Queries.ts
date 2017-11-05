@@ -11,6 +11,7 @@ export default {
 	GET: `
 		SELECT
 			c.COMPANY_ID companyId,
+			c.URL_ID url_id,
 			c.COMPANY_CATEGORY_ID categoryId,
 			(SELECT NAME FROM wikipet.code_values WHERE ID = c.COMPANY_CATEGORY_ID) as categoryName,
 			c.COMPANY_SUBCATEGORY_ID subcategoryId,
@@ -22,6 +23,7 @@ export default {
 			c.WEBSITE_URL url,
 
 			cl.COMPANY_LOCATION_ID locationId,
+			cl.URL_ID locUrlId,
 			cl.SUBWAY_ID subwayId,
 			(SELECT NAME FROM wikipet.code_values WHERE ID = cl.SUBWAY_ID) as subwayName,
 			cl.CITY_ID cityId,
@@ -58,7 +60,7 @@ export default {
 		LEFT JOIN ${COMPANIES_ANIMALS} ca
 			ON ca.COMPANY_ID = c.COMPANY_ID
 			
-		WHERE c.COMPANY_ID = ?
+		WHERE c.URL_ID = ?
 	`,
 
 	GET_BY_NAME: `

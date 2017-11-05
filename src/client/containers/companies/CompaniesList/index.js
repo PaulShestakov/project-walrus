@@ -225,7 +225,7 @@ class CompaniesListContainer extends React.Component {
 					</Card>
 					<div>
 						{
-							this.props.companies.map(company => {
+							companies.map(company => {
 								return (
 									<CompanyItem
 										key={company.companyId}

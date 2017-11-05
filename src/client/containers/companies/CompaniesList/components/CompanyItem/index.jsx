@@ -46,7 +46,7 @@ export default class CompanyItem extends React.Component {
 
 		return (
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>
-				<Link to={`/company/${company.companyId}`}>
+				<Link to={`/company/${encodeURI(company.url_id)}`}>
 					<Paper>
 						<CardMedia
 						className={classes.cardImage}
@@ -56,7 +56,7 @@ export default class CompanyItem extends React.Component {
 
 				<CardContent className={classNames(classes.cardContent, 'p-0', 'pl-4')}>
 					<div className={classes.headerWrapper}>
-						<Link to={`/company/${company.companyId}`} className={classes.headerLink}>
+						<Link to={`/company/${encodeURI(company.url_id)}`} className={classes.headerLink}>
 							<Label uppercase bold fontSize="2rem">
 								{company.name}
 							</Label>
@@ -64,7 +64,7 @@ export default class CompanyItem extends React.Component {
 
 						<Authorized allowedRoles={[5]} className={classes.editButtonsBlock}>
 							<Button fab className={classes.editButton}>
-								<Link to={`/company/edit/${company.companyId}`}>
+								<Link to={`/company/edit/${encodeURI(company.url_id)}`}>
 									<ModeEditIcon className={classes.editIcon} />
 								</Link>
 							</Button>
@@ -112,10 +112,10 @@ export default class CompanyItem extends React.Component {
                             Телефоны
 						</Button>
 						{
-							company.numerOfLocations > 0 &&
-							<Link to={`/company/${company.companyId}/contacts`}>
+							company.numberOfLocations > 0 &&
+							<Link to={`/company/${company.url_id}/contacts`}>
 								<Button className="mr-2 text-white" accent="white">
-									Филиалы ({ company.numerOfLocations })
+									Филиалы ({ company.numberOfLocations })
 								</Button>
 							</Link>
 						}

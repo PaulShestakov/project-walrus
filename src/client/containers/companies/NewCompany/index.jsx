@@ -40,9 +40,9 @@ class NewCompanyContainer extends React.Component {
 	}
 
 	componentDidMount() {
-		if (this.props.editMode) {
-			const companyId = this.props.match.params.companyId;
-			this.props.loadCompany(companyId);
+	    const { editMode, match, loadCompany } = this.props;
+		if (editMode) {
+			loadCompany(match.params.url_id);
 		}
     }
     
@@ -83,13 +83,13 @@ class NewCompanyContainer extends React.Component {
 	};
 
 	saveAction = (values) => {
-		const companyId = this.props.match.params.companyId;
-		const { history, editMode } = this.props;
+		const { history, editMode, match, updateCompany, postCompany, initialValues } = this.props;
 
 		if (editMode) {
-			this.props.updateCompany(companyId, values, history);
+            values.companyId = initialValues.companyId;
+			updateCompany(match.params.url_id, values, history);
 		} else {
-			this.props.postCompany(values, history);
+			postCompany(values, history);
 		}
 	};
 
@@ -103,7 +103,7 @@ class NewCompanyContainer extends React.Component {
     };
 
 	render() {
-		const { t, classes, common, handleSubmit, workingTimes } = this.props;
+		const { t, classes, common, handleSubmit, workingTimes, subcategories } = this.props;
 
 		return (
             <form className="d-flex-column align-items-center my-4">
@@ -124,6 +124,14 @@ class NewCompanyContainer extends React.Component {
                                    placeholder="Название компании"/>
                         </Grid>
                         <Grid item xs={11}>
+                            <Title>Имя в поисковой строке</Title>
+                            <Field name="url_id"
+                                   component={Input}
+                                   fullWidth
+                                   placeholder="Имя компании в поисковой строке (транслитом)"/>
+                        </Grid>
+
+                        <Grid item xs={11}>
                             <Title>Категория</Title>
                             <Field name="categoryId"
                                    component={Dropdown}
@@ -137,9 +145,9 @@ class NewCompanyContainer extends React.Component {
                             <Title>Подкатегория</Title>
                             <Field name="subcategoryId"
                                    component={Dropdown}
-                                   options={this.props.subcategories}
+                                   options={subcategories}
                                    onChange={this.handleSubcategoryChange}
-                                   format={value => this.props.subcategories.find(x => x.value === value)}
+                                   format={value => subcategories.find(x => x.value === value)}
                                    normalize={value => value.value}
                             />
                         </Grid>
@@ -240,58 +248,6 @@ const getSubcategories = createSelector(
 	}
 );
 
-const internalizeCompany = createSelector(
-    [(state) => state.newCompany.company, state => state.common],
-	(company, common) => {
-
-        const workingTimes = common.daysOfWeek.map(day => ({
-            dayOfWeek: {...day}
-        }));
-
-        if (company.companyId) {
-            company = {
-                ...company,
-                locations: company.locations.map(location => {
-                    const city = common.cities.find(city => city.value === location.cityId);
-                    const subway = city.subways.find(subway => subway.value === location.subwayId);
-                    
-                    // Create new base array and write working times
-                    location.workingTimes.forEach(day => {
-                        workingTimes[day.dayOfWeek].open = day.open;
-                        workingTimes[day.dayOfWeek].close = day.close;
-                    });
-
-                    const result = {
-                        ...location,
-                        cityId: {
-                            value: city.value,
-                            label: city.label,
-                        },
-                        subways: city.subways,
-                        markers: [{
-                            position: location.position
-                        }],
-                        workingTimes
-                    };
-                    if (subway) {
-                        result.subwayId = {
-                            value: subway.value,
-                            label: subway.label,
-                        };
-                    }
-                    return result;
-                }),
-                imageObjects: [
-                    {
-                        imageUrl: company.logo
-                    }
-                ]
-            }
-        }
-        return company;
-    }
-);
-
 const extendCodeValues = createSelector(
     [state => state.common],
     (common) => {
@@ -308,6 +264,63 @@ const extendCodeValues = createSelector(
             ...common,
             allCities
         };
+    }
+);
+
+const internalizeCompany = createSelector(
+    [(state) => state.newCompany.company, extendCodeValues],
+	(company, common) => {
+
+        const workingTimes = common.daysOfWeek.map(day => ({
+            dayOfWeek: {...day}
+        }));
+
+        if (company.companyId) {
+            company = {
+                ...company,
+                locations: company.locations.map(location => {
+                    const city = common.allCities.find(city => city.value === location.cityId);
+                    let subway = undefined;
+                    if (city && city.subways) {
+                        subway = city.subways.find(subway => subway.value === location.subwayId)
+                    }
+                    
+                    // Create new base array and write working times
+                    location.workingTimes.forEach(day => {
+                        workingTimes[day.dayOfWeek].open = day.open;
+                        workingTimes[day.dayOfWeek].close = day.close;
+                    });
+
+                    const result = {
+                        ...location,
+                        subways: city.subways || [],
+                        markers: [{
+                            position: location.position
+                        }],
+                        workingTimes
+                    };
+                    if (city) {
+                        result.cityId = {
+                            value: city.value,
+                            label: city.label,
+                        };
+                    }
+                    if (subway) {
+                        result.subwayId = {
+                            value: subway.value,
+                            label: subway.label,
+                        };
+                    }
+                    return result;
+                }),
+                imageObjects: [
+                    {
+                        imageUrl: company.logo
+                    }
+                ]
+            }
+        }
+        return company;
     }
 );
 

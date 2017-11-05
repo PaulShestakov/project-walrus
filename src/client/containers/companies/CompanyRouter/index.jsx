@@ -7,7 +7,7 @@ import {
 	closeUnauthorizedDialog
 } from "../../common/actions";
 
-import {Route, Switch} from "react-router-dom";
+import {Route, Switch, Redirect} from "react-router-dom";
 
 import NewCompany from "../NewCompany/index";
 import CompaniesList from "../CompaniesList/index";
@@ -37,8 +37,9 @@ class CompanyRouterContainer extends React.Component {
 					<Route path="/company/new" component={NewCompany} />
 					<Route path="/company/list" component={CompaniesList} />
 					<Route path="/company/overview" component={CompaniesOverview} />
-					<Route path="/company/edit/:companyId" component={EditComponent} />
-					<Route path="/company/:companyId" component={CompanyPage} />
+					<Route path="/company/edit/:url_id" component={EditComponent} />
+					<Route path="/company/:url_id" component={CompanyPage} />
+					<Redirect to='/company/overview' />
 				</Switch>
 			</div>
 

@@ -5,6 +5,7 @@ interface Company {
 	description: string,
 	email: string,
 	url: string,
+	url_id: string,
 	image: object,
     animals: Array<object>,
     companyCategoryId: string,

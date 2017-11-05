@@ -103,7 +103,6 @@ export default class Location extends React.Component {
                 >
                     {
                         fields.map((field, index, fields) => {
-                            const curField = fields.get(index);
                             return (
                                 <Tab
                                     className={classes.tab}
@@ -121,6 +120,15 @@ export default class Location extends React.Component {
                             const curField = fields.get(index);
                             return (
                                 <Grid container spacing={0} className="p-2">
+                                    <Grid item xs={12} className="my-2">
+                                        <Title>Имя в поисковой строке</Title>
+                                        <Field
+                                            name={`${member}.url_id`}
+                                            component={Input}
+                                            fullWidth
+                                            placeholder="Имя филиала в поисковой строке (транслитом)"
+                                        />
+                                    </Grid>
                                     <Grid item xs={12} className="my-2">
                                         <Title>Главный офис</Title>
                                         <Field

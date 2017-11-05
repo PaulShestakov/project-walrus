@@ -16,6 +16,7 @@ export default class Companies extends BaseCRUD  {
 
 	static mapCompany = (item) => ({
 		companyId: item.companyId,
+		url_id: item.url_id,
 		categoryId: item.categoryId,
 		subcategoryId: item.subcategoryId,
 		subcategoryName: item.subcategoryName,
@@ -24,7 +25,7 @@ export default class Companies extends BaseCRUD  {
 		description: item.description,
 		email: item.email,
 		url: item.url,
-		numerOfLocations: item.locationsCount,
+		numberOfLocations: item.locationsCount,
 		numberOfFeedbacks: item.numberOfFeedbacks || 0,
 		averageRating: item.averageRating,
 	});
@@ -36,6 +37,7 @@ export default class Companies extends BaseCRUD  {
 		}
 		return {
 			COMPANY_ID: company.companyId,
+			URL_ID: company.url_id,
 			COMPANY_CATEGORY_ID: company.categoryId || null,
 			COMPANY_SUBCATEGORY_ID: company.subcategoryId || null,
 			NAME: company.name,
@@ -58,7 +60,7 @@ export default class Companies extends BaseCRUD  {
 			if (error) {
 				Util.handleError(error, callback);
 			} else {
-				if (rows) {
+				if (rows && rows.length > 0) {
 					const shape = {
 						name: 'companies',
 						idName: 'companyId',
@@ -108,10 +110,10 @@ export default class Companies extends BaseCRUD  {
   
 	static saveCompany(company: Company, callback) {
 		company.companyId = uuid();
-		const locations = company.locations.map(item => Locations.internalizeLocation(company.companyId, item));
+		const locations = company.locations.map(item => Locations.internalizeLocationToArray(company.companyId, item));
 
 	    const savePhones = (connection, done) => {
-			const phones: Array<object> = company.locations.reduce((acc, item, index) => {
+			const phones: Array<object> = company.locations.reduce((acc, item: any, index) => {
 				if (item.phones) {
 					item.phones.forEach(phone => {
 						acc.push(Phones.internalizePhone({
@@ -136,7 +138,7 @@ export default class Companies extends BaseCRUD  {
 			}
 		};
 		const saveWorkingTimes = (connection, done) => {
-			const times: Array<object> = company.locations.reduce((acc, item, index) => {
+			const times: Array<object> = company.locations.reduce((acc, item: any, index) => {
 				if (item.workingTimes) {
 					item.workingTimes.filter(i => i.open && i.close && i.dayOfWeek)
                         .forEach(time => {
@@ -172,34 +174,33 @@ export default class Companies extends BaseCRUD  {
             if (error) {
                 Util.handleError(error, callback);
             } else {
-                callback(null, { uuid : company.companyId });
+                callback(null, { url_id : company.url_id });
             }
         });
 	}
 
-	static updateCompany(companyId, company, callback) {
+	static updateCompany(url_id, company, callback) {
+
 		const internalizedCompany = this.internalizeCompany(company);
-		internalizedCompany.COMPANY_ID = companyId;
 		if (company.image.length === 0) {
 			delete internalizedCompany.LOGO;
 		}
 
-		const locations = company.locations.map(Locations.internalizeLocationToObject.bind(null, companyId));
+		const locations = company.locations.map(Locations.internalizeLocation.bind(null, company.companyId));
 		const updateLocations = Locations.getLocationsUpdater(locations, company.locations.map(loc => loc.locationId));
-		
-		
+		//const updatePhones = Phones.getPhonesUpdater();
 
 		const updateCompany = (connection, done) => {
-			connection.query(Queries.UPDATE_COMPANY, [internalizedCompany, companyId], done);
-		}
+			connection.query(Queries.UPDATE_COMPANY, [internalizedCompany, company.companyId], done);
+		};
 
 		executeParallel([updateCompany, updateLocations], (error) => {
 			if (error) {
 				Util.handleError(error, callback);
 			} else {
-				callback(null, { uuid : companyId });
+				callback(null, { url_id : company.url_id });
 			}
-		})
+		});
 	}
 
 	static getFiltered(params, callback): void {
@@ -240,10 +241,10 @@ export default class Companies extends BaseCRUD  {
 			timeNow = momentNow.format('HH:mm:ss');
 		}
 
-		
 		let sql = squel
 			.select()
 				.field('c.COMPANY_ID', 'companyId')
+				.field('c.URL_ID', 'url_id')
 				.field('c.NAME', 'name')
 				.field('c.COMPANY_CATEGORY_ID', 'categoryId')
 				.field('c.COMPANY_SUBCATEGORY_ID', 'subcategoryId')
