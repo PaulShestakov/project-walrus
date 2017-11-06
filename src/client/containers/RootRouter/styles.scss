@@ -24,3 +24,18 @@ body, body > div {
 .flexGrowFull {
   flex-grow: 1;
 }
+
+
+
+// Breadcrumbs
+.breadcrumbs {
+  margin-top: 1rem;
+
+  .breadcrumbs__separator {
+    margin: 0 .5rem;
+  }
+
+  a {
+
+  }
+}
