@@ -1,6 +1,9 @@
 import * as uuid from 'uuid';
 import Queries from "./sql/Queries";
 import * as _ from 'lodash';
+import Util from "../../util/Util";
+import Phones from "./Phones";
+import WorkingTimes from "./WorkingTimes";
 
 export default class Locations {
 	static mapLocation(item) {
@@ -65,34 +68,37 @@ export default class Locations {
 					const externalIds = locations.map(item => (item.locationId));
 					let idsToDelete = [];
 					const promisesToExecute = [];
+
 					if (result) {
 						const selectedIds = result.map(res => (res.locId));
 						idsToDelete = _.difference(selectedIds, externalIds);
 						if (idsToDelete.length > 0) {
 							const deleteLocations = new Promise((resolve, reject) => {
-								connection.query(Queries.DELETE_LOCATIONS, [idsToDelete], (error, result) => {
-									if (error) {
-										reject(error);
-									} else {
-										resolve(result);
-									}
-								});
+								connection.query(Queries.DELETE_LOCATIONS, [idsToDelete], Util.resolvePromise(resolve, reject));
 							});
 							promisesToExecute.push(deleteLocations);
 						}
 					}
+
 					const updateLocations = new Promise((resolve, reject) => {
 						const internalizedLocations = locations
-							.filter(i => !idsToDelete.includes(i))
+							.filter(i => !idsToDelete.includes(i.locationId))
 							.map(Locations.internalizeLocation.bind(null, companyId));
 
 						const idsToUpdate = _.difference(externalIds, idsToDelete);
 						const locUpdater = Locations.getLocationsUpdater(internalizedLocations, idsToUpdate);
-						locUpdater(connection, (error, result) => {
+
+						// update/insert locations
+						locUpdater(connection, (error) => {
 							if (error) {
 								reject(error);
 							} else {
-								resolve(result);
+								// update/insert phones and working times
+								locations.forEach((location, index) => {
+									const locId = location.locationId || internalizedLocations[index][0];
+									Phones.updatePhones(location.phones, locId)(connection, Util.resolvePromise(resolve, reject));
+									WorkingTimes.updateWorkingTimes(location.workingTimes, locId)(connection, Util.resolvePromise(resolve, reject));
+								});
 							}
 						});
 					});
@@ -113,22 +119,9 @@ export default class Locations {
 						return new Promise((resolve, reject) => {
 							const locationId = locationsIds[index];
 							if (locationId) {
-								connection.query(Queries.UPDATE_LOCATION, [location, locationId], (error, result) => {
-									if (error) {
-										reject(error);
-									} else {
-										resolve(result);
-									}
-								});
+								connection.query(Queries.UPDATE_LOCATION, [location, locationId], Util.resolvePromise(resolve, reject));
 							} else {
-								connection.query(Queries.SAVE_LOCATION, [[location]], (error, result) => {
-									if (error) {
-										console.log(error);
-										reject(error);
-									} else {
-										resolve(result);
-									}
-								});
+								connection.query(Queries.SAVE_LOCATION, [[location]], Util.resolvePromise(resolve, reject));
 							}
 						})
 					})

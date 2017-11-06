@@ -272,10 +272,6 @@ const internalizeCompany = createSelector(
     [(state) => state.newCompany.company, extendCodeValues],
 	(company, common) => {
 
-        const workingTimes = common.daysOfWeek.map(day => ({
-            dayOfWeek: {...day}
-        }));
-
         if (company.companyId) {
             company = {
                 ...company,
@@ -285,6 +281,10 @@ const internalizeCompany = createSelector(
                     if (city && city.subways) {
                         subway = city.subways.find(subway => subway.value === location.subwayId)
                     }
+
+                    const workingTimes = common.daysOfWeek.map(day => ({
+                        dayOfWeek: {...day}
+                    }));
                     
                     // Create new base array and write working times
                     location.workingTimes.forEach(day => {

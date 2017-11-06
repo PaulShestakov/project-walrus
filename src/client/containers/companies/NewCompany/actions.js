@@ -146,7 +146,11 @@ function externalizeCompany(company) {
                 isMain: location.isMain,
                 address: location.address,
                 phones: location.phones,
-                workingTimes: location.workingTimes,
+                workingTimes: location.workingTimes.filter(wt => wt.dayOfWeek && wt.open && wt.close).map(wt => ({
+                	day: wt.dayOfWeek.value,
+					open: wt.open,
+					close: wt.close,
+				})),
             };
         });
 	}
