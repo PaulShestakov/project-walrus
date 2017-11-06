@@ -4,7 +4,7 @@ const nodeExternals = require('webpack-node-externals');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const nodeEnv = process.env.NODE_ENV;
 
@@ -12,7 +12,21 @@ let clientConfig = {
 	name : 'client',
 	devtool: 'inline-source-map',
 	entry: {
-		app: './src/client/index.js'
+		app: './src/client/index.js',
+		vendor: [
+			// The heaviest libraries
+			'react',
+			'react-dom',
+			'material-ui',
+			'material-ui-icons',
+			'lodash',
+			'moment',
+			'redux-form',
+			'react-google-maps',
+			'i18next',
+			'history',
+			'react-redux'
+		]
 	},
 	output: {
 		path: path.resolve(__dirname, 'dist', 'client'),
@@ -67,7 +81,10 @@ let clientConfig = {
 		new ExtractTextPlugin({
 			filename: 'styles.css',
 			allChunks: true
-		})
+		}),
+		new webpack.optimize.CommonsChunkPlugin({
+			name: 'vendor'
+		}),
 	]
 };
 
@@ -87,6 +104,11 @@ if (nodeEnv === 'production') {
 			},
 		}),
 		new webpack.optimize.ModuleConcatenationPlugin()
+	);
+}
+
+if (nodeEnv === 'development') {
+	clientConfig.plugins.push(
 		// new BundleAnalyzerPlugin()
 	);
 }

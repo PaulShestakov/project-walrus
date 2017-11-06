@@ -41,7 +41,6 @@ class CompanyRouterContainer extends React.Component {
 					<Route path="/company/:companyId" component={CompanyPage} />
 				</Switch>
 			</div>
-
 		);
 	}
 }
