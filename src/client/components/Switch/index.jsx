@@ -9,7 +9,7 @@ class Switch extends React.Component {
     render() {
         const { classes, meta, input, ...other } = this.props;
         return (
-            <MaterialSwitch {...input} {...other} />
+            <MaterialSwitch {...input} checked={!!input.value} {...other} />
         );
     }
 }

@@ -4,7 +4,7 @@ import {createSelector} from 'reselect'
 
 import withErrorHandling from './../../../components/decorators/withErrorHandling';
 
-import {postCompany, updateCompany, loadCompany, resetFormState} from "./actions";
+import {postCompany, updateCompany, loadCompany, resetFormState, removeLocation} from "./actions";
 
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
@@ -103,7 +103,7 @@ class NewCompanyContainer extends React.Component {
     };
 
 	render() {
-		const { t, classes, common, handleSubmit, workingTimes, subcategories } = this.props;
+		const { t, common, handleSubmit, workingTimes, subcategories } = this.props;
 
 		return (
             <form className="d-flex-column align-items-center my-4">
@@ -197,6 +197,7 @@ class NewCompanyContainer extends React.Component {
                                 {...common}
                                 workingTimes={workingTimes}
                                 change={this.props.change}
+                                removeLocation={this.props.removeLocation}
                                 component={Location}/>
                         </Grid>
 
@@ -336,7 +337,8 @@ const NewCompany = connect(
         postCompany,
         updateCompany,
         loadCompany,
-        resetFormState
+        resetFormState,
+        removeLocation
     }
 )(NewCompanyContainer);
 

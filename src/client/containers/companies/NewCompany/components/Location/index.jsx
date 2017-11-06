@@ -2,19 +2,16 @@ import React from 'react';
 import { Add } from 'material-ui-icons';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
-import { Dropdown, Button, Title, Switch, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Map } from "components";
+import { Dropdown, Button, Title, Switch, Input, Grid,
+ImageUploader, TextField, Tabs, Tab, Card, Map, ConfirmDialog } from "components";
 import styles from './styles';
-import { PlusOne } from 'material-ui-icons';
+import { Delete } from 'material-ui-icons';
 import SwipeableViews from 'react-swipeable-views';
 import {Divider, Typography, Paper} from "material-ui";
 
 import { Field, Fields, FieldArray } from 'redux-form'
 import WorkingTimes from "./WorkingTimes/index";
 import Phones from "./Phones/index";
-
-import Autosuggest from 'react-autosuggest';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
 
 
 @translate(['common'])
@@ -25,6 +22,8 @@ export default class Location extends React.Component {
         super(props);
         this.state = {
             selectedAddress: 0,
+            isConfirmDialogOpened: false,
+            location: {}
         };
     }
 
@@ -69,6 +68,23 @@ export default class Location extends React.Component {
             fields.get(index).subways = foundCity.subways;
             this.props.change(`${member}.subwayId`, null);
         }
+    };
+
+    deleteLocation = () => {
+        const { location } = this.state;
+        if (location && Number.isInteger(location.index)) {
+            this.props.fields.remove(location.index);
+            this.setState({ location: {}, isConfirmDialogOpened: false });
+        }
+    };
+
+    confirmDeleteLocation = (index) => {
+        this.setState({location: {
+            message: `Вы действительно хотите удалить Адрес ${index + 1}?`,
+            title: `Удаление локации`,
+            action: this.deleteLocation,
+            index: index,
+        }, isConfirmDialogOpened: true });
     };
 
     render() {
@@ -120,6 +136,12 @@ export default class Location extends React.Component {
                             const curField = fields.get(index);
                             return (
                                 <Grid container spacing={0} className="p-2">
+                                    <Grid item xs={12} className="my-2 text-right">
+                                        <Button fab className={classes.editButton}
+                                                onClick={() => this.confirmDeleteLocation(index)}>
+                                            <Delete className={classes.editIcon} />
+                                        </Button>
+                                    </Grid>
                                     <Grid item xs={12} className="my-2">
                                         <Title>Имя в поисковой строке</Title>
                                         <Field
@@ -187,12 +209,17 @@ export default class Location extends React.Component {
                                     <FieldArray
                                         name={`${member}.workingTimes`}
                                         component={WorkingTimes}/>
-
                                 </Grid>
                             );
                         })
                     }
                 </SwipeableViews>
+                <ConfirmDialog
+                    open={this.state.isConfirmDialogOpened}
+                    message={this.state.location.message}
+                    title={this.state.location.title}
+                    okCallback={this.state.location.action}
+                    closeCallback={() => this.setState({ isConfirmDialogOpened: false })}/>
             </div>
         );
     }

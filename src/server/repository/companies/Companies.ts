@@ -186,13 +186,11 @@ export default class Companies extends BaseCRUD  {
 			delete internalizedCompany.LOGO;
 		}
 
-		const locations = company.locations.map(Locations.internalizeLocation.bind(null, company.companyId));
-		const updateLocations = Locations.getLocationsUpdater(locations, company.locations.map(loc => loc.locationId));
-		//const updatePhones = Phones.getPhonesUpdater();
-
 		const updateCompany = (connection, done) => {
 			connection.query(Queries.UPDATE_COMPANY, [internalizedCompany, company.companyId], done);
 		};
+
+		const updateLocations = Locations.updateLocations(company.locations, company.companyId);
 
 		executeParallel([updateCompany, updateLocations], (error) => {
 			if (error) {
