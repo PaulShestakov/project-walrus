@@ -156,10 +156,10 @@ function externalizeCompany(company) {
 	}
 
 	if (externalizedCompany.animals) {
-        externalizedCompany.animals = externalizedCompany.animals.map(animal => {
+        externalizedCompany.animals = externalizedCompany.animals.filter(i => i.animalId).map(animal => {
 			return {
-				animalId: animal.animalId,
-				breedId: animal.breedId,
+				animalId: animal.animalId.value,
+				breedId: animal.breedId ? animal.breedId.value : null,
 			}
         });
 	}

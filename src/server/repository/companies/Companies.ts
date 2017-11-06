@@ -11,6 +11,7 @@ import * as uuid from 'uuid';
 import Locations from "./Locations";
 import Phones from "./Phones";
 import WorkingTimes from "./WorkingTimes";
+import Animals from "./Animals";
 
 export default class Companies extends BaseCRUD  {
 
@@ -48,13 +49,6 @@ export default class Companies extends BaseCRUD  {
 		};
 	}
 
-	static mapCompanyAnimal = (item) => ({
-		animalId: item.animalId,
-		breedId: item.breedId,
-		animalName: item.animalName,
-		breedName: item.breedName,
-	});
-
 	static getCompany(companyId: string, callback) {
 		executeQuery(Queries.GET, [companyId], (error, rows) => {
 			if (error) {
@@ -86,7 +80,7 @@ export default class Companies extends BaseCRUD  {
 							{
 								name: 'animals',
 								idName: 'companyAnimalId',
-								map: Companies.mapCompanyAnimal
+								map: Animals.mapCompanyAnimal
 							}
 						]
 					};
@@ -112,60 +106,14 @@ export default class Companies extends BaseCRUD  {
 		company.companyId = uuid();
 		const locations = company.locations.map(item => Locations.internalizeLocationToArray(company.companyId, item));
 
-	    const savePhones = (connection, done) => {
-			const phones: Array<object> = company.locations.reduce((acc, item: any, index) => {
-				if (item.phones) {
-					item.phones.forEach(phone => {
-						acc.push(Phones.internalizePhone({
-							locationId: locations[index][0],
-							phone: phone.phone,
-						}));
-					});
-				}
-				return acc;
-			}, []);
-            if (phones.length > 0) {
-                connection.query(Queries.SAVE_PHONES, [phones], done);
-            } else {
-	            done(null, null);
-            }
-		};
-		const saveLocation = (connection, done) => {
-			if (locations.length > 0) {
-				connection.query(Queries.SAVE_LOCATION, [locations], done);
-			} else {
-				done(null, null);
-			}
-		};
-		const saveWorkingTimes = (connection, done) => {
-			const times: Array<object> = company.locations.reduce((acc, item: any, index) => {
-				if (item.workingTimes) {
-					item.workingTimes.filter(i => i.open && i.close && i.dayOfWeek)
-                        .forEach(time => {
-							acc.push(WorkingTimes.internalizeTime({
-								locationId: locations[index][0],
-								day: time.dayOfWeek.value,
-								from: time.open,
-								to: time.close,
-							}));
-						});
-				}
-				return acc;
-			}, []);
-			if (times.length > 0) {
-				connection.query(Queries.SAVE_WORKING_TIMES, [times], done);
-			} else {
-				done(null, null);
-			}
-        };
-		const saveAnimals = (connection, done) => {
-			if (company.animals && company.animals.length > 0) {
-				connection.query(Queries.SAVE_COMPANY_ANIMAL,
-					[company.animals.map(a => Companies.internalizeCompanyAnimal(a, company.companyId))], done);
-			} else {
-				done(null, null);
-			}
-		};
+		const savePhones = Phones.savePhones(company.locations, locations);
+
+		const saveLocation = Locations.saveLocations(locations);
+
+		const saveWorkingTimes = WorkingTimes.saveWorkingTimes(company.locations, locations);
+
+		const saveAnimals = Animals.saveAnimals(company.animals, company.companyId);
+
 	    const saveCompany = (connection, done) => {
             connection.query(Queries.SAVE, [Companies.internalizeCompany(company)], done);
 		};
@@ -191,12 +139,13 @@ export default class Companies extends BaseCRUD  {
 		};
 
 		const updateLocations = Locations.updateLocations(company.locations, company.companyId);
+		const updateAnimals = Animals.updateAnimals(company.animals, company.companyId);
 
-		executeParallel([updateCompany, updateLocations], (error) => {
+		executeParallel([updateCompany, updateAnimals, updateLocations], (error) => {
 			if (error) {
 				Util.handleError(error, callback);
 			} else {
-				callback(null, { url_id : company.url_id });
+				callback(null, { url_id : company.url_id || url_id });
 			}
 		});
 	}
@@ -344,7 +293,7 @@ export default class Companies extends BaseCRUD  {
 					{
 						name: 'animals',
 						idName: 'companyAnimalId',
-						map: Companies.mapCompanyAnimal
+						map: Animals.mapCompanyAnimal
 					}
 				]
 			};
@@ -363,14 +312,5 @@ export default class Companies extends BaseCRUD  {
 			}
 			callback(null, data);
 		});
-	}
-
-	static internalizeCompanyAnimal(animal, companyId) {
-		return [
-			uuid(),
-			companyId,
-			animal.animalId,
-			animal.breedId,
-		]
 	}
 }

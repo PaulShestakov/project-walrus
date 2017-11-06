@@ -16,6 +16,27 @@ export default class Phones {
 		];
 	}
 
+	static savePhones(allLocations, locationsWithIds) {
+		return (connection, done) => {
+			const phones: Array<object> = allLocations.reduce((acc, item: any, index) => {
+				if (item.phones) {
+					item.phones.forEach(phone => {
+						acc.push(Phones.internalizePhone({
+							locationId: locationsWithIds[index][0],
+							phone: phone.phone,
+						}));
+					});
+				}
+				return acc;
+			}, []);
+			if (phones.length > 0) {
+				connection.query(Queries.SAVE_PHONES, [phones], done);
+			} else {
+				done(null, null);
+			}
+		}
+	}
+
 	static updatePhones = (phones, locationId) => {
 		return (connection, done) => {
 			const deletePhones = new Promise((resolve, reject) => {

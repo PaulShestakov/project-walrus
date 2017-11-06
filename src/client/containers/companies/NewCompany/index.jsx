@@ -256,6 +256,7 @@ const extendCodeValues = createSelector(
             acc.push({
                 value: item.value,
                 label: item.label,
+                subways: item.subways
             });
             acc.push(...item.subCities);
             return acc;
@@ -275,6 +276,31 @@ const internalizeCompany = createSelector(
         if (company.companyId) {
             company = {
                 ...company,
+                animals: company.animals.map(animal => {
+                   const foundAnimal = common.animals.find(a => a.value === animal.animalId);
+                   let breed = undefined;
+                   if (foundAnimal && foundAnimal.breeds) {
+                       breed = foundAnimal.breeds.find(b => b.value === animal.breedId);
+                   }
+                   const result = {
+                       ...animal,
+                       animals: common.animals,
+                       breeds: foundAnimal.breeds || []
+                   };
+                   if (foundAnimal) {
+                       result.animalId = {
+                           value: foundAnimal.value,
+                           label: foundAnimal.label
+                       };
+                   }
+                   if (breed) {
+                       result.breedId = {
+                           value: breed.value,
+                           label: breed.label
+                       };
+                   }
+                   return result;
+                }),
                 locations: company.locations.map(location => {
                     const city = common.allCities.find(city => city.value === location.cityId);
                     let subway = undefined;

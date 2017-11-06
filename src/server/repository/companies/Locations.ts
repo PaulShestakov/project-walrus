@@ -59,6 +59,16 @@ export default class Locations {
 		}
 	}
 
+	static saveLocations(locations) {
+		return (connection, done) => {
+			if (locations.length > 0) {
+				connection.query(Queries.SAVE_LOCATION, [locations], done);
+			} else {
+				done(null, null);
+			}
+		};
+	}
+
 	static updateLocations(locations, companyId) {
 		return (connection, done) => {
 			connection.query(Queries.SELECT_LOCATIONS_FOR_COMPANY, [companyId], (error, result) => {
