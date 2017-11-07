@@ -1,15 +1,14 @@
-// Import External Dependencies
 import React from 'react';
 import { Route } from 'react-router-dom';
-
-// Import Components
 import { Breadcrumb } from 'react-breadcrumbs';
 
 // Create and export the component
-export default ({ component: Component, render, ...props }) => (
-    <Route { ...props } render={ routeProps => (
-        <Breadcrumb data={{ title: props.title, pathname: props.path }}>
-            { Component ? <Component { ...routeProps } /> : render(routeProps) }
-        </Breadcrumb>
-    )} />
-)
+export default function CrumbRoute({ component: Component, render, ...props }) {
+	return (
+		<Route {...props} render={routeProps => (
+			<Breadcrumb data={{title: props.title, pathname: props.path}}>
+				{Component ? <Component {...routeProps} /> : render(routeProps)}
+			</Breadcrumb>
+		)}/>
+	)
+}

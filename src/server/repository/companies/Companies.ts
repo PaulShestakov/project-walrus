@@ -110,6 +110,7 @@ export default class Companies extends BaseCRUD  {
   
 	static saveCompany(company: Company, callback) {
 		company.companyId = uuid();
+
 		const locations = company.locations.map(item => Locations.internalizeLocationToArray(company.companyId, item));
 
 		const savePhones = Phones.savePhones(company.locations, locations);
@@ -124,7 +125,7 @@ export default class Companies extends BaseCRUD  {
             connection.query(Queries.SAVE, [Companies.internalizeCompany(company)], done);
 		};
 
-        executeSeries([saveCompany, saveAnimals, saveLocation, savePhones, saveWorkingTimes], (error) => {
+        executeSeries([saveCompany, saveAnimals, saveLocations, savePhones, saveWorkingTimes], (error) => {
             if (error) {
                 Util.handleError(error, callback);
             } else {
