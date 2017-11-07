@@ -34,7 +34,7 @@ export function postCompany(company, history) {
 				throw Error(error);
             }
         ).then(json => {
-            history.push("/company/" + json.uuid);
+            history.push("/company/" + json.url_id);
             dispatch(saveCompanySuccess(json));
         }).catch(error => {
             dispatch(saveCompanyFailed(error))
@@ -51,21 +51,12 @@ export const LOAD_COMPANY_SUCCESS = 'NewCompany/LOAD_COMPANY_SUCCESS';
 const loadCompanyStart = () => ({
 	type: LOAD_COMPANY_START
 });
-const loadCompanyError = (error) => ({
-	type: LOAD_COMPANY_ERROR,
-	error: true,
-	payload: error
-});
-const loadCompanySuccess = (data) => ({
-	type: LOAD_COMPANY_SUCCESS,
-	payload: data
-});
 
-export function loadCompany(companyId) {
-	return (dispatch, getState) => {
+export function loadCompany(url_id) {
+	return (dispatch) => {
 		dispatch(loadCompanyStart());
 
-		fetch(baseUrl + '/company/' + companyId).then(
+		fetch(baseUrl + '/company/' + url_id).then(
 			response => {
 				if (!response.ok) {
 					throw Error(response.statusText);
@@ -76,14 +67,19 @@ export function loadCompany(companyId) {
 				throw Error(error);
 			}
 		).then(json => {
-			dispatch(loadCompanySuccess(json));
+			dispatch({
+                type: LOAD_COMPANY_SUCCESS,
+                payload: json
+            });
 		}).catch(error => {
-			dispatch(loadCompanyError(error));
+			dispatch({
+                type: LOAD_COMPANY_ERROR,
+                error: true,
+                payload: error
+            });
 		})
 	}
 }
-
-
 
 export const UPDATE_COMPANY_START = 'NewCompany/UPDATE_COMPANY_START';
 export const UPDATE_COMPANY_ERROR = 'NewCompany/UPDATE_COMPANY_ERROR';
@@ -122,7 +118,7 @@ export function updateCompany(companyId, company, history) {
 				throw Error(error);
 			}
 		).then(json => {
-			history.push("/company/" + json.uuid);
+			history.push("/company/" + json.url_id);
 			dispatch(updateCompanySuccess(json));
 		}).catch(error => {
 			dispatch(updateCompanyError(error))
@@ -133,26 +129,37 @@ export function updateCompany(companyId, company, history) {
 function externalizeCompany(company) {
 	const files = [];
 	const externalizedCompany = {...company};
+
 	if (externalizedCompany.locations) {
         externalizedCompany.locations = externalizedCompany.locations.map(location => {
+        	let markers = location.markers;
+        	let position = null;
+        	if (markers && markers.length > 0) {
+                position = markers[0].position;
+			}
             return {
 				locationId: location.locationId,
-                location: location.markers[0].position,
-                city: location.cityId.value,
+                location: position,
+                url_id: location.url_id,
+                city: location.cityId ? location.cityId.value : null,
                 subway: location.subwayId ? location.subwayId.value : null,
                 isMain: location.isMain,
                 address: location.address,
                 phones: location.phones,
-                workingTimes: location.workingTimes,
+                workingTimes: location.workingTimes.filter(wt => wt.dayOfWeek && wt.open && wt.close).map(wt => ({
+                	day: wt.dayOfWeek.value,
+					open: wt.open,
+					close: wt.close,
+				})),
             };
         });
 	}
 
 	if (externalizedCompany.animals) {
-        externalizedCompany.animals = externalizedCompany.animals.map(animal => {
+        externalizedCompany.animals = externalizedCompany.animals.filter(i => i.animalId).map(animal => {
 			return {
-				animalId: animal.animalId,
-				breedId: animal.breedId,
+				animalId: animal.animalId.value,
+				breedId: animal.breedId ? animal.breedId.value : null,
 			}
         });
 	}

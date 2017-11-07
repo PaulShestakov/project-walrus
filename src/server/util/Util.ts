@@ -17,6 +17,16 @@ export default class Util {
         }
     }
 
+    static resolvePromise(resolve, reject) {
+    	return (error, result) => {
+    		if (error) {
+    			reject(error);
+			} else {
+    			resolve(result);
+			}
+		}
+	}
+
     static reduceFlatData(rows, shape) {
 
     	if (rows.length === 0) {

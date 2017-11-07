@@ -12,6 +12,7 @@ const server = http.createServer(app);
 server.listen(PORT);
 server.on('error', onError);
 server.on('listening', onListening);
+server.on('unhandledRejection', up => { throw up })
 
 function onError(error: NodeJS.ErrnoException): void {
 	if (error.syscall !== 'listen') throw error;

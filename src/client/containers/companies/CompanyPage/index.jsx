@@ -39,10 +39,10 @@ class CompanyPageContainer extends React.Component {
 	}
 
 	componentDidMount() {
-		const companyId = this.props.match.params.companyId;
+		const url_id = this.props.match.params.url_id;
 
-		if (companyId) {
-			this.props.loadCompany(companyId);
+		if (url_id) {
+			this.props.loadCompany(url_id);
 		}
 	}
 
@@ -84,11 +84,11 @@ class CompanyPageContainer extends React.Component {
 		this.setState({ selectedTab: index });
 		const { match, history, loadFeedbacks } = this.props;
 		if (index === 1) {
-			loadFeedbacks(match.params.companyId, history);
+			loadFeedbacks(decodeURI(match.params.url_id), history);
 		} else if (index === 2) {
-			history.push('/company/' + match.params.companyId + '/contacts');
+			history.push('/company/' + match.params.url_id + '/contacts');
 		} else {
-			history.push('/company/' + match.params.companyId);
+			history.push('/company/' + match.params.url_id);
 		}
 	};
 
@@ -142,7 +142,7 @@ class CompanyPageContainer extends React.Component {
 								</Authorized>
 								<Authorized allowedRoles={[5]} className={classes.editButtonsBlock}>
 									<Button fab className={classes.editButton}>
-										<Link to={`/company/edit/${company.companyId}`}>
+										<Link to={`/company/edit/${company.url_id}`}>
 											<ModeEditIcon className={classes.editIcon} />
 										</Link>
 									</Button>

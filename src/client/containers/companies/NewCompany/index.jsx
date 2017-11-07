@@ -4,7 +4,7 @@ import {createSelector} from 'reselect'
 
 import withErrorHandling from '../../../components/decorators/withErrorHandling';
 
-import {postCompany, updateCompany, loadCompany, resetFormState} from "./actions";
+import {postCompany, updateCompany, loadCompany, resetFormState, removeLocation} from "./actions";
 
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
@@ -39,9 +39,9 @@ class NewCompanyContainer extends React.Component {
 	}
 
 	componentDidMount() {
-		if (this.props.editMode) {
-			const companyId = this.props.match.params.companyId;
-			this.props.loadCompany(companyId);
+	    const { editMode, match, loadCompany } = this.props;
+		if (editMode) {
+			loadCompany(match.params.url_id);
 		}
     }
     
@@ -82,13 +82,13 @@ class NewCompanyContainer extends React.Component {
 	};
 
 	saveAction = (values) => {
-		const companyId = this.props.match.params.companyId;
-		const { history, editMode } = this.props;
+		const { history, editMode, match, updateCompany, postCompany, initialValues } = this.props;
 
 		if (editMode) {
-			this.props.updateCompany(companyId, values, history);
+            values.companyId = initialValues.companyId;
+			updateCompany(match.params.url_id, values, history);
 		} else {
-			this.props.postCompany(values, history);
+			postCompany(values, history);
 		}
 	};
 
@@ -102,101 +102,110 @@ class NewCompanyContainer extends React.Component {
     };
 
 	render() {
-		const { t, classes, common, handleSubmit, workingTimes } = this.props;
+		const { t, common, handleSubmit, workingTimes, subcategories } = this.props;
 
 		return (
-			<form className="d-flex-column align-items-center my-4">
-				<Card raised>
-					<Grid container justify="center" spacing={24}>
+            <form className="d-flex-column align-items-center my-4">
+                <Card raised>
+                    <Grid container justify="center" spacing={24}>
 
-						<Grid item xs={11}>
-							<Typography type="headline" component="h1" className="mt-4">
-								Основная информация
-							</Typography>
-						</Grid>
+                        <Grid item xs={11}>
+                            <Typography type="headline" component="h1" className="mt-4">
+                                Основная информация
+                            </Typography>
+                        </Grid>
 
-						<Grid item xs={11}>
-							<Title>Название</Title>
-							<Field name="name"
-								   component={Input}
-								   fullWidth
-								   placeholder="Название компании"/>
-						</Grid>
-						<Grid item xs={11}>
-							<Title>Категория</Title>
-							<Field name="categoryId"
-								   component={Dropdown}
-								   options={common.companiesCategories}
-								   onChange={this.handleCategoryChange}
-								   format={value => common.companiesCategories.find(x => x.value === value)}
-								   normalize={value => value.value}
-							/>
-						</Grid>
-						<Grid item xs={11}>
-							<Title>Подкатегория</Title>
-							<Field name="subcategoryId"
-								   component={Dropdown}
-								   options={this.props.subcategories}
-								   onChange={this.handleSubcategoryChange}
-								   format={value => this.props.subcategories.find(x => x.value === value)}
-								   normalize={value => value.value}
-							/>
-						</Grid>
-						<Grid item xs={11}>
-							<FieldArray
-								name="animals"
-								animals={this.props.common.animals}
-								renderAnimals={this.state.renderAnimals}
-								renderBreeds={this.state.renderBreeds}
-								component={Animals}/>
-						</Grid>
-						<Grid item xs={11}>
-							<Title>Картинка лого</Title>
-							<Field name="imageObjects"
-								   type="file"
+                        <Grid item xs={11}>
+                            <Title>Название</Title>
+                            <Field name="name"
+                                   component={Input}
+                                   fullWidth
+                                   placeholder="Название компании"/>
+                        </Grid>
+                        <Grid item xs={11}>
+                            <Title>Имя в поисковой строке</Title>
+                            <Field name="url_id"
+                                   component={Input}
+                                   fullWidth
+                                   placeholder="Имя компании в поисковой строке (транслитом)"/>
+                        </Grid>
+
+                        <Grid item xs={11}>
+                            <Title>Категория</Title>
+                            <Field name="categoryId"
+                                   component={Dropdown}
+                                   options={common.companiesCategories}
+                                   onChange={this.handleCategoryChange}
+                                   format={value => common.companiesCategories.find(x => x.value === value)}
+                                   normalize={value => value.value}
+                            />
+                        </Grid>
+                        <Grid item xs={11}>
+                            <Title>Подкатегория</Title>
+                            <Field name="subcategoryId"
+                                   component={Dropdown}
+                                   options={subcategories}
+                                   onChange={this.handleSubcategoryChange}
+                                   format={value => subcategories.find(x => x.value === value)}
+                                   normalize={value => value.value}
+                            />
+                        </Grid>
+                        <Grid item xs={11}>
+                            <FieldArray
+                                name="animals"
+                                animals={this.props.common.animals}
+                                renderAnimals={this.state.renderAnimals}
+                                renderBreeds={this.state.renderBreeds}
+                                component={Animals}/>
+                        </Grid>
+                        <Grid item xs={11}>
+                            <Title>Картинка лого</Title>
+                            <Field name="imageObjects"
+                                   type="file"
 								   imageObjectsMaxLimit={1}
-								   component={ReduxFormsImageUploader} />
-						</Grid>
+                                   component={ReduxFormsImageUploader} />
+                        </Grid>
 
-						<Grid item xs={11}>
-							<Title>Описание</Title>
-							<Field name="description"
-								   component={Input}
-								   multiline
-								   rowsMax="20"
-								   placeholder="Описание"
-								   fullWidth/>
-						</Grid>
-						<Grid item xs={11}>
-							<Title>Сайт компании</Title>
-							<Field name="url"
-								   component={Input}
-								   placeholder="Сайт"
-								   fullWidth/>
-						</Grid>
-						<Grid item xs={11}>
-							<Title>Email</Title>
-							<Field name="email"
-								   component={Input}
-								   placeholder="Email"
-								   fullWidth/>
-						</Grid>
+                        <Grid item xs={11}>
+                            <Title>Описание</Title>
+                            <Field name="description"
+                                   component={Input}
+                                   multiline
+                                   rowsMax="20"
+                                   placeholder="Описание"
+                                   fullWidth/>
+                        </Grid>
+                        <Grid item xs={11}>
+                            <Title>Сайт компании</Title>
+                            <Field name="url"
+                                   component={Input}
+                                   placeholder="Сайт"
+                                   fullWidth/>
+                        </Grid>
+                        <Grid item xs={11}>
+                            <Title>Email</Title>
+                            <Field name="email"
+                                   component={Input}
+                                   placeholder="Email"
+                                   fullWidth/>
+                        </Grid>
 
-						<Grid item xs={11}>
-							<FieldArray
-								name="locations"
-								{...common}
-								workingTimes={workingTimes}
-								change={this.props.change}
-								component={Location}/>
-						</Grid>
+                        <Grid item xs={11}>
+                            <FieldArray
+                                name="locations"
+                                {...common}
+                                workingTimes={workingTimes}
+                                change={this.props.change}
+                                removeLocation={this.props.removeLocation}
+                                component={Location}/>
+                        </Grid>
 
-						<Grid container justify="center" className="my-3">
-							<Grid item xs={4} className="text-center">
-								<Button type="button"
-										onClick={this.openConfirmDialog}
-										className="my-4 text-white w-100"
-										accent="blue">
+                        <Grid container justify="center" className="my-3">
+                            <Grid item xs={4} className="text-center">
+                                <Button type="button"
+                                        onClick={this.openConfirmDialog}
+                                        className="my-4 text-white w-100"
+                                        accent="blue">
 									{t('Сохранить')}
 								</Button>
 							</Grid>
@@ -239,20 +248,68 @@ const getSubcategories = createSelector(
 	}
 );
 
-const internalizeCompany = createSelector(
-    [(state) => state.newCompany.company, state => state.common],
-	(company, common) => {
+const extendCodeValues = createSelector(
+    [state => state.common],
+    (common) => {
+        const allCities = common.cities.reduce((acc, item) => {
+            acc.push({
+                value: item.value,
+                label: item.label,
+                subways: item.subways
+            });
+            acc.push(...item.subCities);
+            return acc;
+        }, []);
+        allCities.sort((a, b) => a.label.localeCompare(b.label));
+        return {
+            ...common,
+            allCities
+        };
+    }
+);
 
-        const workingTimes = common.daysOfWeek.map(day => ({
-            dayOfWeek: {...day}
-        }));
+const internalizeCompany = createSelector(
+    [(state) => state.newCompany.company, extendCodeValues],
+	(company, common) => {
 
         if (company.companyId) {
             company = {
                 ...company,
+                animals: company.animals.map(animal => {
+                   const foundAnimal = common.animals.find(a => a.value === animal.animalId);
+                   let breed = undefined;
+                   if (foundAnimal && foundAnimal.breeds) {
+                       breed = foundAnimal.breeds.find(b => b.value === animal.breedId);
+                   }
+                   const result = {
+                       ...animal,
+                       animals: common.animals,
+                       breeds: foundAnimal.breeds || []
+                   };
+                   if (foundAnimal) {
+                       result.animalId = {
+                           value: foundAnimal.value,
+                           label: foundAnimal.label
+                       };
+                   }
+                   if (breed) {
+                       result.breedId = {
+                           value: breed.value,
+                           label: breed.label
+                       };
+                   }
+                   return result;
+                }),
                 locations: company.locations.map(location => {
-                    const city = common.cities.find(city => city.value === location.cityId);
-                    const subway = city.subways.find(subway => subway.value === location.subwayId);
+                    const city = common.allCities.find(city => city.value === location.cityId);
+                    let subway = undefined;
+                    if (city && city.subways) {
+                        subway = city.subways.find(subway => subway.value === location.subwayId)
+                    }
+
+                    const workingTimes = common.daysOfWeek.map(day => ({
+                        dayOfWeek: {...day}
+                    }));
                     
                     // Create new base array and write working times
                     location.workingTimes.forEach(day => {
@@ -262,16 +319,18 @@ const internalizeCompany = createSelector(
 
                     const result = {
                         ...location,
-                        cityId: {
-                            value: city.value,
-                            label: city.label,
-                        },
-                        subways: city.subways,
+                        subways: city.subways || [],
                         markers: [{
                             position: location.position
                         }],
                         workingTimes
                     };
+                    if (city) {
+                        result.cityId = {
+                            value: city.value,
+                            label: city.label,
+                        };
+                    }
                     if (subway) {
                         result.subwayId = {
                             value: subway.value,
@@ -291,25 +350,6 @@ const internalizeCompany = createSelector(
     }
 );
 
-const extendCodeValues = createSelector(
-    [state => state.common],
-    (common) => {
-        const allCities = common.cities.reduce((acc, item) => {
-            acc.push({
-                value: item.value,
-                label: item.label,
-            });
-            acc.push(...item.subCities);
-            return acc;
-        }, []);
-        allCities.sort((a, b) => a.label.localeCompare(b.label));
-        return {
-            ...common,
-            allCities
-        };
-    }
-);
-
 const NewCompany = connect(
     state => ({
 		common: extendCodeValues(state),
@@ -322,7 +362,8 @@ const NewCompany = connect(
         postCompany,
         updateCompany,
         loadCompany,
-        resetFormState
+        resetFormState,
+        removeLocation
     }
 )(NewCompanyContainer);
 

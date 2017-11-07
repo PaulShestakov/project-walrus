@@ -9,8 +9,8 @@ import styles from './styles';
 
 import { Field, FieldArray } from 'redux-form'
 import {Typography} from "material-ui";
+import { Delete } from 'material-ui-icons';
 import SwipeableViews from 'react-swipeable-views';
-
 
 @translate(['common'])
 @withStyles(styles)
@@ -80,12 +80,11 @@ export default class Animals extends React.Component {
                             onChange={this.handleTabPress}
                         >
                             {
-                                fields.map((field, index, fields) => {
-                                    const curField = fields.get(index);
+                                fields.map((field, index) => {
                                     return (
                                         <Tab
                                             key={index}
-                                            label={curField.label}
+                                            label={`Животное ${index + 1}`}
                                             value={index}/>
                                     );
                                 })
@@ -93,8 +92,8 @@ export default class Animals extends React.Component {
                         </Tabs>
                         <SwipeableViews
                             index={selectedAnimal}
-                            style={{ minHeight: '400px' }}
-                            containerStyle={{ minHeight: '400px' }}
+                            style={{ minHeight: '450px' }}
+                            containerStyle={{ minHeight: '450px' }}
                             slideStyle={{ overflow: 'visible' }}
                             onChangeIndex={this.handleTabPress}>
                             {
@@ -105,14 +104,18 @@ export default class Animals extends React.Component {
                                               container
                                               spacing={16}
                                               className="p-2">
+                                        <Grid item xs={12} className="text-right">
+                                            <Button fab className={classes.editButton}
+                                                    onClick={() => fields.remove(index)}>
+                                                <Delete className={classes.editIcon} />
+                                            </Button>
+                                        </Grid>
                                         <Grid item xs={12}>
                                             <Title>Животное</Title>
                                             <Field name={`${member}.animalId`}
                                                    component={Dropdown}
                                                    options={curField.animals}
                                                    onChange={(animal) => this.handleAnimalChange(animal, index)}
-                                                   format={value => curField.animals.find(x => x.value === value)}
-                                                   normalize={value => value.value}
                                             />
                                         </Grid>
                                         {
@@ -122,8 +125,6 @@ export default class Animals extends React.Component {
                                                 <Field name={`${member}.breedId`}
                                                        component={Dropdown}
                                                        options={curField.breeds}
-                                                       format={value => curField.breeds.find(x => x.value === value)}
-                                                       normalize={value => value.value}
                                                 />
                                             </Grid>
                                         }
