@@ -1,13 +1,11 @@
 import {
     LOAD_COMPANY_SUCCESS,
-    LOAD_FEEDBACKS_SUCCESS
 } from './actions';
 
 const defaultState = {
     company: {
         locations: [],
     },
-    feedbacks: []
 };
 
 const companyPageReducer = (state = defaultState, action) => {
@@ -20,12 +18,12 @@ const companyPageReducer = (state = defaultState, action) => {
             }
         }
 
-        case LOAD_FEEDBACKS_SUCCESS: {
-            return {
-                ...state,
-                feedbacks: action.payload
-            }
-        }
+        // case LOAD_FEEDBACKS_SUCCESS: {
+        //     return {
+        //         ...state,
+        //         feedbacks: action.payload
+        //     }
+        // }
 
         default: {
             return state;

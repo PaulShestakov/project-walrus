@@ -31,7 +31,7 @@ export default class Animals {
         };
     }
 
-    static updateAnimals = (animals, companyId) => {
+    static updateAnimals(animals, companyId) {
         return (connection, done) => {
             const deleteAnimals = new Promise((resolve, reject) => {
                 connection.query(Queries.DELETE_ANIMALS_FOR_COMPANY, [companyId], Util.resolvePromise(resolve, reject));

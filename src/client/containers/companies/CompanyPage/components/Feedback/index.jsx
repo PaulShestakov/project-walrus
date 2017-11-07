@@ -25,7 +25,7 @@ export default class Feedbacks extends React.Component {
 
     deleteFeedback = () => {
         this.setState({ isConfirmDialogOpened: false });
-        this.props.deleteFeedback(this.state.feedback.id);
+        this.props.deleteFeedback(this.state.feedback.feedbackId);
     };
 
     render() {
@@ -63,15 +63,9 @@ export default class Feedbacks extends React.Component {
                                                     <Delete />
                                                 </Button>
                                             </Authorized>
-
                                         </div>
                                     </Grid>
                                 </Grid>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Typography type="title" className="text-wrap" component="p">
-                                    {feedback.summary}
-                                </Typography>
                             </Grid>
                             <Grid item xs={12}>
                                 <Typography type="body1" className="text-wrap" component="p">
@@ -89,13 +83,13 @@ export default class Feedbacks extends React.Component {
                 feedbacks.length === 0 &&
                 <Grid container>
                     <Grid item xs={12} className={classes.emptyFeedbacks}>
-                        У компании пока что нет отзывов
+                        У данного местоположения компании пока что нет отзывов
                     </Grid>
                 </Grid>
             }
             <ConfirmDialog
                 open={this.state.isConfirmDialogOpened}
-                message={`Вы действительно хотите удалить отзыв ${this.state.feedback.summary}`}
+                message={`Вы действительно хотите удалить отзыв ${this.state.feedback.feedback}`}
                 title="Удаление комментария"
                 okCallback={this.deleteFeedback}
                 closeCallback={() => this.setState({ isConfirmDialogOpened: false })}/>

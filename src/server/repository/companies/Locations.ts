@@ -76,15 +76,16 @@ export default class Locations {
 					done(error);
 				} else {
 					const externalIds = locations.map(item => (item.locationId));
+					let selectedIds = [];
 					let idsToDelete = [];
 					const promisesToExecute = [];
 
 					if (result) {
-						const selectedIds = result.map(res => (res.locId));
+						selectedIds = result.map(res => (res.locId));
 						idsToDelete = _.difference(selectedIds, externalIds);
 						if (idsToDelete.length > 0) {
 							const deleteLocations = new Promise((resolve, reject) => {
-								connection.query(Queries.DELETE_LOCATIONS, [idsToDelete], Util.resolvePromise(resolve, reject));
+								connection.query(Queries.DELETE_LOCATIONS, idsToDelete, Util.resolvePromise(resolve, reject));
 							});
 							promisesToExecute.push(deleteLocations);
 						}
@@ -112,10 +113,10 @@ export default class Locations {
 							}
 						});
 					});
-					promisesToExecute.push(updateLocations);
-					Promise.all(promisesToExecute).then((results) => {
-						done(null, results);
-					});
+					if (selectedIds.length !== idsToDelete.length) {
+						promisesToExecute.push(updateLocations);
+					}
+					Promise.all(promisesToExecute).then((results) => done(null, results));
 				}
 			});
 		}

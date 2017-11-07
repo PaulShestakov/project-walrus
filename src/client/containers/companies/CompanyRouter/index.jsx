@@ -45,6 +45,7 @@ class CompanyRouterContainer extends React.Component {
 					<CrumbRoute path="/company/list" component={CompaniesList} title="Список компаний" />
 					<CrumbRoute path="/company/overview" component={CompaniesOverview} title="Компании" />
 					<CrumbRoute path="/company/edit/:url_id" component={EditComponent} title="Редактирование компании" />
+					<CrumbRoute path="/company/:url_id/contacts/:filial_url_id" component={CompanyPage} title="Страница филиала"/>
 					<CrumbRoute path="/company/:url_id" component={CompanyPage} title="Страница компании" />
 					<Redirect to='/company/overview' />
 

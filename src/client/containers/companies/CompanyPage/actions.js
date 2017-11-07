@@ -1,14 +1,13 @@
 import { unauthorizedError } from '../../common/actions';
 
 export const LOAD_COMPANY_SUCCESS = 'LOAD_COMPANY_SUCCESS';
-export const LOAD_FEEDBACKS_SUCCESS = 'LOAD_FEEDBACKS_SUCCESS';
 export const POST_FEEDBACK_SUCCESS = 'POST_FEEDBACK_SUCCESS';
 export const DELETE_FEEDBACK_SUCCESS = 'DELETE_FEEDBACK_SUCCESS';
 
-export function loadCompany(companyId) {
+export function loadCompany(url_id) {
     return (dispatch) => {
 
-        fetch('/api/v1/company/' + companyId).then(
+        fetch('/api/v1/company/' + url_id).then(
             response => {
                 if (response.ok) {
                     return response.json();
@@ -52,32 +51,10 @@ export function postFeedback(feedback, history) {
                 
             }
         ).then(json => {
-            dispatch(loadFeedbacks(feedback.companyId, history));
+            history.push(feedback.redirectUrl);
+            dispatch(loadCompany(feedback.url_id, history));
         }).catch(error => {
             dispatch(unauthorizedError());
-        });
-
-    }
-}
-
-export function loadFeedbacks(companyId, history) {
-    return (dispatch) => {
-
-        fetch('/api/v1/company/' + companyId + '/feedback').then(
-            response => {
-                if (response.ok) {
-                    return response.json();
-                }
-            },
-            error => {
-                //dispatch(loadPromoError())
-            }
-        ).then(json => {
-			history.push('/company/' + companyId + '/feedbacks');
-            dispatch({
-                type: LOAD_FEEDBACKS_SUCCESS,
-                payload: json
-            });
         });
 
     }
@@ -99,7 +76,8 @@ export function deleteFeedback(data, history) {
                 //dispatch(loadPromoError())
             }
         ).then(json => {
-            dispatch(loadFeedbacks(data.companyId, history));
+            history.push(data.redirectUrl);
+            dispatch(loadCompany(data.url_id, history));
         });
 
     }

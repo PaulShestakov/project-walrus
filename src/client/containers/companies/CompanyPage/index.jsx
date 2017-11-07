@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { createSelector } from 'reselect'
 
-import {loadCompany, postFeedback, loadFeedbacks, deleteFeedback} from "./actions";
+import {loadCompany, postFeedback, deleteFeedback} from "./actions";
 import { removeCompany } from '../CompaniesList/actionCreators/companiesList';
 
 import { translate } from 'react-i18next';
@@ -34,7 +34,8 @@ class CompanyPageContainer extends React.Component {
 		this.state = {
 			selectedTab: 0,
 			isConfirmDialogOpened: false,
-			company: {}
+			company: {},
+			locationToDisplay: null
 		};
 	}
 
@@ -47,24 +48,26 @@ class CompanyPageContainer extends React.Component {
 	}
 
 	componentWillReceiveProps(newProps) {
-		const feedbacks = newProps.location.pathname.indexOf("/feedbacks");
-		const feedback = newProps.location.pathname.indexOf("/feedback");
-		const contacts = newProps.location.pathname.indexOf("/contacts");
+		const lastWord = newProps.location.pathname.split("/").slice(-1)[0];
 		let index;
-		const { loadFeedbacks, match, history } = this.props;
-		if (feedbacks !== -1) {
+		if (lastWord === 'feedbacks') {
 			index = 1;
-			if (this.state.selectedTab !== index) {
-				loadFeedbacks(match.params.companyId, history);
-			}
-		} else if (feedback !== -1) {
+		} else if (lastWord === 'feedback') {
 			index = -1;
-		} else if (contacts !== -1) {
+		} else if (lastWord === 'contacts') {
 			index = 2;
 		} else {
 			index = 0;
 		}
-		this.setState({selectedTab: index});
+
+		let location = undefined;
+		const filialUrlId = newProps.match.params.filial_url_id;
+		if (filialUrlId) {
+			location = newProps.company.locations.find(location => location.url_id === filialUrlId);
+		} else {
+			location = newProps.company.mainLocation;
+		}
+		this.setState({ selectedTab: index, locationToDisplay: location });
 	}
 
 	handleAction = (company, action) => {
@@ -82,29 +85,31 @@ class CompanyPageContainer extends React.Component {
 
 	handleTabPress = (event, index) => {
 		this.setState({ selectedTab: index });
-		const { match, history, loadFeedbacks } = this.props;
+		const { match, history } = this.props;
+		let url = match.url;
 		if (index === 1) {
-			loadFeedbacks(decodeURI(match.params.url_id), history);
+            url += '/feedbacks';
 		} else if (index === 2) {
-			history.push('/company/' + match.params.url_id + '/contacts');
-		} else {
-			history.push('/company/' + match.params.url_id);
+            url += '/contacts';
 		}
+        history.push(url);
 	};
 
 	deleteFeedback = (feedbackId) => {
-		this.props.deleteFeedback({
-			companyId: this.props.match.params.companyId,
+        const { deleteFeedback, company, history, match } = this.props;
+		deleteFeedback({
+            redirectUrl: match.url + "/feedbacks",
+			companyId: company.companyId,
+			url_id: company.url_id,
 			feedbackId
-		}, this.props.history);
+		}, history);
 	};
 
 	onPostFeedback = (data) => {
-		const { companyId } = this.props.match.params;
-		if (companyId) {
-			data.companyId = companyId;
-			this.props.postFeedback(data, this.props.history);
-		}
+		const { postFeedback, history, match } = this.props;
+        data.redirectUrl = match.url + "/feedbacks";
+        data.url_id = match.params.url_id;
+        postFeedback(data, history);
 	};
 
 	delete = () => {
@@ -117,8 +122,9 @@ class CompanyPageContainer extends React.Component {
 	}
 
 	render() {
-		const {t, classes, company, feedbacks, common, markers } = this.props;
-
+		const {t, classes, company, common, markers } = this.props;
+		const { locationToDisplay } = this.state;
+        const phonesText = locationToDisplay ? locationToDisplay.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
 		return (
 			<div className={classes.mainCardWrapper}>
 				<Card raised className={classNames(classes.mainCard, "my-4")}>
@@ -133,13 +139,16 @@ class CompanyPageContainer extends React.Component {
 								</Typography>
 							</Grid>
 							<Grid item xs={4}>
-								<Authorized allowedRoles={[5]}>
-									<Link to={`${this.props.match.url}/feedback`} className={classes.link}>
-										<Button accent="red" className='w-100'>
-											{t('Оставить отзыв')}
-										</Button>
-									</Link>
-								</Authorized>
+								{
+                                    locationToDisplay &&
+									<Authorized allowedRoles={[5]}>
+										<Link to={`${this.props.match.url}/feedback`} className={classes.link}>
+											<Button accent="red" className='w-100'>
+                                                {t('Оставить отзыв')}
+											</Button>
+										</Link>
+									</Authorized>
+								}
 								<Authorized allowedRoles={[5]} className={classes.editButtonsBlock}>
 									<Button fab className={classes.editButton}>
 										<Link to={`/company/edit/${company.url_id}`}>
@@ -184,27 +193,26 @@ class CompanyPageContainer extends React.Component {
 										</Typography>
 									</Grid>
 									<Grid item xs={12}>
-										<Grid container
-												spacing={16}>
-											<Grid item xs={12}>
-												<Typography component="p">
-													Контакты главного офиса :
-												</Typography>
-											</Grid>
-											<Grid item xs={12}
-													className="d-flex align-items-center">
-												<LocationOn className="mr-2"/>
-												<Typography component="p">
-													{company.mainLocation.address}
-												</Typography>
-											</Grid>
-											<Grid item xs={12}
-													className="d-flex align-items-center">
-												<Call className="mr-2"/>
-												<Typography component="p">
-													{company.phonesText}
-												</Typography>
-											</Grid>
+										<Grid container spacing={16}>
+                                            {
+                                                locationToDisplay &&
+												<Grid item xs={12} className="d-flex align-items-center">
+													<LocationOn className="mr-2"/>
+													<Typography component="p">
+                                                        {locationToDisplay.address}
+													</Typography>
+												</Grid>
+                                            }
+											{
+                                                locationToDisplay &&
+												<Grid item xs={12}
+													  className="d-flex align-items-center">
+													<Call className="mr-2"/>
+													<Typography component="p">
+                                                        {phonesText}
+													</Typography>
+												</Grid>
+											}
 										</Grid>
 									</Grid>
 								</Grid>
@@ -220,7 +228,7 @@ class CompanyPageContainer extends React.Component {
 								  root: classes.tabs
 							  }}>
 							<Tab label={t('Инфо')}/>
-							<Tab label={t('Отзывы')}/>
+							<Tab label={t('Отзывы')} disabled={!locationToDisplay}/>
 							<Tab label={t('Адреса и контакты')}/>
 						</Tabs>
 						<Divider />
@@ -231,7 +239,7 @@ class CompanyPageContainer extends React.Component {
 							/>
 
 							<CrumbRoute exact path={`${this.props.match.url}/feedbacks`}
-								   render={() => <Feedbacks feedbacks={ feedbacks }
+								   render={() => <Feedbacks feedbacks={ locationToDisplay ? locationToDisplay.feedbacks : [] }
 															deleteFeedback={ this.deleteFeedback }/>}
 								   title="Отзывы"
 							/>
@@ -239,12 +247,17 @@ class CompanyPageContainer extends React.Component {
 
 							<CrumbRoute path={`${this.props.match.url}/feedback`}
 								   render={() => <NewFeedback user={ common.user }
+															  companyInfo={{
+                                                                  companyId: company.companyId,
+                                                                  locationId: locationToDisplay ? locationToDisplay.locationId : null
+                                                              }}
 															  onPostFeedback={this.onPostFeedback}/>}
 								   title="Новый отзыв"
 							/>
 
-							<CrumbRoute path={`${this.props.match.url}/contacts`}
+							<CrumbRoute exact path={`${this.props.match.url}/contacts`}
 								   render={() => <Contacts locations={ company.locations }
+														   url_id={ company.url_id }
 														   markers={ markers }/>}
 								   title="Контакты"
 							/>
@@ -286,19 +299,13 @@ const getCompany = createSelector(
 		if (!mainLocation) {
 			if (company.locations.length > 0) {
 				mainLocation = company.locations[0];
-			} else {
-				mainLocation = {
-					workingTimes: [],
-					phones: []
-				}
 			}
 		}
-		const phonesText = mainLocation.phones ? mainLocation.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
+
 
 		return {
 			...company,
 			mainLocation,
-			phonesText
 		}
 	}
 );
@@ -308,14 +315,12 @@ const CompanyPage = connect(
 		return {
 			common: state.common,
 			company: getCompany(state),
-			feedbacks: state.companyPage.feedbacks,
 			markers: getMarkers(state),
 		}
 	},
 	{
 		loadCompany,
 		postFeedback,
-		loadFeedbacks,
 		deleteFeedback,
 		removeCompany,
 	}

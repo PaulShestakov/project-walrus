@@ -11,6 +11,7 @@ export default class NewFeedback extends React.Component {
         super(props);
         this.state = {
             rating: 0,
+            disabled: false
         }
     }
 
@@ -19,8 +20,14 @@ export default class NewFeedback extends React.Component {
     };
 
     handleSubmit = (values) => {
-        values.rating = this.state.rating;
-        this.props.onPostFeedback(values);
+        const { companyInfo, onPostFeedback } = this.props;
+        this.setState({ disabled: true },
+            onPostFeedback({
+                ...values,
+                rating: this.state.rating,
+                ...companyInfo
+            }
+        ));
     };
 
     render() {
@@ -32,21 +39,9 @@ export default class NewFeedback extends React.Component {
                     <Grid item xs={10} className="mx-auto">
                         <Grid container spacing={24}>
                             <Grid item xs={12}>
-                                <div>
-                                    <Title>Заголовок</Title>
-                                </div>
-                                <Field
-                                    name="summary"
-                                    component={Input}
-                                    fullWidth
-                                    className="mt-2"
-                                    placeholder="Заголовок" 
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
                                 <Title>Оценка компании</Title>
                                 <Rating value={this.state.rating}
-                                onChange={this.changeRating}/>
+                                        onChange={this.changeRating}/>
                             </Grid>
                             <Grid item xs={12}>
                                 <div>
@@ -59,13 +54,14 @@ export default class NewFeedback extends React.Component {
                                     rowsMax="10"
                                     fullWidth
                                     className="mt-2"
-                                    placeholder="Отзыв" 
+                                    placeholder="Отзыв"
                                 />
                             </Grid>
                             <Grid item xs={12} className="text-center">
                                 <Button type="button"
                                         className="text-white"
                                         accent="red"
+                                        disabled={this.state.disabled}
                                         onClick={handleSubmit(this.handleSubmit)}>
                                     {t('Отправить')}
                                 </Button>

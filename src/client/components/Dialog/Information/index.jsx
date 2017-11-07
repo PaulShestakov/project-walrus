@@ -42,7 +42,7 @@ export default class InfoDialog extends React.Component {
             <Dialog open={this.state.open}
                     fullWidth
                     onRequestClose={this.handleClose}
-                    className={classNames(classes.root)}>
+                    classes={{ paper: classes.paper}}>
                 <Grid container className="d-flex-row">
                     <Grid item className={classes.closeButton}>
                         <Clear onClick={this.handleClose}

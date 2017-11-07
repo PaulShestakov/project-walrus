@@ -16,7 +16,7 @@ interface Company {
 interface IFeedback {
 	user: object,
 	companyId: string,
+	locationId: string,
 	feedback: string,
-	summary: string,
 	rating: number,
 }

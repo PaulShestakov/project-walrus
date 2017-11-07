@@ -23,7 +23,7 @@ class Companies extends BaseController {
 		// this.router.post('/:companyId/feedback',
 		// 	passport.authenticate('jwt', { session: false }), this.postFeedback.bind(this));
 		this.router.post('/:companyId/feedback', this.postFeedback.bind(this));
-		this.router.get('/:companyId/feedback', this.getFeedbacks.bind(this));
+		// this.router.get('/:companyId/feedback', this.getFeedbacks.bind(this));
 		// this.router.delete('/:companyId/feedback/:feedbackId',
 		// 	passport.authenticate('jwt', { session: false }), this.deleteFeedback.bind(this));
 		this.router.delete('/:companyId/feedback/:feedbackId', this.deleteFeedback.bind(this));
@@ -32,7 +32,7 @@ class Companies extends BaseController {
 		//this.router.post('/', passport.authenticate('jwt', { session: false }), this.postCompany.bind(this));
 		this.router.post('/', upload.array('image', 1), this.saveCompany.bind(this));
 		this.router.put('/:companyId', upload.array('image', 1), this.updateCompany.bind(this));
-		this.router.get('/:companyId', this.getCompany.bind(this));
+		this.router.get('/:url_id', this.getCompany.bind(this));
 		this.router.delete('/:companyId', this.deleteCompany.bind(this));
 	}
 
@@ -62,7 +62,7 @@ class Companies extends BaseController {
 	}
 
 	private getCompany(req: Request, res: Response) {
-		CompaniesRepository.getCompany(req.params.companyId, (error, result) => {
+		CompaniesRepository.getCompany(decodeURI(req.params.url_id), (error, result) => {
 			if (error) {
 				this.errorResponse(res, 500, error);
 			} else {
@@ -134,20 +134,20 @@ class Companies extends BaseController {
 		}
 	}
 
-	private getFeedbacks(req: Request, res: Response) {
-		const { companyId } = req.params;
-		if (companyId) {
-			FeedbacksRepository.getFeedbacks(companyId, (error, result) => {
-				if (error) {
-					this.errorResponse(res, 500, error);
-				} else {
-					this.okResponse(res, result);
-				}
-			});
-		} else {
-			this.errorResponse(res, 400, 'Company id was not provided');
-		}
-	}
+	// private getFeedbacks(req: Request, res: Response) {
+	// 	const { url_id } = req.params;
+	// 	if (url_id) {
+	// 		FeedbacksRepository.getFeedbacks(decodeURI(url_id), (error, result) => {
+	// 			if (error) {
+	// 				this.errorResponse(res, 500, error);
+	// 			} else {
+	// 				this.okResponse(res, result);
+	// 			}
+	// 		});
+	// 	} else {
+	// 		this.errorResponse(res, 400, 'Company url_id was not provided');
+	// 	}
+	// }
 
 	private deleteFeedback(req: Request, res: Response) {
 		const { feedbackId } = req.params;

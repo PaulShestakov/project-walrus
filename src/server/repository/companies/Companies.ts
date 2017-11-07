@@ -12,6 +12,7 @@ import Locations from "./Locations";
 import Phones from "./Phones";
 import WorkingTimes from "./WorkingTimes";
 import Animals from "./Animals";
+import Feedbacks from "./Feedbacks";
 
 export default class Companies extends BaseCRUD  {
 
@@ -74,6 +75,11 @@ export default class Companies extends BaseCRUD  {
 										name: 'phones',
 										idName: 'phoneId',
 										map: Phones.mapPhone
+									},
+									{
+										name: 'feedbacks',
+										idName: 'feedbackId',
+										map: Feedbacks.mapFeedback
 									}
 								]
 							},
@@ -200,7 +206,7 @@ export default class Companies extends BaseCRUD  {
 				.field('c.EMAIL', 'email')
 				.field('c.WEBSITE_URL', 'url')
 				.field( squel.select()
-								.field('COUNT(*)')
+							.field('COUNT(*)')
 							.from('wikipet.companies_location', 'cl1')
 							.where('cl1.COMPANY_ID = c.COMPANY_ID')
 							.where('cl1.IS_MAIN = 0'), 'locationsCount'
