@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { Breadcrumb } from 'react-breadcrumbs';
 
-// Create and export the component
+
 export default function CrumbRoute({ component: Component, render, ...props }) {
 	return (
 		<Route {...props} render={routeProps => (
@@ -10,5 +10,5 @@ export default function CrumbRoute({ component: Component, render, ...props }) {
 				{Component ? <Component {...routeProps} /> : render(routeProps)}
 			</Breadcrumb>
 		)}/>
-	)
+	);
 }

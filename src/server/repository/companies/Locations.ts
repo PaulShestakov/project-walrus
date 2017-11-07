@@ -51,6 +51,7 @@ export default class Locations {
 		}
 	}
 
+	// Bad function design
 	static internalizeLocation(companyId, location) {
 		if (location.locationId) {
 			return Locations.internalizeLocationToObject(companyId, location);
@@ -93,9 +94,11 @@ export default class Locations {
 
 					const updateLocations = new Promise((resolve, reject) => {
 						const internalizedLocations = locations
+							// ...so-so
 							.filter(i => !idsToDelete.includes(i.locationId))
 							.map(Locations.internalizeLocation.bind(null, companyId));
 
+						// WTF???
 						const idsToUpdate = _.difference(externalIds, idsToDelete);
 						const locUpdater = Locations.getLocationsUpdater(internalizedLocations, idsToUpdate);
 
@@ -107,6 +110,9 @@ export default class Locations {
 								// update/insert phones and working times
 								locations.forEach((location, index) => {
 									const locId = location.locationId || internalizedLocations[index][0];
+
+									// WHAT THE FUCK IS THAT???
+									// FUUUUUUCKK
 									Phones.updatePhones(location.phones, locId)(connection, Util.resolvePromise(resolve, reject));
 									WorkingTimes.updateWorkingTimes(location.workingTimes, locId)(connection, Util.resolvePromise(resolve, reject));
 								});
