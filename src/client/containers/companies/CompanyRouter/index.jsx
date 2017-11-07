@@ -13,7 +13,7 @@ import NewCompany from "../NewCompany/index";
 import CompaniesList from "../CompaniesList/index";
 import CompaniesOverview from "../CompaniesOverview/index";
 import CompanyPage from "../CompanyPage";
-
+import CrumbRoute from "../../../components/CrumbRoute"
 
 const EditComponent = (props) => {
 	return <NewCompany editMode {...props} />;
@@ -40,9 +40,16 @@ class CompanyRouterContainer extends React.Component {
 					<Route path="/company/edit/:url_id" component={EditComponent} />
 					<Route path="/company/:url_id" component={CompanyPage} />
 					<Redirect to='/company/overview' />
+
+					{/*<CrumbRoute path="/company/new" component={NewCompany} title="Создание компании" />*/}
+					{/*<CrumbRoute path="/company/list" component={CompaniesList} title="Список компаний" />*/}
+					{/*<CrumbRoute path="/company/overview" component={CompaniesOverview} title="Компании" />*/}
+					{/*<CrumbRoute path="/company/edit/:url_id" component={EditComponent} title="Редактирование компании" />*/}
+					{/*<CrumbRoute path="/company/:url_id" component={CompanyPage} title="Страница компании" />*/}
+					{/*<Redirect to='/company/overview' />*/}
+
 				</Switch>
 			</div>
-
 		);
 	}
 }

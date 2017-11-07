@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {createSelector} from 'reselect'
 
-import withErrorHandling from './../../../components/decorators/withErrorHandling';
+import withErrorHandling from '../../../components/decorators/withErrorHandling';
 
 import {postCompany, updateCompany, loadCompany, resetFormState, removeLocation} from "./actions";
 
@@ -18,14 +18,13 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import Location from "./components/Location/index";
 import Animals from "./components/Animals/index";
 
-import {getFormValues} from 'redux-form'
-
+import {getFormValues} from 'redux-form';
 
 
 @translate(['common'])
 @withStyles(styles)
 @reduxForm({form: 'company', enableReinitialize: true})
-// @withErrorHandling()
+@withErrorHandling()
 class NewCompanyContainer extends React.Component {
 
 	constructor(props) {
@@ -208,25 +207,25 @@ class NewCompanyContainer extends React.Component {
                                         className="my-4 text-white w-100"
                                         accent="blue">
 									{t('Сохранить')}
-                                </Button>
-                            </Grid>
-                            <Grid item xs={4} className="text-center">
-                                <Button className="my-4 text-white w-100"
-                                        onClick={this.onCancelPressed}
-                                        accent="red">
+								</Button>
+							</Grid>
+							<Grid item xs={4} className="text-center">
+								<Button className="my-4 text-white w-100"
+										onClick={this.onCancelPressed}
+										accent="red">
 									{t('Отмена')}
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Card>
-                <ConfirmDialog
-                    open={this.state.showConfirm}
-                    message="Вы действительно хотите сохранить введенные данные?"
-                    title="Сохранение компании"
-                    okCallback={handleSubmit(this.saveAction)}
-                    closeCallback={() => this.setState({ showConfirm: false })}/>
-            </form>
+								</Button>
+							</Grid>
+						</Grid>
+					</Grid>
+				</Card>
+				<ConfirmDialog
+					open={this.state.showConfirm}
+					message="Вы действительно хотите сохранить введенные данные?"
+					title="Сохранение компании"
+					okCallback={handleSubmit(this.saveAction)}
+					closeCallback={() => this.setState({ showConfirm: false })}/>
+			</form>
 		);
 	}
 }

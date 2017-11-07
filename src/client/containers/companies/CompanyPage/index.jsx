@@ -22,6 +22,7 @@ import {Route, Link} from 'react-router-dom'
 import NewFeedback from "./components/Feedback/NewFeedback/index";
 import Contacts from "./components/Contacts/index";
 import Authorized from "../../../containers/Authorized";
+import CrumbRoute from "../../../components/CrumbRoute/index"
 
 
 @translate(['common'])
@@ -224,21 +225,29 @@ class CompanyPageContainer extends React.Component {
 						</Tabs>
 						<Divider />
 						<div className={classes.context}>
-							<Route exact path={`${this.props.match.url}`}
-								   render={() => <CompanyInfo company={ company } /> }/>
+							<CrumbRoute exact path={`${this.props.match.url}`}
+								render={() => <CompanyInfo company={ company } />}
+								title="Информация о компании"
+							/>
 
-							<Route exact path={`${this.props.match.url}/feedbacks`}
+							<CrumbRoute exact path={`${this.props.match.url}/feedbacks`}
 								   render={() => <Feedbacks feedbacks={ feedbacks }
-															deleteFeedback={ this.deleteFeedback }/>}/>
+															deleteFeedback={ this.deleteFeedback }/>}
+								   title="Отзывы"
+							/>
 
 
-							<Route path={`${this.props.match.url}/feedback`}
+							<CrumbRoute path={`${this.props.match.url}/feedback`}
 								   render={() => <NewFeedback user={ common.user }
-															  onPostFeedback={this.onPostFeedback}/>}/>
+															  onPostFeedback={this.onPostFeedback}/>}
+								   title="Новый отзыв"
+							/>
 
-							<Route path={`${this.props.match.url}/contacts`}
+							<CrumbRoute path={`${this.props.match.url}/contacts`}
 								   render={() => <Contacts locations={ company.locations }
-														   markers={ markers }/>}/>
+														   markers={ markers }/>}
+								   title="Контакты"
+							/>
 						</div>
 					</CardContent>
 				</Card>
