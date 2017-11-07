@@ -10,7 +10,6 @@ import NewPromo from "../promos/NewPromo";
 import PromoPage from "../promos/PromoPage";
 import CompanyRouter from "../companies/CompanyRouter";
 
-import './styles.scss';
 import { Breadcrumbs } from 'react-breadcrumbs';
 
 export default class Router extends React.Component {
