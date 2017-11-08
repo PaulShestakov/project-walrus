@@ -1,7 +1,6 @@
 import * as uuid from 'uuid';
 import Queries from "./sql/Queries";
 import * as _ from 'lodash';
-import Util from "../../util/Util";
 import Phones from "./Phones";
 import WorkingTimes from "./WorkingTimes";
 import async from 'async';
@@ -52,17 +51,6 @@ export default class Locations {
 		}
 	}
 
-	internalizeLocation(companyId, location)
-
-
-	static internalizeLocation(companyId, location) {
-		if (location.locationId) {
-			return Locations.internalizeLocationToObject(companyId, location);
-		} else {
-			return Locations.internalizeLocationToArray(companyId, location);
-		}
-	}
-
 	static saveLocations(locations) {
 		return (connection, done) => {
 			if (locations.length > 0) {
@@ -97,12 +85,21 @@ export default class Locations {
 
 					locations.forEach(location => {
 						if (location.locationId) {
+							const updateBody = Locations.internalizeLocationToObject(companyId, location);
+
 							locationsToUpdate.push({
-								updateBody: Locations.internalizeLocationToObject(companyId, location),
+								updateBody,
+								locationObject: location,
 								locationId: location.locationId
 							});
 						} else {
-							locationsToCreate.push(Locations.internalizeLocationToArray(companyId, location));
+							const saveBody = Locations.internalizeLocationToArray(companyId, location);
+
+							locationsToCreate.push({
+								saveBody,
+								locationObject: location,
+								locationId: saveBody[0]
+							});
 						}
 					});
 
@@ -126,30 +123,33 @@ export default class Locations {
 						tasks.push(...tasksForUpdate);
 					}
 
-
 					if (locationsToCreate.length > 0) {
 						const tasksForCreate = locationsToCreate.map(location => {
 							return (connection, done) => {
-								connection.query(Queries.SAVE_LOCATION, [[location]], done);
+								connection.query(Queries.SAVE_LOCATION, [[location.saveBody]], done);
 							};
 						});
 
 						tasks.push(...tasksForCreate);
 					}
-
-					if (locations.length > 0) {
+					
+					const locationsToUpdateDependencies = locationsToUpdate.concat(locationsToCreate);
+					if (locationsToUpdateDependencies.length > 0) {
 
 						const updateDependenciesTasks = [];
-						locations.forEach(location => {
+						locationsToUpdateDependencies.forEach(object => {
+							const location = object.locationObject;
+							const locationId = object.locationId;
+
 							if (location.phones && location.phones.length > 0) {
 								updateDependenciesTasks.push(
-									Phones.updatePhones(location.phones, location.locationId)
+									Phones.updatePhones(location.phones, locationId)
 								);
 							}
 
 							if (location.workingTimes && location.workingTimes.length > 0) {
 								updateDependenciesTasks.push(
-									WorkingTimes.updateWorkingTimes(location.workingTimes, location.locationId)
+									WorkingTimes.updateWorkingTimes(location.workingTimes, locationId)
 								);
 							}
 						});
