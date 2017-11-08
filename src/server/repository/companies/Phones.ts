@@ -1,6 +1,6 @@
 import * as uuid from 'uuid';
 import Queries from './sql/Queries';
-import Util from "../../util/Util";
+import async from 'async';
 
 export default class Phones {
 	static mapPhone = (item) => ({
@@ -17,18 +17,19 @@ export default class Phones {
 	}
 
 	static savePhones(allLocations, locationsWithIds) {
+		const phones: Array<object> = allLocations.reduce((acc, item: any, index) => {
+			if (item.phones) {
+				item.phones.forEach(phone => {
+					acc.push(Phones.internalizePhone({
+						locationId: locationsWithIds[index][0],
+						phone: phone.phone,
+					}));
+				});
+			}
+			return acc;
+		}, []);
+
 		return (connection, done) => {
-			const phones: Array<object> = allLocations.reduce((acc, item: any, index) => {
-				if (item.phones) {
-					item.phones.forEach(phone => {
-						acc.push(Phones.internalizePhone({
-							locationId: locationsWithIds[index][0],
-							phone: phone.phone,
-						}));
-					});
-				}
-				return acc;
-			}, []);
 			if (phones.length > 0) {
 				connection.query(Queries.SAVE_PHONES, [phones], done);
 			} else {
@@ -38,22 +39,30 @@ export default class Phones {
 	}
 
 	static updatePhones = (phones, locationId) => {
+
+		let internalizedPhones = [];
+		if (phones) {
+			internalizedPhones = phones.map(phone => {
+				phone.locationId = locationId;
+				return Phones.internalizePhone(phone);
+			});
+		}
+
+		const deletePhones = (connection, done) => {
+			connection.query(Queries.DELETE_PHONES_BY_LOCATION, [locationId], done);
+		};
+
+		const insertPhones = (connection, done) => {
+			if (internalizedPhones.length > 0) {
+				connection.query(Queries.SAVE_PHONES, [internalizedPhones], done);
+			} else {
+				done(null, null);
+			}
+		};
+
 		return (connection, done) => {
-			const deletePhones = new Promise((resolve, reject) => {
-				connection.query(Queries.DELETE_PHONES_BY_LOCATION, [locationId], Util.resolvePromise(resolve, reject));
-			});
-			const insertPhones = new Promise((resolve, reject) => {
-				if (phones && phones.length > 0) {
-					const internalizedPhones = phones.map(phone => {
-						phone.locationId = locationId;
-						return Phones.internalizePhone(phone);
-					});
-					connection.query(Queries.SAVE_PHONES, [internalizedPhones], Util.resolvePromise(resolve, reject));
-				} else {
-					resolve(null);
-				}
-			});
-			Promise.all([deletePhones, insertPhones]).then((results) => done(null, results));
+			const tasks = [deletePhones, insertPhones].map(f => f.bind(null, connection));
+			async.series(tasks, done);
 		};
 	}
 }
