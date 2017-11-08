@@ -1,5 +1,6 @@
 import Util from "../../util/Util";
 import Queries from './sql/Queries';
+import async from 'async';
 
 export default class WorkingTimes {
 	static mapDayOfWeek = (item) => ({
@@ -19,16 +20,17 @@ export default class WorkingTimes {
 	}
 
 	static saveWorkingTimes(allLocations, locationsWithIds) {
+
 		return (connection, done) => {
-			const times: Array<object> = allLocations.reduce((acc, item: any, index) => {
+			const times: Array<any> = allLocations.reduce((acc, item, index) => {
 				if (item.workingTimes) {
-					item.workingTimes.filter(i => i.open && i.close && i.dayOfWeek)
+					item.workingTimes.filter(i => i.open && i.close && i.day)
                         .forEach(time => {
 							acc.push(WorkingTimes.internalizeTime({
 								locationId: locationsWithIds[index][0],
-								day: time.dayOfWeek.value,
-								from: time.open,
-								to: time.close,
+								day: time.day,
+								open: time.open,
+								close: time.close,
 							}));
 						});
 				}
@@ -42,23 +44,31 @@ export default class WorkingTimes {
 		};
 	}
 
-	static updateWorkingTimes(workingTimes, locationId) {
+	static updateWorkingTimes = (workingTimes, locationId) => {
+
+		let internalizedWorkingTimes = [];
+		if (workingTimes) {
+			internalizedWorkingTimes = workingTimes.map(time => {
+				time.locationId = locationId;
+				return WorkingTimes.internalizeTime(time);
+			});
+		}
+
+		const deleteWorkingTimes = (connection, done) => {
+			connection.query(Queries.DELETE_WORKING_TIMES_BY_LOCATION, [locationId], done);
+		};
+
+		const insertWorkingTimes = (connection, done) => {
+			if (internalizedWorkingTimes.length > 0) {
+				connection.query(Queries.SAVE_WORKING_TIMES, [internalizedWorkingTimes], done);
+			} else {
+				done(null, null);
+			}
+		};
+
 		return (connection, done) => {
-			const deleteWorkingTimes = new Promise((resolve, reject) => {
-				connection.query(Queries.DELETE_WORKING_TIMES_BY_LOCATION, [locationId], Util.resolvePromise(resolve, reject));
-			});
-			const insertWorkingTimes = new Promise((resolve, reject) => {
-				if (workingTimes && workingTimes.length > 0) {
-					const internalizedWorkingTimes = workingTimes.map(time => {
-						time.locationId = locationId;
-						return WorkingTimes.internalizeTime(time);
-					});
-					connection.query(Queries.SAVE_WORKING_TIMES, [internalizedWorkingTimes], Util.resolvePromise(resolve, reject));
-				} else {
-					resolve(null);
-				}
-			});
-			Promise.all([deleteWorkingTimes, insertWorkingTimes]).then((results) => done(null, results));
+			const tasks = [deleteWorkingTimes, insertWorkingTimes].map(f => f.bind(null, connection));
+			async.series(tasks, done);
 		};
 	}
 }

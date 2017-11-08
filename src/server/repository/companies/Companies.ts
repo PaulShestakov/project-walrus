@@ -115,7 +115,7 @@ export default class Companies extends BaseCRUD  {
 
 		const savePhones = Phones.savePhones(company.locations, locations);
 
-		const saveLocation = Locations.saveLocations(locations);
+		const saveLocations = Locations.saveLocations(locations);
 
 		const saveWorkingTimes = WorkingTimes.saveWorkingTimes(company.locations, locations);
 

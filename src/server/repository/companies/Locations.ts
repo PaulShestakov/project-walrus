@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import Util from "../../util/Util";
 import Phones from "./Phones";
 import WorkingTimes from "./WorkingTimes";
+import async from 'async';
 
 export default class Locations {
 	static mapLocation(item) {
@@ -51,7 +52,9 @@ export default class Locations {
 		}
 	}
 
-	// Bad function design
+	internalizeLocation(companyId, location)
+
+
 	static internalizeLocation(companyId, location) {
 		if (location.locationId) {
 			return Locations.internalizeLocationToObject(companyId, location);
@@ -71,83 +74,92 @@ export default class Locations {
 	}
 
 	static updateLocations(locations, companyId) {
+
 		return (connection, done) => {
 			connection.query(Queries.SELECT_LOCATIONS_FOR_COMPANY, [companyId], (error, result) => {
 				if (error) {
 					done(error);
 				} else {
-					const externalIds = locations.map(item => (item.locationId));
-					let selectedIds = [];
-					let idsToDelete = [];
-					const promisesToExecute = [];
 
+					const externalIds = [];
+					if (locations) {
+						externalIds = locations.map(item => item.locationId);
+					}
+
+					let selectedIds = [];
 					if (result) {
 						selectedIds = result.map(res => (res.locId));
-						idsToDelete = _.difference(selectedIds, externalIds);
-						if (idsToDelete.length > 0) {
-							const deleteLocations = new Promise((resolve, reject) => {
-								connection.query(Queries.DELETE_LOCATIONS, idsToDelete, Util.resolvePromise(resolve, reject));
-							});
-							promisesToExecute.push(deleteLocations);
-						}
 					}
 
-					const updateLocations = new Promise((resolve, reject) => {
-						const internalizedLocations = locations
-							// ...so-so
-							.filter(i => !idsToDelete.includes(i.locationId))
-							.map(Locations.internalizeLocation.bind(null, companyId));
+					let idsToDelete = _.difference(selectedIds, externalIds);
+					let locationsToUpdate = [];
+					let locationsToCreate = [];
 
-						// WTF???
-						const idsToUpdate = _.difference(externalIds, idsToDelete);
-						const locUpdater = Locations.getLocationsUpdater(internalizedLocations, idsToUpdate);
+					locations.forEach(location => {
+						if (location.locationId) {
+							locationsToUpdate.push({
+								updateBody: Locations.internalizeLocationToObject(companyId, location),
+								locationId: location.locationId
+							});
+						} else {
+							locationsToCreate.push(Locations.internalizeLocationToArray(companyId, location));
+						}
+					});
 
-						// update/insert locations
-						locUpdater(connection, (error) => {
-							if (error) {
-								reject(error);
-							} else {
-								// update/insert phones and working times
-								locations.forEach((location, index) => {
-									const locId = location.locationId || internalizedLocations[index][0];
 
-									// WHAT THE FUCK IS THAT???
-									// FUUUUUUCKK
-									Phones.updatePhones(location.phones, locId)(connection, Util.resolvePromise(resolve, reject));
-									WorkingTimes.updateWorkingTimes(location.workingTimes, locId)(connection, Util.resolvePromise(resolve, reject));
-								});
+					const tasks = [];
+
+					if (idsToDelete.length > 0) {
+						const deleteLocations = (connection, done) => {
+							connection.query(Queries.DELETE_LOCATIONS, idsToDelete, done);
+						};
+						tasks.push(deleteLocations);
+					}
+
+					if (locationsToUpdate.length > 0) {
+						const tasksForUpdate = locationsToUpdate.map(location => {
+							return (connection, done) => {
+								connection.query(Queries.UPDATE_LOCATION, [location.updateBody, location.locationId], done);
+							};
+						});
+
+						tasks.push(...tasksForUpdate);
+					}
+
+
+					if (locationsToCreate.length > 0) {
+						const tasksForCreate = locationsToCreate.map(location => {
+							return (connection, done) => {
+								connection.query(Queries.SAVE_LOCATION, [[location]], done);
+							};
+						});
+
+						tasks.push(...tasksForCreate);
+					}
+
+					if (locations.length > 0) {
+
+						const updateDependenciesTasks = [];
+						locations.forEach(location => {
+							if (location.phones && location.phones.length > 0) {
+								updateDependenciesTasks.push(
+									Phones.updatePhones(location.phones, location.locationId)
+								);
+							}
+
+							if (location.workingTimes && location.workingTimes.length > 0) {
+								updateDependenciesTasks.push(
+									WorkingTimes.updateWorkingTimes(location.workingTimes, location.locationId)
+								);
 							}
 						});
-					});
-					if (selectedIds.length !== idsToDelete.length) {
-						promisesToExecute.push(updateLocations);
+
+						tasks.push(...updateDependenciesTasks);
 					}
-					Promise.all(promisesToExecute).then((results) => done(null, results));
+
+					async.series(tasks.map(task => task.bind(null, connection)), done);
 				}
 			});
-		}
-	}
-
-	static getLocationsUpdater(locations, locationsIds) {
-		return (connection, done) => {
-			if (locations.length > 0) {
-				Promise.all(
-					locations.map((location, index) => {
-						return new Promise((resolve, reject) => {
-							const locationId = locationsIds[index];
-							if (locationId) {
-								connection.query(Queries.UPDATE_LOCATION, [location, locationId], Util.resolvePromise(resolve, reject));
-							} else {
-								connection.query(Queries.SAVE_LOCATION, [[location]], Util.resolvePromise(resolve, reject));
-							}
-						})
-					})
-				).then((results) => {
-					done(null, results);
-				})
-			} else {
-				done(null, null);
-			}
 		}
 	}
 }

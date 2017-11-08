@@ -60,9 +60,8 @@ export default class Phones {
 			}
 		};
 
-		const tasks = [deletePhones, insertPhones].map(f => f.bind(null, connection));
-
 		return (connection, done) => {
+			const tasks = [deletePhones, insertPhones].map(f => f.bind(null, connection));
 			async.series(tasks, done);
 		};
 	}

@@ -1,6 +1,7 @@
 import * as uuid from 'uuid';
 import Queries from './sql/Queries';
 import Util from "../../util/Util";
+import async from 'async';
 
 export default class Animals {
 
@@ -31,22 +32,30 @@ export default class Animals {
         };
     }
 
-    static updateAnimals(animals, companyId) {
-        return (connection, done) => {
-            const deleteAnimals = new Promise((resolve, reject) => {
-                connection.query(Queries.DELETE_ANIMALS_FOR_COMPANY, [companyId], Util.resolvePromise(resolve, reject));
-            });
-            const insertAnimals = new Promise((resolve, reject) => {
-                if (animals && animals.length > 0) {
-                    const internalizedAnimals = animals.map(animal => {
-                        return Animals.internalizeCompanyAnimal(animal, companyId);
-                    });
-                    connection.query(Queries.SAVE_COMPANY_ANIMAL, [internalizedAnimals], Util.resolvePromise(resolve, reject));
-                } else {
-                    resolve(null);
-                }
-            });
-            Promise.all([deleteAnimals, insertAnimals]).then((results) => done(null, results));
-        };
-    }
+	static updateAnimals(animals, companyId) {
+
+		let internalizedAnimals = [];
+		if (animals) {
+			internalizedAnimals = animals.map(animal => {
+				return Animals.internalizeCompanyAnimal(animal, companyId);
+			});
+		}
+
+		const deleteAnimals = (connection, done) => {
+			connection.query(Queries.DELETE_ANIMALS_FOR_COMPANY, [companyId], done);
+		};
+
+		const insertAnimals = (connection, done) => {
+			if (internalizedAnimals.length > 0) {
+				connection.query(Queries.SAVE_COMPANY_ANIMAL, [internalizedAnimals], done);
+			} else {
+				done(null, null);
+			}
+		};
+
+		return (connection, done) => {
+			const tasks = [deleteAnimals, insertAnimals].map(f => f.bind(null, connection));
+			async.series(tasks, done);
+		};
+	}
 }
