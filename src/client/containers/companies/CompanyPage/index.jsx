@@ -127,7 +127,7 @@ class CompanyPageContainer extends React.Component {
         const phonesText = locationToDisplay ? locationToDisplay.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
 		return (
 			<div className={classes.mainCardWrapper}>
-				<Card raised className={classNames(classes.mainCard, "my-4")}>
+				<Card raised className={classNames(classes.mainCard, "my-3")}>
 					<CardContent>
 						<Grid container>
 							<Grid item xs={8}>

@@ -197,7 +197,7 @@ class CompaniesListContainer extends React.Component {
 		const {t, companies, classes} = this.props;
 
 		return (
-			<Grid container className="my-4">
+			<Grid container className="my-3">
 				<Grid item md={9}>
 					<Card className={classNames(classes.inputWrapper)}>
 						<Autosuggest

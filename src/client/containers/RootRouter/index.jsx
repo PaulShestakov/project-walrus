@@ -12,6 +12,8 @@ import CompanyRouter from "../companies/CompanyRouter";
 
 import { Breadcrumbs } from 'react-breadcrumbs';
 
+import './styles.scss';
+
 export default class Router extends React.Component {
 
 	constructor(props) {
