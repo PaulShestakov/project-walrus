@@ -24,7 +24,7 @@ export default class Contacts extends React.Component {
     };
 
     render() {
-        const { classes, url_id, locations = [], markers } = this.props;
+        const { classes, locations = [], markers, match } = this.props;
         const { selectedMarker } = this.state;
         return (
             <div className="mt-3">
@@ -38,7 +38,7 @@ export default class Contacts extends React.Component {
                                       disablePadding>
                                     {
                                         locations.map((item, index) => {
-                                            let url = `/company/${url_id}`;
+                                            let url = match.url;
                                             if (item.isMain === 0) {
                                                 url += `/contacts/${item.url_id}`;
                                             }
