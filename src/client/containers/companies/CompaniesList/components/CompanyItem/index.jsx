@@ -113,7 +113,7 @@ export default class CompanyItem extends React.Component {
 						</Button>
 						{
 							company.numberOfLocations > 0 &&
-							<Link to={`/company/${company.url_id}/contacts`}>
+							<Link to={`${match.url}/${company.url_id}/contacts`}>
 								<Button className="mr-2 text-white" accent="white">
 									Филиалы ({ company.numberOfLocations })
 								</Button>

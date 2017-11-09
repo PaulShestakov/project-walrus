@@ -261,8 +261,8 @@ export default class Companies extends BaseCRUD  {
 		}
 			
 		sql = sql
-			.left_join('wikipet.code_values', 'cv1', "cv1.GROUP = 'CITY' AND cv1.ID = l.CITY_ID")
-			.left_join('wikipet.code_values', 'cv2', "cv2.GROUP = 'DAY_OF_WEEK' AND cv2.ID = t.DAY_OF_WEEK")
+			.left_join('wikipet.code_values', 'cv1', "cv1.ID = l.CITY_ID")
+			.left_join('wikipet.code_values', 'cv2', "cv2.ID = t.DAY_OF_WEEK")
 			.left_join('wikipet.companies_animals', 'ca', 'c.COMPANY_ID = ca.COMPANY_ID')
 			.left_join('wikipet.companies_phones', 'p', 'p.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
 			.where(filter);

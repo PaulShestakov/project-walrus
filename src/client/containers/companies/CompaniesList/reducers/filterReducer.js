@@ -101,7 +101,7 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 		case COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE: {
 			return {
 				...state,
-				...action.payload
+				...urlParamsToStateData(action.payload)
 			}
 		}
 
@@ -135,17 +135,17 @@ function updateUrl(state, history) {
 	});
 }
 
-//
-// function urlParamsToStateData(searchParams) {
-// 	const urlData = Util.searchParamsToObject(searchParams);
-//
-// 	return {
-// 		companyCategoryId: urlData.companyCategoryId || defaultState.companyCategoryId,
-// 		companySubcategoryId: urlData.companySubcategoryId  || defaultState.companySubcategoryId,
-// 		selectedCitiesIds: Util.ensureArray(urlData.cityId),
-// 		selectedSubwaysIds: Util.ensureArray(urlData.subwayId),
-// 		selectedAnimalsIds: Util.ensureArray(urlData.animalId),
-//         selectedBreedsIds: Util.ensureArray(urlData.breedId),
-// 		isWorkingNow: urlData.isWorkingNow === 'true'
-// 	};
-// }
+
+function urlParamsToStateData(searchParams) {
+	const urlData = Util.searchParamsToObject(searchParams);
+
+	return {
+		companyCategoryId: urlData.companyCategoryId || defaultState.companyCategoryId,
+		companySubcategoryId: urlData.companySubcategoryId  || defaultState.companySubcategoryId,
+		selectedCitiesIds: Util.ensureArray(urlData.cityId),
+		selectedSubwaysIds: Util.ensureArray(urlData.subwayId),
+		selectedAnimalsIds: Util.ensureArray(urlData.animalId),
+        selectedBreedsIds: Util.ensureArray(urlData.breedId),
+		isWorkingNow: urlData.isWorkingNow === 'true'
+	};
+}

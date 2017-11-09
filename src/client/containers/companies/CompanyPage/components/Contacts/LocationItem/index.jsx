@@ -34,13 +34,13 @@ export default class LocationItem extends React.Component {
                 <Grid item xs={12} className={classes.workingTime}>
                     Сегодня {todayWorking}
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                     <Button className="text-white"
                             accent="white"
                             onClick={this.props.onPhonesClick}>
                         Телефоны
                     </Button>
-                </Grid>
+                </Grid> */}
             </Grid>
         )
     }

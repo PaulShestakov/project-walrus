@@ -108,11 +108,11 @@ class CompaniesListContainer extends React.Component {
 	}
 
 	componentDidMount() {
-		const { updateStateWithUrlSource, match, loadCompanies } = this.props;
-        updateStateWithUrlSource({
-            companyCategoryId: match.params.categoryId,
-            companySubcategoryId: match.params.subCategoryId,
-		});
+		const { updateStateWithUrlSource, match, loadCompanies, location } = this.props;
+		const searchParams = new URLSearchParams(location.search);
+		searchParams.set('companyCategoryId', match.params.categoryId);
+		searchParams.set('companySubcategoryId', match.params.subCategoryId);
+        updateStateWithUrlSource(searchParams);
         loadCompanies();
 	}
 
