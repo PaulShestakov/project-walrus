@@ -108,9 +108,12 @@ class CompaniesListContainer extends React.Component {
 	}
 
 	componentDidMount() {
-		const searchParams = new URLSearchParams(this.props.location.search);
-		this.props.updateStateWithUrlSource(searchParams);
-		this.props.loadCompanies();
+		const { updateStateWithUrlSource, match, loadCompanies } = this.props;
+        updateStateWithUrlSource({
+            companyCategoryId: match.params.categoryId,
+            companySubcategoryId: match.params.subCategoryId,
+		});
+        loadCompanies();
 	}
 
 	handleSuggestionsFetchRequested = (change) => {
@@ -194,7 +197,7 @@ class CompaniesListContainer extends React.Component {
 	};
 
 	render() {
-		const {t, companies, classes} = this.props;
+		const { t, companies, classes, match } = this.props;
 
 		return (
 			<Grid container className="my-4">
@@ -230,6 +233,7 @@ class CompaniesListContainer extends React.Component {
 									<CompanyItem
 										key={company.companyId}
 										company={company}
+										match={match}
 										deleteAction={this.deleteCompany}
 										blockAction={this.blockCompany}
 										handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}

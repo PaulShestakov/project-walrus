@@ -42,11 +42,11 @@ export default class CompanyItem extends React.Component {
 	}
 
 	render() {
-		const { t, classes, company } = this.props;
+		const { t, classes, company, match } = this.props;
 
 		return (
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>
-				<Link to={`/company/${encodeURI(company.url_id)}`}>
+				<Link to={`${match.url}/${encodeURI(company.url_id)}`}>
 					<Paper>
 						<CardMedia
 						className={classes.cardImage}

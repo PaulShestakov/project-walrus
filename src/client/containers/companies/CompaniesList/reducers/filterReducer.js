@@ -101,7 +101,7 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 		case COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE: {
 			return {
 				...state,
-				...urlParamsToStateData(action.payload)
+				...action.payload
 			}
 		}
 
@@ -126,22 +126,26 @@ export function stateDataToUrlQuery(state) {
 }
 
 function updateUrl(state, history) {
+	const updatedState = {...state};
+	// I will think over this...
+	delete updatedState.companyCategoryId;
+	delete updatedState.companySubcategoryId;
 	history.push({
-		search: stateDataToUrlQuery(state)
+		search: stateDataToUrlQuery(updatedState)
 	});
 }
 
-
-function urlParamsToStateData(searchParams) {
-	const urlData = Util.searchParamsToObject(searchParams);
-
-	return {
-		companyCategoryId: urlData.companyCategoryId || defaultState.companyCategoryId,
-		companySubcategoryId: urlData.companySubcategoryId  || defaultState.companySubcategoryId,
-		selectedCitiesIds: Util.ensureArray(urlData.cityId),
-		selectedSubwaysIds: Util.ensureArray(urlData.subwayId),
-		selectedAnimalsIds: Util.ensureArray(urlData.animalId),
-        selectedBreedsIds: Util.ensureArray(urlData.breedId),
-		isWorkingNow: urlData.isWorkingNow === 'true'
-	};
-}
+//
+// function urlParamsToStateData(searchParams) {
+// 	const urlData = Util.searchParamsToObject(searchParams);
+//
+// 	return {
+// 		companyCategoryId: urlData.companyCategoryId || defaultState.companyCategoryId,
+// 		companySubcategoryId: urlData.companySubcategoryId  || defaultState.companySubcategoryId,
+// 		selectedCitiesIds: Util.ensureArray(urlData.cityId),
+// 		selectedSubwaysIds: Util.ensureArray(urlData.subwayId),
+// 		selectedAnimalsIds: Util.ensureArray(urlData.animalId),
+//         selectedBreedsIds: Util.ensureArray(urlData.breedId),
+// 		isWorkingNow: urlData.isWorkingNow === 'true'
+// 	};
+// }

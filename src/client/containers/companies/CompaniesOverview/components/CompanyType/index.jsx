@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 @withStyles(styles)
 export default class Type extends React.Component {
     render() {
-        const {t, classes, type, ...other} = this.props;
+        const { classes, type, match } = this.props;
 
         return (
             <div className={classes.exactTypesContainer}>
@@ -20,11 +20,7 @@ export default class Type extends React.Component {
                             <div className={classes.exactTypeLinkWrapper}>
                                 <Link key={index}
                                     className={classes.exactTypeLink}
-                                    to={
-                                        '/company/list' + location.search +
-                                            '&companySubcategoryId=' + subcategory.value +
-                                            '&isWorkingNow=false'
-                                    }>
+                                    to={`${match.url}/${subcategory.value.toLowerCase()}`}>
                                     {`${subcategory.label} (${subcategory.count})`}
                                 </Link>
                             </div>

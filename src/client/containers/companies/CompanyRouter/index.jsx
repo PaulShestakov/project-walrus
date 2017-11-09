@@ -42,12 +42,13 @@ class CompanyRouterContainer extends React.Component {
 					{/*<Redirect to='/company/overview' />*/}
 
 					<CrumbRoute path="/company/new" component={NewCompany} title="Создание компании" />
-					<CrumbRoute path="/company/list" component={CompaniesList} title="Список компаний" />
-					<CrumbRoute path="/company/overview" component={CompaniesOverview} title="Компании" />
 					<CrumbRoute path="/company/edit/:url_id" component={EditComponent} title="Редактирование компании" />
-					<CrumbRoute path="/company/:url_id/contacts/:filial_url_id" component={CompanyPage} title="Страница филиала"/>
-					<CrumbRoute path="/company/:url_id" component={CompanyPage} title="Страница компании" />
-					<Redirect to='/company/overview' />
+                    <CrumbRoute path="/company/:categoryId/:subCategoryId/:url_id/contacts/:filial_url_id"
+								component={CompanyPage} title="Страница филиала"/>
+                    <CrumbRoute path="/company/:categoryId/:subCategoryId/:url_id" component={CompanyPage} title="Страница компании" />
+					<CrumbRoute path="/company/:categoryId/:subCategoryId" component={CompaniesList} title="Список компаний" />
+					<CrumbRoute path="/company/:categoryId" component={CompaniesOverview} title="Компании" />
+					<Redirect to='/company/health' />
 
 				</Switch>
 			</div>
