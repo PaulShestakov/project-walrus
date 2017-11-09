@@ -53,7 +53,7 @@ class CompaniesOverviewContainer extends React.Component {
 		];
 
 		return (
-			<Card className="my-4">
+			<Card className="my-3">
 				<Paper>
 					<Tabs indicatorColor="primary"
 						  textColor="primary"

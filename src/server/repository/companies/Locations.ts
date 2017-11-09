@@ -132,7 +132,7 @@ export default class Locations {
 
 						tasks.push(...tasksForCreate);
 					}
-					
+
 					const locationsToUpdateDependencies = locationsToUpdate.concat(locationsToCreate);
 					if (locationsToUpdateDependencies.length > 0) {
 
