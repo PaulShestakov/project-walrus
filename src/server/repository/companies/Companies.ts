@@ -265,7 +265,8 @@ export default class Companies extends BaseCRUD  {
 			.left_join('wikipet.code_values', 'cv2', "cv2.ID = t.DAY_OF_WEEK")
 			.left_join('wikipet.companies_animals', 'ca', 'c.COMPANY_ID = ca.COMPANY_ID')
 			.left_join('wikipet.companies_phones', 'p', 'p.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
-			.where(filter);
+			.where(filter)
+			.order('c.NAME');
 			
 		const sqlParams = sql.toParam();
 

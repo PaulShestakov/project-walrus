@@ -57,6 +57,7 @@ class CompaniesOverviewContainer extends React.Component {
 				<Paper>
 					<Tabs indicatorColor="primary"
 						  textColor="primary"
+						  scrollable
 						  value={this.state.selectedTabIndex}
 						  onChange={this.handleTabPress}
 						  fullWidth>

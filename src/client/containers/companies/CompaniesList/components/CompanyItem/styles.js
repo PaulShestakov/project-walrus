@@ -5,9 +5,10 @@ export default {
 		display: 'flex'
 	},
 	cardImage: {
-		width: '12rem',
+		width: '100%',
 		height: '12rem',
-		backgroundSize: 'contain'
+		backgroundSize: 'contain',
+		margin: 'auto'
 	},
 	cardContent: {
 		display: 'flex',
@@ -22,6 +23,7 @@ export default {
 	},
 	editButtonsBlock: {
 		flexShrink: 0,
+		display: 'flex',
 	},
 
 	editButton: {
@@ -29,7 +31,8 @@ export default {
 		alignSelf: 'flex-start',
 		width: '2.5rem',
 		height: '2.5rem',
-		marginLeft: '0.5rem',
+		margin: '0 0.25rem',
+		// padding: '0.5rem'
 	},
 	editIcon: {
 		color: 'white'
@@ -40,9 +43,9 @@ export default {
 		marginRight: '0.5rem'
 	},
 	buttonsBlock: {
-		flexGrow: '1',
-		display: 'flex',
-		alignItems: 'flex-end'
+		// flexGrow: '1',
+		display: 'block',
+		// alignItems: 'flex-end'
 	},
 
 	noShrink: {

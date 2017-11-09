@@ -69,10 +69,10 @@ function renderSuggestionsContainer(options) {
 	);
 }
 
-function renderSuggestion(classes, company, { query, isHighlighted }) {
+function renderSuggestion(classes, match, company, { query, isHighlighted }) {
 	return (
 		<MenuItem component="div" className="p-3" classes={{root: classes.suggestionMenuItem}}>
-			<Link to={`/company/${company.companyId}`} className={classes.suggestionItemLink}>
+			<Link to={`${match.url}/${company.url_id}`} className={classes.suggestionItemLink}>
 				<Paper>
 					<img src={company.logo} className={classes.suggestionImage}/>
 				</Paper>
@@ -216,7 +216,7 @@ class CompaniesListContainer extends React.Component {
 							onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
 							renderSuggestionsContainer={renderSuggestionsContainer}
 							getSuggestionValue={getSuggestionValue}
-							renderSuggestion={renderSuggestion.bind(null, classes)}
+							renderSuggestion={renderSuggestion.bind(null, classes, match)}
 							inputProps={{
 								autoFocus: false,
 								classes,
