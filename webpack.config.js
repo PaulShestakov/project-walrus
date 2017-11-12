@@ -25,7 +25,8 @@ let clientConfig = {
 			'react-google-maps',
 			'i18next',
 			'history',
-			'react-redux'
+			'react-redux',
+			'jss-nested'
 		]
 	},
 	output: {

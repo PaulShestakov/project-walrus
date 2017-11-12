@@ -1,5 +1,5 @@
 export default {
-	inputWrapper: {
+    searchInputWrapper: {
 		display: 'flex'
 	},
 	searchInput: {
@@ -56,7 +56,24 @@ export default {
 
 	flexColumn: {
 		display: 'flex',
-		flexDirection: 'column'
-	}
+		flexDirection: 'column',
+	},
+
+    companiesListBlock: {
+		position: 'relative',
+		display: 'flex',
+		flexDirection: 'column',
+	},
+    companiesList: {
+        flexGrow: '1',
+    },
+	progressCircle: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+    }
+
+
 
 }

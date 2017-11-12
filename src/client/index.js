@@ -1,26 +1,45 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux'
-import { I18nextProvider } from 'react-i18next';
-import createHistory from 'history/createBrowserHistory';
-
-import configureStore from './store/configStore.js';
-import configI18n from './i18n/configI18n.js';
-
-import Router from './containers/RootRouter';
 
 import './style.global.scss';
-
 import './assets/fonts/fonts.global.scss';
 import './assets/img/favicon.ico';
-import {BrowserRouter} from "react-router-dom";
 
-import { MuiThemeProvider } from 'material-ui/styles';
+import { BrowserRouter } from "react-router-dom";
+import Router from './containers/RootRouter';
+
+
+// ---------------------- CONFIG JSS INSTANCE -----------------------//
+import { I18nextProvider } from 'react-i18next';
+import configI18n from './i18n/configI18n.js';
+
+const i18n = configI18n();
+// ---------------------- CONFIG JSS INSTANCE -----------------------//
+
+
+// ---------------------- CONFIG REDUX -----------------------//
+import { Provider as ReduxProvider } from 'react-redux'
+import configureStore from './store/configStore.js';
 
 const store = configureStore();
-const i18n = configI18n();
+// ---------------------- CONFIG REDUX -----------------------//
 
 
+// ---------------------- CONFIG JSS INSTANCE -----------------------//
+import JssProvider from 'react-jss/lib/JssProvider';
+import { create } from 'jss';
+import preset from 'jss-preset-default';
+import jssNested from 'jss-nested';
+import createGenerateClassName from 'material-ui/styles/createGenerateClassName';
+
+const jss = create(preset());
+jss.use(jssNested());
+jss.options.createGenerateClassName = createGenerateClassName;
+// ---------------------- CONFIG JSS INSTANCE -----------------------//
+
+
+// ---------------------- CONFIG THEME -----------------------//
+import { MuiThemeProvider } from 'material-ui/styles';
 import { createMuiTheme } from 'material-ui/styles';
 
 const theme = createMuiTheme({
@@ -46,19 +65,22 @@ const theme = createMuiTheme({
 		}
 	}
 });
+// ---------------------- CONFIG THEME -----------------------//
 
 
 class Root extends React.Component {
   render() {
     return (
 		<I18nextProvider i18n={i18n}>
-			<Provider store={store}>
-				<MuiThemeProvider theme={theme}>
-					<BrowserRouter>
-						<Router />
-					</BrowserRouter>
-				</MuiThemeProvider>
-			</Provider>
+			<ReduxProvider store={store}>
+				<JssProvider jss={jss}>
+					<MuiThemeProvider theme={theme}>
+						<BrowserRouter>
+							<Router />
+						</BrowserRouter>
+					</MuiThemeProvider>
+				</JssProvider>
+			</ReduxProvider>
 		</I18nextProvider>
     );
   }

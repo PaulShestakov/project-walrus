@@ -13,6 +13,7 @@ import styles from './styles';
 import Autosuggest from 'react-autosuggest';
 import Paper from 'material-ui/Paper';
 import {MenuItem} from 'material-ui/Menu';
+import { CircularProgress } from 'material-ui/Progress';
 
 import {
 	loadCompanies,
@@ -21,6 +22,8 @@ import {
 	clearFuzzySearchLoadedCompanies,
 	suggestionInputValueChange,
 	removeCompany,
+
+    componentLeave,
 } from "./actionCreators/companiesList";
 
 import {
@@ -157,6 +160,10 @@ class CompaniesListContainer extends React.Component {
 		// action to block company
 	};
 
+	componentWillUnmount() {
+		this.props.componentLeave();
+	}
+
 	handleCheckboxPressed = (event) => {
         switch(event.target.name) {
             case 'cities': {
@@ -197,12 +204,12 @@ class CompaniesListContainer extends React.Component {
 	};
 
 	render() {
-		const { t, companies, classes, match } = this.props;
+		const { t, companies, classes, match, main } = this.props;
 
 		return (
 			<Grid container className="my-3">
-				<Grid item md={9}>
-					<Card className={classNames(classes.inputWrapper)}>
+				<Grid item xs={9} className={classes.companiesListBlock}>
+					<Card className={classNames(classes.searchInputWrapper)}>
 						<Autosuggest
 							theme={{
 								container: classNames(classes.container, 'p-3'),
@@ -226,8 +233,12 @@ class CompaniesListContainer extends React.Component {
 							}}
 						/>
 					</Card>
-					<div>
+					<div className={classes.companiesList}>
 						{
+                            main.isLoading ?
+
+							<CircularProgress className={classes.progressCircle} /> :
+
 							companies.map(company => {
 								return (
 									<CompanyItem
@@ -245,7 +256,7 @@ class CompaniesListContainer extends React.Component {
 					</div>
 				</Grid>
 
-				<Grid item md={3}>
+				<Grid item xs={3}>
 					<Sidebar
 						history={this.props.history}
 						filter={this.props.filter}
@@ -423,6 +434,8 @@ const CompaniesList = connect(
 		removeBreed,
 
 		setIsWorkingNow,
+
+        componentLeave,
 	}
 )(CompaniesListContainer);
 

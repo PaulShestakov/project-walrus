@@ -31,8 +31,8 @@ export default class Router extends React.Component {
 
 				<main>
 					<Grid container justify="center" spacing={0}>
-						<Grid item xs={11} md={9} className="flexGrowFull">
-							<Breadcrumbs className="demo">
+						<Grid item xs={11} md={9} className="mainGridWrapper">
+							<Breadcrumbs className="breadcrumbsWrapper">
 								<Switch>
 									{/*<Route path="/promoPage/:promoId" component={PromoPage} />*/}
 									{/*<Route path="/newPromo" component={NewPromo} />*/}

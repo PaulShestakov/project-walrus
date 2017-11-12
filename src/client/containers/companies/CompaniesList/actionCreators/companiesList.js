@@ -1,10 +1,10 @@
 import fetch from 'isomorphic-fetch';
 import {stateDataToUrlQuery} from '../reducers/filterReducer';
 
-export const LOAD_COMPANIES_START = 'LOAD_COMPANIES_START';
-export const LOAD_COMPANIES_SUCCESS = 'LOAD_COMPANIES_SUCCESS';
-export const LOAD_COMPANIES_ERROR = 'LOAD_COMPANIES_ERROR';
-export const DELETE_COMPANY_SUCCESS = 'DELETE_COMPANY_SUCCESS';
+export const LOAD_COMPANIES_START = 'companiesList/LOAD_COMPANIES_START';
+export const LOAD_COMPANIES_SUCCESS = 'companiesList/LOAD_COMPANIES_SUCCESS';
+export const LOAD_COMPANIES_ERROR = 'companiesList/LOAD_COMPANIES_ERROR';
+export const DELETE_COMPANY_SUCCESS = 'companiesList/DELETE_COMPANY_SUCCESS';
 
 const baseUrl = '/api/v1';
 
@@ -77,7 +77,7 @@ export const removeCompany = (companyId, history) => {
 };
 
 
-export const FUZZY_SEARCH_LOAD_COMPANIES_SUCCESS = 'FUZZY_SEARCH_LOAD_COMPANIES_SUCCESS';
+export const FUZZY_SEARCH_LOAD_COMPANIES_SUCCESS = 'companiesList/FUZZY_SEARCH_LOAD_COMPANIES_SUCCESS';
 
 const fuzzySearchLoadCompaniesSuccess = (data) => ({
 	type: FUZZY_SEARCH_LOAD_COMPANIES_SUCCESS,
@@ -101,16 +101,23 @@ export const fuzzySearchLoadCompanies = (searchQuery) => {
 };
 
 
-export const CLEAR_FUZZY_SEARCH_LOADED_COMPANIES = 'CLEAR_FUZZY_SEARCH_LOADED_COMPANIES';
+export const CLEAR_FUZZY_SEARCH_LOADED_COMPANIES = 'companiesList/CLEAR_FUZZY_SEARCH_LOADED_COMPANIES';
 
 export const clearFuzzySearchLoadedCompanies = () => ({
 	type: CLEAR_FUZZY_SEARCH_LOADED_COMPANIES
 });
 
 
-export const COMPANIES_SUGGESTION_INPUT_VALUE_CHANGE = 'COMPANIES_SUGGESTION_INPUT_VALUE_CHANGE';
+export const COMPANIES_SUGGESTION_INPUT_VALUE_CHANGE = 'companiesList/COMPANIES_SUGGESTION_INPUT_VALUE_CHANGE';
 
 export const suggestionInputValueChange = (data) => ({
 	type: COMPANIES_SUGGESTION_INPUT_VALUE_CHANGE,
 	payload: data
+});
+
+
+export const COMPONENT_LEAVE = 'companiesList/COMPONENT_LEAVE';
+
+export const componentLeave = () => ({
+    type: COMPONENT_LEAVE
 });
