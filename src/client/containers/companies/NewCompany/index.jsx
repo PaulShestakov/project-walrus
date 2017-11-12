@@ -35,6 +35,7 @@ class NewCompanyContainer extends React.Component {
 			renderBreeds: false,
 			selectedAddress: 0,
 			showConfirm: false,
+            required: value => (value ? undefined : 'Поле обязательно для заполнения')
         };
 	}
 
@@ -83,7 +84,7 @@ class NewCompanyContainer extends React.Component {
 
 	saveAction = (values) => {
 		const { history, editMode, match, updateCompany, postCompany, initialValues } = this.props;
-
+        console.log('g');
 		if (editMode) {
             values.companyId = initialValues.companyId;
 			updateCompany(match.params.url_id, values, history);
@@ -102,7 +103,7 @@ class NewCompanyContainer extends React.Component {
     };
 
 	render() {
-		const { t, common, handleSubmit, workingTimes, subcategories } = this.props;
+		const { t, common, handleSubmit, workingTimes, subcategories, formLocations } = this.props;
 
 		return (
             <form className="d-flex-column align-items-center my-4">
@@ -120,6 +121,7 @@ class NewCompanyContainer extends React.Component {
                             <Field name="name"
                                    component={Input}
                                    fullWidth
+                                   validate={this.state.required}
                                    placeholder="Название компании"/>
                         </Grid>
                         <Grid item xs={11}>
@@ -127,6 +129,7 @@ class NewCompanyContainer extends React.Component {
                             <Field name="url_id"
                                    component={Input}
                                    fullWidth
+                                   validate={this.state.required}
                                    placeholder="Имя компании в поисковой строке (транслитом)"/>
                         </Grid>
 
@@ -136,6 +139,7 @@ class NewCompanyContainer extends React.Component {
                                    component={Dropdown}
                                    options={common.companiesCategories}
                                    onChange={this.handleCategoryChange}
+                                   validate={this.state.required}
                                    format={value => common.companiesCategories.find(x => x.value === value)}
                                    normalize={value => value.value}
                             />
@@ -146,6 +150,7 @@ class NewCompanyContainer extends React.Component {
                                    component={Dropdown}
                                    options={subcategories}
                                    onChange={this.handleSubcategoryChange}
+                                   validate={this.state.required}
                                    format={value => subcategories.find(x => x.value === value)}
                                    normalize={value => value.value}
                             />
@@ -153,7 +158,7 @@ class NewCompanyContainer extends React.Component {
                         <Grid item xs={11}>
                             <FieldArray
                                 name="animals"
-                                animals={this.props.common.animals}
+                                animals={common.animals}
                                 renderAnimals={this.state.renderAnimals}
                                 renderBreeds={this.state.renderBreeds}
                                 component={Animals}/>
@@ -172,7 +177,7 @@ class NewCompanyContainer extends React.Component {
                                    component={Input}
                                    multiline
                                    rowsMax="20"
-                                   placeholder="Описание"
+                                   placeholder="Специализация, ассортимент"
                                    fullWidth/>
                         </Grid>
                         <Grid item xs={11}>
@@ -196,6 +201,7 @@ class NewCompanyContainer extends React.Component {
                                 {...common}
                                 workingTimes={workingTimes}
                                 change={this.props.change}
+                                formLocations={formLocations}
                                 removeLocation={this.props.removeLocation}
                                 component={Location}/>
                         </Grid>
@@ -223,7 +229,7 @@ class NewCompanyContainer extends React.Component {
 					open={this.state.showConfirm}
 					message="Вы действительно хотите сохранить введенные данные?"
 					title="Сохранение компании"
-					okCallback={handleSubmit(this.saveAction)}
+					okCallback={() => this.setState({ showConfirm: false }, handleSubmit(this.saveAction))}
 					closeCallback={() => this.setState({ showConfirm: false })}/>
 			</form>
 		);
@@ -356,6 +362,7 @@ const NewCompany = connect(
 		initialValues: internalizeCompany(state),
 		selectedCategory: formValueSelector('company')(state, 'categoryId'),
 		selectedSubCategory: formValueSelector('company')(state, 'subcategoryId'),
+        formLocations: formValueSelector('company')(state, 'locations'),
         subcategories: getSubcategories(state),
     }),
     {

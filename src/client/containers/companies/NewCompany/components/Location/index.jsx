@@ -88,7 +88,7 @@ export default class Location extends React.Component {
     };
 
     render() {
-        const {t, classes, fields, allCities, workingTimes, ...other} = this.props;
+        const { classes, fields, allCities, formLocations } = this.props;
         return (
             <div>
                 <Grid item>
@@ -118,7 +118,7 @@ export default class Location extends React.Component {
                     onChange={this.handleTabPress}
                 >
                     {
-                        fields.map((field, index, fields) => {
+                        fields.map((field, index) => {
                             return (
                                 <Tab
                                     className={classes.tab}
@@ -143,15 +143,6 @@ export default class Location extends React.Component {
                                         </Button>
                                     </Grid>
                                     <Grid item xs={12} className="my-2">
-                                        <Title>Имя в поисковой строке</Title>
-                                        <Field
-                                            name={`${member}.url_id`}
-                                            component={Input}
-                                            fullWidth
-                                            placeholder="Имя филиала в поисковой строке (транслитом)"
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} className="my-2">
                                         <Title>Главный офис</Title>
                                         <Field
                                             name={`${member}.isMain`}
@@ -159,6 +150,18 @@ export default class Location extends React.Component {
                                             fullWidth
                                         />
                                     </Grid>
+                                    {
+                                        !formLocations[index].isMain &&
+                                        <Grid item xs={12} className="my-2">
+                                            <Title>Имя в поисковой строке</Title>
+                                            <Field
+                                                name={`${member}.url_id`}
+                                                component={Input}
+                                                fullWidth
+                                                placeholder="Имя филиала в поисковой строке (транслитом)"
+                                            />
+                                        </Grid>
+                                    }
                                     <Grid item xs={12} className="my-2">
                                         <Title>Город</Title>
                                         <Field
