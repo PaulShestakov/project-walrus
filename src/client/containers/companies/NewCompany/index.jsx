@@ -84,7 +84,6 @@ class NewCompanyContainer extends React.Component {
 
 	saveAction = (values) => {
 		const { history, editMode, match, updateCompany, postCompany, initialValues } = this.props;
-        console.log('g');
 		if (editMode) {
             values.companyId = initialValues.companyId;
 			updateCompany(match.params.url_id, values, history);

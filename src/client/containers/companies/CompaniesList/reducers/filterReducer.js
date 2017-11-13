@@ -1,4 +1,5 @@
 import Util from '../../../util/index';
+import * as _ from 'lodash';
 import {
 	COMPANIES_LIST_ADD_CITY,
 	COMPANIES_LIST_REMOVE_CITY,
@@ -41,9 +42,11 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 			}
 		}
 		case COMPANIES_LIST_REMOVE_CITY: {
+			const { cityId, subwayIds } = action.payload;
 			return {
 				...state,
-				selectedCitiesIds: state.selectedCitiesIds.filter(x => x !== action.payload)
+				selectedCitiesIds: state.selectedCitiesIds.filter(x => x !== cityId),
+				selectedSubwaysIds: _.difference(state.selectedSubwaysIds, subwayIds)
 			}
 		}
 
@@ -67,9 +70,11 @@ export const companiesFilterReducer = (state = defaultState, action) => {
             }
         }
         case COMPANIES_LIST_REMOVE_ANIMAL: {
+			const { animalId, breedIds } = action.payload;
             return {
                 ...state,
-                selectedAnimalsIds: state.selectedAnimalsIds.filter(x => x !== action.payload)
+				selectedAnimalsIds: state.selectedAnimalsIds.filter(x => x !== animalId),
+				selectedBreedsIds: _.difference(state.selectedBreedsIds, breedIds)
             }
         }
 

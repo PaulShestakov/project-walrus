@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
 import { Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card } from "components";
-import { Pets, Extension, ShoppingCart, Healing, Favorite, Assignment } from 'material-ui-icons';
+import { Pets, Extension, ShoppingCart, Healing, Favorite, Work, Assignment } from 'material-ui-icons';
 import SwipeableViews from 'react-swipeable-views';
 import styles from './styles';
 import Category from "./components/CompanyType/index";
@@ -48,8 +48,8 @@ class CompaniesOverviewContainer extends React.Component {
 			<ShoppingCart className={classes.tabIcon} />,
 			<Favorite className={classes.tabIcon} />,
 			<Pets className={classes.tabIcon} />,
+			<Work className={classes.tabIcon} />,
 			<Assignment className={classes.tabIcon} />,
-			<Extension className={classes.tabIcon} />
 		];
 
 		return (

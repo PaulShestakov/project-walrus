@@ -163,7 +163,11 @@ class CompaniesListContainer extends React.Component {
                 if (event.target.checked) {
                     this.props.addCity(event.target.value);
                 } else {
-                    this.props.removeCity(event.target.value);
+					const cityId = event.target.value;
+					const subwayIds = this.props.common.cities
+						.find(city => city.value === cityId).subways
+						.map(subway => subway.value);
+                    this.props.removeCity(cityId, subwayIds);
                 }
                 break;
             }
@@ -179,7 +183,11 @@ class CompaniesListContainer extends React.Component {
                 if (event.target.checked) {
                     this.props.addAnimal(event.target.value);
                 } else {
-                    this.props.removeAnimal(event.target.value);
+					const animalId = event.target.value;
+					const breedIds = this.props.common.animals
+						.find(animal => animal.value === animalId).breeds
+						.map(breed => breed.value);
+                    this.props.removeAnimal(animalId, breedIds);
                 }
                 break;
             }
@@ -249,10 +257,7 @@ class CompaniesListContainer extends React.Component {
 					<Sidebar
 						history={this.props.history}
 						filter={this.props.filter}
-						cities={this.props.cities}
-						subways={this.props.subways}
-						animals={this.props.animals}
-						breeds={this.props.breeds}
+						filterValues={this.props.filterValues}
 						handleCheckboxPressed={this.handleCheckboxPressed}
 						setIsWorkingNow={this.props.setIsWorkingNow}
 						updateUrlWithStateSource={this.props.updateUrlWithStateSource}
@@ -298,73 +303,12 @@ class CompaniesListContainer extends React.Component {
 	}
 }
 
-const getCities = (state) => state.common.cities;
+const getCommon = (state) => state.common;
 const getFilter = (state) => state.companiesList.filter;
-const getAnimals = (state) => state.common.animals;
+const getCompanies = (state) => state.companiesList.main.companies;
 
-const getFlatCitiesList = createSelector(
-	[getCities],
-	(cities) => {
-		return cities
-			.reduce((acc, item) => {
-				acc.push({
-					value: item.value,
-					label: item.label,
-					sort: item.sort
-				});
-				item.subCities.forEach(item => {
-					acc.push({
-						value: item.value,
-						label: item.label,
-						sort: item.sort
-					});
-				});
-				return acc;
-			}, [])
-			.sort((cityA, cityB) => cityA.sort - cityB.sort);
-	}
-);
-
-const getSubways = createSelector(
-	[getFilter, getCities],
-	(filter, cities) => {
-		const subways = [];
-		cities.forEach(city => {
-			if (filter.selectedCitiesIds.includes(city.value)) {
-				subways.push(...city.subways);
-			}
-		});
-		return subways;
-	}
-);
-
-const getFlatAnimals = createSelector(
-	[getFilter, getAnimals],
-	(filter, animals) => {
-		let result = [];
-		if (['SERVICES'].includes(filter.companyCategoryId) ||
-			['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(filter.companySubcategoryId)) {
-            result = animals;
-		}
-		return result;
-	}
-);
-
-const getBreeds = createSelector(
-	[getFilter, getFlatAnimals],
-	(filter, animals) => {
-		const breeds = [];
-        animals.forEach(animal => {
-            if (['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(filter.companySubcategoryId) && filter.selectedAnimalsIds.includes(animal.value)) {
-                breeds.push(...animal.breeds);
-            }
-        });
-		return breeds;
-	}
-);
-
-const getCompanies = createSelector(
-	[state => state.companiesList.main.companies],
+const getFlatCompanies = createSelector(
+	[getCompanies],
 	(companies) => {
 		return companies.map(company => {
 			let mainLocation = company.locations.find(location => (location.isMain === 1));
@@ -389,16 +333,73 @@ const getCompanies = createSelector(
 	}
 );
 
+const getFilterValues = createSelector(
+	[getFilter, getCommon],
+	(filter, common) => {
+		const result = {};
+
+		// Insert cities
+		result.cities = common.cities.reduce((acc, item) => {
+
+			acc.push({
+				value: item.value,
+				label: item.label,
+				sort: item.sort
+			});
+
+			item.subCities.forEach(item => {
+				acc.push({
+					value: item.value,
+					label: item.label,
+					sort: item.sort
+				});
+			});
+
+			return acc;
+
+		}, []).sort((cityA, cityB) => cityA.sort - cityB.sort);
+
+		// Insert subways
+		const subways = [];
+		common.cities.forEach(city => {
+			if (filter.selectedCitiesIds.includes(city.value)) {
+				subways.push(...city.subways);
+			}
+		});
+		result.subways = subways;
+
+		// Insert animals
+		let animals = [];
+		const categoryId = filter.companyCategoryId ? filter.companyCategoryId.toUpperCase() : null;
+		const subCatId = filter.companySubcategoryId ? filter.companySubcategoryId.toUpperCase() : null;
+		if (['SERVICES'].includes(categoryId) || ['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(subCatId)) {
+			animals = common.animals;
+		}
+		result.animals = animals;
+
+		// Insert breeds
+		const breeds = [];
+		if (result.animals) {
+			result.animals.forEach(animal => {
+				if (['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(subCatId) && filter.selectedAnimalsIds.includes(animal.value)) {
+					breeds.push(...animal.breeds);
+				}
+			});
+		}
+		result.breeds = breeds;
+
+		return result;
+	}
+);
+
 const CompaniesList = connect(
 	state => {
 		return {
+			common: state.common,
 			main: state.companiesList.main,
-			companies: getCompanies(state),
+			companies: getFlatCompanies(state),
 			filter: state.companiesList.filter,
-			cities: getFlatCitiesList(state),
-			subways: getSubways(state),
-			animals: getFlatAnimals(state),
-			breeds: getBreeds(state),
+			filterValues: getFilterValues(state),
 		};
 	},
 	{
