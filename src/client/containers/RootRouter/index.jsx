@@ -12,6 +12,8 @@ import CompanyRouter from "../companies/CompanyRouter";
 
 import { Breadcrumbs } from 'react-breadcrumbs';
 
+import './styles.scss';
+
 export default class Router extends React.Component {
 
 	constructor(props) {
@@ -32,10 +34,9 @@ export default class Router extends React.Component {
 						<Grid item xs={11} md={9} className="flexGrowFull">
 							<Breadcrumbs className="demo">
 								<Switch>
-									<Route path="/promoPage/:promoId" component={PromoPage} />
-									<Route path="/newPromo" component={NewPromo} />
-									<Route exact path='/promosList' component={PromosList} />
-
+									{/*<Route path="/promoPage/:promoId" component={PromoPage} />*/}
+									{/*<Route path="/newPromo" component={NewPromo} />*/}
+									{/*<Route exact path='/promosList' component={PromosList} />*/}
 									<Route path="/company" component={CompanyRouter} />
 								</Switch>
 							</Breadcrumbs>

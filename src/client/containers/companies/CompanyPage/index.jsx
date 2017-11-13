@@ -122,12 +122,12 @@ class CompanyPageContainer extends React.Component {
 	}
 
 	render() {
-		const {t, classes, company, common, markers } = this.props;
+		const {t, classes, company, common, markers, match } = this.props;
 		const { locationToDisplay } = this.state;
         const phonesText = locationToDisplay ? locationToDisplay.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
 		return (
 			<div className={classes.mainCardWrapper}>
-				<Card raised className={classNames(classes.mainCard, "my-4")}>
+				<Card raised className={classNames(classes.mainCard, "my-3")}>
 					<CardContent>
 						<Grid container>
 							<Grid item xs={8}>
@@ -142,7 +142,7 @@ class CompanyPageContainer extends React.Component {
 								{
                                     locationToDisplay &&
 									<Authorized allowedRoles={[5]}>
-										<Link to={`${this.props.match.url}/feedback`} className={classes.link}>
+										<Link to={`${match.url}/feedback`} className={classes.link}>
 											<Button accent="red" className='w-100'>
                                                 {t('Оставить отзыв')}
 											</Button>
@@ -257,7 +257,7 @@ class CompanyPageContainer extends React.Component {
 
 							<CrumbRoute exact path={`${this.props.match.url}/contacts`}
 								   render={() => <Contacts locations={ company.locations }
-														   url_id={ company.url_id }
+														   match={match}
 														   markers={ markers }/>}
 								   title="Контакты"
 							/>

@@ -126,8 +126,12 @@ export function stateDataToUrlQuery(state) {
 }
 
 function updateUrl(state, history) {
+	const updatedState = {...state};
+	// I will think over this...
+	delete updatedState.companyCategoryId;
+	delete updatedState.companySubcategoryId;
 	history.push({
-		search: stateDataToUrlQuery(state)
+		search: stateDataToUrlQuery(updatedState)
 	});
 }
 

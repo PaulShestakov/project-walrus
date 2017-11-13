@@ -69,10 +69,10 @@ function renderSuggestionsContainer(options) {
 	);
 }
 
-function renderSuggestion(classes, company, { query, isHighlighted }) {
+function renderSuggestion(classes, match, company, { query, isHighlighted }) {
 	return (
 		<MenuItem component="div" className="p-3" classes={{root: classes.suggestionMenuItem}}>
-			<Link to={`/company/${company.companyId}`} className={classes.suggestionItemLink}>
+			<Link to={`${match.url}/${company.url_id}`} className={classes.suggestionItemLink}>
 				<Paper>
 					<img src={company.logo} className={classes.suggestionImage}/>
 				</Paper>
@@ -108,9 +108,12 @@ class CompaniesListContainer extends React.Component {
 	}
 
 	componentDidMount() {
-		const searchParams = new URLSearchParams(this.props.location.search);
-		this.props.updateStateWithUrlSource(searchParams);
-		this.props.loadCompanies();
+		const { updateStateWithUrlSource, match, loadCompanies, location } = this.props;
+		const searchParams = new URLSearchParams(location.search);
+		searchParams.set('companyCategoryId', match.params.categoryId);
+		searchParams.set('companySubcategoryId', match.params.subCategoryId);
+        updateStateWithUrlSource(searchParams);
+        loadCompanies();
 	}
 
 	handleSuggestionsFetchRequested = (change) => {
@@ -194,10 +197,10 @@ class CompaniesListContainer extends React.Component {
 	};
 
 	render() {
-		const {t, companies, classes} = this.props;
+		const { t, companies, classes, match } = this.props;
 
 		return (
-			<Grid container className="my-4">
+			<Grid container className="my-3">
 				<Grid item md={9}>
 					<Card className={classNames(classes.inputWrapper)}>
 						<Autosuggest
@@ -213,7 +216,7 @@ class CompaniesListContainer extends React.Component {
 							onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
 							renderSuggestionsContainer={renderSuggestionsContainer}
 							getSuggestionValue={getSuggestionValue}
-							renderSuggestion={renderSuggestion.bind(null, classes)}
+							renderSuggestion={renderSuggestion.bind(null, classes, match)}
 							inputProps={{
 								autoFocus: false,
 								classes,
@@ -230,6 +233,7 @@ class CompaniesListContainer extends React.Component {
 									<CompanyItem
 										key={company.companyId}
 										company={company}
+										match={match}
 										deleteAction={this.deleteCompany}
 										blockAction={this.blockCompany}
 										handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}

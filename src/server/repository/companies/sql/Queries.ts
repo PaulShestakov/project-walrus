@@ -85,6 +85,7 @@ export default {
 		SELECT
 			c.COMPANY_ID companyId,
 			c.NAME name,
+			c.URL_ID url_id,
 			c.LOGO logo,
 			c.DESCRIPTION description,
 			c.EMAIL email,

@@ -1,3 +1,5 @@
+@import '../../style.global.scss';
+
 
 html {
   position: relative;
@@ -30,12 +32,21 @@ body, body > div {
 // Breadcrumbs
 .breadcrumbs {
   margin-top: 1rem;
+  padding: 0.5rem;
+  border-radius: 2px;
+  background-color: white;
+  @include shadow();
 
   .breadcrumbs__separator {
     margin: 0 .5rem;
+    color: #585858;
   }
 
   a {
+    color: #585858;
 
+    &:hover {
+      color: #9d331b;
+    }
   }
 }

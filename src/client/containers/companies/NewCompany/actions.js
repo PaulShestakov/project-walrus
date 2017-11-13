@@ -34,7 +34,7 @@ export function postCompany(company, history) {
 				throw Error(error);
             }
         ).then(json => {
-            history.push("/company/" + json.url_id);
+            history.goBack();
             dispatch(saveCompanySuccess(json));
         }).catch(error => {
             dispatch(saveCompanyFailed(error))
@@ -118,7 +118,7 @@ export function updateCompany(companyId, company, history) {
 				throw Error(error);
 			}
 		).then(json => {
-			history.push("/company/" + json.url_id);
+			history.goBack();
 			dispatch(updateCompanySuccess(json));
 		}).catch(error => {
 			dispatch(updateCompanyError(error))
@@ -158,7 +158,7 @@ function externalizeCompany(company) {
 	if (externalizedCompany.animals) {
         externalizedCompany.animals = externalizedCompany.animals.filter(i => i.animalId).map(animal => {
 			return {
-				animalId: animal.animalId.value,
+				animalId: animal.animalId ? animal.animalId.value : null,
 				breedId: animal.breedId ? animal.breedId.value : null,
 			}
         });

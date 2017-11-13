@@ -106,7 +106,7 @@ class NewCompanyContainer extends React.Component {
 		const { t, common, handleSubmit, workingTimes, subcategories, formLocations } = this.props;
 
 		return (
-            <form className="d-flex-column align-items-center my-4">
+            <form className="d-flex-column align-items-center my-3">
                 <Card raised>
                     <Grid container justify="center" spacing={24}>
 

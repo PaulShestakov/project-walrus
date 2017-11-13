@@ -21,16 +21,12 @@ class CompaniesOverviewContainer extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const params = new URLSearchParams(nextProps.location.search);
-		const category = params.get('companyCategoryId');
+		const { match, common: { companiesCategories } } = nextProps;
+		const category = match.params.categoryId;
 		let categoryIndex = 0;
-		const { companiesCategories } = nextProps.common;
-		if (!category && companiesCategories.length > 0) {
-			return this.changeUrl(companiesCategories[categoryIndex].value);
-		}
 		if (category) {
 			companiesCategories.forEach((type, index) => {
-				if (type.value === category) {
+				if (type.value.toUpperCase() === category.toUpperCase()) {
 					categoryIndex = index;
 				}
 			});
@@ -39,20 +35,13 @@ class CompaniesOverviewContainer extends React.Component {
 	}
 
 	handleTabPress = (event, index) => {
-		this.changeUrl(this.props.common.companiesCategories[index].value);
-	};
-
-	changeUrl = (companyCategoryId) => {
-		const params = new URLSearchParams(this.props.location.search);
-		params.set('companyCategoryId', companyCategoryId);
-		this.props.history.push({
-			pathname: this.props.location.pathname,
-			search: params.toString()
-		});
+		const { history, common : { companiesCategories } } = this.props;
+		const category = companiesCategories[index].value.toLowerCase();
+		history.push('/company/' + category);
 	};
 
 	render() {
-		const {t, classes, match, common, ...other} = this.props;
+		const { classes, common, match } = this.props;
 
 		const icons = [
 			<Healing className={classes.tabIcon} />,
@@ -64,10 +53,11 @@ class CompaniesOverviewContainer extends React.Component {
 		];
 
 		return (
-			<Card className="my-4">
+			<Card className="my-3">
 				<Paper>
 					<Tabs indicatorColor="primary"
 						  textColor="primary"
+						  scrollable
 						  value={this.state.selectedTabIndex}
 						  onChange={this.handleTabPress}
 						  fullWidth>
@@ -82,11 +72,14 @@ class CompaniesOverviewContainer extends React.Component {
 						}
 					</Tabs>
 				</Paper>
-				<SwipeableViews index={this.state.selectedTabIndex} onChangeIndex={this.handleTabPress}>
+				<SwipeableViews index={this.state.selectedTabIndex}
+								onChangeIndex={this.handleTabPress}>
 					{
 						common.companiesCategories.map(category => {
 							return (
-								<Category key={category.value} type={category} location={location}/>
+								<Category key={category.value}
+										  type={category}
+										  match={match}/>
 							);
 						})
 					}

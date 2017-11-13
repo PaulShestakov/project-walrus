@@ -110,11 +110,12 @@ export default class Companies extends BaseCRUD  {
   
 	static saveCompany(company: Company, callback) {
 		company.companyId = uuid();
+
 		const locations = company.locations.map(item => Locations.internalizeLocationToArray(company.companyId, item));
 
 		const savePhones = Phones.savePhones(company.locations, locations);
 
-		const saveLocation = Locations.saveLocations(locations);
+		const saveLocations = Locations.saveLocations(locations);
 
 		const saveWorkingTimes = WorkingTimes.saveWorkingTimes(company.locations, locations);
 
@@ -124,7 +125,7 @@ export default class Companies extends BaseCRUD  {
             connection.query(Queries.SAVE, [Companies.internalizeCompany(company)], done);
 		};
 
-        executeSeries([saveCompany, saveAnimals, saveLocation, savePhones, saveWorkingTimes], (error) => {
+        executeSeries([saveCompany, saveAnimals, saveLocations, savePhones, saveWorkingTimes], (error) => {
             if (error) {
                 Util.handleError(error, callback);
             } else {
@@ -260,11 +261,12 @@ export default class Companies extends BaseCRUD  {
 		}
 			
 		sql = sql
-			.left_join('wikipet.code_values', 'cv1', "cv1.GROUP = 'CITY' AND cv1.ID = l.CITY_ID")
-			.left_join('wikipet.code_values', 'cv2', "cv2.GROUP = 'DAY_OF_WEEK' AND cv2.ID = t.DAY_OF_WEEK")
+			.left_join('wikipet.code_values', 'cv1', "cv1.ID = l.CITY_ID")
+			.left_join('wikipet.code_values', 'cv2', "cv2.ID = t.DAY_OF_WEEK")
 			.left_join('wikipet.companies_animals', 'ca', 'c.COMPANY_ID = ca.COMPANY_ID')
 			.left_join('wikipet.companies_phones', 'p', 'p.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
-			.where(filter);
+			.where(filter)
+			.order('c.NAME');
 			
 		const sqlParams = sql.toParam();
 

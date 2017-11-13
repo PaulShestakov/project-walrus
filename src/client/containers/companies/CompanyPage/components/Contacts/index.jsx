@@ -15,7 +15,7 @@ export default class Contacts extends React.Component {
         super(props);
         this.state = {
             selectedMarker: 0,
-            isPhonesDialogOpened: false,
+            // isPhonesDialogOpened: false,
         }
     }
 
@@ -24,8 +24,9 @@ export default class Contacts extends React.Component {
     };
 
     render() {
-        const { classes, url_id, locations = [], markers } = this.props;
+        const { classes, locations = [], markers, match } = this.props;
         const { selectedMarker } = this.state;
+        const baseUrl = `/company/${match.params.categoryId}/${match.params.subCategoryId}/${match.params.url_id}`; 
         return (
             <div className="mt-3">
             {
@@ -38,9 +39,9 @@ export default class Contacts extends React.Component {
                                       disablePadding>
                                     {
                                         locations.map((item, index) => {
-                                            let url = `/company/${url_id}`;
+                                            let url = baseUrl;
                                             if (item.isMain === 0) {
-                                                url += `/contacts/${item.url_id}`;
+                                                url += '/contacts/' + item.url_id;
                                             }
                                             return (
                                                 <ListItem
@@ -66,7 +67,7 @@ export default class Contacts extends React.Component {
                     </Paper>
                 )
             }
-            <InfoDialog
+            {/* <InfoDialog
                 open={this.state.isPhonesDialogOpened}
                 title="Телефоны"
                 closeCallback={() => this.setState({ isPhonesDialogOpened: false })}>
@@ -78,7 +79,7 @@ export default class Contacts extends React.Component {
                         </div>
                     ))
                 }
-            </InfoDialog>
+            </InfoDialog> */}
             </div>
         );
     }

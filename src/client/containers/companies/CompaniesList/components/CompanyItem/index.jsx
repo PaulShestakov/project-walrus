@@ -42,86 +42,84 @@ export default class CompanyItem extends React.Component {
 	}
 
 	render() {
-		const { t, classes, company } = this.props;
+		const { t, classes, company, match } = this.props;
 
 		return (
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>
-				<Link to={`/company/${encodeURI(company.url_id)}`}>
-					<Paper>
-						<CardMedia
-						className={classes.cardImage}
-						image={this.getImageSrc()} />
-					</Paper>
-				</Link>
-
-				<CardContent className={classNames(classes.cardContent, 'p-0', 'pl-4')}>
-					<div className={classes.headerWrapper}>
-						<Link to={`/company/${encodeURI(company.url_id)}`} className={classes.headerLink}>
-							<Label uppercase bold fontSize="2rem">
-								{company.name}
-							</Label>
+				<Grid container justify="center" spacing={24}>
+					<Grid item xs={5} md={3}>
+						<Link to={`${match.url}/${encodeURI(company.url_id)}`}>
+							<Paper className="h-100 d-flex">
+								<CardMedia
+									className={classes.cardImage}
+									image={this.getImageSrc()} />
+							</Paper>
 						</Link>
-
-						<Authorized allowedRoles={[5]} className={classes.editButtonsBlock}>
-							<Button fab className={classes.editButton}>
-								<Link to={`/company/edit/${encodeURI(company.url_id)}`}>
-									<ModeEditIcon className={classes.editIcon} />
+					</Grid>
+					<Grid item xs={7} md={9}>
+						<Grid container className={classNames(classes.cardContent, 'p-0')}>
+							<Grid item className={classes.headerWrapper}>
+								<Link to={`${match.url}/${encodeURI(company.url_id)}`} className={classes.headerLink}>
+									<Label uppercase bold fontSize="2rem">
+										{company.name}
+									</Label>
 								</Link>
-							</Button>
-							<Button fab className={classes.editButton}
-									onClick={this.handleAction.bind(null, company, 'block')}>
-								<Block className={classes.editIcon} />
-							</Button>
-							<Button fab className={classes.editButton}
-									onClick={this.handleAction.bind(null, company, 'delete')}>
-								<Delete className={classes.editIcon} />
-							</Button>
-						</Authorized>
-					</div>
 
-					<div className={classNames(classes.flexRow, 'mt-2')}>
-						<div className={classes.flexRow}>
-							<FontAwesome name="map-marker"
-										 className={classes.icon} />
-							<Text>{ company.mainLocation.cityName + ': ' + company.mainLocation.address } </Text>
-						</div>
-					</div>
-
-					<div className={classNames(classes.flexRow, 'mt-2')}>
-						<div className={classes.flexRow}>
-							<FontAwesome name="globe" className={classes.icon} />
-							<Text>{company.url}</Text>
-						</div>
-					</div>
-					<div className={classNames(classes.flexRow, 'mt-2')}>
-						<div className={classes.flexRow}>
-							<Rating 
-								readOnly
-								value={company.averageRating}/>
-							<Text>{company.numberOfFeedbacks} отзывов</Text>
-						</div>
-					</div>
-
-					<div className={classes.buttonsBlock}>
-						<Button className="mr-2 text-white" accent="white"
-							onClick={this.props.handleOpenWorkingTimeDialog.bind(null, company.mainLocation.workingTimes)}>
-							{t('WORKING_TIME')}
-						</Button>
-						<Button className="mr-2 text-white" accent="white"
-								onClick={this.props.handleOpenPhonesDialog.bind(null, company.mainLocation.phones)}>
-                            Телефоны
-						</Button>
-						{
-							company.numberOfLocations > 0 &&
-							<Link to={`/company/${company.url_id}/contacts`}>
-								<Button className="mr-2 text-white" accent="white">
-									Филиалы ({ company.numberOfLocations })
+								<Authorized allowedRoles={[5]} className={classes.editButtonsBlock}>
+									<Link to={`/company/edit/${encodeURI(company.url_id)}`}>
+										<Button fab className={classes.editButton}>
+											<ModeEditIcon className={classes.editIcon} />
+										</Button>
+									</Link>
+									<Button fab className={classes.editButton}
+											onClick={this.handleAction.bind(null, company, 'block')}>
+										<Block className={classes.editIcon} />
+									</Button>
+									<Button fab className={classes.editButton}
+											onClick={this.handleAction.bind(null, company, 'delete')}>
+										<Delete className={classes.editIcon} />
+									</Button>
+								</Authorized>
+							</Grid>
+							<Grid item className={classes.flexRow}>
+								<FontAwesome name="map-marker" className={classes.icon} />
+								<Text>{ company.mainLocation.cityName + ': ' + company.mainLocation.address } </Text>
+							</Grid>
+							<Grid item className={classes.flexRow}>
+								<FontAwesome name="globe" className={classes.icon} />
+								<Text>{company.url}</Text>
+							</Grid>
+							<Grid item className={classNames(classes.flexRow)}>
+								<Link to={`${match.url}/${company.url_id}/feedbacks`}>
+									<div className={classes.flexRow}>
+										<Rating 
+											readOnly
+											value={company.averageRating}/>
+										<Text>Отзывов : {company.numberOfFeedbacks}</Text>
+									</div>
+								</Link>
+							</Grid>
+							<Grid item className={classes.buttonsBlock}>
+								<Button className="mr-2 mt-2 text-white" accent="white"
+									onClick={this.props.handleOpenWorkingTimeDialog.bind(null, company.mainLocation.workingTimes)}>
+									{t('WORKING_TIME')}
 								</Button>
-							</Link>
-						}
-						
-					</div>
-				</CardContent>
+								<Button className="mr-2 mt-2 text-white" accent="white"
+										onClick={this.props.handleOpenPhonesDialog.bind(null, company.mainLocation.phones)}>
+									Телефоны
+								</Button>
+								{
+									company.numberOfLocations > 0 &&
+									<Link to={`${match.url}/${company.url_id}/contacts`}>
+										<Button className="mr-2 mt-2 text-white" accent="white">
+											Филиалы ({ company.numberOfLocations })
+										</Button>
+									</Link>
+								}
+							</Grid>
+						</Grid>
+					</Grid>
+				</Grid>				
 			</Card>
 		);
 	}
