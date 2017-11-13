@@ -27,7 +27,7 @@ export default class WorkingTimes extends React.Component {
                                 </Grid>
                                 <Grid item xs={3}>
                                     <FormControl>
-                                        <InputLabel htmlFor="open">С</InputLabel>
+                                        <Title>С</Title>
                                         <Field
                                             component={Input}
                                             name={`${member}.open`}
@@ -37,7 +37,7 @@ export default class WorkingTimes extends React.Component {
                                 </Grid>
                                 <Grid item xs={3}>
                                     <FormControl>
-                                        <InputLabel htmlFor="close">По</InputLabel>
+                                        <Title>По</Title>
                                         <Field
                                             component={Input}
                                             name={`${member}.close`}

@@ -1,4 +1,5 @@
 import Util from '../../../util/index';
+import * as _ from 'lodash';
 import {
 	COMPANIES_LIST_ADD_CITY,
 	COMPANIES_LIST_REMOVE_CITY,
@@ -41,51 +42,53 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 			}
 		}
 		case COMPANIES_LIST_REMOVE_CITY: {
+			const { cityId, subwayIds } = action.payload;
 			return {
 				...state,
-				selectedCitiesIds: state.selectedCitiesIds.filter(x => x !== action.payload)
+				selectedCitiesIds: state.selectedCitiesIds.filter(x => x !== cityId),
+				selectedSubwaysIds: _.difference(state.selectedSubwaysIds, subwayIds)
 			}
 		}
+        case COMPANIES_LIST_ADD_SUBWAY: {
+            return {
+                ...state,
+                selectedSubwaysIds: state.selectedSubwaysIds.concat([action.payload])
+            }
+        }
+        case COMPANIES_LIST_REMOVE_SUBWAY: {
+            return {
+                ...state,
+                selectedSubwaysIds: state.selectedSubwaysIds.filter(x => x !== action.payload)
+            }
+        }
 
-				case COMPANIES_LIST_ADD_SUBWAY: {
-						return {
-								...state,
-								selectedSubwaysIds: state.selectedSubwaysIds.concat([action.payload])
-						}
-				}
-				case COMPANIES_LIST_REMOVE_SUBWAY: {
-						return {
-								...state,
-								selectedSubwaysIds: state.selectedSubwaysIds.filter(x => x !== action.payload)
-						}
-				}
+        case COMPANIES_LIST_ADD_ANIMAL: {
+            return {
+                ...state,
+                selectedAnimalsIds: state.selectedAnimalsIds.concat([action.payload])
+            }
+        }
+        case COMPANIES_LIST_REMOVE_ANIMAL: {
+			const { animalId, breedIds } = action.payload;
+            return {
+                ...state,
+				selectedAnimalsIds: state.selectedAnimalsIds.filter(x => x !== animalId),
+				selectedBreedsIds: _.difference(state.selectedBreedsIds, breedIds)
+            }
+        }
 
-				case COMPANIES_LIST_ADD_ANIMAL: {
-						return {
-								...state,
-								selectedAnimalsIds: state.selectedAnimalsIds.concat([action.payload])
-						}
-				}
-				case COMPANIES_LIST_REMOVE_ANIMAL: {
-						return {
-								...state,
-								selectedAnimalsIds: state.selectedAnimalsIds.filter(x => x !== action.payload)
-						}
-				}
-
-				case COMPANIES_LIST_ADD_BREED: {
-						return {
-								...state,
-								selectedBreedsIds: state.selectedBreedsIds.concat([action.payload])
-						}
-				}
-				case COMPANIES_LIST_REMOVE_BREED: {
-						return {
-								...state,
-								selectedBreedsIds: state.selectedBreedsIds.filter(x => x !== action.payload)
-						}
-				}
-
+        case COMPANIES_LIST_ADD_BREED: {
+            return {
+                ...state,
+                selectedBreedsIds: state.selectedBreedsIds.concat([action.payload])
+            }
+        }
+        case COMPANIES_LIST_REMOVE_BREED: {
+            return {
+                ...state,
+                selectedBreedsIds: state.selectedBreedsIds.filter(x => x !== action.payload)
+            }
+        }
 		case COMPANIES_LIST_SET_IS_WORKING_NOW: {
 			return {
 				...state,

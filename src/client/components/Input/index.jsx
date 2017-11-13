@@ -6,9 +6,16 @@ import styles from './styles';
 
 class Input extends React.Component {
 	render() {
-        const { classes, meta, input, ...other } = this.props;
+        const { classes, input, meta: { touched, error }, ...other } = this.props;
 		return (
-			<MaterialInput {...input} {...other} />
+			<div>
+				{
+                    touched && error &&
+					<span className={classes.red}>{error}</span>
+				}
+				<MaterialInput {...input} {...other} />
+			</div>
+
 		);
 	}
 }

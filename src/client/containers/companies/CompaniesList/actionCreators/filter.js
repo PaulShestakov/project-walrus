@@ -6,10 +6,13 @@ export const addCity = (cityId) => {
 		payload: cityId
 	};
 };
-export const removeCity = (cityId) => {
+export const removeCity = (cityId, subwayIds) => {
 	return {
 		type: COMPANIES_LIST_REMOVE_CITY,
-		payload: cityId
+		payload: {
+            cityId,
+            subwayIds
+        }
 	};
 };
 
@@ -37,10 +40,13 @@ export const addAnimal = (animalId) => {
         payload: animalId
     };
 };
-export const removeAnimal = (animalId) => {
+export const removeAnimal = (animalId, breedIds) => {
     return {
         type: COMPANIES_LIST_REMOVE_ANIMAL,
-        payload: animalId
+        payload: {
+            animalId,
+            breedIds
+        }
     };
 };
 

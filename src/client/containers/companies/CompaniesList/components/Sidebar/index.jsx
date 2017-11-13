@@ -23,7 +23,7 @@ export default class Sidebar extends React.Component {
 					title: 'Местоположение',
                     showMoreLabel: 'Все города',
                     numberOfItemsToShowDefault: 6,
-					getItems: (props) => props.cities,
+					getItems: (props) => props.filterValues.cities,
 					getSelectedIds: (props) => props.filter.selectedCitiesIds,
 				},
 				{
@@ -31,7 +31,7 @@ export default class Sidebar extends React.Component {
 					title: 'Метро',
 					showMoreLabel: 'Все станции метро',
                     numberOfItemsToShowDefault: 4,
-                    getItems: (props) => props.subways,
+                    getItems: (props) => props.filterValues.subways,
                     getSelectedIds: (props) => props.filter.selectedSubwaysIds,
 				},
 				{
@@ -39,7 +39,7 @@ export default class Sidebar extends React.Component {
                     title: 'Животные',
                     showMoreLabel: 'Все животные',
                     numberOfItemsToShowDefault: 4,
-                    getItems: (props) => props.animals,
+                    getItems: (props) => props.filterValues.animals,
                     getSelectedIds: (props) => props.filter.selectedAnimalsIds,
 				},
                 {
@@ -47,7 +47,7 @@ export default class Sidebar extends React.Component {
                     title: 'Породы',
                     showMoreLabel: 'Все породы',
                     numberOfItemsToShowDefault: 4,
-                    getItems: (props) => props.breeds,
+                    getItems: (props) => props.filterValues.breeds,
                     getSelectedIds: (props) => props.filter.selectedBreedsIds,
                 }
 			]
