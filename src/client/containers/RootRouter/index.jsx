@@ -38,6 +38,7 @@ export default class Router extends React.Component {
 									{/*<Route path="/newPromo" component={NewPromo} />*/}
 									{/*<Route exact path='/promosList' component={PromosList} />*/}
 									<Route path="/company" component={CompanyRouter} />
+									<Redirect to="/company/health" />
 								</Switch>
 							</Breadcrumbs>
 						</Grid>

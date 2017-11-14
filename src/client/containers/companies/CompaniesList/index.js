@@ -171,9 +171,11 @@ class CompaniesListContainer extends React.Component {
                     this.props.addCity(event.target.value);
                 } else {
 					const cityId = event.target.value;
-					const subwayIds = this.props.common.cities
-						.find(city => city.value === cityId).subways
-						.map(subway => subway.value);
+					const foundCity = this.props.common.allCities.find(city => city.value === cityId);
+					let subwayIds = [];
+					if (foundCity.subways) {
+						subwayIds = foundCity.subways.map(subway => subway.value);
+					}
                     this.props.removeCity(cityId, subwayIds);
                 }
                 break;
@@ -403,10 +405,30 @@ const getFilterValues = createSelector(
 	}
 );
 
+const extendCodeValues = createSelector(
+    [state => state.common],
+    (common) => {
+        const allCities = common.cities.reduce((acc, item) => {
+            acc.push({
+                value: item.value,
+                label: item.label,
+                subways: item.subways
+            });
+            acc.push(...item.subCities);
+            return acc;
+        }, []);
+        allCities.sort((a, b) => a.label.localeCompare(b.label));
+        return {
+            ...common,
+            allCities
+        };
+    }
+);
+
 const CompaniesList = connect(
 	state => {
 		return {
-			common: state.common,
+			common: extendCodeValues(state),
 			main: state.companiesList.main,
 			companies: getFlatCompanies(state),
 			filter: state.companiesList.filter,

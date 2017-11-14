@@ -289,7 +289,7 @@ const internalizeCompany = createSelector(
                    const result = {
                        ...animal,
                        animals: common.animals,
-                       breeds: foundAnimal.breeds || []
+                       breeds: foundAnimal ? foundAnimal.breeds : []
                    };
                    if (foundAnimal) {
                        result.animalId = {

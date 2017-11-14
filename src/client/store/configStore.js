@@ -12,9 +12,10 @@ export default function configureStore() {
 
 	const middlewares = [thunk];
 
-	const logger = createLogger();
-	middlewares.push(logger);
-
+	if (process.env.NODE_ENV === 'development') {
+		const logger = createLogger();
+		middlewares.push(logger);
+	}
 
     const store = createStore(
 		rootReducer,

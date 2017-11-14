@@ -15,7 +15,8 @@ export default {
     cardImage: {
         backgroundSize: 'contain',
         width: '100%',
-        height: '12rem'
+        height: '100%',
+        minHeight: '15rem'
     },
 
     link: {

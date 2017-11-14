@@ -6,7 +6,7 @@ export default {
 	},
 	cardImage: {
 		width: '100%',
-		height: '12rem',
+		height: '100%',
 		backgroundSize: 'contain',
 		margin: 'auto'
 	},

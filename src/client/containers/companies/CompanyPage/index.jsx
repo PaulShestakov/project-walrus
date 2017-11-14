@@ -166,7 +166,7 @@ class CompanyPageContainer extends React.Component {
 
 						<Grid container>
 							<Grid item xs={4}>
-								<Paper className="d-flex justify-content-center">
+								<Paper className="mx-auto h-100">
 									<CardMedia
 										className={classes.cardImage}
 										image={this.getImageSrc()}
