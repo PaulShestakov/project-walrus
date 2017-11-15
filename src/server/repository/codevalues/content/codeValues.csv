@@ -1,10 +1,10 @@
-0,DAY_OF_WEEK,Понедельник,0
-1,DAY_OF_WEEK,Вторник,10
-2,DAY_OF_WEEK,Среда,20
-3,DAY_OF_WEEK,Четверг,30
-4,DAY_OF_WEEK,Пятница,40
-5,DAY_OF_WEEK,Суббота,50
-6,DAY_OF_WEEK,Воскресенье,60
+MONDAY,DAY_OF_WEEK,Понедельник,0
+TUESDAY,DAY_OF_WEEK,Вторник,10
+WEDNESDAY,DAY_OF_WEEK,Среда,20
+THURSDAY,DAY_OF_WEEK,Четверг,30
+FRIDAY,DAY_OF_WEEK,Пятница,40
+SATURDAY,DAY_OF_WEEK,Суббота,50
+SUNDAY,DAY_OF_WEEK,Воскресенье,60
 DOG,ANIMAL,Собаки,10
 CAT,ANIMAL,Кошки,20
 BIRD,ANIMAL,Птицы,30

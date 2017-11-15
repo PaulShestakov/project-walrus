@@ -61,20 +61,25 @@ export default class Location extends React.Component {
     };
 
     handleCityChange = (item, index, member) => {
-        const { fields, cities } = this.props;
-        const foundCity = cities.find(city => item.value === city.value);
+        const { fields, allCities } = this.props;
+        const foundCity = allCities.find(city => item.value === city.value);
         if (foundCity) {
             fields.get(index).cityId = foundCity;
-            fields.get(index).subways = foundCity.subways;
-            this.props.change(`${member}.subwayId`, null);
+            fields.get(index).subways = foundCity.subways || [];
+            fields.get(index).subwayId = null;
         }
     };
 
     deleteLocation = () => {
         const { location } = this.state;
+        const { fields } = this.props;
         if (location && Number.isInteger(location.index)) {
-            this.props.fields.remove(location.index);
-            this.setState({ location: {}, isConfirmDialogOpened: false });
+            fields.remove(location.index);
+            let nextPosition = location.index - 1;
+            if (nextPosition < 0) {
+                nextPosition = 0;
+            }
+            this.setState({ location: {}, isConfirmDialogOpened: false, selectedAddress: nextPosition });
         }
     };
 

@@ -124,7 +124,11 @@ class CompanyPageContainer extends React.Component {
 	render() {
 		const {t, classes, company, common, markers, match } = this.props;
 		const { locationToDisplay } = this.state;
-        const phonesText = locationToDisplay ? locationToDisplay.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
+		const phonesText = locationToDisplay ? locationToDisplay.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
+		let companyName = company.name;
+		if (locationToDisplay && locationToDisplay.cityName) {
+			companyName += " г. " + locationToDisplay.cityName;
+		}
 		return (
 			<div className={classes.mainCardWrapper}>
 				<Card raised className={classNames(classes.mainCard, "my-3")}>
@@ -132,7 +136,7 @@ class CompanyPageContainer extends React.Component {
 						<Grid container>
 							<Grid item xs={8}>
 								<Typography type="headline" component="h2">
-									{company.name}
+									{companyName}
 								</Typography>
 								<Typography component="p">
 									{company.subcategoryName}
@@ -174,28 +178,31 @@ class CompanyPageContainer extends React.Component {
 								</Paper>
 							</Grid>
 							<Grid item xs={8}>
-								<Grid container
-									  spacing={16}>
-									<Grid item xs={12}
-										  className="d-flex align-items-center">
-										<Mail className="mr-2"/>
-										<Typography component="p">
-											{company.email}
-										</Typography>
-									</Grid>
-									<Grid item xs={12}
-										  className="d-flex align-items-center">
-										<Public className="mr-2"/>
-										<Typography component="p">
-											<a href={company.url} target="_blank">
-												{company.url}
-											</a>
-										</Typography>
-									</Grid>
+								<Grid container spacing={16}>
+									{
+										company.email &&
+										<Grid item xs={12} className="d-flex align-items-center">
+											<Mail className="mr-2"/>
+											<Typography component="p">
+												{company.email}
+											</Typography>
+										</Grid>
+									}
+									{
+										company.url &&
+										<Grid item xs={12} className="d-flex align-items-center">
+											<Public className="mr-2"/>
+											<Typography component="p">
+												<a href={company.url} target="_blank">
+													{company.url}
+												</a>
+											</Typography>
+										</Grid>
+									}
 									<Grid item xs={12}>
 										<Grid container spacing={16}>
                                             {
-                                                locationToDisplay &&
+                                                locationToDisplay && locationToDisplay.address &&
 												<Grid item xs={12} className="d-flex align-items-center">
 													<LocationOn className="mr-2"/>
 													<Typography component="p">
@@ -204,7 +211,7 @@ class CompanyPageContainer extends React.Component {
 												</Grid>
                                             }
 											{
-                                                locationToDisplay &&
+                                                locationToDisplay && phonesText &&
 												<Grid item xs={12}
 													  className="d-flex align-items-center">
 													<Call className="mr-2"/>

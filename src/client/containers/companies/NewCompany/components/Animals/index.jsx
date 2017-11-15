@@ -37,11 +37,22 @@ export default class Animals extends React.Component {
         this.setState({ selectedAnimal: fields.length });
     };
 
+    handleDeleteAnimal = (index) => {
+        const { fields } = this.props;
+        fields.remove(index);
+        let nextPosition = index - 1;
+        if (nextPosition < 0) {
+            nextPosition = 0;
+        }
+        this.setState({ selectedAnimal: nextPosition });
+    };
+
     handleAnimalChange = (animal, index) => {
         const foundAnimal = this.props.animals.find(i => i.value === animal.value);
         if (foundAnimal) {
             const { fields } = this.props;
-            fields.get(index).breeds = foundAnimal.breeds;
+            fields.get(index).breeds = foundAnimal.breeds || [];
+            fields.get(index).breedId = null;
         }
     };
 
@@ -106,7 +117,7 @@ export default class Animals extends React.Component {
                                               className="p-2">
                                         <Grid item xs={12} className="text-right">
                                             <Button fab className={classes.editButton}
-                                                    onClick={() => fields.remove(index)}>
+                                                    onClick={() => this.handleDeleteAnimal(index)}>
                                                 <Delete className={classes.editIcon} />
                                             </Button>
                                         </Grid>

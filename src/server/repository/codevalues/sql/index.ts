@@ -8,7 +8,8 @@ export default {
         SELECT
             cv.ID,
             cv.GROUP,
-            cv.NAME
+            cv.NAME,
+            cv.SORT
         FROM ${CODE_VALUE_TABLE} AS cv
         WHERE cv.GROUP IN (?)
             ORDER BY cv.SORT`,

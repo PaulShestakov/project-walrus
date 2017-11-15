@@ -296,12 +296,16 @@ class CompaniesListContainer extends React.Component {
 					title="Время работы"
 					closeCallback={() => this.setState({ isWorkingTimeDialogOpened: false })}>
 					{
-						this.state.daysOfWeekWorkingTime.map(dayWorkingTime => (
-							<div key={dayWorkingTime.dayOfWeek} className={classNames(classes.flexRow, "mt-2")}>
-								<Label>{dayWorkingTime.dayOfWeekName}</Label>
-								<Label className="ml-3">{`${dayWorkingTime.open} - ${dayWorkingTime.close}`}</Label>
-							</div>
-						))
+						this.state.daysOfWeekWorkingTime.map(time => {
+							const open = time.open.substring(0, time.open.lastIndexOf(":"));
+							const close = time.close.substring(0, time.close.lastIndexOf(":"));
+							return (
+								<div key={time.dayOfWeek} className={classNames(classes.flexRow, "mt-2")}>
+									<Label>{time.dayOfWeekName}</Label>
+									<Label className="ml-3">{`${open} - ${close}`}</Label>
+								</div>
+							)
+						})
 					}
 				</InfoDialog>
 

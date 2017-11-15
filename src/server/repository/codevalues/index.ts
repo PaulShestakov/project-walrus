@@ -18,7 +18,8 @@ class CodeValues extends BaseCRUD {
 
 			acc[row.GROUP].push({
 				value: row.ID,
-                label: row.NAME
+                label: row.NAME,
+                sort: row.SORT,
             });
 
             return acc;

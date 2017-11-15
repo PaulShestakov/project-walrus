@@ -85,10 +85,13 @@ export default class CompanyItem extends React.Component {
 								<FontAwesome name="map-marker" className={classes.icon} />
 								<Text>{ company.mainLocation.cityName + ': ' + company.mainLocation.address } </Text>
 							</Grid>
-							<Grid item className={classes.flexRow}>
-								<FontAwesome name="globe" className={classes.icon} />
-								<Text>{company.url}</Text>
-							</Grid>
+							{
+								company.url &&
+								<Grid item className={classes.flexRow}>
+									<FontAwesome name="globe" className={classes.icon} />
+									<Text>{company.url}</Text>
+								</Grid>
+							}
 							<Grid item className={classNames(classes.flexRow)}>
 								<Link to={`${match.url}/${company.url_id}/feedbacks`}>
 									<div className={classes.flexRow}>

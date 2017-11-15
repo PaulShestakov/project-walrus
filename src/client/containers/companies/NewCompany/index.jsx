@@ -318,8 +318,9 @@ const internalizeCompany = createSelector(
                     
                     // Create new base array and write working times
                     location.workingTimes.forEach(day => {
-                        workingTimes[day.dayOfWeek].open = day.open;
-                        workingTimes[day.dayOfWeek].close = day.close;
+                        const foundWorkingTime = workingTimes.find(time => time.dayOfWeek.value === day.dayOfWeek);
+                        foundWorkingTime.open = day.open;
+                        foundWorkingTime.close = day.close;
                     });
 
                     const result = {
