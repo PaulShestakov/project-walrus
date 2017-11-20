@@ -47,7 +47,7 @@ export default class CompanyItem extends React.Component {
 		return (
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>
 				<Grid container justify="center" spacing={24}>
-					<Grid item xs={5} md={3}>
+					<Grid item xs={5} md={4}>
 						<Link to={`${match.url}/${encodeURI(company.url_id)}`}>
 							<Paper className="h-100 d-flex">
 								<CardMedia
@@ -56,7 +56,7 @@ export default class CompanyItem extends React.Component {
 							</Paper>
 						</Link>
 					</Grid>
-					<Grid item xs={7} md={9}>
+					<Grid item xs={7} md={8}>
 						<Grid container className={classNames(classes.cardContent, 'p-0')}>
 							<Grid item className={classes.headerWrapper}>
 								<Link to={`${match.url}/${encodeURI(company.url_id)}`} className={classes.headerLink}>
