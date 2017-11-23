@@ -24,7 +24,8 @@ const defaultState = {
 	companyCategoryId: null,
 	companySubcategoryId: null,
 
-	selectedCitiesIds: [],
+	selectedCountry: null,
+	selectedCity: null,
 	selectedSubwaysIds: [],
 	selectedAnimalsIds: [],
 	selectedBreedsIds: [],

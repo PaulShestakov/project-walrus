@@ -17,6 +17,7 @@ import {Typography} from "material-ui";
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import Location from "./components/Location/index";
 import Animals from "./components/Animals/index";
+import { extendCodeValues } from '../selectors';
 
 import {getFormValues} from 'redux-form';
 
@@ -253,28 +254,8 @@ const getSubcategories = createSelector(
 	}
 );
 
-const extendCodeValues = createSelector(
-    [state => state.common],
-    (common) => {
-        const allCities = common.cities.reduce((acc, item) => {
-            acc.push({
-                value: item.value,
-                label: item.label,
-                subways: item.subways
-            });
-            acc.push(...item.subCities);
-            return acc;
-        }, []);
-        allCities.sort((a, b) => a.label.localeCompare(b.label));
-        return {
-            ...common,
-            allCities
-        };
-    }
-);
-
 const internalizeCompany = createSelector(
-    [(state) => state.newCompany.company, extendCodeValues],
+    [state => state.newCompany.company, extendCodeValues()],
 	(company, common) => {
 
         if (company.companyId) {
@@ -358,7 +339,7 @@ const internalizeCompany = createSelector(
 
 const NewCompany = connect(
     state => ({
-		common: extendCodeValues(state),
+		common: extendCodeValues()(state),
 		initialValues: internalizeCompany(state),
 		selectedCategory: formValueSelector('company')(state, 'categoryId'),
 		selectedSubCategory: formValueSelector('company')(state, 'subcategoryId'),

@@ -17,6 +17,7 @@ import ConfirmDialog from './Dialog/Confirm';
 import InfoDialog from './Dialog/Information';
 import Switch from './Switch';
 import CheckboxesBlock from './CheckboxesBlock';
+import Suggestion from './Suggestion';
 
 
 import Header from './Header';
@@ -55,7 +56,8 @@ export {
     ConfirmDialog,
     InfoDialog,
 	Switch,
-    CheckboxesBlock,
+	CheckboxesBlock,
+	Suggestion,
 
 	Header,
 	Footer

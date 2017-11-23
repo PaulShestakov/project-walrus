@@ -14,6 +14,8 @@ import Autosuggest from 'react-autosuggest';
 import Paper from 'material-ui/Paper';
 import {MenuItem} from 'material-ui/Menu';
 import { CircularProgress } from 'material-ui/Progress';
+import { extendCodeValues } from '../selectors';
+import * as filterConstrains from './filterConstrains';
 
 import {
 	loadCompanies,
@@ -164,54 +166,54 @@ class CompaniesListContainer extends React.Component {
 		this.props.componentLeave();
 	}
 
-	handleCheckboxPressed = (event) => {
-        switch(event.target.name) {
-            case 'cities': {
-                if (event.target.checked) {
-                    this.props.addCity(event.target.value);
-                } else {
-					const cityId = event.target.value;
-					const foundCity = this.props.common.allCities.find(city => city.value === cityId);
-					let subwayIds = [];
-					if (foundCity.subways) {
-						subwayIds = foundCity.subways.map(subway => subway.value);
-					}
-                    this.props.removeCity(cityId, subwayIds);
-                }
-                break;
-            }
-            case 'subways': {
-                if (event.target.checked) {
-                    this.props.addSubway(event.target.value);
-                } else {
-                    this.props.removeSubway(event.target.value);
-                }
-                break;
-            }
-            case 'animals': {
-                if (event.target.checked) {
-                    this.props.addAnimal(event.target.value);
-                } else {
-					const animalId = event.target.value;
-					const breedIds = this.props.common.animals
-						.find(animal => animal.value === animalId).breeds
-						.map(breed => breed.value);
-                    this.props.removeAnimal(animalId, breedIds);
-                }
-                break;
-            }
-            case 'breeds': {
-                if (event.target.checked) {
-                    this.props.addBreed(event.target.value);
-                } else {
-                    this.props.removeBreed(event.target.value);
-                }
-                break;
-            }
-        }
-        this.props.updateUrlWithStateSource(this.props.history);
-        this.props.loadCompanies();
-	};
+	// handleCheckboxPressed = (event) => {
+    //     switch(event.target.name) {
+    //         case 'cities': {
+    //             if (event.target.checked) {
+    //                 this.props.addCity(event.target.value);
+    //             } else {
+	// 				const cityId = event.target.value;
+	// 				const foundCity = this.props.common.allCities.find(city => city.value === cityId);
+	// 				let subwayIds = [];
+	// 				if (foundCity.subways) {
+	// 					subwayIds = foundCity.subways.map(subway => subway.value);
+	// 				}
+    //                 this.props.removeCity(cityId, subwayIds);
+    //             }
+    //             break;
+    //         }
+    //         case 'subways': {
+    //             if (event.target.checked) {
+    //                 this.props.addSubway(event.target.value);
+    //             } else {
+    //                 this.props.removeSubway(event.target.value);
+    //             }
+    //             break;
+    //         }
+    //         case 'animals': {
+    //             if (event.target.checked) {
+    //                 this.props.addAnimal(event.target.value);
+    //             } else {
+	// 				const animalId = event.target.value;
+	// 				const breedIds = this.props.common.animals
+	// 					.find(animal => animal.value === animalId).breeds
+	// 					.map(breed => breed.value);
+    //                 this.props.removeAnimal(animalId, breedIds);
+    //             }
+    //             break;
+    //         }
+    //         case 'breeds': {
+    //             if (event.target.checked) {
+    //                 this.props.addBreed(event.target.value);
+    //             } else {
+    //                 this.props.removeBreed(event.target.value);
+    //             }
+    //             break;
+    //         }
+    //     }
+    //     this.props.updateUrlWithStateSource(this.props.history);
+    //     this.props.loadCompanies();
+	// };
 
 	render() {
 		const { t, companies, classes, match, main } = this.props;
@@ -271,7 +273,7 @@ class CompaniesListContainer extends React.Component {
 						history={this.props.history}
 						filter={this.props.filter}
 						filterValues={this.props.filterValues}
-						handleCheckboxPressed={this.handleCheckboxPressed}
+						// handleCheckboxPressed={this.handleCheckboxPressed}
 						setIsWorkingNow={this.props.setIsWorkingNow}
 						updateUrlWithStateSource={this.props.updateUrlWithStateSource}
 						loadCompanies={this.props.loadCompanies}
@@ -353,86 +355,84 @@ const getFlatCompanies = createSelector(
 const getFilterValues = createSelector(
 	[getFilter, getCommon],
 	(filter, common) => {
+		const { selectedCountry, selectedCity, companyCategoryId, companySubcategoryId, selectedAnimalsIds } = filter;
+
+		const codeValueMapper = (item) => ({
+			value: item.value,
+			label: item.label,
+			sort: item.sort
+		});
+
 		const result = {};
 
-		// Insert cities
-		result.cities = common.cities.reduce((acc, item) => {
+		result.countries = {
+			isVisible: true,
+			getValues: () => common.countries.reduce((acc, item) => {
+				acc.push(codeValueMapper(item));
+				return acc;
+			}, [])
+		};
 
-			acc.push({
-				value: item.value,
-				label: item.label,
-				sort: item.sort
-			});
-
-			item.subCities.forEach(item => {
-				acc.push({
-					value: item.value,
-					label: item.label,
-					sort: item.sort
-				});
-			});
-
-			return acc;
-
-		}, []).sort((cityA, cityB) => cityA.sort - cityB.sort);
-
-		// Insert subways
-		const subways = [];
-		common.cities.forEach(city => {
-			if (filter.selectedCitiesIds.includes(city.value)) {
-				subways.push(...city.subways);
-			}
-		});
-		result.subways = subways;
-
-		// Insert animals
-		let animals = [];
-		const categoryId = filter.companyCategoryId ? filter.companyCategoryId.toUpperCase() : null;
-		const subCatId = filter.companySubcategoryId ? filter.companySubcategoryId.toUpperCase() : null;
-		if (['SERVICES'].includes(categoryId) || ['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(subCatId)) {
-			animals = common.animals;
-		}
-		result.animals = animals;
-
-		// Insert breeds
-		const breeds = [];
-		if (result.animals) {
-			result.animals.forEach(animal => {
-				if (['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(subCatId) && filter.selectedAnimalsIds.includes(animal.value)) {
-					breeds.push(...animal.breeds);
+		result.cities = {
+			isVisible: filterConstrains.isCitiesVisible(filter),
+			getValues: () => {
+				let values;
+				if (result.cities.isVisible) {
+					const foundCountry = common.countries.find(country => country.value === selectedCountry);
+					if (foundCountry) {
+						values = foundCountry.cities.reduce((acc, item) => {
+							
+							acc.push(codeValueMapper(item));
+							item.subCities.forEach(item => acc.push(codeValueMapper(item)));
+		
+							return acc;
+				
+						}, []).sort((cityA, cityB) => cityA.sort - cityB.sort);
+					}
 				}
-			});
-		}
-		result.breeds = breeds;
+				return values || [];
+			}
+		};
+
+		result.subways = {
+			isVisible: filterConstrains.isSubwaysVisible(filter),
+			getValues: () => {
+				if (result.subways.isVisible) {
+					const foundCity = result.cities.find(city => city.value === selectedCity);
+					return foundCity.subways || [];
+				}
+				return [];
+			}
+		};
+		
+		result.animals = {
+			isVisible: filterConstrains.isAnimalsVisible(filter),
+			getValues: () => result.animals.isVisible ? common.animals || [] : []
+		};
+
+		result.breeds = {
+			isVisible: !!result.animals.getValues() && filterConstrains.isBreedsVisible(filter),
+			getValues: () => {
+				const values = [];
+				if (result.breeds.isVisible) {
+					result.animals.forEach(animal => {
+						if (selectedAnimalsIds.includes(animal.value)) {
+							values.push(...animal.breeds);
+						}
+					});
+				}
+				return values;
+			}
+		};
 
 		return result;
 	}
 );
 
-const extendCodeValues = createSelector(
-    [state => state.common],
-    (common) => {
-        const allCities = common.cities.reduce((acc, item) => {
-            acc.push({
-                value: item.value,
-                label: item.label,
-                subways: item.subways
-            });
-            acc.push(...item.subCities);
-            return acc;
-        }, []);
-        allCities.sort((a, b) => a.label.localeCompare(b.label));
-        return {
-            ...common,
-            allCities
-        };
-    }
-);
-
 const CompaniesList = connect(
 	state => {
 		return {
-			common: extendCodeValues(state),
+			common: extendCodeValues()(state),
 			main: state.companiesList.main,
 			companies: getFlatCompanies(state),
 			filter: state.companiesList.filter,
@@ -448,7 +448,6 @@ const CompaniesList = connect(
 
 		updateStateWithUrlSource,
 		updateUrlWithStateSource,
-
 
 		addCity,
 		removeCity,

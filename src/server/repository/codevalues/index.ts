@@ -99,46 +99,61 @@ class CodeValues extends BaseCRUD {
         });
     }
 
-    public getCities(callback) {
-        executeQuery(codeValuesSQL.GET_CITIES, [], (error, rows) => {
+    mapCountry = (item) => ({
+		value: item.countryId,
+        label: item.countryName,
+        sort: item.countrySort,
+    });
+    
+    mapCity = (item) => ({
+		value: item.cityId,
+        label: item.cityName,
+        sort: item.citySort,
+    });
+    
+    mapSubCity = (item) => ({
+		value: item.subCityId,
+        label: item.subCityName,
+        sort: item.subCitySort,
+    });
+    
+    mapSubway = (item) => ({
+		value: item.citySubwayId,
+        label: item.citySubwayName,
+        sort: item.citySubwaySort,
+    });
+
+    public getCountries(callback) {
+        executeQuery(codeValuesSQL.GET_COUNTIRES, [], (error, rows) => {
             if (error) {
                 return callback(error);
             }
-
-            const reducedRows = rows.reduce((accum, row) => {
-                if (!accum[row.cityId]) {
-                    accum[row.cityId] = {
-                        value: row.cityId,
-                        label: row.cityName,
-                        sort: row.citySort,
-                        subCities: {},
-                        subways: {}
+            const shape = {
+                name: 'countries',
+                idName: 'countryId',
+                map: this.mapCountry,
+                children: [
+                    {
+                        name: 'cities',
+                        idName: 'cityId',
+                        map: this.mapCity,
+                        children: [
+							{
+								name: 'subCities',
+								idName: 'subCityId',
+								map: this.mapSubCity
+							},
+							{
+								name: 'subways',
+								idName: 'citySubwayId',
+								map: this.mapSubway
+							}
+						]
                     }
-                }
-                if (!accum[row.cityId].subCities[row.subCityId]) {
-                    accum[row.cityId].subCities[row.subCityId] = {
-                        value: row.subCityId,
-                        label: row.subCityName,
-                        sort: row.subCitySort,
-                    };
-                }
-                if (!accum[row.cityId].subways[row.citySubwayId]) {
-                    accum[row.cityId].subways[row.citySubwayId] = {
-                        value: row.citySubwayId,
-                        label: row.citySubwayName,
-                        sort: row.citySubwaySort,
-                    };
-                }
-                return accum;
-            }, {});
-
-            const result = Object.values(reducedRows).map(entry => ({
-                ...entry,
-                subways: Object.values(entry.subways).filter(e => e.value !== null),
-                subCities: Object.values(entry.subCities).filter(e => e.value !== null),
-            }));
+                ]
+            };
     
-            callback(error, result);
+            callback(null, Util.reduceFlatData(rows, shape).countries);
         });        
     }
 }

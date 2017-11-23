@@ -11,43 +11,6 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import { withStyles } from 'material-ui/styles';
 
-const suggestions = [
-  { label: 'Afghanistan' },
-  { label: 'Aland Islands' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'American Samoa' },
-  { label: 'Andorra' },
-  { label: 'Angola' },
-  { label: 'Anguilla' },
-  { label: 'Antarctica' },
-  { label: 'Antigua and Barbuda' },
-  { label: 'Argentina' },
-  { label: 'Armenia' },
-  { label: 'Aruba' },
-  { label: 'Australia' },
-  { label: 'Austria' },
-  { label: 'Azerbaijan' },
-  { label: 'Bahamas' },
-  { label: 'Bahrain' },
-  { label: 'Bangladesh' },
-  { label: 'Barbados' },
-  { label: 'Belarus' },
-  { label: 'Belgium' },
-  { label: 'Belize' },
-  { label: 'Benin' },
-  { label: 'Bermuda' },
-  { label: 'Bhutan' },
-  { label: 'Bolivia, Plurinational State of' },
-  { label: 'Bonaire, Sint Eustatius and Saba' },
-  { label: 'Bosnia and Herzegovina' },
-  { label: 'Botswana' },
-  { label: 'Bouvet Island' },
-  { label: 'Brazil' },
-  { label: 'British Indian Ocean Territory' },
-  { label: 'Brunei Darussalam' },
-];
-
 function renderInput(inputProps) {
   const { classes, autoFocus, value, ref, ...other } = inputProps;
 
@@ -104,25 +67,6 @@ function getSuggestionValue(suggestion) {
   return suggestion.label;
 }
 
-function getSuggestions(value) {
-  const inputValue = value.trim().toLowerCase();
-  const inputLength = inputValue.length;
-  let count = 0;
-
-  return inputLength === 0
-    ? []
-    : suggestions.filter(suggestion => {
-        const keep =
-          count < 5 && suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;
-
-        if (keep) {
-          count += 1;
-        }
-
-        return keep;
-      });
-}
-
 const styles = theme => ({
   container: {
     flexGrow: 1,
@@ -150,14 +94,19 @@ const styles = theme => ({
 });
 
 class IntegrationAutosuggest extends React.Component {
-  state = {
-    value: '',
-    suggestions: [],
-  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: '',
+      suggestions: [],
+      items: [],
+    };
+  }
 
   handleSuggestionsFetchRequested = ({ value }) => {
     this.setState({
-      suggestions: getSuggestions(value),
+      suggestions: this.getSuggestions(value),
     });
   };
 
@@ -172,6 +121,21 @@ class IntegrationAutosuggest extends React.Component {
       value: newValue,
     });
   };
+
+  getSuggestions = (value) => {
+    const inputValue = value.trim().toLowerCase();
+    let count = 0;
+  
+    return inputValue.length === 0 ? [] : this.props.items.filter(suggestion => {
+          const keep = count < 5 && suggestion.label.toLowerCase().slice(0, inputValue.length) === inputValue;
+  
+          if (keep) {
+            count ++;
+          }
+  
+          return keep;
+    });
+  }
 
   render() {
     const { classes } = this.props;
@@ -194,7 +158,7 @@ class IntegrationAutosuggest extends React.Component {
         inputProps={{
           autoFocus: true,
           classes,
-          placeholder: 'Search a country (start with a)',
+          placeholder: this.props.title,
           value: this.state.value,
           onChange: this.handleChange,
         }}

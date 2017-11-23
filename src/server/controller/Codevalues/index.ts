@@ -12,7 +12,7 @@ class Codevalues extends BaseController {
         super();
         this.router = Router();
 
-		this.router.get('/cities', this.getCities.bind(this));
+		this.router.get('/countries', this.getCountries.bind(this));
 		this.router.get('/animals', this.getAnimals.bind(this));
 		this.router.get('/companyCategories', this.getCompanyCategories.bind(this));
 		this.router.get('/', this.getByTypes.bind(this));
@@ -37,8 +37,8 @@ class Codevalues extends BaseController {
 
 	}
 
-	getCities(req: Request, res: Response) {
-		repo.getCities(this.getOrdinalResponseCallback(res));
+	getCountries(req: Request, res: Response) {
+		repo.getCountries(this.getOrdinalResponseCallback(res));
 	}
 
 	getAnimals(req: Request, res: Response) {

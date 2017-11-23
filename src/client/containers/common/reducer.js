@@ -14,8 +14,7 @@ const defaultState = {
 		role: 5
 	},
 
-	cities: [],
-	subway: [],
+	countries: [],
 	citiesAreLoaded: false,
 
 	companiesCategories: [],
@@ -35,7 +34,7 @@ const commonReducer = (state = defaultState, action) => {
 				animals: action.payload.animals,
 				animalsAreLoaded: true,
 
-				cities: action.payload.cities,
+				countries: action.payload.countries,
 				citiesAreLoaded: true
 			};
 
@@ -43,7 +42,7 @@ const commonReducer = (state = defaultState, action) => {
             return {
                 ...state,
 				animals: action.payload.animals,
-				cities: action.payload.cities,
+				countries: action.payload.countries,
 				daysOfWeek: action.payload.DAY_OF_WEEK,
                 companiesCategories: action.payload.categories
 			};
