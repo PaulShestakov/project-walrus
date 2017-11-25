@@ -18,6 +18,9 @@ export default {
 			(SELECT NAME FROM wikipet.code_values WHERE ID = c.COMPANY_SUBCATEGORY_ID) as subcategoryName,
 			c.NAME name,
 			c.LOGO logo,
+			c.VK vk,
+			c.FACEBOOK facebook,
+			c.INSTAGRAM instagram,
 			c.DESCRIPTION description,
 			c.EMAIL email,
 			c.WEBSITE_URL url,
@@ -86,13 +89,15 @@ export default {
 			c.COMPANY_ID companyId,
 			c.NAME name,
 			c.URL_ID url_id,
+			c.COMPANY_CATEGORY_ID categoryId,
+			c.COMPANY_SUBCATEGORY_ID subcategoryId,
 			c.LOGO logo,
 			c.DESCRIPTION description,
 			c.EMAIL email,
 			c.WEBSITE_URL url
 
 		FROM ${COMPANIES_TABLE} c
-		WHERE c.NAME LIKE ?
+		WHERE c.NAME LIKE ? AND c.COMPANY_SUBCATEGORY_ID = ?
 	`,
 	SAVE: `INSERT INTO ${COMPANIES_TABLE} set ?`,
 	UPDATE_COMPANY: `UPDATE ${COMPANIES_TABLE} SET ? WHERE COMPANY_ID = ?`,

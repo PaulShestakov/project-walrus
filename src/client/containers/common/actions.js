@@ -69,11 +69,11 @@ export function loadCompaniesCodeValues() {
 
 		if (!companiesCategories || companiesCategories.length === 0) {
 			const generalCodeValues = fetch('/api/v1/codevalue?type=DAY_OF_WEEK');
-			const citiesCodeValues = fetch('/api/v1/codevalue/cities');
+			const countiresCodeValues = fetch('/api/v1/codevalue/countries');
 			const animalsCodeValues = fetch('/api/v1/codevalue/animals');
 			const specificCodeValues = fetch('/api/v1/codevalue/companyCategories');
 
-			Promise.all([generalCodeValues, animalsCodeValues, citiesCodeValues, specificCodeValues]).then(results => {
+			Promise.all([generalCodeValues, animalsCodeValues, countiresCodeValues, specificCodeValues]).then(results => {
 				return results.map(result => {
 					if (result.ok) {
 						return result.json();
@@ -86,7 +86,7 @@ export function loadCompaniesCodeValues() {
 						payload: {
 							...values[0],
                             animals: values[1],
-							cities: values[2],
+							countries: values[2],
 							categories: sortCompaniesCategories(values[3])
 						}
 					});

@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { createSelector } from 'reselect'
+import { createSelector } from 'reselect';
+
+import FontAwesome from 'react-fontawesome';
 
 import {loadCompany, postFeedback, deleteFeedback} from "./actions";
 import { removeCompany } from '../CompaniesList/actionCreators/companiesList';
@@ -23,6 +25,7 @@ import NewFeedback from "./components/Feedback/NewFeedback/index";
 import Contacts from "./components/Contacts/index";
 import Authorized from "../../../containers/Authorized";
 import CrumbRoute from "../../../components/CrumbRoute/index"
+import Util from "../../util/index";
 
 
 @translate(['common'])
@@ -117,10 +120,6 @@ class CompanyPageContainer extends React.Component {
 		this.props.removeCompany(this.state.company.companyId, this.props.history);
 	};
 
-	getImageSrc() {
-		return encodeURI((this.props.company.logo || defaultCompanyImage).split('\\').join('\/'));
-	}
-
 	render() {
 		const {t, classes, company, common, markers, match } = this.props;
 		const { locationToDisplay } = this.state;
@@ -173,7 +172,7 @@ class CompanyPageContainer extends React.Component {
 								<Paper className="mx-auto h-100">
 									<CardMedia
 										className={classes.cardImage}
-										image={this.getImageSrc()}
+										image={Util.encodeUrl(company.logo, defaultCompanyImage)}
 									/>
 								</Paper>
 							</Grid>
@@ -193,7 +192,7 @@ class CompanyPageContainer extends React.Component {
 										<Grid item xs={12} className="d-flex align-items-center">
 											<Public className="mr-2"/>
 											<Typography component="p">
-												<a href={company.url} target="_blank">
+												<a href={company.url} target="_blank" rel="nofollow">
 													{company.url}
 												</a>
 											</Typography>
@@ -220,6 +219,37 @@ class CompanyPageContainer extends React.Component {
 													</Typography>
 												</Grid>
 											}
+										</Grid>
+									</Grid>
+									<Grid item xs={12}>
+										<Grid container>
+                                            {
+                                                [
+                                                    {
+                                                        link: company.vk,
+                                                        image: 'vk'
+                                                    },
+                                                    {
+                                                        link: company.facebook,
+                                                        image: 'facebook'
+                                                    },
+                                                    {
+                                                        link: company.instagram,
+                                                        image: 'instagram'
+                                                    }
+                                                ].map(item => {
+                                                    if (item.link) {
+                                                        return (
+															<Grid item>
+																<a href={item.link} target="_blank" rel="nofollow">
+																	<FontAwesome name={item.image}
+																				 className={classes.greyIcon} />
+																</a>
+															</Grid>
+                                                        )
+                                                    }
+                                                })
+                                            }
 										</Grid>
 									</Grid>
 								</Grid>

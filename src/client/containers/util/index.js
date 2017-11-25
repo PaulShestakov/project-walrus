@@ -60,4 +60,12 @@ export default class Util {
 	static ensureArray(item) {
 		return Array.isArray(item) ? item : (item ? [item] : []);
 	}
+
+	static encodeUrl(url, defaultUrl) {
+		const result = url || defaultUrl;
+		if (!result) {
+			return null;
+		}
+        return encodeURI((result).split('\\').join('\/'));
+	}
 }

@@ -10,6 +10,9 @@ interface Company {
     animals: Array<object>,
     companyCategoryId: string,
     companySubcategoryId: string,
+	vk: string,
+	facebook: string,
+	instagram: string,
 	locations: Array<object>,
 }
 

@@ -58,5 +58,12 @@ export default {
 	editIcon: {
 		color: 'white'
 	},
+    greyIcon: {
+        fontSize: '1.25rem',
+        color: 'grey',
+        marginRight: '0.5rem'
+    },
+
+
 
 }

@@ -1,5 +1,6 @@
 const CODE_VALUE_TABLE = 'wikipet.code_values';
 const COMPANIES_TABLE = 'wikipet.companies';
+const EXTENSION = 'wikipet.companies_code_values_ext';
 
 export default {
     TABLE_NAME: CODE_VALUE_TABLE,
@@ -19,16 +20,26 @@ export default {
             cv1.ID AS categoryId,
             cv1.NAME AS categoryName,
             cv1.SORT AS categorySort,
+            
+            ext.IMAGE_URL as catImageUrl,
+            ext.DESCRIPTION as catDescription,
 
             cv2.ID AS subcategoryId,
             cv2.NAME AS subcategoryName,
             cv2.SORT AS subcategorySort,
+            
+            ext1.IMAGE_URL as subCatImageUrl,
+            ext1.DESCRIPTION as subCatDescription,
 
             t0.number AS number
 
-        FROM ${CODE_VALUE_TABLE} AS cv1 
-        JOIN ${CODE_VALUE_TABLE} AS cv2 
+        FROM ${CODE_VALUE_TABLE} AS cv1
+        JOIN ${CODE_VALUE_TABLE} AS cv2
             ON cv2.GROUP LIKE CONCAT('%', cv1.ID, '%')
+        LEFT JOIN ${EXTENSION} as ext
+            ON cv1.ID = ext.ID
+        LEFT JOIN ${EXTENSION} as ext1
+            ON cv2.ID = ext1.ID
         LEFT JOIN
             (SELECT COMPANY_SUBCATEGORY_ID, COUNT(*) AS number FROM ${COMPANIES_TABLE} GROUP BY COMPANY_SUBCATEGORY_ID) as t0
             ON cv2.ID = t0.COMPANY_SUBCATEGORY_ID
@@ -36,8 +47,12 @@ export default {
         WHERE cv1.GROUP = 'COMPANY_CATEGORY'
     `,
 
-    GET_CITIES: `
+    GET_COUNTIRES: `
         SELECT
+            cv0.ID as countryId,
+            cv0.NAME as countryName,
+            cv0.SORT as countrySort,
+
             cv1.ID AS cityId,
             cv1.NAME AS cityName,
             cv1.SORT AS citySort,
@@ -50,7 +65,10 @@ export default {
             cv3.NAME AS citySubwayName,
             cv3.SORT AS citySubwaySort
 
-        FROM ${CODE_VALUE_TABLE} AS cv1
+        FROM ${CODE_VALUE_TABLE} AS cv0
+
+        LEFT JOIN ${CODE_VALUE_TABLE} AS cv1
+            ON cv1.GROUP LIKE CONCAT('CITY.', cv0.ID, '%')
 
         LEFT JOIN ${CODE_VALUE_TABLE} AS cv2
             ON cv2.GROUP LIKE CONCAT('CITY.', cv1.ID, '%')
@@ -58,7 +76,7 @@ export default {
         LEFT JOIN ${CODE_VALUE_TABLE} AS cv3
             ON cv3.GROUP LIKE CONCAT('SUBWAY.', cv1.ID, '%')
 
-        WHERE cv1.GROUP = 'CITY'
+        WHERE cv0.GROUP = 'COUNTRY'
     `,
 
     GET_ANIMALS: `

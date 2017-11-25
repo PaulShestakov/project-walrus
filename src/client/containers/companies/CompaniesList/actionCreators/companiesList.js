@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import {stateDataToUrlQuery} from '../reducers/filterReducer';
+import Utils from "../../../util/index";
 
 export const LOAD_COMPANIES_START = 'companiesList/LOAD_COMPANIES_START';
 export const LOAD_COMPANIES_SUCCESS = 'companiesList/LOAD_COMPANIES_SUCCESS';
@@ -84,9 +85,9 @@ const fuzzySearchLoadCompaniesSuccess = (data) => ({
 	payload: data
 });
 
-export const fuzzySearchLoadCompanies = (searchQuery) => {
+export const fuzzySearchLoadCompanies = (searchData) => {
 	return (dispatch) => {
-		return fetch(`${baseUrl}/company/fuzzySearch?searchQuery=${searchQuery}`).then(
+		return fetch(`${baseUrl}/company/fuzzySearch${Utils.objectToUrlQuery(searchData)}`).then(
 			response => {
 				if (response.ok) {
 					return response.json();
