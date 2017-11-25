@@ -1,7 +1,7 @@
 // collects all the filter constrains
 import * as _ from 'lodash';
 
-export function isBreedsVisible(filter, animal) {
+export function isBreedsVisible(filter) {
     let { companySubcategoryId } = filter;
     companySubcategoryId = _.toUpper(companySubcategoryId);
     return ['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(companySubcategoryId);

@@ -172,6 +172,25 @@ class NewCompanyContainer extends React.Component {
                         </Grid>
 
                         <Grid item xs={11}>
+                            <Title>Социальные сети</Title>
+                            <Field name="vk"
+                                   className="my-1"
+                                   component={Input}
+                                   placeholder="Vk"
+                                   fullWidth/>
+                            <Field name="facebook"
+                                   className="my-1"
+                                   component={Input}
+                                   placeholder="Facebook"
+                                   fullWidth/>
+                            <Field name="instagram"
+                                   className="my-1"
+                                   component={Input}
+                                   placeholder="Instagram"
+                                   fullWidth/>
+                        </Grid>
+
+                        <Grid item xs={11}>
                             <Title>Описание</Title>
                             <Field name="description"
                                    component={Input}

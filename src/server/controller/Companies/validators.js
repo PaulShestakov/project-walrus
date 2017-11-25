@@ -14,13 +14,14 @@ export default {
                 "enum": ["true", "false"]
             },
             "cityId": {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                }
+                "type": "string",
+            },
+            "animalId": {
+                "type": "string"
             }
-        },
+        }
+        ,
     
-        "required": ["companyCategoryId", "companySubcategoryId", "isWorkingNow"]
+        "required": ["companyCategoryId", "companySubcategoryId"]
     }
 }

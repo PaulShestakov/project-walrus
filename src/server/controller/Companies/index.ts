@@ -134,21 +134,6 @@ class Companies extends BaseController {
 		}
 	}
 
-	// private getFeedbacks(req: Request, res: Response) {
-	// 	const { url_id } = req.params;
-	// 	if (url_id) {
-	// 		FeedbacksRepository.getFeedbacks(decodeURI(url_id), (error, result) => {
-	// 			if (error) {
-	// 				this.errorResponse(res, 500, error);
-	// 			} else {
-	// 				this.okResponse(res, result);
-	// 			}
-	// 		});
-	// 	} else {
-	// 		this.errorResponse(res, 400, 'Company url_id was not provided');
-	// 	}
-	// }
-
 	private deleteFeedback(req: Request, res: Response) {
 		const { feedbackId } = req.params;
 		if (feedbackId) {

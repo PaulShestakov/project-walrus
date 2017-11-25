@@ -22,4 +22,13 @@ export default {
 		width: '3rem',
 		height: '3rem'
 	},
+
+	h1Style: {
+		textTransform: 'uppercase',
+		color: globalStyle.ACCENT_RED,
+		fontWeight: 'bold',
+		fontFamily: globalStyle.BEBAS_FONT,
+		fontSize: '2.5rem',
+		margin: '5px 0'
+	},
 }

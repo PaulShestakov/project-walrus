@@ -24,9 +24,8 @@ export default class Contacts extends React.Component {
     };
 
     render() {
-        const { classes, locations = [], markers, match } = this.props;
-        const { selectedMarker } = this.state;
-        const baseUrl = `/company/${match.params.categoryId}/${match.params.subCategoryId}/${match.params.url_id}`; 
+        const { classes, locations = [], markers, match: {params: { companyCategoryId, companySubcategoryId, url_id  }} } = this.props;
+        const baseUrl = `/company/${companyCategoryId}/${companySubcategoryId}/company/${url_id}`;
         return (
             <div className="mt-3">
             {

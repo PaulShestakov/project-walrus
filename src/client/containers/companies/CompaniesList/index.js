@@ -2,98 +2,35 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {createSelector} from 'reselect'
 
-import {Link} from 'react-router-dom';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Title, Grid, Card, Label, Text, TextField, Button, ConfirmDialog, InfoDialog } from "components";
+import {Title, Grid, Card, Label, Text, TextField, Button, ConfirmDialog, InfoDialog, Finder } from "components";
 import CompanyItem from './components/CompanyItem/index'
 import Sidebar from './components/Sidebar/index';
 import classNames from 'classnames';
 import styles from './styles';
-import Autosuggest from 'react-autosuggest';
-import Paper from 'material-ui/Paper';
-import {MenuItem} from 'material-ui/Menu';
-import { CircularProgress } from 'material-ui/Progress';
+import { CircularProgress } from 'material-ui';
 import { extendCodeValues } from '../selectors';
 import * as filterConstrains from './filterConstrains';
 
 import {
 	loadCompanies,
-
 	fuzzySearchLoadCompanies,
 	clearFuzzySearchLoadedCompanies,
 	suggestionInputValueChange,
 	removeCompany,
-
     componentLeave,
 } from "./actionCreators/companiesList";
 
 import {
 	updateStateWithUrlSource,
 	updateUrlWithStateSource,
-
-	addCity,
-	removeCity,
 	addSubway,
 	removeSubway,
-	addAnimal,
-	removeAnimal,
 	addBreed,
 	removeBreed,
-
 	setIsWorkingNow,
 } from "./actionCreators/filter";
-
-
-function renderInput(inputProps) {
-	const { classes, autoFocus, value, ref, ...other } = inputProps;
-
-	return (
-		<TextField
-			autoFocus={autoFocus}
-			fullWidth
-			value={value}
-			inputRef={ref}
-			InputProps={{
-				classes: {
-					input: classes.input,
-				},
-				...other,
-			}}
-		/>
-	);
-}
-
-function renderSuggestionsContainer(options) {
-	const { containerProps, children } = options;
-
-	return (
-		<Paper {...containerProps} square>
-			{children}
-		</Paper>
-	);
-}
-
-function renderSuggestion(classes, match, company, { query, isHighlighted }) {
-	return (
-		<MenuItem component="div" className="p-3" classes={{root: classes.suggestionMenuItem}}>
-			<Link to={`${match.url}/${company.url_id}`} className={classes.suggestionItemLink}>
-				<Paper>
-					<img src={company.logo} className={classes.suggestionImage}/>
-				</Paper>
-
-				<div className="ml-2">
-					<Label uppercase bold fontSize="1.5rem">{company.name}</Label>
-					<Text className="mt-1" maxLines={2}>{company.description}</Text>
-				</div>
-			</Link>
-		</MenuItem>
-	);
-}
-
-function getSuggestionValue(suggestion) {
-	return suggestion.name;
-}
 
 
 @translate(['companiesList'])
@@ -114,21 +51,30 @@ class CompaniesListContainer extends React.Component {
 
 	componentDidMount() {
 		const { updateStateWithUrlSource, match, loadCompanies, location } = this.props;
+		const { companyCategoryId, companySubcategoryId, countryId, cityId } = match.params;
+
 		const searchParams = new URLSearchParams(location.search);
-		searchParams.set('companyCategoryId', match.params.categoryId);
-		searchParams.set('companySubcategoryId', match.params.subCategoryId);
+		searchParams.append('companyCategoryId', companyCategoryId);
+		searchParams.append('companySubcategoryId', companySubcategoryId);
+		if (countryId) {
+            searchParams.append('selectedCountryId', countryId);
+		}
+		if (cityId) {
+            searchParams.append('selectedCityId', cityId);
+		}
+
+		this.state.companyBaseUrl = `/company/${companyCategoryId}/${companySubcategoryId}/company/`;
         updateStateWithUrlSource(searchParams);
         loadCompanies();
 	}
 
 	handleSuggestionsFetchRequested = (change) => {
 		if (this.props.main.suggestionInputValue !== change.value) {
-			this.props.fuzzySearchLoadCompanies(change.value);
+			this.props.fuzzySearchLoadCompanies({
+                searchQuery: change.value,
+				subcategoryId: this.props.match.params.companySubcategoryId,
+			});
 		}
-	};
-
-	handleSuggestionsClearRequested = () => {
-		this.props.clearFuzzySearchLoadedCompanies();
 	};
 
 	handleChange = (event, { newValue }) => {
@@ -166,82 +112,25 @@ class CompaniesListContainer extends React.Component {
 		this.props.componentLeave();
 	}
 
-	// handleCheckboxPressed = (event) => {
-    //     switch(event.target.name) {
-    //         case 'cities': {
-    //             if (event.target.checked) {
-    //                 this.props.addCity(event.target.value);
-    //             } else {
-	// 				const cityId = event.target.value;
-	// 				const foundCity = this.props.common.allCities.find(city => city.value === cityId);
-	// 				let subwayIds = [];
-	// 				if (foundCity.subways) {
-	// 					subwayIds = foundCity.subways.map(subway => subway.value);
-	// 				}
-    //                 this.props.removeCity(cityId, subwayIds);
-    //             }
-    //             break;
-    //         }
-    //         case 'subways': {
-    //             if (event.target.checked) {
-    //                 this.props.addSubway(event.target.value);
-    //             } else {
-    //                 this.props.removeSubway(event.target.value);
-    //             }
-    //             break;
-    //         }
-    //         case 'animals': {
-    //             if (event.target.checked) {
-    //                 this.props.addAnimal(event.target.value);
-    //             } else {
-	// 				const animalId = event.target.value;
-	// 				const breedIds = this.props.common.animals
-	// 					.find(animal => animal.value === animalId).breeds
-	// 					.map(breed => breed.value);
-    //                 this.props.removeAnimal(animalId, breedIds);
-    //             }
-    //             break;
-    //         }
-    //         case 'breeds': {
-    //             if (event.target.checked) {
-    //                 this.props.addBreed(event.target.value);
-    //             } else {
-    //                 this.props.removeBreed(event.target.value);
-    //             }
-    //             break;
-    //         }
-    //     }
-    //     this.props.updateUrlWithStateSource(this.props.history);
-    //     this.props.loadCompanies();
-	// };
-
 	render() {
-		const { t, companies, classes, match, main } = this.props;
+		const { t, companies, classes, match, main, clearFuzzySearchLoadedCompanies } = this.props;
 
 		return (
 			<Grid container className="my-3">
 				<Grid item xs={9} className={classes.companiesListBlock}>
 					<Card className={classNames(classes.searchInputWrapper)}>
-						<Autosuggest
-							theme={{
-								container: classNames(classes.container, 'p-3'),
-								suggestionsContainerOpen: classes.suggestionsContainerOpen,
-								suggestionsList: classes.suggestionsList,
-								suggestion: classes.suggestion,
-							}}
-							renderInputComponent={renderInput}
-							suggestions={this.props.main.fuzzySearchCompanies}
-							onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-							onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-							renderSuggestionsContainer={renderSuggestionsContainer}
-							getSuggestionValue={getSuggestionValue}
-							renderSuggestion={renderSuggestion.bind(null, classes, match)}
-							inputProps={{
-								autoFocus: false,
-								classes,
-								placeholder: t('SECTION_SEARCH'),
-								value: this.props.main.suggestionInputValue,
-								onChange: this.handleChange,
+						<Finder
+							values={main.fuzzySearchCompanies}
+							placeholder={t('SECTION_SEARCH')}
+							value={main.suggestionInputValue}
+							onChange={this.handleChange}
+							handleSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+							handleSuggestionsClearRequested={clearFuzzySearchLoadedCompanies}
+							suggestionData={{
+                                getLink: company => `/company/${company.categoryId}/${company.subcategoryId}/company/${company.url_id}`,
+                                getLogo: company => company.logo,
+                                getTitle: company => company.name,
+                                getDescription: company => company.description
 							}}
 						/>
 					</Card>
@@ -255,6 +144,7 @@ class CompaniesListContainer extends React.Component {
 								return (
 									<CompanyItem
 										key={company.companyId}
+										companyBaseUrl={this.state.companyBaseUrl}
 										company={company}
 										match={match}
 										deleteAction={this.deleteCompany}
@@ -355,7 +245,7 @@ const getFlatCompanies = createSelector(
 const getFilterValues = createSelector(
 	[getFilter, getCommon],
 	(filter, common) => {
-		const { selectedCountry, selectedCity, companyCategoryId, companySubcategoryId, selectedAnimalsIds } = filter;
+		const { selectedCountry, selectedCity, selectedAnimalId } = filter;
 
 		const codeValueMapper = (item) => ({
 			value: item.value,
@@ -416,7 +306,7 @@ const getFilterValues = createSelector(
 				const values = [];
 				if (result.breeds.isVisible) {
 					result.animals.forEach(animal => {
-						if (selectedAnimalsIds.includes(animal.value)) {
+						if (selectedAnimalId === animal.value) {
 							values.push(...animal.breeds);
 						}
 					});
@@ -449,13 +339,9 @@ const CompaniesList = connect(
 		updateStateWithUrlSource,
 		updateUrlWithStateSource,
 
-		addCity,
-		removeCity,
 		addSubway,
 		removeSubway,
 		removeCompany,
-		addAnimal,
-		removeAnimal,
 		addBreed,
 		removeBreed,
 

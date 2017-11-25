@@ -11,6 +11,7 @@ import {Paper} from "material-ui";
 import defaultImage from '../../../../../assets/img/company-default.png';
 import {ModeEdit as ModeEditIcon, DeleteForever as Delete, Block} from 'material-ui-icons';
 import Authorized from "../../../../Authorized";
+import Util from "../../../../util/index";
 
 
 @translate(['companiesList'])
@@ -37,29 +38,29 @@ export default class CompanyItem extends React.Component {
 		this.props.handleAction(value);
 	};
 
-	getImageSrc() {
-		return encodeURI((this.props.company.logo || defaultImage).split('\\').join('\/'));
-	}
-
 	render() {
-		const { t, classes, company, match } = this.props;
+		const { t, classes, company, match, companyBaseUrl } = this.props;
 
 		return (
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>
 				<Grid container justify="center" spacing={24}>
+
 					<Grid item xs={5} md={3}>
-						<Link to={`${match.url}/${encodeURI(company.url_id)}`}>
+						<Link to={companyBaseUrl + encodeURI(company.url_id)}>
 							<Paper className="h-100 d-flex">
 								<CardMedia
 									className={classes.cardImage}
-									image={this.getImageSrc()} />
+									image={Util.encodeUrl(company.logo, defaultImage)} />
 							</Paper>
 						</Link>
 					</Grid>
+
 					<Grid item xs={7} md={9}>
 						<Grid container className={classNames(classes.cardContent, 'p-0')}>
+
 							<Grid item className={classes.headerWrapper}>
-								<Link to={`${match.url}/${encodeURI(company.url_id)}`} className={classes.headerLink}>
+
+								<Link to={companyBaseUrl + encodeURI(company.url_id)} className={classes.headerLink}>
 									<Label uppercase bold fontSize="2rem">
 										{company.name}
 									</Label>
@@ -80,7 +81,22 @@ export default class CompanyItem extends React.Component {
 										<Delete className={classes.editIcon} />
 									</Button>
 								</Authorized>
+
 							</Grid>
+
+							<Grid item className={classNames(classes.flexRow)}>
+								<Link to={`${companyBaseUrl + encodeURI(company.url_id)}/feedbacks`}>
+									<div className={classes.flexRow}>
+										<Rating
+											readOnly
+											value={company.averageRating}
+											itemStyle={classes.small}
+											itemIconStyle={classes.smallIcon}/>
+										<Text>Отзывов : {company.numberOfFeedbacks}</Text>
+									</div>
+								</Link>
+							</Grid>
+
 							<Grid item className={classes.flexRow}>
 								<FontAwesome name="map-marker" className={classes.icon} />
 								<Text>{ company.mainLocation.cityName + ': ' + company.mainLocation.address } </Text>
@@ -92,16 +108,38 @@ export default class CompanyItem extends React.Component {
 									<Text>{company.url}</Text>
 								</Grid>
 							}
-							<Grid item className={classNames(classes.flexRow)}>
-								<Link to={`${match.url}/${company.url_id}/feedbacks`}>
-									<div className={classes.flexRow}>
-										<Rating 
-											readOnly
-											value={company.averageRating}/>
-										<Text>Отзывов : {company.numberOfFeedbacks}</Text>
-									</div>
-								</Link>
+							<Grid item>
+								<Grid container>
+                                    {
+                                        [
+                                        	{
+                                        		link: company.vk,
+												image: 'vk'
+											},
+											{
+                                        		link: company.facebook,
+												image: 'facebook'
+											},
+											{
+												link: company.instagram,
+												image: 'instagram'
+											}
+										].map(item => {
+                                            if (item.link) {
+                                                return (
+													<Grid item>
+														<a href={item.link} target="_blank" rel="nofollow">
+															<FontAwesome name={item.image}
+																		 className={classes.greyIcon} />
+														</a>
+													</Grid>
+                                                )
+                                            }
+                                        })
+                                    }
+								</Grid>
 							</Grid>
+
 							<Grid item className={classes.buttonsBlock}>
 								<Button className="mr-2 mt-2 text-white" accent="white"
 									onClick={this.props.handleOpenWorkingTimeDialog.bind(null, company.mainLocation.workingTimes)}>
@@ -120,8 +158,10 @@ export default class CompanyItem extends React.Component {
 									</Link>
 								}
 							</Grid>
+
 						</Grid>
 					</Grid>
+
 				</Grid>				
 			</Card>
 		);

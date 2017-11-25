@@ -1,20 +1,3 @@
-export const COMPANIES_LIST_ADD_CITY = 'COMPANIES_LIST_ADD_CITY';
-export const COMPANIES_LIST_REMOVE_CITY = 'COMPANIES_LIST_REMOVE_CITY';
-export const addCity = (cityId) => {
-	return {
-		type: COMPANIES_LIST_ADD_CITY,
-		payload: cityId
-	};
-};
-export const removeCity = (cityId, subwayIds) => {
-	return {
-		type: COMPANIES_LIST_REMOVE_CITY,
-		payload: {
-            cityId,
-            subwayIds
-        }
-	};
-};
 
 export const COMPANIES_LIST_ADD_SUBWAY = 'COMPANIES_LIST_ADD_SUBWAY';
 export const COMPANIES_LIST_REMOVE_SUBWAY = 'COMPANIES_LIST_REMOVE_SUBWAY';
@@ -28,25 +11,6 @@ export const removeSubway = (subwayId) => {
     return {
         type: COMPANIES_LIST_REMOVE_SUBWAY,
         payload: subwayId
-    };
-};
-
-
-export const COMPANIES_LIST_ADD_ANIMAL = 'COMPANIES_LIST_ADD_ANIMAL';
-export const COMPANIES_LIST_REMOVE_ANIMAL = 'COMPANIES_LIST_REMOVE_ANIMAL';
-export const addAnimal = (animalId) => {
-    return {
-        type: COMPANIES_LIST_ADD_ANIMAL,
-        payload: animalId
-    };
-};
-export const removeAnimal = (animalId, breedIds) => {
-    return {
-        type: COMPANIES_LIST_REMOVE_ANIMAL,
-        payload: {
-            animalId,
-            breedIds
-        }
     };
 };
 

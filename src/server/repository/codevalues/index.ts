@@ -41,25 +41,37 @@ class CodeValues extends BaseCRUD {
                 return callback(error);
             }
 
-            const reducedRows = rows.reduce((accum, row) => {
-                if (!accum[row.categoryId]) {
-                    accum[row.categoryId] = {
-                        value: row.categoryId,
-                        label: row.categoryName,
-                        sort: row.categorySort,
-                        subcategories: []
-                    }
-                }
-                accum[row.categoryId].subcategories.push({
-                    value: row.subcategoryId,
-                    label: row.subcategoryName,
-                    sort: row.subcategorySort,
-                    count: row.number ? row.number : 0
-                });
-                return accum;
-            }, {});
+            const mapCategory = (item) => ({
+                value: item.categoryId,
+                label: item.categoryName,
+                sort: item.categorySort,
+                imageUrl: item.catImageUrl,
+                description: item.catDescription,
+            });
 
-            callback(error, Object.values(reducedRows));
+            const mapSubCategory = (item) => ({
+                value: item.subcategoryId,
+                label: item.subcategoryName,
+                sort: item.subcategorySort,
+                imageUrl: item.subCatImageUrl,
+                description: item.subCatDescription,
+                count: item.number ? item.number : 0
+            });
+
+            const shape = {
+                name: 'categories',
+                idName: 'categoryId',
+                map: mapCategory,
+                children: [
+                    {
+                        name: 'subcategories',
+                        idName: 'subcategoryId',
+                        map: mapSubCategory
+                    }
+                ]
+            };
+            const categories = Util.reduceFlatData(rows, shape).categories;
+            callback(null, Util.ensureArray(categories));
         });
     }
 

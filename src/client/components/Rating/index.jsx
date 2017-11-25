@@ -59,7 +59,7 @@ export default class Rating extends Component {
           disabled={this.props.disabled}
           iconStyle={this.props.itemIconStyle}
           iconClassName={this.props.iconClassName}
-          style={this.props.itemStyle}
+          style={{...this.props.itemStyle}}
           tooltip={tooltip}
           tooltipPosition={this.props.tooltipPosition}
           tooltipStyles={this.props.tooltipStyles}
@@ -96,7 +96,7 @@ Rating.defaultProps = {
   max: 5,
   readOnly: false,
   value: 0
-}
+};
 
 Rating.propTypes = {
   className: PropTypes.string,
@@ -119,4 +119,4 @@ Rating.propTypes = {
   readOnly: PropTypes.bool,
   style: PropTypes.object,
   value: PropTypes.number
-}
+};

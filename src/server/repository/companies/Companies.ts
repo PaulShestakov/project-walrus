@@ -26,6 +26,9 @@ export default class Companies extends BaseCRUD  {
 		logo: item.logo,
 		description: item.description,
 		email: item.email,
+		vk: item.vk,
+		facebook: item.facebook,
+		instagram: item.instagram,
 		url: item.url,
 		numberOfLocations: item.locationsCount,
 		numberOfFeedbacks: item.numberOfFeedbacks || 0,
@@ -47,6 +50,9 @@ export default class Companies extends BaseCRUD  {
 			DESCRIPTION: company.description,
 			EMAIL: company.email,
 			WEBSITE_URL: company.url,
+			VK: company.vk,
+			FACEBOOK: company.facebook,
+			INSTAGRAM: company.instagram,
 		};
 	}
 
@@ -158,30 +164,30 @@ export default class Companies extends BaseCRUD  {
 	}
 
 	static getFiltered(params, callback): void {
-		const companyCategoryId = params.companyCategoryId;
-		const companySubcategoryId = params.companySubcategoryId;
-		const citiesIds = Util.ensureArray(params.cityId);
-		const animalsIds = Util.ensureArray(params.animalId);
+		const { companyCategoryId, companySubcategoryId, cityId, countryId, animalId } = params;
 		const subwaysIds = Util.ensureArray(params.subwayId);
 		const breedsIds = Util.ensureArray(params.breedId);
-		const isWorkingNow = params.isWorkingNow === 'true';
+		const isWorkingNow = params.isWorkingNow && params.isWorkingNow === 'true';
 
 		let filter = squel.expr();
 
-		if (companyCategoryId && companyCategoryId !== 'ALL') {
+		if (companyCategoryId) {
 			filter = filter.and('c.COMPANY_CATEGORY_ID = ?', companyCategoryId);
 		}
-		if (companySubcategoryId && companySubcategoryId !== 'ALL') {
+		if (companySubcategoryId) {
 			filter = filter.and('c.COMPANY_SUBCATEGORY_ID = ?', companySubcategoryId);
 		}
-		if (citiesIds.length > 0) {
-			filter = filter.and('l.CITY_ID IN ?', citiesIds);
+		if (countryId) {
+			filter = filter.and('l.COUNTRY_ID = ?', countryId);
+		}
+		if (cityId) {
+			filter = filter.and('l.CITY_ID = ?', cityId);
 		}
 		if (subwaysIds.length > 0) {
 			filter = filter.and('l.SUBWAY_ID IN ?', subwaysIds);
 		}
-		if (animalsIds.length > 0) {
-			filter = filter.and('ca.ANIMAL_ID IN ?', animalsIds);
+		if (animalId) {
+			filter = filter.and('ca.ANIMAL_ID = ?', animalId);
 		}
 		if (breedsIds.length > 0) {
 			filter = filter.and('ca.BREED_ID IN ?', breedsIds);
@@ -202,9 +208,13 @@ export default class Companies extends BaseCRUD  {
 				.field('c.NAME', 'name')
 				.field('c.COMPANY_CATEGORY_ID', 'categoryId')
 				.field('c.COMPANY_SUBCATEGORY_ID', 'subcategoryId')
+            	.field('cv0.NAME', 'subcategoryName')
 				.field('c.LOGO', 'logo')
 				.field('c.DESCRIPTION', 'description')
 				.field('c.EMAIL', 'email')
+				.field('c.VK', 'vk')
+				.field('c.FACEBOOK', 'facebook')
+				.field('c.INSTAGRAM', 'instagram')
 				.field('c.WEBSITE_URL', 'url')
 				.field( squel.select()
 							.field('COUNT(*)')
@@ -261,6 +271,7 @@ export default class Companies extends BaseCRUD  {
 		}
 			
 		sql = sql
+            .left_join('wikipet.code_values', 'cv0', "cv0.ID = c.COMPANY_SUBCATEGORY_ID")
 			.left_join('wikipet.code_values', 'cv1', "cv1.ID = l.CITY_ID")
 			.left_join('wikipet.code_values', 'cv2', "cv2.ID = t.DAY_OF_WEEK")
 			.left_join('wikipet.companies_animals', 'ca', 'c.COMPANY_ID = ca.COMPANY_ID')
@@ -311,9 +322,9 @@ export default class Companies extends BaseCRUD  {
 	}
 
 	static fuzzySearch(queryParams, callback): void {
-		const searchQuery = queryParams.searchQuery;
+		const { searchQuery, subcategoryId } = queryParams;
 
-		executeQuery(Queries.GET_BY_NAME, `%${searchQuery}%`, (error, data) => {
+		executeQuery(Queries.GET_BY_NAME, [`${searchQuery}%`, subcategoryId], (error, data) => {
 			if (error) {
 				callback(error);
 				return;
