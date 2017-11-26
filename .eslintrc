@@ -1,0 +1,19 @@
+{
+  "env": {
+    "es6": true
+  },
+
+  "parser": "babel-eslint",
+
+
+  "rules": {
+    "strict": 0,
+    "semi": ["error", "always"],
+    "quotes": ["error", "single", { "allowTemplateLiterals": true, "avoidEscape": true }],
+    "indent": ["error", "tab"]
+  },
+
+  "plugins": [
+    "react"
+  ]
+}

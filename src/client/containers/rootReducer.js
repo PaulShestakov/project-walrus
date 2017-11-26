@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 import newPromoReducer from './promos/NewPromo/reducer';
-import newCompanyReducer from './companies/NewCompany/reducer'
+import newCompanyReducer from './companies/NewCompany/reducer';
 
 import promoPageReducer from './promos/PromoPage/reducer';
 import companyPageReducer from './companies/CompanyPage/reducer';
@@ -13,10 +13,10 @@ import companiesListReducer from './companies/CompaniesList/reducers/companiesLi
 import {companiesFilterReducer} from './companies/CompaniesList/reducers/filterReducer';
 
 import commonReducer from './common/reducer';
-import { reducer as formReducer } from 'redux-form'
+import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
-    form: formReducer,
+	form: formReducer,
 	common: commonReducer,
 
 	newPromo: newPromoReducer,
