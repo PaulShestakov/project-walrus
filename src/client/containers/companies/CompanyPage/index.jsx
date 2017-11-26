@@ -128,6 +128,22 @@ class CompanyPageContainer extends React.Component {
 		if (locationToDisplay && locationToDisplay.cityName) {
 			companyName += " г. " + locationToDisplay.cityName;
 		}
+		const socialLinks = [
+            {link: company.vk, image: 'vk'},
+            {link: company.facebook, image: 'facebook'},
+            {link: company.instagram,image: 'instagram'}
+        ].map(item => {
+            if (item.link) {
+                return (
+					<Grid item>
+						<a href={item.link} target="_blank" rel="nofollow">
+							<FontAwesome name={item.image}
+										 className={classes.greyIcon} />
+						</a>
+					</Grid>
+                )
+            }
+        });
 		return (
 			<div className={classes.mainCardWrapper}>
 				<Card raised className={classNames(classes.mainCard, "my-3")}>
@@ -221,37 +237,15 @@ class CompanyPageContainer extends React.Component {
 											}
 										</Grid>
 									</Grid>
-									<Grid item xs={12}>
-										<Grid container>
-                                            {
-                                                [
-                                                    {
-                                                        link: company.vk,
-                                                        image: 'vk'
-                                                    },
-                                                    {
-                                                        link: company.facebook,
-                                                        image: 'facebook'
-                                                    },
-                                                    {
-                                                        link: company.instagram,
-                                                        image: 'instagram'
-                                                    }
-                                                ].map(item => {
-                                                    if (item.link) {
-                                                        return (
-															<Grid item>
-																<a href={item.link} target="_blank" rel="nofollow">
-																	<FontAwesome name={item.image}
-																				 className={classes.greyIcon} />
-																</a>
-															</Grid>
-                                                        )
-                                                    }
-                                                })
-                                            }
+									{
+										socialLinks.length > 0 &&
+										<Grid item xs={12}>
+											<Grid container>
+                                                {socialLinks}
+											</Grid>
 										</Grid>
-									</Grid>
+									}
+
 								</Grid>
 							</Grid>
 						</Grid>

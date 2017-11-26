@@ -68,7 +68,11 @@ export function loadCompaniesCodeValues() {
 		const { companiesCategories } = getState().common;
 
 		if (!companiesCategories || companiesCategories.length === 0) {
-			const generalCodeValues = fetch('/api/v1/codevalue?type=DAY_OF_WEEK');
+			let codeValuesUrl = '/api/v1/codevalue?';
+            ['DAY_OF_WEEK', 'DRUGS_TYPE', 'CLINICS_SERVICES', 'TORG_TYPE', 'SPECIALIST_DIRECTION'].forEach(i => {
+                codeValuesUrl += '&type[]=' + i;
+			});
+			const generalCodeValues = fetch(codeValuesUrl);
 			const countiresCodeValues = fetch('/api/v1/codevalue/countries');
 			const animalsCodeValues = fetch('/api/v1/codevalue/animals');
 			const specificCodeValues = fetch('/api/v1/codevalue/companyCategories');

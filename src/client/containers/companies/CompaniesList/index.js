@@ -11,7 +11,6 @@ import classNames from 'classnames';
 import styles from './styles';
 import { CircularProgress } from 'material-ui';
 import { extendCodeValues } from '../selectors';
-import * as filterConstrains from './filterConstrains';
 
 import {
 	loadCompanies,
@@ -167,6 +166,8 @@ class CompaniesListContainer extends React.Component {
 						setIsWorkingNow={this.props.setIsWorkingNow}
 						updateUrlWithStateSource={this.props.updateUrlWithStateSource}
 						loadCompanies={this.props.loadCompanies}
+						category={this.props.match.params.companyCategoryId}
+						subcategory={this.props.match.params.companySubcategoryId}
 					/>
 				</Grid>
 
@@ -256,7 +257,7 @@ const getFilterValues = createSelector(
 		const result = {};
 
 		result.countries = {
-			isVisible: true,
+			//isVisible: true,
 			getValues: () => common.countries.reduce((acc, item) => {
 				acc.push(codeValueMapper(item));
 				return acc;
@@ -264,56 +265,69 @@ const getFilterValues = createSelector(
 		};
 
 		result.cities = {
-			isVisible: filterConstrains.isCitiesVisible(filter),
+			//isVisible: filterConstrains.isCitiesVisible(filter),
 			getValues: () => {
 				let values;
-				if (result.cities.isVisible) {
-					const foundCountry = common.countries.find(country => country.value === selectedCountry);
-					if (foundCountry) {
-						values = foundCountry.cities.reduce((acc, item) => {
-							
-							acc.push(codeValueMapper(item));
-							item.subCities.forEach(item => acc.push(codeValueMapper(item)));
-		
-							return acc;
-				
-						}, []).sort((cityA, cityB) => cityA.sort - cityB.sort);
-					}
+				const foundCountry = common.countries.find(country => country.value === selectedCountry);
+				if (foundCountry) {
+					values = foundCountry.cities.reduce((acc, item) => {
+
+						acc.push(codeValueMapper(item));
+						item.subCities.forEach(item => acc.push(codeValueMapper(item)));
+
+						return acc;
+
+					}, []).sort((cityA, cityB) => cityA.sort - cityB.sort);
 				}
 				return values || [];
 			}
 		};
 
 		result.subways = {
-			isVisible: filterConstrains.isSubwaysVisible(filter),
+			//isVisible: filterConstrains.isSubwaysVisible(filter),
 			getValues: () => {
-				if (result.subways.isVisible) {
-					const foundCity = result.cities.find(city => city.value === selectedCity);
-					return foundCity.subways || [];
-				}
-				return [];
+				const foundCity = result.cities.getValues().find(city => city.value === selectedCity);
+				return foundCity ? foundCity.subways : [];
 			}
 		};
 		
 		result.animals = {
-			isVisible: filterConstrains.isAnimalsVisible(filter),
-			getValues: () => result.animals.isVisible ? common.animals || [] : []
+			//isVisible: filterConstrains.isAnimalsVisible(filter),
+			getValues: () => common.animals
 		};
 
 		result.breeds = {
-			isVisible: !!result.animals.getValues() && filterConstrains.isBreedsVisible(filter),
+			//isVisible: !!result.animals.getValues() && filterConstrains.isBreedsVisible(filter),
 			getValues: () => {
 				const values = [];
-				if (result.breeds.isVisible) {
-					result.animals.forEach(animal => {
-						if (selectedAnimalId === animal.value) {
-							values.push(...animal.breeds);
-						}
-					});
-				}
+				result.animals.getValues().forEach(animal => {
+					if (selectedAnimalId === animal.value) {
+						values.push(...animal.breeds);
+					}
+				});
 				return values;
 			}
 		};
+
+		result.drugTypes = {
+            //isVisible: filterConstrains.isDrugsTypesVisible(filter),
+            getValues: () => common.drugsTypes
+		};
+
+        result.torgTypes = {
+            //isVisible: filterConstrains.isTorgTypeVisible(filter),
+            getValues: () => common.torgTypes
+        };
+
+        result.specDirections = {
+            //isVisible: filterConstrains.isSpecDirectionVisible(filter),
+            getValues: () => common.specialistDirections
+        };
+
+        result.clinicsServices = {
+            //isVisible: filterConstrains.isClinicsServicesVisible(filter),
+            getValues: () => common.clinicsServices
+        };
 
 		return result;
 	}

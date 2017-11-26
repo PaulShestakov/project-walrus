@@ -52,6 +52,14 @@ class CompaniesOverviewContainer extends React.Component {
 		});
 	}
 
+    handleSuggestionsFetchRequested = (change) => {
+        if (this.props.main.suggestionInputValue !== change.value) {
+            this.props.fuzzySearchLoadCompanies({
+                searchQuery: change.value,
+            });
+        }
+    };
+
     handleChange = (event, { newValue }) => {
         this.props.suggestionInputValueChange(newValue);
     };
@@ -64,7 +72,7 @@ class CompaniesOverviewContainer extends React.Component {
 	};
 
 	render() {
-		const { classes, common, match } = this.props;
+		const { classes, common, match, clearFuzzySearchLoadedCompanies } = this.props;
 
 		const icons = [
 			<Healing className={classes.tabIcon} />,
@@ -85,25 +93,27 @@ class CompaniesOverviewContainer extends React.Component {
 				<Text className="my-3">
 					{this.state.selectedCategory.description}
 				</Text>
-				<Grid container spacing={0} className="my-3">
-					<Grid item xs={9}>
-						<Finder
-							values={[]}
-							placeholder="Поиск компании"
-							value={''}
-							onChange={this.handleChange}
-							//handleSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-							handleSuggestionsClearRequested={clearFuzzySearchLoadedCompanies}
-							suggestionData={{
-                                getLink: company => `/company/${company.categoryId}/${company.subcategoryId}/company/${company.url_id}`,
-                                getLogo: company => Util.encodeUrl(company.logo, defaultImage),
-                                getTitle: company => company.title,
-                                getDescription: company => company.description
-							}}/>
+				<Grid container spacing={8} className="my-3">
+					<Grid item xs={9} className={classes.searchInputWrapper}>
+						<Card>
+							<Finder
+								values={this.props.main.fuzzySearchCompanies}
+								placeholder="Поиск компании"
+								value={this.props.main.suggestionInputValue}
+								onChange={this.handleChange}
+								handleSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+								handleSuggestionsClearRequested={clearFuzzySearchLoadedCompanies}
+								suggestionData={{
+                                    getLink: company => `/company/${company.categoryId.toLowerCase()}/${company.subcategoryId.toLowerCase()}/company/${company.url_id}`,
+                                    getLogo: company => Util.encodeUrl(company.logo, defaultImage),
+                                    getTitle: company => company.name,
+                                    getDescription: company => company.description
+                                }}/>
+						</Card>
 					</Grid>
 					<Grid item xs={3}>
 						<a href={addCompanyLink} className={classes.link}>
-							<Button accent="red" disableRipple className="w-100 mb-2">
+							<Button accent="red" disableRipple className="w-100 h-100 mb-2">
 								<FontAwesome name="plus" className="mr-1" />
 								Добавить компанию
 							</Button>
@@ -150,11 +160,14 @@ class CompaniesOverviewContainer extends React.Component {
 const CompaniesOverview = connect(
 	state => {
 		return {
-			...state
+			...state,
+            main: state.companiesList.main,
 		};
 	},
 	{
-        suggestionInputValueChange
+        suggestionInputValueChange,
+        fuzzySearchLoadCompanies,
+        clearFuzzySearchLoadedCompanies,
 	}
 )(CompaniesOverviewContainer);
 

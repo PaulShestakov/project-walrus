@@ -172,16 +172,16 @@ export default class Companies extends BaseCRUD  {
 		let filter = squel.expr();
 
 		if (companyCategoryId) {
-			filter = filter.and('c.COMPANY_CATEGORY_ID = ?', companyCategoryId);
+			filter = filter.and('c.COMPANY_CATEGORY_ID = ?', companyCategoryId.toUpperCase());
 		}
 		if (companySubcategoryId) {
-			filter = filter.and('c.COMPANY_SUBCATEGORY_ID = ?', companySubcategoryId);
+			filter = filter.and('c.COMPANY_SUBCATEGORY_ID = ?', companySubcategoryId.toUpperCase());
 		}
 		if (countryId) {
-			filter = filter.and('l.COUNTRY_ID = ?', countryId);
+			filter = filter.and('l.COUNTRY_ID = ?', countryId.toUpperCase());
 		}
 		if (cityId) {
-			filter = filter.and('l.CITY_ID = ?', cityId);
+			filter = filter.and('l.CITY_ID = ?', cityId.toUpperCase());
 		}
 		if (subwaysIds.length > 0) {
 			filter = filter.and('l.SUBWAY_ID IN ?', subwaysIds);
@@ -323,8 +323,14 @@ export default class Companies extends BaseCRUD  {
 
 	static fuzzySearch(queryParams, callback): void {
 		const { searchQuery, subcategoryId } = queryParams;
-
-		executeQuery(Queries.GET_BY_NAME, [`${searchQuery}%`, subcategoryId], (error, data) => {
+		const params = subcategoryId ? {
+			q: Queries.GET_BY_NAME_AND_SUBCATEGORY,
+			p: [`${searchQuery}%`, subcategoryId],
+		} : {
+			q: Queries.GET_BY_NAME,
+			p: [`${searchQuery}%`]
+		};
+		executeQuery(params.q, params.p, (error, data) => {
 			if (error) {
 				callback(error);
 				return;

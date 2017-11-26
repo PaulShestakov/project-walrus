@@ -32,6 +32,11 @@ const defaultState = {
 	selectedAnimalId: null,
 	selectedBreedsIds: [],
 
+    selectedDrugTypesIds: [],
+    selectedClinicsServices: [],
+	selectedSpecDirections: [],
+	selectedTorgTypes: [],
+
 	isWorkingNow: false
 };
 
