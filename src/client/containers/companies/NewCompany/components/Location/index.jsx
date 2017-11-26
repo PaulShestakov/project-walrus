@@ -60,9 +60,20 @@ export default class Location extends React.Component {
         }
     };
 
+    handleCountryChange = (item, index, member) => {
+        const { fields, countries } = this.props;
+        const foundCountry = countries.find(c => c.value === item.value);
+        if (foundCountry) {
+            fields.get(index).countryId = foundCountry;
+            fields.get(index).cities = foundCountry.allCities || [];
+            fields.get(index).cityId = null;
+            fields.get(index).subwayId = null;
+        }
+    };
+
     handleCityChange = (item, index, member) => {
-        const { fields, allCities } = this.props;
-        const foundCity = allCities.find(city => item.value === city.value);
+        const { fields } = this.props;
+        const foundCity = fields.get(index).cities.find(city => item.value === city.value);
         if (foundCity) {
             fields.get(index).cityId = foundCity;
             fields.get(index).subways = foundCity.subways || [];
@@ -93,7 +104,7 @@ export default class Location extends React.Component {
     };
 
     render() {
-        const { classes, fields, allCities, formLocations } = this.props;
+        const { countries, classes, fields, formLocations } = this.props;
         return (
             <div>
                 <Grid item>
@@ -168,12 +179,20 @@ export default class Location extends React.Component {
                                         </Grid>
                                     }
                                     <Grid item xs={12} className="my-2">
+                                        <Title>Страна</Title>
+                                        <Field
+                                            name={`${member}.countryId`}
+                                            component={Dropdown}
+                                            onChange={(item) => this.handleCountryChange(item, index, member)}
+                                            options={countries}/>
+                                    </Grid>
+                                    <Grid item xs={12} className="my-2">
                                         <Title>Город</Title>
                                         <Field
                                             name={`${member}.cityId`}
                                             component={Dropdown}
                                             onChange={(item) => this.handleCityChange(item, index, member)}
-                                            options={allCities}/>
+                                            options={curField.cities}/>
                                     </Grid>
                                     <Grid item xs={12} className="my-2">
                                         <Title>Метро</Title>

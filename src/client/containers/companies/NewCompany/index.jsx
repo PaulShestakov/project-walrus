@@ -306,10 +306,13 @@ const internalizeCompany = createSelector(
                    return result;
                 }),
                 locations: company.locations.map(location => {
-                    const city = common.allCities.find(city => city.value === location.cityId);
-                    let subway = undefined;
-                    if (city && city.subways) {
-                        subway = city.subways.find(subway => subway.value === location.subwayId)
+                    const country = common.countries.find(country => country.value === location.countryId);
+                    let city, subway;
+                    if (country) {
+                        city = country.allCities.find(city => city.value === location.cityId);
+                        if (city && city.subways) {
+                            subway = city.subways.find(subway => subway.value === location.subwayId)
+                        }
                     }
 
                     const workingTimes = common.daysOfWeek.map(day => ({
@@ -325,17 +328,24 @@ const internalizeCompany = createSelector(
 
                     const result = {
                         ...location,
-                        subways: city.subways || [],
                         markers: [{
                             position: location.position
                         }],
                         workingTimes
                     };
+                    if (country) {
+                        result.countryId = {
+                            value: country.value,
+                            label: country.label
+                        };
+                        result.cities = country.allCities || [];
+                    }
                     if (city) {
                         result.cityId = {
                             value: city.value,
                             label: city.label,
                         };
+                        result.subways = city.subways || [];
                     }
                     if (subway) {
                         result.subwayId = {

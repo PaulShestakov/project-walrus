@@ -10,6 +10,8 @@ export default class Locations {
 		return {
 			locationId: item.locationId,
 			url_id: item.locUrlId,
+			countryId: item.countryId,
+			countryName: item.countryName,
 			subwayId: item.subwayId,
 			cityId: item.cityId,
 			cityName: item.cityName,
@@ -28,6 +30,7 @@ export default class Locations {
 			location.url_id,
 			location.subway,
 			companyId,
+			location.country,
 			location.city,
 			location.address || 'Не задано',
 			location.location ? location.location.lat : 0,

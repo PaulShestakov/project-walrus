@@ -141,6 +141,7 @@ function externalizeCompany(company) {
 				locationId: location.locationId,
                 location: position,
                 url_id: location.url_id,
+                country: location.countryId ? location.countryId.value : null,
                 city: location.cityId ? location.cityId.value : null,
                 subway: location.subwayId ? location.subwayId.value : null,
                 isMain: location.isMain,

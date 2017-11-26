@@ -26,6 +26,8 @@ export default {
 			c.WEBSITE_URL url,
 
 			cl.COMPANY_LOCATION_ID locationId,
+			cl.COUNTRY_ID countryId,
+			(SELECT NAME FROM wikipet.code_values WHERE ID = cl.COUNTRY_ID) as countryName,
 			cl.URL_ID locUrlId,
 			cl.SUBWAY_ID subwayId,
 			(SELECT NAME FROM wikipet.code_values WHERE ID = cl.SUBWAY_ID) as subwayName,
