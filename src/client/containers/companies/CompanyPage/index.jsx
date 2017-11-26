@@ -289,6 +289,7 @@ class CompanyPageContainer extends React.Component {
 							<CrumbRoute exact path={`${this.props.match.url}/contacts`}
 								   render={() => <Contacts locations={ company.locations }
 														   match={match}
+														   history={this.props.history}
 														   markers={ markers }/>}
 								   title="Контакты"
 							/>
@@ -332,7 +333,6 @@ const getCompany = createSelector(
 				mainLocation = company.locations[0];
 			}
 		}
-
 
 		return {
 			...company,

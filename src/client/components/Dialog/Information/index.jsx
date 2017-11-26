@@ -53,7 +53,7 @@ export default class InfoDialog extends React.Component {
                     </Grid>
                 </Grid>
                 <Divider />
-                <DialogContent className={classes.dialogContent}>
+                <DialogContent >
                     {
                         children ? children : (
                             <DialogContentText>

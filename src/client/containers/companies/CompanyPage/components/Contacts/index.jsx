@@ -5,7 +5,6 @@ import { withStyles } from 'material-ui/styles';
 import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Map, InfoDialog } from "components";
 import {Divider, Typography, Paper, List, ListSubheader, ListItem} from "material-ui";
 import LocationItem from "./LocationItem/index";
-import {Route, Link} from 'react-router-dom'
 
 @translate(['common'])
 @withStyles(styles)
@@ -15,17 +14,47 @@ export default class Contacts extends React.Component {
         super(props);
         this.state = {
             selectedMarker: 0,
-            // isPhonesDialogOpened: false,
+            phones: []
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        const { match, locations } = nextProps;
+        const selectedUrlId = match.params.filial_url_id || match.params.url_id;
+        for (let i = 0; i < locations.length; i++) {
+            if (locations[i].url_id === selectedUrlId) {
+                this.setState({ selectedMarker: i });
+                break;
+            }
+        }
+    }
+
+    handlePhonesClick = (index) => {
+        const { locations } = this.props;
+        this.setState({ isPhonesDialogOpened: true, phones: locations[index].phones });
+    };
+
+    handleMarkerDblClick = (index) => {
+        const location = this.props.locations[index];
+        if (location && location.url) {
+            this.props.history.push(location.url);
+        }
+    };
+
     handleMarkerClick = (index) => {
-        this.setState({ selectedMarker: index, isPhonesDialogOpened: true });
+        this.setState({ selectedMarker: index });
     };
 
     render() {
         const { classes, locations = [], markers, match: {params: { companyCategoryId, companySubcategoryId, url_id  }} } = this.props;
         const baseUrl = `/company/${companyCategoryId}/${companySubcategoryId}/company/${url_id}`;
+        locations.forEach(item => {
+            let url = baseUrl;
+            if (item.isMain === 0) {
+                url += '/contacts/' + item.url_id;
+            }
+            item.url = url;
+        });
         return (
             <div className="mt-3">
             {
@@ -38,19 +67,17 @@ export default class Contacts extends React.Component {
                                       disablePadding>
                                     {
                                         locations.map((item, index) => {
-                                            let url = baseUrl;
-                                            if (item.isMain === 0) {
-                                                url += '/contacts/' + item.url_id;
-                                            }
+
                                             return (
                                                 <ListItem
+                                                    className={this.state.selectedMarker === index
+                                                        ? classes.selectedLocation
+                                                        : ''}
                                                     disableGutters
                                                     divider>
-                                                    <Link to={url}>
-                                                        <LocationItem
-                                                            item={item}
-                                                            onPhonesClick={() => this.handleMarkerClick(index)}/>
-                                                    </Link>
+                                                    <LocationItem
+                                                        item={item}
+                                                        onPhonesClick={this.handlePhonesClick.bind(null, index)}/>
                                                 </ListItem>
                                             )
                                         })
@@ -59,26 +86,27 @@ export default class Contacts extends React.Component {
                             </Grid>
                             <Grid item xs={8}>
                                 <Map extMarkers={markers}
+                                     selected={this.state.selectedMarker}
                                      onMarkerClick={(index) => this.handleMarkerClick(index)}
+                                     onDoubleClick={(index) => this.handleMarkerDblClick(index)}
                                 />
                             </Grid>
                         </Grid>
                     </Paper>
                 )
             }
-            {/* <InfoDialog
+            <InfoDialog
                 open={this.state.isPhonesDialogOpened}
                 title="Телефоны"
                 closeCallback={() => this.setState({ isPhonesDialogOpened: false })}>
                 {
-                    locations[selectedMarker] &&
-                    locations[selectedMarker].phones.map(item => (
+                    this.state.phones.map(item => (
                         <div key={item.phoneId} className="mt-2">
                             <Label>{item.phone}</Label>
                         </div>
                     ))
                 }
-            </InfoDialog> */}
+            </InfoDialog>
             </div>
         );
     }

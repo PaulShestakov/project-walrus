@@ -124,7 +124,7 @@ const MapWithASearchBox = compose(
     {
       props.extMarkers.map((marker, index) =>  {
         let markerProps;
-        if (marker.isMain) {
+        if (index === props.selected) {
           markerProps = {
               url: markerMain,
               width: 50,
@@ -144,7 +144,8 @@ const MapWithASearchBox = compose(
                         url: markerProps.url,
                         scaledSize: new google.maps.Size(markerProps.width, markerProps.height)
                     }}
-                    onClick={() => props.onMarkerClick(index)}>
+                    onClick={() => props.onMarkerClick(index)}
+                    onDblClick={() => props.onDoubleClick(index)}>
                 {
                     marker.isOpen && marker.markerInfo &&
                     <InfoWindow onCloseClick={() => props.onMarkerClick(index)}>

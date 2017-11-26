@@ -9,4 +9,8 @@ export default {
         maxHeight: 400,
     },
 
+    selectedLocation: {
+        backgroundColor: globalStyle.LIGHT_GREY,
+    }
+
 }

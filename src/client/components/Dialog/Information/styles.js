@@ -17,11 +17,8 @@ export default {
 
     closeButton : {
         position: 'absolute',
-        margin: '10px'
-    },
-
-    dialogContent: {
-        minHeight: '100px'
+        margin: '10px',
+        cursor: 'pointer'
     },
 
     closeImg: {
