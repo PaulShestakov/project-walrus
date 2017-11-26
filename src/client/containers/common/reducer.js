@@ -21,7 +21,11 @@ const defaultState = {
 	companiesCategoriesAreLoaded: false,
     unauthorizedError: false,
 
-	daysOfWeek: []
+	daysOfWeek: [],
+    drugsTypes: [],
+    torgTypes: [],
+    clinicsServices: [],
+    specialistDirections: [],
 };
 
 const commonReducer = (state = defaultState, action) => {
@@ -44,6 +48,10 @@ const commonReducer = (state = defaultState, action) => {
 				animals: action.payload.animals,
 				countries: action.payload.countries,
 				daysOfWeek: action.payload.DAY_OF_WEEK,
+                drugsTypes: action.payload.DRUGS_TYPE,
+                torgTypes: action.payload.TORG_TYPE,
+                specialistDirections: action.payload.SPECIALIST_DIRECTION,
+                clinicsServices: action.payload.CLINICS_SERVICES,
                 companiesCategories: action.payload.categories
 			};
 

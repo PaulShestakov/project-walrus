@@ -86,7 +86,7 @@ export default {
 		
 		ORDER BY fe.CREATION_DATE DESC
 	`,
-	GET_BY_NAME: `
+	GET_BY_NAME_AND_SUBCATEGORY: `
 		SELECT
 			c.COMPANY_ID companyId,
 			c.NAME name,
@@ -100,6 +100,21 @@ export default {
 
 		FROM ${COMPANIES_TABLE} c
 		WHERE c.NAME LIKE ? AND c.COMPANY_SUBCATEGORY_ID = ?
+	`,
+	GET_BY_NAME: `
+		SELECT
+			c.COMPANY_ID companyId,
+			c.NAME name,
+			c.URL_ID url_id,
+			c.COMPANY_CATEGORY_ID categoryId,
+			c.COMPANY_SUBCATEGORY_ID subcategoryId,
+			c.LOGO logo,
+			c.DESCRIPTION description,
+			c.EMAIL email,
+			c.WEBSITE_URL url
+
+		FROM ${COMPANIES_TABLE} c
+		WHERE c.NAME LIKE ?
 	`,
 	SAVE: `INSERT INTO ${COMPANIES_TABLE} set ?`,
 	UPDATE_COMPANY: `UPDATE ${COMPANIES_TABLE} SET ? WHERE COMPANY_ID = ?`,

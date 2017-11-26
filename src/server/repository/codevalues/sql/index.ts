@@ -35,7 +35,7 @@ export default {
 
         FROM ${CODE_VALUE_TABLE} AS cv1
         JOIN ${CODE_VALUE_TABLE} AS cv2
-            ON cv2.GROUP LIKE CONCAT('%', cv1.ID, '%')
+            ON cv2.GROUP LIKE CONCAT('%.', cv1.ID, '%')
         LEFT JOIN ${EXTENSION} as ext
             ON cv1.ID = ext.ID
         LEFT JOIN ${EXTENSION} as ext1

@@ -33,6 +33,7 @@ export default {
 		height: '1.5rem',
 		display: 'flex',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		flexShrink: 0
 	}
 }
