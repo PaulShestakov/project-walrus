@@ -18,28 +18,39 @@ import classNames from 'classnames';
 import styles from './styles';
 import {Link} from 'react-router-dom';
 import Authorized from '../../../../Authorized';
-import assignments from '../config/assignments';
-import description from '../config/componentDescription';
+import assignments from '../../config/assignments';
+import description from '../../config/componentDescription';
+import SearchSelect from '../../../../../components/SearchSelect/index';
 
 @translate(['companiesList'])
 @withStyles(styles)
 export default class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
+
+		// Find appropriate filters config
+		let filters = this.getFilters(props);
+
 		this.state = {
-			filters: []
+			filters
 		};
+
+		this.props.setupInitialFilterState(filters.map(filter => description[filter.component][filter.name]));
 	}
 
-	componentDidMount() {
-		const { category, subcategory } = this.props;
+	getFilters(props) {
+		let filters;
+		const { category, subcategory } = props;
+
 		const foundCategory = assignments.find(a => a.categories.includes(category));
 		const foundAssignment = assignments.find(a => a.subcategories.includes(subcategory));
+
 		if (foundAssignment) {
-			this.state.filters = foundAssignment.filters;
+			filters = foundAssignment.filters;
 		} else if (foundCategory) {
-			this.state.filters = foundCategory.filters;
+			filters = foundCategory.filters;
 		}
+		return filters;
 	}
 
     handleIsWorkingNowChange = (event, checked) => {
@@ -48,7 +59,11 @@ export default class Sidebar extends React.Component {
     	this.props.loadCompanies();
     };
 
-    render() {
+	handleChange = (name, value) => {
+
+	};
+
+	render() {
     	const {t, classes} = this.props;
 
     	return (
@@ -61,20 +76,43 @@ export default class Sidebar extends React.Component {
     					</Button>
     				</Link>
     			</Authorized>
+
+
     			<Card className={classNames(classes.card, 'mb-3 pb-3')}>
     				{
     					this.state.filters.map(filter => {
     						const { component, name } = filter;
-    						if (component === 'suggestion') {
-    							return <Suggestion props={this.props}
-    								item={description[component][name]}/>;
-    						} else if (component === 'checkbox') {
-    							return <CheckboxesBlock props={this.props}
-    								item={description[component][name]}/>;
-    						} else if (component === 'workingNow') {
-    							return <WorkingNow {...this.props}
-    								handleIsWorkingNowChange={this.handleIsWorkingNowChange} />;
-    						}
+
+
+
+    						if (this.props.filter.sidebarFilters) {
+
+								const value = this.props.filter.sidebarFilters[name];
+
+
+								switch (component) {
+								case 'suggestion': {
+									return (
+										<SearchSelect
+											value={value}
+											suggestions={description[component][name].getItems(this.props)}
+											onChange={(newValue) => this.handleChange(name, newValue)} />
+									);
+								}
+
+								// case 'checkbox':{
+								// 	return <CheckboxesBlock props={this.props} item={description[component][name]} />;
+								// }
+								//
+								// case 'switch': {
+								// 	return <WorkingNow {...this.props} handleIsWorkingNowChange={this.handleIsWorkingNowChange} />;
+								// }
+
+								default:
+									return null
+									//throw new Error('Unsupported filter component');
+								}
+							}
     					})
     				}
     			</Card>

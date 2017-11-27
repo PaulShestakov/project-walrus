@@ -1,11 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {createSelector} from 'reselect'
+import {createSelector} from 'reselect';
 
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Title, Grid, Card, Label, Text, TextField, Button, ConfirmDialog, InfoDialog, Finder } from "components";
-import CompanyItem from './components/CompanyItem/index'
+import {Title, Grid, Card, Label, Text, TextField, Button, ConfirmDialog, InfoDialog, Finder } from 'components';
+import CompanyItem from './components/CompanyItem/index';
 import Sidebar from './components/Sidebar/index';
 import classNames from 'classnames';
 import styles from './styles';
@@ -18,8 +18,8 @@ import {
 	clearFuzzySearchLoadedCompanies,
 	suggestionInputValueChange,
 	removeCompany,
-    componentLeave,
-} from "./actionCreators/companiesList";
+	componentLeave,
+} from './actionCreators/companiesList';
 
 import {
 	updateStateWithUrlSource,
@@ -29,7 +29,9 @@ import {
 	addBreed,
 	removeBreed,
 	setIsWorkingNow,
-} from "./actionCreators/filter";
+
+	setupInitialFilterState
+} from './actionCreators/filter';
 
 
 @translate(['companiesList'])
@@ -56,21 +58,21 @@ class CompaniesListContainer extends React.Component {
 		searchParams.append('companyCategoryId', companyCategoryId);
 		searchParams.append('companySubcategoryId', companySubcategoryId);
 		if (countryId) {
-            searchParams.append('selectedCountryId', countryId);
+			searchParams.append('selectedCountryId', countryId);
 		}
 		if (cityId) {
-            searchParams.append('selectedCityId', cityId);
+			searchParams.append('selectedCityId', cityId);
 		}
 
 		this.state.companyBaseUrl = `/company/${companyCategoryId}/${companySubcategoryId}/company/`;
-        updateStateWithUrlSource(searchParams);
-        loadCompanies();
+		updateStateWithUrlSource(searchParams);
+		loadCompanies();
 	}
 
 	handleSuggestionsFetchRequested = (change) => {
 		if (this.props.main.suggestionInputValue !== change.value) {
 			this.props.fuzzySearchLoadCompanies({
-                searchQuery: change.value,
+				searchQuery: change.value,
 				subcategoryId: this.props.match.params.companySubcategoryId,
 			});
 		}
@@ -84,7 +86,7 @@ class CompaniesListContainer extends React.Component {
 		this.setState({
 			isWorkingTimeDialogOpened: true,
 			daysOfWeekWorkingTime
-		})
+		});
 	};
 
 	handleOpenPhonesDialog = (phones) => {
@@ -126,33 +128,33 @@ class CompaniesListContainer extends React.Component {
 							handleSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
 							handleSuggestionsClearRequested={clearFuzzySearchLoadedCompanies}
 							suggestionData={{
-                                getLink: company => `/company/${company.categoryId}/${company.subcategoryId}/company/${company.url_id}`,
-                                getLogo: company => company.logo,
-                                getTitle: company => company.name,
-                                getDescription: company => company.description
+								getLink: company => `/company/${company.categoryId}/${company.subcategoryId}/company/${company.url_id}`,
+								getLogo: company => company.logo,
+								getTitle: company => company.name,
+								getDescription: company => company.description
 							}}
 						/>
 					</Card>
 					<div className={classes.companiesList}>
 						{
-                            main.isLoading ?
+							main.isLoading ?
 
-							<CircularProgress className={classes.progressCircle} /> :
+								<CircularProgress className={classes.progressCircle} /> :
 
-							companies.map(company => {
-								return (
-									<CompanyItem
-										key={company.companyId}
-										companyBaseUrl={this.state.companyBaseUrl}
-										company={company}
-										match={match}
-										deleteAction={this.deleteCompany}
-										blockAction={this.blockCompany}
-										handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}
-										handleOpenPhonesDialog={this.handleOpenPhonesDialog}
-										handleAction={this.handleAction}/>
-								);
-							})
+								companies.map(company => {
+									return (
+										<CompanyItem
+											key={company.companyId}
+											companyBaseUrl={this.state.companyBaseUrl}
+											company={company}
+											match={match}
+											deleteAction={this.deleteCompany}
+											blockAction={this.blockCompany}
+											handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}
+											handleOpenPhonesDialog={this.handleOpenPhonesDialog}
+											handleAction={this.handleAction}/>
+									);
+								})
 						}
 					</div>
 				</Grid>
@@ -168,6 +170,7 @@ class CompaniesListContainer extends React.Component {
 						loadCompanies={this.props.loadCompanies}
 						category={this.props.match.params.companyCategoryId}
 						subcategory={this.props.match.params.companySubcategoryId}
+						setupInitialFilterState={this.props.setupInitialFilterState}
 					/>
 				</Grid>
 
@@ -190,14 +193,14 @@ class CompaniesListContainer extends React.Component {
 					closeCallback={() => this.setState({ isWorkingTimeDialogOpened: false })}>
 					{
 						this.state.daysOfWeekWorkingTime.map(time => {
-							const open = time.open.substring(0, time.open.lastIndexOf(":"));
-							const close = time.close.substring(0, time.close.lastIndexOf(":"));
+							const open = time.open.substring(0, time.open.lastIndexOf(':'));
+							const close = time.close.substring(0, time.close.lastIndexOf(':'));
 							return (
-								<div key={time.dayOfWeek} className={classNames(classes.flexRow, "mt-2")}>
+								<div key={time.dayOfWeek} className={classNames(classes.flexRow, 'mt-2')}>
 									<Label>{time.dayOfWeekName}</Label>
 									<Label className="ml-3">{`${open} - ${close}`}</Label>
 								</div>
-							)
+							);
 						})
 					}
 				</InfoDialog>
@@ -229,16 +232,16 @@ const getFlatCompanies = createSelector(
 					mainLocation = {
 						workingTimes: [],
 						phones: []
-					}
+					};
 				}
 			}
-			const phonesText = mainLocation.phones ? mainLocation.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
+			const phonesText = mainLocation.phones ? mainLocation.phones.map(p => (p.phone)).join(', ') : 'Телефонов нет';
 
 			return {
 				...company,
 				mainLocation,
 				phonesText
-			}
+			};
 		});
 	}
 );
@@ -258,6 +261,12 @@ const getFilterValues = createSelector(
 
 		result.countries = {
 			//isVisible: true,
+
+			values: common.countries.reduce((acc, item) => {
+				acc.push(codeValueMapper(item));
+				return acc;
+			}, []),
+
 			getValues: () => common.countries.reduce((acc, item) => {
 				acc.push(codeValueMapper(item));
 				return acc;
@@ -310,24 +319,24 @@ const getFilterValues = createSelector(
 		};
 
 		result.drugTypes = {
-            //isVisible: filterConstrains.isDrugsTypesVisible(filter),
-            getValues: () => common.drugsTypes
+			//isVisible: filterConstrains.isDrugsTypesVisible(filter),
+			getValues: () => common.drugsTypes
 		};
 
-        result.torgTypes = {
-            //isVisible: filterConstrains.isTorgTypeVisible(filter),
-            getValues: () => common.torgTypes
-        };
+		result.torgTypes = {
+			//isVisible: filterConstrains.isTorgTypeVisible(filter),
+			getValues: () => common.torgTypes
+		};
 
-        result.specDirections = {
-            //isVisible: filterConstrains.isSpecDirectionVisible(filter),
-            getValues: () => common.specialistDirections
-        };
+		result.specDirections = {
+			//isVisible: filterConstrains.isSpecDirectionVisible(filter),
+			getValues: () => common.specialistDirections
+		};
 
-        result.clinicsServices = {
-            //isVisible: filterConstrains.isClinicsServicesVisible(filter),
-            getValues: () => common.clinicsServices
-        };
+		result.clinicsServices = {
+			//isVisible: filterConstrains.isClinicsServicesVisible(filter),
+			getValues: () => common.clinicsServices
+		};
 
 		return result;
 	}
@@ -361,7 +370,9 @@ const CompaniesList = connect(
 
 		setIsWorkingNow,
 
-        componentLeave,
+		componentLeave,
+
+		setupInitialFilterState
 	}
 )(CompaniesListContainer);
 

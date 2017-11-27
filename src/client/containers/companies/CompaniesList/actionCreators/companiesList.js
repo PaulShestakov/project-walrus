@@ -36,7 +36,7 @@ export const loadCompanies = () => {
 				}
 			},
 			error => {
-				dispatch(loadCompaniesError(error))
+				dispatch(loadCompaniesError(error));
 			}
 		).then(json => {
 			dispatch({
@@ -46,16 +46,16 @@ export const loadCompanies = () => {
 			});
 		}).catch(error => {
 			dispatch(loadCompaniesError(error));
-		})
+		});
 	};
 };
 
 export const removeCompany = (companyId, history) => {
 	return dispatch => {
 		return fetch(baseUrl + '/company/' + companyId, {
-            method: 'DELETE',
-            credentials: 'include'
-        }).then(
+			method: 'DELETE',
+			credentials: 'include'
+		}).then(
 			response => {
 				if (response.ok) {
 					return response.json();
@@ -73,7 +73,7 @@ export const removeCompany = (companyId, history) => {
 			dispatch(loadCompanies());
 		}).catch(error => {
 			// dispatch(loadCompaniesError(error));
-		})
+		});
 	};
 };
 
@@ -97,7 +97,7 @@ export const fuzzySearchLoadCompanies = (searchData) => {
 			}
 		).then(json => {
 			dispatch(fuzzySearchLoadCompaniesSuccess(json));
-		})
+		});
 	};
 };
 
@@ -120,5 +120,5 @@ export const suggestionInputValueChange = (data) => ({
 export const COMPONENT_LEAVE = 'companiesList/COMPONENT_LEAVE';
 
 export const componentLeave = () => ({
-    type: COMPONENT_LEAVE
+	type: COMPONENT_LEAVE
 });
