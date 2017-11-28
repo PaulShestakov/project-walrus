@@ -30,7 +30,8 @@ import {
 	removeBreed,
 	setIsWorkingNow,
 
-	setupInitialFilterState
+	setupInitialFilterState,
+	suggestionFilterChange
 } from './actionCreators/filter';
 
 
@@ -164,13 +165,14 @@ class CompaniesListContainer extends React.Component {
 						history={this.props.history}
 						filter={this.props.filter}
 						filterValues={this.props.filterValues}
-						// handleCheckboxPressed={this.handleCheckboxPressed}
 						setIsWorkingNow={this.props.setIsWorkingNow}
 						updateUrlWithStateSource={this.props.updateUrlWithStateSource}
 						loadCompanies={this.props.loadCompanies}
 						category={this.props.match.params.companyCategoryId}
 						subcategory={this.props.match.params.companySubcategoryId}
 						setupInitialFilterState={this.props.setupInitialFilterState}
+
+						suggestionFilterChange={this.props.suggestionFilterChange}
 					/>
 				</Grid>
 
@@ -246,101 +248,68 @@ const getFlatCompanies = createSelector(
 	}
 );
 
-const getFilterValues = createSelector(
-	[getFilter, getCommon],
-	(filter, common) => {
-		const { selectedCountry, selectedCity, selectedAnimalId } = filter;
 
-		const codeValueMapper = (item) => ({
-			value: item.value,
-			label: item.label,
-			sort: item.sort
-		});
+const mapCodeValue = (item) => ({
+	value: item.value,
+	label: item.label,
+	sort: item.sort
+});
 
-		const result = {};
 
-		result.countries = {
-			//isVisible: true,
+const getCountries = createSelector(
+	[getCommon], (common) => common.countries
+);
 
-			values: common.countries.reduce((acc, item) => {
-				acc.push(codeValueMapper(item));
-				return acc;
-			}, []),
+const getCities = createSelector(
+	[getCommon, getFilter], (common, filter) => {
+		const foundCountry = common.countries.find(country => country.value === filter.sidebarFilters.countries);
 
-			getValues: () => common.countries.reduce((acc, item) => {
-				acc.push(codeValueMapper(item));
-				return acc;
-			}, [])
-		};
-
-		result.cities = {
-			//isVisible: filterConstrains.isCitiesVisible(filter),
-			getValues: () => {
-				let values;
-				const foundCountry = common.countries.find(country => country.value === selectedCountry);
-				if (foundCountry) {
-					values = foundCountry.cities.reduce((acc, item) => {
-
-						acc.push(codeValueMapper(item));
-						item.subCities.forEach(item => acc.push(codeValueMapper(item)));
-
-						return acc;
-
-					}, []).sort((cityA, cityB) => cityA.sort - cityB.sort);
-				}
-				return values || [];
-			}
-		};
-
-		result.subways = {
-			//isVisible: filterConstrains.isSubwaysVisible(filter),
-			getValues: () => {
-				const foundCity = result.cities.getValues().find(city => city.value === selectedCity);
-				return foundCity ? foundCity.subways : [];
-			}
-		};
-		
-		result.animals = {
-			//isVisible: filterConstrains.isAnimalsVisible(filter),
-			getValues: () => common.animals
-		};
-
-		result.breeds = {
-			//isVisible: !!result.animals.getValues() && filterConstrains.isBreedsVisible(filter),
-			getValues: () => {
-				const values = [];
-				result.animals.getValues().forEach(animal => {
-					if (selectedAnimalId === animal.value) {
-						values.push(...animal.breeds);
-					}
-				});
-				return values;
-			}
-		};
-
-		result.drugTypes = {
-			//isVisible: filterConstrains.isDrugsTypesVisible(filter),
-			getValues: () => common.drugsTypes
-		};
-
-		result.torgTypes = {
-			//isVisible: filterConstrains.isTorgTypeVisible(filter),
-			getValues: () => common.torgTypes
-		};
-
-		result.specDirections = {
-			//isVisible: filterConstrains.isSpecDirectionVisible(filter),
-			getValues: () => common.specialistDirections
-		};
-
-		result.clinicsServices = {
-			//isVisible: filterConstrains.isClinicsServicesVisible(filter),
-			getValues: () => common.clinicsServices
-		};
-
-		return result;
+		if (foundCountry) {
+			return foundCountry.cities
+				.reduce((acc, item) => acc.concat(item, item.subCities), [])
+				.sort((a, b) => a.sort - b.sort);
+		}
+		return [];
 	}
 );
+
+const getDrugTypes = createSelector(
+	[getCommon], (common) => common.drugTypes
+);
+
+const getTorgTypes = createSelector(
+	[getCommon], (common) => common.torgTypes
+);
+
+const getDirections = createSelector(
+	[getCommon], (common) => common.specialistDirections
+);
+
+const getClinicsServices = createSelector(
+	[getCommon], (common) => common.clinicsServices
+);
+
+const getAnimals = createSelector(
+	[getCommon], (common) => common.animals
+);
+
+const getSubways = createSelector(
+	[getCommon, getFilter], (common, filter) => {
+		const foundCity = common.cities.find(city => city.value === filter.selectedCity);
+		return foundCity ? foundCity.subways : [];
+	}
+);
+
+const getBreeds = createSelector(
+	[getCommon, getFilter], (common, filter) => {
+		const selectedAnimal = common.animals.find(animal => animal.value === filter.selectedAnimalId);
+		if (selectedAnimal) {
+			return selectedAnimal.breeds;
+		}
+		return [];
+	}
+);
+
 
 const CompaniesList = connect(
 	state => {
@@ -349,7 +318,17 @@ const CompaniesList = connect(
 			main: state.companiesList.main,
 			companies: getFlatCompanies(state),
 			filter: state.companiesList.filter,
-			filterValues: getFilterValues(state),
+			filterValues: {
+				countries: getCountries(state),
+				drugTypes: getDrugTypes(state),
+				torgTypes: getTorgTypes(state),
+				directions: getDirections(state),
+				clinicsServices: getClinicsServices(state),
+				animals: getAnimals(state),
+				cities: getCities(state),
+				subways: getSubways(state),
+				breeds: getBreeds(state),
+			},
 		};
 	},
 	{
@@ -372,7 +351,8 @@ const CompaniesList = connect(
 
 		componentLeave,
 
-		setupInitialFilterState
+		setupInitialFilterState,
+		suggestionFilterChange
 	}
 )(CompaniesListContainer);
 

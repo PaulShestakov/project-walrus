@@ -31,9 +31,7 @@ export default class SearchSelect extends React.Component {
 
 			inputValue: '',
 			isPopoverOpened: false,
-			anchorEl: null,
-
-			suggestions: props.suggestions,
+			anchorEl: null
 		};
 	}
 
@@ -63,8 +61,8 @@ export default class SearchSelect extends React.Component {
     };
 
     renderDropdown = () => {
-    	const { classes } = this.props;
-    	const { inputValue, isPopoverOpened, suggestions } = this.state;
+    	const { classes, suggestions } = this.props;
+    	const { inputValue, isPopoverOpened  } = this.state;
 
     	return (
     		<Fade in={isPopoverOpened} transitionDuration="auto" unmountOnExit>
@@ -84,7 +82,7 @@ export default class SearchSelect extends React.Component {
     					suggestions.map(suggestion => (
 
     						<MenuItem
-    							key={suggestion.key}
+    							key={suggestion.value}
     							disabled={false}
     							selected={false}
     							onClick={() => this.handleSuggestionClick(suggestion)}
@@ -101,6 +99,8 @@ export default class SearchSelect extends React.Component {
     renderButton = () => {
     	const { classes, placeholder, value } = this.props;
 
+    	const selectedOption = this.props.suggestions.find(item => item.value === value);
+
     	return (
     		<Button
     			accent='white'
@@ -108,8 +108,8 @@ export default class SearchSelect extends React.Component {
     			onClick={this.handleOpenDropdown}>
     			<span className={classes.buttonLabel}>
     				{
-    					value ?
-    						value.label :
+    					selectedOption ?
+    						selectedOption.label :
     						placeholder
     				}
     			</span>
@@ -136,7 +136,7 @@ export default class SearchSelect extends React.Component {
 }
 
 const suggestionPropType = {
-	key: PropTypes.string,
+	value: PropTypes.string,
 	label: PropTypes.string,
 };
 
@@ -144,7 +144,7 @@ SearchSelect.displayName = 'SearchSelect';
 
 SearchSelect.propTypes = {
 	placeholder: PropTypes.string,
-	value: PropTypes.shape(suggestionPropType),
+	value: PropTypes.string,
 	suggestions: PropTypes.arrayOf(suggestionPropType),
 	onChange: PropTypes.func
 };

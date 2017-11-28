@@ -44,28 +44,39 @@ export const setupInitialFilterState = (filters) => {
 
 
 
-export const FILTER_CHANGE = 'companiesList/FILTER_CHANGE';
-export const filterChange = (component, config) => {
-
-	switch(component) {
-	case 'suggestion':
-	case 'switch': {
-		return {
-			type: FILTER_CHANGE,
-			payload: {
-				name: config.name,
-				value: config.newValue
-			}
-		};
-	}
-	case 'checkbox': {
-		return {
-			type: FILTER_CHANGE,
-			payload: {
-				type: config.type,
-				value: config.newValue
-			}
-		};
-	}
-	}
+export const SUGGESTION_FILTER_CHANGE = 'companiesList/SUGGESTION_FILTER_CHANGE';
+export const suggestionFilterChange = (name, newValue) => {
+	return {
+		type: SUGGESTION_FILTER_CHANGE,
+		payload: {
+			name,
+			newValue
+		}
+	};
 };
+//
+// export const SUGGESTION_FILTER_CHANGE = 'companiesList/FILTER_CHANGE';
+// export const filterChange = (component, config) => {
+//
+// 	switch(component) {
+// 		case 'suggestion':
+// 		case 'switch': {
+// 			return {
+// 				type: FILTER_CHANGE,
+// 				payload: {
+// 					name: config.name,
+// 					value: config.newValue
+// 				}
+// 			};
+// 		}
+// 		case 'checkbox': {
+// 			return {
+// 				type: FILTER_CHANGE,
+// 				payload: {
+// 					type: config.type,
+// 					value: config.newValue
+// 				}
+// 			};
+// 		}
+// 	}
+// };

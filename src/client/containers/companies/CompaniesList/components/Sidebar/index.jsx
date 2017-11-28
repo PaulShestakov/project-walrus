@@ -78,7 +78,7 @@ export default class Sidebar extends React.Component {
     			</Authorized>
 
 
-    			<Card className={classNames(classes.card, 'mb-3 pb-3')}>
+    			<Card className={classNames(classes.card, 'mb-3 p-3')}>
     				{
     					this.state.filters.map(filter => {
     						const { component, name } = filter;
@@ -88,15 +88,18 @@ export default class Sidebar extends React.Component {
     						if (this.props.filter.sidebarFilters) {
 
 								const value = this.props.filter.sidebarFilters[name];
+								const placeholder = description[component][name].title;
+
 
 
 								switch (component) {
 								case 'suggestion': {
 									return (
 										<SearchSelect
-											value={value}
-											suggestions={description[component][name].getItems(this.props)}
-											onChange={(newValue) => this.handleChange(name, newValue)} />
+											placeholder={placeholder}
+											value={this.props.filter.sidebarFilters[name]}
+											suggestions={this.props.filterValues[name]}
+											onChange={(option) => this.props.suggestionFilterChange(name, option.value)} />
 									);
 								}
 

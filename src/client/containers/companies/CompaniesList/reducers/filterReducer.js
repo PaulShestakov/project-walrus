@@ -20,7 +20,8 @@ import {
 	COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE,
 
 
-	SETUP_INITIAL_FILTER_STATE
+	SETUP_INITIAL_FILTER_STATE,
+	SUGGESTION_FILTER_CHANGE
 
 } from '../actionCreators/filter';
 
@@ -39,6 +40,16 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 		return {
 			...state,
 			sidebarFilters: action.payload
+		};
+	}
+
+	case SUGGESTION_FILTER_CHANGE: {
+		return {
+			...state,
+			sidebarFilters: {
+				...state.sidebarFilters,
+				[action.payload.name]: action.payload.newValue
+			}
 		};
 	}
 

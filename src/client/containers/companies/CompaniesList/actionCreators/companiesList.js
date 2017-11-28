@@ -64,7 +64,7 @@ export const removeCompany = (companyId, history) => {
 				}
 			},
 			error => {
-				dispatch(loadCompaniesError(error))
+				dispatch(loadCompaniesError(error));
 			}
 		).then(json => {
 			if (history) {
