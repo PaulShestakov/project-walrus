@@ -31,7 +31,10 @@ import {
 	setIsWorkingNow,
 
 	setupInitialFilterState,
-	suggestionFilterChange
+
+	suggestionFilterChange,
+	checkboxesBlockFilterChange,
+	handleSuggestionSearch,
 } from './actionCreators/filter';
 
 
@@ -173,6 +176,9 @@ class CompaniesListContainer extends React.Component {
 						setupInitialFilterState={this.props.setupInitialFilterState}
 
 						suggestionFilterChange={this.props.suggestionFilterChange}
+						checkboxesBlockFilterChange={this.props.checkboxesBlockFilterChange}
+
+						handleSuggestionSearch={this.props.handleSuggestionSearch}
 					/>
 				</Grid>
 
@@ -220,6 +226,7 @@ class CompaniesListContainer extends React.Component {
 
 const getCommon = (state) => state.common;
 const getFilter = (state) => state.companiesList.filter;
+const getSuggestionQueries = (state) => state.companiesList.filter.suggestionQueries;
 const getCompanies = (state) => state.companiesList.main.companies;
 
 const getFlatCompanies = createSelector(
@@ -259,10 +266,11 @@ const mapCodeValue = (item) => ({
 const getCountries = createSelector(
 	[getCommon], (common) => common.countries
 );
+const getQueriedCountries = searchConnectedSelector('countries', getCountries);
 
 const getCities = createSelector(
 	[getCommon, getFilter], (common, filter) => {
-		const foundCountry = common.countries.find(country => country.value === filter.sidebarFilters.countries);
+		const foundCountry = common.countries.find(country => country.value === filter.countries);
 
 		if (foundCountry) {
 			return foundCountry.cities
@@ -272,9 +280,28 @@ const getCities = createSelector(
 		return [];
 	}
 );
+const getQueriedCities = searchConnectedSelector('cities', getCities);
 
-const getDrugTypes = createSelector(
-	[getCommon], (common) => common.drugTypes
+const getCitiesEnabled = createSelector(
+	[getFilter], (filter) => {
+		return !!filter.countries;
+	}
+);
+
+const getSubways = createSelector(
+	[getCities, getFilter], (cities, filter) => {
+		const foundCity = cities.find(city => city.value === filter.cities);
+		return foundCity ? foundCity.subways : [];
+	}
+);
+const getSubwaysEnabled = createSelector(
+	[getFilter], (filter) => {
+		return !!filter.cities;
+	}
+);
+
+const getDrugsTypes = createSelector(
+	[getCommon], (common) => common.drugsTypes
 );
 
 const getTorgTypes = createSelector(
@@ -292,13 +319,30 @@ const getClinicsServices = createSelector(
 const getAnimals = createSelector(
 	[getCommon], (common) => common.animals
 );
+const getQueriedAnimals = searchConnectedSelector('animals', getAnimals);
 
-const getSubways = createSelector(
-	[getCommon, getFilter], (common, filter) => {
-		const foundCity = common.cities.find(city => city.value === filter.selectedCity);
-		return foundCity ? foundCity.subways : [];
-	}
-);
+function containsFilter(substring, option) {
+	return option.label.search(new RegExp(substring, 'i')) !== -1;
+}
+
+function searchConnectedSelector(name, getAllValuesSelector) {
+	return createSelector(
+		[getAllValuesSelector, getSuggestionQueries], (allValues, suggestionQueries) => {
+			const searchQuery = suggestionQueries[name];
+
+			if (searchQuery) {
+				return allValues.filter(containsFilter.bind(null, searchQuery));
+			}
+			return allValues;
+		}
+	);
+}
+
+
+
+
+
+
 
 const getBreeds = createSelector(
 	[getCommon, getFilter], (common, filter) => {
@@ -307,6 +351,11 @@ const getBreeds = createSelector(
 			return selectedAnimal.breeds;
 		}
 		return [];
+	}
+);
+const getBreedsEnabled = createSelector(
+	[getFilter], (filter) => {
+		return !!filter.animals;
 	}
 );
 
@@ -319,15 +368,42 @@ const CompaniesList = connect(
 			companies: getFlatCompanies(state),
 			filter: state.companiesList.filter,
 			filterValues: {
-				countries: getCountries(state),
-				drugTypes: getDrugTypes(state),
-				torgTypes: getTorgTypes(state),
-				directions: getDirections(state),
-				clinicsServices: getClinicsServices(state),
-				animals: getAnimals(state),
-				cities: getCities(state),
-				subways: getSubways(state),
-				breeds: getBreeds(state),
+				countries: {
+					values: getQueriedCountries(state),
+					enabled: true
+				},
+				cities: {
+					values: getQueriedCities(state),
+					enabled: getCitiesEnabled(state)
+				},
+				subways: {
+					values: getSubways(state),
+					enabled: getSubwaysEnabled(state)
+				},
+				animals: {
+					values: getQueriedAnimals(state),
+					enabled: true
+				},
+				breeds: {
+					values: getBreeds(state),
+					enabled: getBreedsEnabled(state)
+				},
+				drugsTypes: {
+					values: getDrugsTypes(state),
+					enabled: true
+				},
+				torgTypes: {
+					values: getTorgTypes(state),
+					enabled: true
+				},
+				directions: {
+					values: getDirections(state),
+					enabled: true
+				},
+				clinicsServices: {
+					values: getClinicsServices(state),
+					enabled: true
+				},
 			},
 		};
 	},
@@ -352,7 +428,12 @@ const CompaniesList = connect(
 		componentLeave,
 
 		setupInitialFilterState,
-		suggestionFilterChange
+
+
+		suggestionFilterChange,
+		checkboxesBlockFilterChange,
+
+		handleSuggestionSearch
 	}
 )(CompaniesListContainer);
 

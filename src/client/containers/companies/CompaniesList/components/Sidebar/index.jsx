@@ -7,12 +7,10 @@ import {
 	Dropdown, Button,
 	Label, Grid, ImageUploader,
 	TextField, Tabs, Tab, Card, Popover,
-	Checkbox, Separator
+	Checkbox, Separator, CheckboxesBlock
 } from 'components';
 
-import CheckboxesBlock from './Checkbox';
-import Suggestion from './Suggestion';
-import WorkingNow from './WorkingNow';
+
 
 import classNames from 'classnames';
 import styles from './styles';
@@ -63,6 +61,8 @@ export default class Sidebar extends React.Component {
 
 	};
 
+
+
 	render() {
     	const {t, classes} = this.props;
 
@@ -84,42 +84,61 @@ export default class Sidebar extends React.Component {
     						const { component, name } = filter;
 
 
+							const title = description[component][name].title;
+							const enabled = this.props.filterValues[name].enabled;
 
-    						if (this.props.filter.sidebarFilters) {
-
-								const value = this.props.filter.sidebarFilters[name];
-								const placeholder = description[component][name].title;
+							const value = this.props.filter[name];
+							const allOptions = this.props.filterValues[name].values || [];
 
 
 
-								switch (component) {
-								case 'suggestion': {
-									return (
-										<SearchSelect
-											placeholder={placeholder}
-											value={this.props.filter.sidebarFilters[name]}
-											suggestions={this.props.filterValues[name]}
-											onChange={(option) => this.props.suggestionFilterChange(name, option.value)} />
-									);
-								}
-
-								// case 'checkbox':{
-								// 	return <CheckboxesBlock props={this.props} item={description[component][name]} />;
-								// }
-								//
-								// case 'switch': {
-								// 	return <WorkingNow {...this.props} handleIsWorkingNowChange={this.handleIsWorkingNowChange} />;
-								// }
-
-								default:
-									return null
-									//throw new Error('Unsupported filter component');
-								}
+							switch (component) {
+							case 'suggestion': {
+								return (
+									<SearchSelect
+										disabled={!enabled}
+										className="mb-3"
+										placeholder={title}
+										value={value}
+										suggestions={allOptions}
+										onChange={(option) => this.props.suggestionFilterChange(name, option.value)}
+										handleSearch={(query) => this.props.handleSuggestionSearch(name, query)}/>
+								);
 							}
+							case 'checkbox': {
+								return (
+									enabled &&
+									<CheckboxesBlock
+										className="mb-3"
+										formGroupName={name}
+										title={title}
+										showMoreLabel={'more'}
+										numberOfItemsToShowDefault={4}
+										items={allOptions}
+										selectedIds={value || []}
+										handleCheckboxPressed={event => this.props.checkboxesBlockFilterChange(name, event)}
+									/>
+								);
+							}
+
+
+							// case 'checkbox':{
+							// 	return <CheckboxesBlock props={this.props} item={description[component][name]} />;
+							// }
+							//
+							// case 'switch': {
+							// 	return <WorkingNow {...this.props} handleIsWorkingNowChange={this.handleIsWorkingNowChange} />;
+							// }
+
+							default:
+								return null;
+									//throw new Error('Unsupported filter component');
+							}
+
     					})
     				}
     			</Card>
     		</div>
     	);
-    }
+	}
 }

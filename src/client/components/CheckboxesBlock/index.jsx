@@ -1,7 +1,7 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Button, Title, Label, Grid, Card, Popover, Checkbox, Separator, ButtonMore} from "components";
+import {Button, Title, Label, Grid, Card, Popover, Checkbox, Separator, ButtonMore} from 'components';
 import {FormGroup, FormControlLabel} from 'material-ui/Form';
 import classNames from 'classnames';
 import styles from './styles';
@@ -40,7 +40,7 @@ export default class CheckboxesBlock extends React.Component {
 	};
 
 	render() {
-		const {classes, title, showMoreLabel, formGroupName, items, selectedIds, numberOfItemsToShowDefault } = this.props;
+		const {classes, className, title, showMoreLabel, formGroupName, items, selectedIds, numberOfItemsToShowDefault } = this.props;
 
 		const cols = (((items.length || 0) / 6) ^ 0) + 1;
 
@@ -55,10 +55,10 @@ export default class CheckboxesBlock extends React.Component {
 									className={classNames(classes.checkboxWrapper, 'mt-1')}
 									control={
 										<Checkbox name={formGroupName}
-												  className="ml-3"
-												  value={item.value}
-												  checked={selectedIds.indexOf(item.value) !== -1}
-												  onChange={this.props.handleCheckboxPressed}
+											  className="ml-3"
+											  value={item.value}
+											  checked={selectedIds.indexOf(item.value) !== -1}
+											  onChange={this.props.handleCheckboxPressed}
 										/>
 									} />
 							</GridListTile>
@@ -70,18 +70,18 @@ export default class CheckboxesBlock extends React.Component {
 
 		let numberOfItemsToShow;
 		if (items) {
-            numberOfItemsToShow = numberOfItemsToShowDefault +
-                items.slice(numberOfItemsToShowDefault).filter(item => selectedIds.indexOf(item.value) > -1).length
+			numberOfItemsToShow = numberOfItemsToShowDefault +
+                items.slice(numberOfItemsToShowDefault).filter(item => selectedIds.indexOf(item.value) > -1).length;
 		} else {
 			numberOfItemsToShow = 0;
 		}
 		return (
-			<div>
-				<Label uppercase bold fontSize="1.5rem" className="m-3 mt-4">{title}</Label>
+			<div className={className}>
+				<Label uppercase bold fontSize="1.25rem" className="py-2 pl-2">{title}</Label>
 				<Separator />
 				<div className={classNames(
 					classes.checkboxesContainer,
-					numberOfItemsToShow > 0 ? 'm-3 mb-2' : ''
+					numberOfItemsToShow > 0 ? 'mx-2' : ''
 				)}>
 					{
 						items && items.slice(0, numberOfItemsToShowDefault)
@@ -102,13 +102,14 @@ export default class CheckboxesBlock extends React.Component {
 												checked={checked}
 												onChange={this.props.handleCheckboxPressed}
 											/>
-									}/>
-								)
+										}/>
+								);
 							})
 					}
 				</div>
 
-				<ButtonMore onClick={this.handleClickButton}
+				<ButtonMore
+					onClick={this.handleClickButton}
 					label={showMoreLabel}
 					ref={node => {
 						this.button = node;

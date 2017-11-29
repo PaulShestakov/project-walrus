@@ -45,6 +45,7 @@ export default class SearchSelect extends React.Component {
     	this.setState({
     		inputValue: event.target.value
     	});
+    	this.props.handleSearch(event.target.value);
     };
 
     handleSuggestionClick = (suggestion) => {
@@ -97,24 +98,35 @@ export default class SearchSelect extends React.Component {
     };
 
     renderButton = () => {
-    	const { classes, placeholder, value } = this.props;
+    	const { classes, placeholder, value, disabled } = this.props;
 
-    	const selectedOption = this.props.suggestions.find(item => item.value === value);
+    	let label, clickHandler;
+    	const buttonClasses = [classes.button];
+
+    	if (disabled) {
+    		label = placeholder;
+    		buttonClasses.push(classes.buttonDisabled);
+    	} else {
+    		const selectedOption = this.props.suggestions.find(item => item.value === value);
+    		if (selectedOption) {
+    			label = selectedOption.label;
+    		} else {
+    			label = placeholder;
+    		}
+    		clickHandler = this.handleOpenDropdown;
+    	}
+
 
     	return (
     		<Button
+    			disabled={disabled}
     			accent='white'
-    			className={classes.button}
-    			onClick={this.handleOpenDropdown}>
+    			className={classNames(...buttonClasses)}
+    			onClick={clickHandler}>
     			<span className={classes.buttonLabel}>
-    				{
-    					selectedOption ?
-    						selectedOption.label :
-    						placeholder
-    				}
+    				{label}
     			</span>
-    			<KeyboardArrowDown />
-
+    			<KeyboardArrowDown className={classes.buttonArrow}/>
     		</Button>
     	);
     };
@@ -142,9 +154,16 @@ const suggestionPropType = {
 
 SearchSelect.displayName = 'SearchSelect';
 
+SearchSelect.defaultProps = {
+	disabled: true
+};
+
 SearchSelect.propTypes = {
+	disabled: PropTypes.bool,
 	placeholder: PropTypes.string,
 	value: PropTypes.string,
 	suggestions: PropTypes.arrayOf(suggestionPropType),
-	onChange: PropTypes.func
+
+	onChange: PropTypes.func,
+	handleSearch: PropTypes.func,
 };

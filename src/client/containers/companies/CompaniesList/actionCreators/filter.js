@@ -54,6 +54,30 @@ export const suggestionFilterChange = (name, newValue) => {
 		}
 	};
 };
+
+
+export const CHECKBOXES_BLOCK_FILTER_CHANGE = 'companiesList/CHECKBOXES_BLOCK_FILTER_CHANGE';
+export const checkboxesBlockFilterChange = (name, event) => {
+	return {
+		type: CHECKBOXES_BLOCK_FILTER_CHANGE,
+		payload: {
+			name,
+			event
+		}
+	};
+};
+
+export const SUGGESTION_SEARCH = 'companiesList/SUGGESTION_SEARCH';
+export const handleSuggestionSearch = (name, searchQuery) => {
+	return {
+		type: SUGGESTION_SEARCH,
+		payload: {
+			name,
+			searchQuery
+		}
+	};
+};
+
 //
 // export const SUGGESTION_FILTER_CHANGE = 'companiesList/FILTER_CHANGE';
 // export const filterChange = (component, config) => {

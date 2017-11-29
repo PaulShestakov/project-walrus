@@ -11,15 +11,27 @@ export default {
 		flexGrow: '1',
 		display: 'flex',
 		justifyContent: 'space-between',
-		padding: '.5rem 0',
+		padding: '.5rem',
 		boxShadow: 'none',
-		borderBottom: `1px solid ${globalStyles.DARK_GREY}`,
+		borderBottom: `1px solid ${globalStyles.LIGHT_GREY}`,
 		borderRadius: '0',
+		backgroundColor: 'white !important',
 	},
 
 	buttonLabel: {
+		alignSelf: 'flex-end',
 		fontSize: '1.25rem',
 		fontFamily: globalStyles.BEBAS_FONT,
+		color: globalStyles.DARK_GREY
+	},
+
+	buttonDisabled: {
+		'& svg': {
+			color: globalStyles.LIGHT_GREY
+		},
+		'& span': {
+			color: globalStyles.LIGHT_GREY
+		}
 	},
 
 	dropdown: {
@@ -29,12 +41,16 @@ export default {
 		display: 'flex',
 		flexDirection: 'column',
 		width: '100%',
+		maxHeight: '300px',
+		overflowX: 'scroll',
+		overflowY: 'none',
 		boxSizing: 'border-box',
 		zIndex: '9999'
 	},
 
 	input: {
 		flexGrow: '1',
+		flexShrink: '0',
 		display: 'flex',
 		alignItems: 'center',
 		margin: '.5rem'
@@ -50,6 +66,7 @@ export default {
 	},
 
 	suggestionItem: {
+		flexShrink: '0',
 		padding: '.5rem 1rem'
 	},
 };

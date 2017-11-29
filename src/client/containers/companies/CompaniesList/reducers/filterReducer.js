@@ -21,7 +21,11 @@ import {
 
 
 	SETUP_INITIAL_FILTER_STATE,
-	SUGGESTION_FILTER_CHANGE
+
+	SUGGESTION_FILTER_CHANGE,
+	CHECKBOXES_BLOCK_FILTER_CHANGE,
+
+	SUGGESTION_SEARCH
 
 } from '../actionCreators/filter';
 
@@ -29,7 +33,8 @@ const defaultState = {
 	companyCategoryId: null,
 	companySubcategoryId: null,
 
-	sidebarFilters: null
+	suggestionQueries: {}
+
 };
 
 
@@ -46,12 +51,37 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 	case SUGGESTION_FILTER_CHANGE: {
 		return {
 			...state,
-			sidebarFilters: {
-				...state.sidebarFilters,
-				[action.payload.name]: action.payload.newValue
+
+			[action.payload.name]: action.payload.newValue,
+
+			suggestionQueries: {
+				...state.suggestionQueries,
+				[action.payload.name]: null
+			}
+
+		};
+	}
+
+	case CHECKBOXES_BLOCK_FILTER_CHANGE: {
+		console.log(action.payload);
+		return {
+			...state,
+
+		};
+	}
+
+	case SUGGESTION_SEARCH: {
+		return {
+			...state,
+			suggestionQueries: {
+				...state.suggestionQueries,
+				[action.payload.name]: action.payload.searchQuery
 			}
 		};
 	}
+
+
+
 
 
 
