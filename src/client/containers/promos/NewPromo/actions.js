@@ -38,23 +38,23 @@ const savePromo = (data) => {
 			body: form
 		}).then(
 			response => {
-            if (response.ok) {
-                return response.json();
-            }
-            else {
-                throw new Error('Network response was not ok.');
-            }
-        },
-            error => {
-                console.log('An error occurred.', error);
-                dispatch(savePromoFailed(error))
-            }
-        ).then(json => {
+				if (response.ok) {
+					return response.json();
+				}
+				else {
+					throw new Error('Network response was not ok.');
+				}
+			},
+			error => {
+				console.log('An error occurred.', error);
+				dispatch(savePromoFailed(error));
+			}
+		).then(json => {
 			dispatch(savePromoSuccess(json));
 		}).catch(error => {
-			dispatch(savePromoFailed(error))
-		})
+			dispatch(savePromoFailed(error));
+		});
 	};
 };
 
-export { savePromo }
+export { savePromo };
