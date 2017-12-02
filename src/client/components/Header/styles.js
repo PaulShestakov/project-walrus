@@ -16,4 +16,4 @@ export default {
 		fontSize: '1.4rem',
 		fontFamily: globalStyle.BEBAS_FONT
 	}
-}
+};

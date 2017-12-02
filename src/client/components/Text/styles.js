@@ -7,4 +7,4 @@ export default {
 		whiteSpace: 'normal',
 		wordBreak: 'break-word'
 	}
-}
+};

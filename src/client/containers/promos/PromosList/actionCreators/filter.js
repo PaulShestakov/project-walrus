@@ -31,7 +31,7 @@ export const loadBreedsSuccess = (data) => {
 };
 export const loadBreeds = (animalId) => {
 	return dispatch => {
-		fetch("/api/v1/codevalue/breed?animal=" + animalId).then(
+		fetch('/api/v1/codevalue/breed?animal=' + animalId).then(
 			response => {
 				if (response.ok) {
 					return response.json();
@@ -49,7 +49,7 @@ function mapBreed(breed) {
 	return {
 		value: breed.id,
 		label: breed.name
-	}
+	};
 }
 
 
@@ -120,5 +120,5 @@ export const updateFilterStateWithUrlSource = (searchParams) => {
 	return {
 		type: UPDATE_FILTER_STATE_WITH_URL_SOURCE,
 		payload: searchParams
-	}
+	};
 };

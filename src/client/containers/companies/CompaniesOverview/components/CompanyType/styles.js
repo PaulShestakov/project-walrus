@@ -2,16 +2,16 @@ import globalStyle from '../../../../../style';
 
 export default {
 	exactTypesContainer: {
-		padding: "2rem",
-		display: "flex",
+		padding: '2rem',
+		display: 'flex',
 		flexDirection: 'column'
 	},
 
-    cardImage: {
-        width: '100%',
-        height: '200px',
-        backgroundSize: 'cover',
-    },
+	cardImage: {
+		width: '100%',
+		height: '200px',
+		backgroundSize: 'cover',
+	},
 
 	exactTypeLinkWrapper: {
 		marginBottom: '1rem',
@@ -36,4 +36,4 @@ export default {
 		justifyContent: 'center',
 		flexShrink: 0
 	}
-}
+};

@@ -10,20 +10,20 @@ export default {
 		flexDirection: 'column',
 	},
 
-    companiesListBlock: {
+	companiesListBlock: {
 		position: 'relative',
 		display: 'flex',
 		flexDirection: 'column',
 	},
-    companiesList: {
-        flexGrow: '1',
-    },
+	companiesList: {
+		flexGrow: '1',
+	},
 	progressCircle: {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-    },
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+	},
 
 
-}
+};

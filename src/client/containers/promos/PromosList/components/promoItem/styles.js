@@ -34,6 +34,6 @@ export default {
 		color: 'white',
 		textDecoration: 'none'
 	}
-}
+};
 
 

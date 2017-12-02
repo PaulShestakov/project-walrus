@@ -1,5 +1,5 @@
-import * as React from "react"
-import { Card } from "components";
+import * as React from 'react';
+import { Card } from 'components';
 
 export default function withErrorHandling() {
 
@@ -32,7 +32,7 @@ export default function withErrorHandling() {
 								</h3>
 								{
 									this.state.errorInfo &&
-									this.state.errorInfo.componentStack.split("\n").map(line => {
+									this.state.errorInfo.componentStack.split('\n').map(line => {
 										return (
 											<div key={line}>
 												{line}
@@ -47,6 +47,6 @@ export default function withErrorHandling() {
 					return <Child {...this.props} />;
 				}
 			}
-		}
-	}
+		};
+	};
 }

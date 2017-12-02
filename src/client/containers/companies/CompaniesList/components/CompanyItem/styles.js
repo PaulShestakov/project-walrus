@@ -38,14 +38,14 @@ export default {
 		color: 'white'
 	},
 	icon: {
-        fontSize: '1.25rem',
-        color: globalStyles.ACCENT_BLUE,
-        marginRight: '0.5rem'
-    },
-    greyIcon: {
-        fontSize: '1.25rem',
-        color: 'grey',
-        marginRight: '0.5rem'
+		fontSize: '1.25rem',
+		color: globalStyles.ACCENT_BLUE,
+		marginRight: '0.5rem'
+	},
+	greyIcon: {
+		fontSize: '1.25rem',
+		color: 'grey',
+		marginRight: '0.5rem'
 	},
 	buttonsBlock: {
 		// flexGrow: '1',
@@ -67,4 +67,4 @@ export default {
 	spaceBetween: {
 		justifyContent: 'space-between'
 	},
-}
+};

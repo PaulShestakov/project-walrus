@@ -25,5 +25,5 @@ export default {
 	STANDART_BOX_SHADOW,
 
 	STANDART_BORDER_RADIUS
-}
+};
 

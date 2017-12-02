@@ -30,11 +30,11 @@ export function loadPromo(promoId) {
 				}
 			},
 			error => {
-				dispatch(loadPromoError())
+				dispatch(loadPromoError());
 			}
 		).then(json => {
 			dispatch(loadPromoSuccess(json));
 		});
 
-	}
+	};
 }

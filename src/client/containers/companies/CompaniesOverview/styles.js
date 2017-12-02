@@ -31,4 +31,4 @@ export default {
 		fontSize: '2.5rem',
 		margin: '5px 0'
 	},
-}
+};

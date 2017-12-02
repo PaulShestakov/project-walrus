@@ -11,4 +11,4 @@ const linkStyle = {
 
 export default {
 	linkStyle,
-}
+};

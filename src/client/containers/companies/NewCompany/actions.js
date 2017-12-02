@@ -6,40 +6,40 @@ export const POST_COMPANY_FAILURE = 'NewCompany/POST_COMPANY_FAILURE';
 const baseUrl = '/api/v1';
 
 const saveCompanyFailed = (error) => ({
-    type: POST_COMPANY_FAILURE,
-    error: error
+	type: POST_COMPANY_FAILURE,
+	error: error
 });
 
 const saveCompanySuccess = (response) => ({
-    type: POST_COMPANY_SUCCESS,
-    response
+	type: POST_COMPANY_SUCCESS,
+	response
 });
 
 export function postCompany(company, history) {
-    const formData = externalizeCompany(company);
+	const formData = externalizeCompany(company);
 
-    return dispatch => {
-        fetch(baseUrl + '/company', {
-            method: 'POST',
-            body: formData,
-            credentials: 'include'
-        }).then(
-            response => {
+	return dispatch => {
+		fetch(baseUrl + '/company', {
+			method: 'POST',
+			body: formData,
+			credentials: 'include'
+		}).then(
+			response => {
 				if (!response.ok) {
 					throw Error(response.statusText);
 				}
 				return response.json();
-            },
-            error => {
+			},
+			error => {
 				throw Error(error);
-            }
-        ).then(json => {
-            history.goBack();
-            dispatch(saveCompanySuccess(json));
-        }).catch(error => {
-            dispatch(saveCompanyFailed(error))
-        })
-    };
+			}
+		).then(json => {
+			history.goBack();
+			dispatch(saveCompanySuccess(json));
+		}).catch(error => {
+			dispatch(saveCompanyFailed(error));
+		});
+	};
 }
 
 
@@ -68,17 +68,17 @@ export function loadCompany(url_id) {
 			}
 		).then(json => {
 			dispatch({
-                type: LOAD_COMPANY_SUCCESS,
-                payload: json
-            });
+				type: LOAD_COMPANY_SUCCESS,
+				payload: json
+			});
 		}).catch(error => {
 			dispatch({
-                type: LOAD_COMPANY_ERROR,
-                error: true,
-                payload: error
-            });
-		})
-	}
+				type: LOAD_COMPANY_ERROR,
+				error: true,
+				payload: error
+			});
+		});
+	};
 }
 
 export const UPDATE_COMPANY_START = 'NewCompany/UPDATE_COMPANY_START';
@@ -121,9 +121,9 @@ export function updateCompany(companyId, company, history) {
 			history.goBack();
 			dispatch(updateCompanySuccess(json));
 		}).catch(error => {
-			dispatch(updateCompanyError(error))
-		})
-	}
+			dispatch(updateCompanyError(error));
+		});
+	};
 }
 
 function externalizeCompany(company) {
@@ -131,38 +131,38 @@ function externalizeCompany(company) {
 	const externalizedCompany = {...company};
 
 	if (externalizedCompany.locations) {
-        externalizedCompany.locations = externalizedCompany.locations.map(location => {
+		externalizedCompany.locations = externalizedCompany.locations.map(location => {
         	let markers = location.markers;
         	let position = null;
         	if (markers && markers.length > 0) {
-                position = markers[0].position;
+				position = markers[0].position;
 			}
-            return {
+			return {
 				locationId: location.locationId,
-                location: position,
-                url_id: location.url_id,
-                country: location.countryId ? location.countryId.value : null,
-                city: location.cityId ? location.cityId.value : null,
-                subway: location.subwayId ? location.subwayId.value : null,
-                isMain: location.isMain,
-                address: location.address,
-                phones: location.phones,
-                workingTimes: location.workingTimes.filter(wt => wt.dayOfWeek && wt.open && wt.close).map(wt => ({
+				location: position,
+				url_id: location.url_id,
+				country: location.countryId ? location.countryId.value : null,
+				city: location.cityId ? location.cityId.value : null,
+				subway: location.subwayId ? location.subwayId.value : null,
+				isMain: location.isMain,
+				address: location.address,
+				phones: location.phones,
+				workingTimes: location.workingTimes.filter(wt => wt.dayOfWeek && wt.open && wt.close).map(wt => ({
                 	day: wt.dayOfWeek.value,
 					open: wt.open,
 					close: wt.close,
 				})),
-            };
-        });
+			};
+		});
 	}
 
 	if (externalizedCompany.animals) {
-        externalizedCompany.animals = externalizedCompany.animals.filter(i => i.animalId).map(animal => {
+		externalizedCompany.animals = externalizedCompany.animals.filter(i => i.animalId).map(animal => {
 			return {
 				animalId: animal.animalId ? animal.animalId.value : null,
 				breedId: animal.breedId ? animal.breedId.value : null,
-			}
-        });
+			};
+		});
 	}
 
 	if (company.imageObjects.length > 0) {

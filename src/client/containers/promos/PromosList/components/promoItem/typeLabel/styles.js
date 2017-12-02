@@ -7,4 +7,4 @@ export default {
 		borderRadius: globalStyles.STANDART_BORDER_RADIUS,
 		boxShadow: globalStyles.STANDART_BOX_SHADOW
 	}
-}
+};

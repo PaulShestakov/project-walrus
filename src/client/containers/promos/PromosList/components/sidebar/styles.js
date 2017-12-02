@@ -8,8 +8,8 @@ export default {
 	},
 
 	popoverContent: {
-		display: "flex",
-		flexDirection: "column"
+		display: 'flex',
+		flexDirection: 'column'
 	},
 
 	link: {
@@ -20,4 +20,4 @@ export default {
 	selectWrapper: {
 		flexGrow: 1
 	}
-}
+};

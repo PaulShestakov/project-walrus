@@ -39,6 +39,6 @@ export default {
 		fontSize: '2rem',
 		color: globalStyles.DARK_GREY,
 	}
-}
+};
 
 

@@ -9,16 +9,16 @@ const defaultState = {
 const promoPageReducer = (state = defaultState, action) => {
 	switch (action.type) {
 
-		case LOAD_PROMO_SUCCESS: {
-			return {
-				...state,
-				promo: action.payload
-			}
-		}
+	case LOAD_PROMO_SUCCESS: {
+		return {
+			...state,
+			promo: action.payload
+		};
+	}
 
-		default: {
-			return state;
-		}
+	default: {
+		return state;
+	}
 	}
 };
 

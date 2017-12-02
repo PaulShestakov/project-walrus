@@ -66,6 +66,6 @@ export default class Util {
 		if (!result) {
 			return null;
 		}
-        return encodeURI((result).split('\\').join('\/'));
+		return encodeURI((result).split('\\').join('\/'));
 	}
 }

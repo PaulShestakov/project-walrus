@@ -10,52 +10,52 @@ import {stateDataToUrlQuery} from '../reducers/filterReducer';
 
 
 const loadPromosStart = () => {
-    return {
-        type: REQUEST_PROMOS,
-        isFetching: true
-    };
+	return {
+		type: REQUEST_PROMOS,
+		isFetching: true
+	};
 };
 
 const loadPromosSuccess = (data) => {
-    return {
-        type: REQUEST_PROMOS_SUCCESS,
-        isFetching: false,
-        data
-    };
+	return {
+		type: REQUEST_PROMOS_SUCCESS,
+		isFetching: false,
+		data
+	};
 };
 
 const loadPromosError = (error) => {
-    return {
-        type: REQUEST_PROMOS_ERROR,
-        isFetching: false,
-        error
-    };
+	return {
+		type: REQUEST_PROMOS_ERROR,
+		isFetching: false,
+		error
+	};
 };
 
 export const loadPromos = () => {
-    return (dispatch, getState) => {
-        const filterState = getState().promosList.filter;
+	return (dispatch, getState) => {
+		const filterState = getState().promosList.filter;
 
-        dispatch(loadPromosStart());
+		dispatch(loadPromosStart());
 
-        return fetch(baseUrl + '/promo/filtered' + stateDataToUrlQuery(filterState)).then(
-            response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Network response was not ok.');
-                }
-            },
-            error => {
-                console.log('An error occured.', error);
-                dispatch(savePromoFailed(error))
-            }
-        ).then(json => {
-            dispatch(loadPromosSuccess(json));
-        }).catch(error => {
-            dispatch(loadPromosError(error));
-        })
-    };
+		return fetch(baseUrl + '/promo/filtered' + stateDataToUrlQuery(filterState)).then(
+			response => {
+				if (response.ok) {
+					return response.json();
+				} else {
+					throw new Error('Network response was not ok.');
+				}
+			},
+			error => {
+				console.log('An error occured.', error);
+				dispatch(savePromoFailed(error));
+			}
+		).then(json => {
+			dispatch(loadPromosSuccess(json));
+		}).catch(error => {
+			dispatch(loadPromosError(error));
+		});
+	};
 };
 
 
@@ -76,7 +76,7 @@ function loadPromoCodeValues() {
 					}
 				},
 				error => {
-					dispatch(loadPromoCodeValuesError())
+					dispatch(loadPromoCodeValuesError());
 				}
 			).then(json => {
 				dispatch(loadPromoCodeValuesSuccess({
@@ -86,5 +86,5 @@ function loadPromoCodeValues() {
 				}));
 			});
 		}
-	}
+	};
 }
