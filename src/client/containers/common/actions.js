@@ -38,7 +38,7 @@ export function loadPromoCodeValues() {
 						type: LOAD_PROMO_CODE_VALUES_ERROR,
 						payload: error,
 						isFetching: false
-					})
+					});
 				}
 			).then(json => {
 				dispatch(loadPromoCodeValuesSuccess({
@@ -47,7 +47,7 @@ export function loadPromoCodeValues() {
 				}));
 			});
 		}
-	}
+	};
 }
 
 export const LOAD_COMPANIES_CODE_VALUES_SUCCESS = 'LOAD_COMPANIES_CODE_VALUES_SUCCESS';
@@ -57,7 +57,7 @@ export function loadCompaniesCodeValues() {
 		const comparator = (a, b) => a.sort - b.sort;
 
 		categories.forEach(category => {
-			category.subcategories.sort(comparator)
+			category.subcategories.sort(comparator);
 		});
 		categories.sort(comparator);
 
@@ -69,8 +69,8 @@ export function loadCompaniesCodeValues() {
 
 		if (!companiesCategories || companiesCategories.length === 0) {
 			let codeValuesUrl = '/api/v1/codevalue?';
-            ['DAY_OF_WEEK', 'DRUGS_TYPE', 'CLINICS_SERVICES', 'TORG_TYPE', 'SPECIALIST_DIRECTION'].forEach(i => {
-                codeValuesUrl += '&type[]=' + i;
+			['DAY_OF_WEEK', 'DRUGS_TYPE', 'CLINICS_SERVICES', 'TORG_TYPE', 'SPECIALIST_DIRECTION'].forEach(i => {
+				codeValuesUrl += '&type[]=' + i;
 			});
 			const generalCodeValues = fetch(codeValuesUrl);
 			const countiresCodeValues = fetch('/api/v1/codevalue/countries');
@@ -89,7 +89,7 @@ export function loadCompaniesCodeValues() {
 						type: LOAD_COMPANIES_CODE_VALUES_SUCCESS,
 						payload: {
 							...values[0],
-                            animals: values[1],
+							animals: values[1],
 							countries: values[2],
 							categories: sortCompaniesCategories(values[3])
 						}
@@ -97,7 +97,7 @@ export function loadCompaniesCodeValues() {
 				});
 			});
 		}
-	}
+	};
 }
 
 export const LOAD_USER_INFO_SUCCESS = 'LOAD_USER_INFO_SUCCESS';
@@ -113,7 +113,7 @@ export function loadUserInfo() {
 					if (response.status > 400) {
 						return {
 							role: 5
-						}
+						};
 					} else if (response.ok) {
 						return response.json();
 					}

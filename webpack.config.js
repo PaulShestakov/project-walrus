@@ -3,7 +3,7 @@ const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const nodeEnv = process.env.NODE_ENV;
@@ -70,13 +70,13 @@ let clientConfig = {
 				test: /\.(svg|ico|png)$/,
 				loader: 'file-loader',
 				query: {
-					name: 'images/[name].[ext]',
+				 name: 'images/[name].[ext]',
 				}
 			}
 		]
 	},
 	plugins: [
-		new HtmlWebpackPlugin({
+	   new HtmlWebpackPlugin({
 			template: 'src/client/index.html'
 		}),
 		new ExtractTextPlugin({
@@ -132,7 +132,7 @@ let serverConfig = {
 	resolve: {
 		extensions: ['.js', '.ts'],
 		modules: [
-			"./src/server/*",
+			'./src/server/*',
 			'node_modules',
 		]
 	},

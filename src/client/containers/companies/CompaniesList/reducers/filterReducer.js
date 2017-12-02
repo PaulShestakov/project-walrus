@@ -7,7 +7,7 @@ import {
 
 	COMPANIES_LIST_ADD_SUBWAY,
 	COMPANIES_LIST_REMOVE_SUBWAY,
-    //
+	//
 	// COMPANIES_LIST_ADD_ANIMAL,
 	// COMPANIES_LIST_REMOVE_ANIMAL,
 
@@ -17,7 +17,15 @@ import {
 	COMPANIES_LIST_SET_IS_WORKING_NOW,
 
 	COMPANIES_LIST_UPDATE_URL_WITH_STATE_SOURCE,
-	COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE
+	COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE,
+
+
+	SETUP_INITIAL_FILTER_STATE,
+
+	SUGGESTION_FILTER_CHANGE,
+	CHECKBOXES_BLOCK_FILTER_CHANGE,
+
+	SUGGESTION_SEARCH
 
 } from '../actionCreators/filter';
 
@@ -25,87 +33,140 @@ const defaultState = {
 	companyCategoryId: null,
 	companySubcategoryId: null,
 
-	selectedCountryId: null,
-    selectedCityId: null,
-	selectedSubwaysIds: [],
+	suggestionQueries: {},
 
-	selectedAnimalId: null,
-	selectedBreedsIds: [],
-
-    selectedDrugTypesIds: [],
-    selectedClinicsServices: [],
-	selectedSpecDirections: [],
-	selectedTorgTypes: [],
-
-	isWorkingNow: false
+	sidebarFilters: {}
 };
 
 
 export const companiesFilterReducer = (state = defaultState, action) => {
 	switch (action.type) {
-        case COMPANIES_LIST_ADD_SUBWAY: {
-            return {
-                ...state,
-                selectedSubwaysIds: state.selectedSubwaysIds.concat([action.payload])
-            }
-        }
-        case COMPANIES_LIST_REMOVE_SUBWAY: {
-            return {
-                ...state,
-                selectedSubwaysIds: state.selectedSubwaysIds.filter(x => x !== action.payload)
-            }
-        }
 
-        case COMPANIES_LIST_ADD_BREED: {
-            return {
-                ...state,
-                selectedBreedsIds: state.selectedBreedsIds.concat([action.payload])
-            }
-        }
-        case COMPANIES_LIST_REMOVE_BREED: {
-            return {
-                ...state,
-                selectedBreedsIds: state.selectedBreedsIds.filter(x => x !== action.payload)
-            }
-        }
-		case COMPANIES_LIST_SET_IS_WORKING_NOW: {
-			return {
-				...state,
-				isWorkingNow: action.payload
+	case SETUP_INITIAL_FILTER_STATE: {
+		return {
+			...state,
+			sidebarFilters: action.payload
+		};
+	}
+
+	case SUGGESTION_FILTER_CHANGE: {
+		return {
+			...state,
+
+			sidebarFilters: {
+				...state.sidebarFilters,
+				[action.payload.name]: action.payload.value,
+			},
+
+			suggestionQueries: {
+				...state.suggestionQueries,
+				[action.payload.name]: null
 			}
+
+		};
+	}
+
+	case CHECKBOXES_BLOCK_FILTER_CHANGE: {
+		const previousSelectedCheckboxes = state.sidebarFilters[action.payload.name];
+
+		let nextSelectedCheckboxes;
+		if (action.payload.isChecked) {
+			nextSelectedCheckboxes = previousSelectedCheckboxes.concat(action.payload.value);
+		} else {
+			const itemToDeleteIndex = previousSelectedCheckboxes.indexOf(action.payload.value);
+
+			nextSelectedCheckboxes = [
+				...nextSelectedCheckboxes.slice(0, itemToDeleteIndex),
+				...nextSelectedCheckboxes.slice(itemToDeleteIndex)
+			];
 		}
 
-		case COMPANIES_LIST_UPDATE_URL_WITH_STATE_SOURCE: {
-			updateUrl(state, action.payload);
-			return state;
-		}
-		case COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE: {
-			return {
-				...state,
-				...urlParamsToStateData(action.payload)
+		return {
+			...state,
+			sidebarFilters: {
+				...state.sidebarFilters,
+				[action.payload.name]: nextSelectedCheckboxes
 			}
-		}
+		};
+	}
 
-		default: {
-			return state;
-		}
+	case SUGGESTION_SEARCH: {
+		return {
+			...state,
+			suggestionQueries: {
+				...state.suggestionQueries,
+				[action.payload.name]: action.payload.searchQuery
+			}
+		};
+	}
+
+
+
+
+
+
+
+
+	case COMPANIES_LIST_ADD_SUBWAY: {
+		return {
+			...state,
+			selectedSubwaysIds: state.selectedSubwaysIds.concat([action.payload])
+		};
+	}
+	case COMPANIES_LIST_REMOVE_SUBWAY: {
+		return {
+			...state,
+			selectedSubwaysIds: state.selectedSubwaysIds.filter(x => x !== action.payload)
+		};
+	}
+
+	case COMPANIES_LIST_ADD_BREED: {
+		return {
+			...state,
+			selectedBreedsIds: state.selectedBreedsIds.concat([action.payload])
+		};
+	}
+	case COMPANIES_LIST_REMOVE_BREED: {
+		return {
+			...state,
+			selectedBreedsIds: state.selectedBreedsIds.filter(x => x !== action.payload)
+		};
+	}
+	case COMPANIES_LIST_SET_IS_WORKING_NOW: {
+		return {
+			...state,
+			isWorkingNow: action.payload
+		};
+	}
+
+	case COMPANIES_LIST_UPDATE_URL_WITH_STATE_SOURCE: {
+		updateUrl(state, action.payload);
+		return state;
+	}
+	case COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE: {
+		return {
+			...state,
+			...urlParamsToStateData(action.payload)
+		};
+	}
+
+	default: {
+		return state;
+	}
 	}
 };
 
 export function stateDataToUrlQuery(state) {
 	const filterData = {
-        companyCategoryId: state.companyCategoryId,
-        companySubcategoryId: state.companySubcategoryId,
-        countryId: state.selectedCountryId,
-        cityId: state.selectedCityId,
+		companyCategoryId: state.companyCategoryId,
+		companySubcategoryId: state.companySubcategoryId,
+		countryId: state.selectedCountryId,
+		cityId: state.selectedCityId,
 		subwayId: state.selectedSubwaysIds,
 		animalId: state.selectedAnimalId,
 		breedId: state.selectedBreedsIds,
+		isWorkingNow: state.isWorkingNow
 	};
-
-	if (state.isWorkingNow) {
-		filterData.isWorkingNow = true;
-	}
 
 	return Util.objectToUrlQuery(filterData);
 }
@@ -116,6 +177,8 @@ function updateUrl(state, history) {
 	delete updatedState.companySubcategoryId;
 	delete updatedState.selectedCountryId;
 	delete updatedState.selectedCityId;
+
+
 	history.push({
 		search: stateDataToUrlQuery(updatedState)
 	});
@@ -128,10 +191,10 @@ function urlParamsToStateData(searchParams) {
 	return {
 		companyCategoryId: urlData.companyCategoryId || defaultState.companyCategoryId,
 		companySubcategoryId: urlData.companySubcategoryId  || defaultState.companySubcategoryId,
-        selectedCountryId: urlData.selectedCountryId || defaultState.selectedCountryId,
+		selectedCountryId: urlData.selectedCountryId || defaultState.selectedCountryId,
 		selectedCityId: urlData.selectedCityId || defaultState.selectedCityId,
 		selectedSubwaysIds: Util.ensureArray(urlData.subwayId),
-        selectedAnimalId: urlData.selectedAnimalId,
+		selectedAnimalId: urlData.selectedAnimalId,
 		selectedBreedsIds: Util.ensureArray(urlData.breedId),
 		isWorkingNow: urlData.isWorkingNow === 'true'
 	};

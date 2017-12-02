@@ -1,11 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {createSelector} from 'reselect'
+import {createSelector} from 'reselect';
 
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Title, Grid, Card, Label, Text, TextField, Button, ConfirmDialog, InfoDialog, Finder } from "components";
-import CompanyItem from './components/CompanyItem/index'
+import {Title, Grid, Card, Label, Text, TextField, Button, ConfirmDialog, InfoDialog, Finder } from 'components';
+import CompanyItem from './components/CompanyItem/index';
 import Sidebar from './components/Sidebar/index';
 import classNames from 'classnames';
 import styles from './styles';
@@ -18,8 +18,8 @@ import {
 	clearFuzzySearchLoadedCompanies,
 	suggestionInputValueChange,
 	removeCompany,
-    componentLeave,
-} from "./actionCreators/companiesList";
+	componentLeave,
+} from './actionCreators/companiesList';
 
 import {
 	updateStateWithUrlSource,
@@ -29,7 +29,13 @@ import {
 	addBreed,
 	removeBreed,
 	setIsWorkingNow,
-} from "./actionCreators/filter";
+
+	setupInitialFilterState,
+
+	suggestionFilterChange,
+	checkboxesBlockFilterChange,
+	handleSuggestionSearch,
+} from './actionCreators/filter';
 
 
 @translate(['companiesList'])
@@ -56,21 +62,21 @@ class CompaniesListContainer extends React.Component {
 		searchParams.append('companyCategoryId', companyCategoryId);
 		searchParams.append('companySubcategoryId', companySubcategoryId);
 		if (countryId) {
-            searchParams.append('selectedCountryId', countryId);
+			searchParams.append('selectedCountryId', countryId);
 		}
 		if (cityId) {
-            searchParams.append('selectedCityId', cityId);
+			searchParams.append('selectedCityId', cityId);
 		}
 
 		this.state.companyBaseUrl = `/company/${companyCategoryId}/${companySubcategoryId}/company/`;
-        updateStateWithUrlSource(searchParams);
-        loadCompanies();
+		updateStateWithUrlSource(searchParams);
+		loadCompanies();
 	}
 
 	handleSuggestionsFetchRequested = (change) => {
 		if (this.props.main.suggestionInputValue !== change.value) {
 			this.props.fuzzySearchLoadCompanies({
-                searchQuery: change.value,
+				searchQuery: change.value,
 				subcategoryId: this.props.match.params.companySubcategoryId,
 			});
 		}
@@ -84,7 +90,7 @@ class CompaniesListContainer extends React.Component {
 		this.setState({
 			isWorkingTimeDialogOpened: true,
 			daysOfWeekWorkingTime
-		})
+		});
 	};
 
 	handleOpenPhonesDialog = (phones) => {
@@ -126,33 +132,33 @@ class CompaniesListContainer extends React.Component {
 							handleSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
 							handleSuggestionsClearRequested={clearFuzzySearchLoadedCompanies}
 							suggestionData={{
-                                getLink: company => `/company/${company.categoryId}/${company.subcategoryId}/company/${company.url_id}`,
-                                getLogo: company => company.logo,
-                                getTitle: company => company.name,
-                                getDescription: company => company.description
+								getLink: company => `/company/${company.categoryId}/${company.subcategoryId}/company/${company.url_id}`,
+								getLogo: company => company.logo,
+								getTitle: company => company.name,
+								getDescription: company => company.description
 							}}
 						/>
 					</Card>
 					<div className={classes.companiesList}>
 						{
-                            main.isLoading ?
+							main.isLoading ?
 
-							<CircularProgress className={classes.progressCircle} /> :
+								<CircularProgress className={classes.progressCircle} /> :
 
-							companies.map(company => {
-								return (
-									<CompanyItem
-										key={company.companyId}
-										companyBaseUrl={this.state.companyBaseUrl}
-										company={company}
-										match={match}
-										deleteAction={this.deleteCompany}
-										blockAction={this.blockCompany}
-										handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}
-										handleOpenPhonesDialog={this.handleOpenPhonesDialog}
-										handleAction={this.handleAction}/>
-								);
-							})
+								companies.map(company => {
+									return (
+										<CompanyItem
+											key={company.companyId}
+											companyBaseUrl={this.state.companyBaseUrl}
+											company={company}
+											match={match}
+											deleteAction={this.deleteCompany}
+											blockAction={this.blockCompany}
+											handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}
+											handleOpenPhonesDialog={this.handleOpenPhonesDialog}
+											handleAction={this.handleAction}/>
+									);
+								})
 						}
 					</div>
 				</Grid>
@@ -162,12 +168,17 @@ class CompaniesListContainer extends React.Component {
 						history={this.props.history}
 						filter={this.props.filter}
 						filterValues={this.props.filterValues}
-						// handleCheckboxPressed={this.handleCheckboxPressed}
 						setIsWorkingNow={this.props.setIsWorkingNow}
 						updateUrlWithStateSource={this.props.updateUrlWithStateSource}
 						loadCompanies={this.props.loadCompanies}
 						category={this.props.match.params.companyCategoryId}
 						subcategory={this.props.match.params.companySubcategoryId}
+						setupInitialFilterState={this.props.setupInitialFilterState}
+
+						suggestionFilterChange={this.props.suggestionFilterChange}
+						checkboxesBlockFilterChange={this.props.checkboxesBlockFilterChange}
+
+						handleSuggestionSearch={this.props.handleSuggestionSearch}
 					/>
 				</Grid>
 
@@ -190,14 +201,14 @@ class CompaniesListContainer extends React.Component {
 					closeCallback={() => this.setState({ isWorkingTimeDialogOpened: false })}>
 					{
 						this.state.daysOfWeekWorkingTime.map(time => {
-							const open = time.open.substring(0, time.open.lastIndexOf(":"));
-							const close = time.close.substring(0, time.close.lastIndexOf(":"));
+							const open = time.open.substring(0, time.open.lastIndexOf(':'));
+							const close = time.close.substring(0, time.close.lastIndexOf(':'));
 							return (
-								<div key={time.dayOfWeek} className={classNames(classes.flexRow, "mt-2")}>
+								<div key={time.dayOfWeek} className={classNames(classes.flexRow, 'mt-2')}>
 									<Label>{time.dayOfWeekName}</Label>
 									<Label className="ml-3">{`${open} - ${close}`}</Label>
 								</div>
-							)
+							);
 						})
 					}
 				</InfoDialog>
@@ -215,6 +226,7 @@ class CompaniesListContainer extends React.Component {
 
 const getCommon = (state) => state.common;
 const getFilter = (state) => state.companiesList.filter;
+const getSuggestionQueries = (state) => state.companiesList.filter.suggestionQueries;
 const getCompanies = (state) => state.companiesList.main.companies;
 
 const getFlatCompanies = createSelector(
@@ -229,109 +241,128 @@ const getFlatCompanies = createSelector(
 					mainLocation = {
 						workingTimes: [],
 						phones: []
-					}
+					};
 				}
 			}
-			const phonesText = mainLocation.phones ? mainLocation.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
+			const phonesText = mainLocation.phones ? mainLocation.phones.map(p => (p.phone)).join(', ') : 'Телефонов нет';
 
 			return {
 				...company,
 				mainLocation,
 				phonesText
-			}
+			};
 		});
 	}
 );
 
-const getFilterValues = createSelector(
-	[getFilter, getCommon],
-	(filter, common) => {
-		const { selectedCountry, selectedCity, selectedAnimalId } = filter;
 
-		const codeValueMapper = (item) => ({
-			value: item.value,
-			label: item.label,
-			sort: item.sort
-		});
+const mapCodeValue = (item) => ({
+	value: item.value,
+	label: item.label,
+	sort: item.sort
+});
 
-		const result = {};
 
-		result.countries = {
-			//isVisible: true,
-			getValues: () => common.countries.reduce((acc, item) => {
-				acc.push(codeValueMapper(item));
-				return acc;
-			}, [])
-		};
+const getCountries = createSelector(
+	[getCommon], (common) => common.countries
+);
+const getQueriedCountries = searchConnectedSelector('countries', getCountries);
 
-		result.cities = {
-			//isVisible: filterConstrains.isCitiesVisible(filter),
-			getValues: () => {
-				let values;
-				const foundCountry = common.countries.find(country => country.value === selectedCountry);
-				if (foundCountry) {
-					values = foundCountry.cities.reduce((acc, item) => {
+const getCities = createSelector(
+	[getCommon, getFilter], (common, filter) => {
+		const selectedCountry = filter.sidebarFilters.countries;
 
-						acc.push(codeValueMapper(item));
-						item.subCities.forEach(item => acc.push(codeValueMapper(item)));
+		const foundCountry = common.countries.find(country => country.value === selectedCountry);
 
-						return acc;
-
-					}, []).sort((cityA, cityB) => cityA.sort - cityB.sort);
-				}
-				return values || [];
-			}
-		};
-
-		result.subways = {
-			//isVisible: filterConstrains.isSubwaysVisible(filter),
-			getValues: () => {
-				const foundCity = result.cities.getValues().find(city => city.value === selectedCity);
-				return foundCity ? foundCity.subways : [];
-			}
-		};
-		
-		result.animals = {
-			//isVisible: filterConstrains.isAnimalsVisible(filter),
-			getValues: () => common.animals
-		};
-
-		result.breeds = {
-			//isVisible: !!result.animals.getValues() && filterConstrains.isBreedsVisible(filter),
-			getValues: () => {
-				const values = [];
-				result.animals.getValues().forEach(animal => {
-					if (selectedAnimalId === animal.value) {
-						values.push(...animal.breeds);
-					}
-				});
-				return values;
-			}
-		};
-
-		result.drugTypes = {
-            //isVisible: filterConstrains.isDrugsTypesVisible(filter),
-            getValues: () => common.drugsTypes
-		};
-
-        result.torgTypes = {
-            //isVisible: filterConstrains.isTorgTypeVisible(filter),
-            getValues: () => common.torgTypes
-        };
-
-        result.specDirections = {
-            //isVisible: filterConstrains.isSpecDirectionVisible(filter),
-            getValues: () => common.specialistDirections
-        };
-
-        result.clinicsServices = {
-            //isVisible: filterConstrains.isClinicsServicesVisible(filter),
-            getValues: () => common.clinicsServices
-        };
-
-		return result;
+		if (foundCountry) {
+			return foundCountry.cities
+				.reduce((acc, item) => acc.concat(item, item.subCities), [])
+				.sort((a, b) => a.sort - b.sort);
+		}
+		return [];
 	}
 );
+const getQueriedCities = searchConnectedSelector('cities', getCities);
+
+const getCitiesEnabled = createSelector(
+	[getFilter], (filter) => {
+		return !!filter.sidebarFilters.countries;
+	}
+);
+
+const getSubways = createSelector(
+	[getCities, getFilter], (cities, filter) => {
+		const selectedCity = filter.sidebarFilters.cities;
+		const foundCity = cities.find(city => city.value === selectedCity);
+
+		return foundCity ? foundCity.subways : [];
+	}
+);
+const getSubwaysEnabled = createSelector(
+	[getFilter], (filter) => {
+		return !!filter.sidebarFilters.cities;
+	}
+);
+
+const getDrugsTypes = createSelector(
+	[getCommon], (common) => common.drugsTypes
+);
+
+const getTorgTypes = createSelector(
+	[getCommon], (common) => common.torgTypes
+);
+
+const getDirections = createSelector(
+	[getCommon], (common) => common.specialistDirections
+);
+
+const getClinicsServices = createSelector(
+	[getCommon], (common) => common.clinicsServices
+);
+
+const getAnimals = createSelector(
+	[getCommon], (common) => common.animals
+);
+const getQueriedAnimals = searchConnectedSelector('animals', getAnimals);
+
+function containsFilter(substring, option) {
+	return option.label.search(new RegExp(substring, 'i')) !== -1;
+}
+
+function searchConnectedSelector(name, getAllValuesSelector) {
+	return createSelector(
+		[getAllValuesSelector, getSuggestionQueries], (allValues, suggestionQueries) => {
+			const searchQuery = suggestionQueries[name];
+
+			if (searchQuery) {
+				return allValues.filter(containsFilter.bind(null, searchQuery));
+			}
+			return allValues;
+		}
+	);
+}
+
+
+
+
+
+
+
+const getBreeds = createSelector(
+	[getCommon, getFilter], (common, filter) => {
+		const selectedAnimal = common.animals.find(animal => animal.value === filter.selectedAnimalId);
+		if (selectedAnimal) {
+			return selectedAnimal.breeds;
+		}
+		return [];
+	}
+);
+const getBreedsEnabled = createSelector(
+	[getFilter], (filter) => {
+		return !!filter.animals;
+	}
+);
+
 
 const CompaniesList = connect(
 	state => {
@@ -340,7 +371,44 @@ const CompaniesList = connect(
 			main: state.companiesList.main,
 			companies: getFlatCompanies(state),
 			filter: state.companiesList.filter,
-			filterValues: getFilterValues(state),
+			filterValues: {
+				countries: {
+					values: getQueriedCountries(state),
+					enabled: true
+				},
+				cities: {
+					values: getQueriedCities(state),
+					enabled: getCitiesEnabled(state)
+				},
+				subways: {
+					values: getSubways(state),
+					enabled: getSubwaysEnabled(state)
+				},
+				animals: {
+					values: getQueriedAnimals(state),
+					enabled: true
+				},
+				breeds: {
+					values: getBreeds(state),
+					enabled: getBreedsEnabled(state)
+				},
+				drugsTypes: {
+					values: getDrugsTypes(state),
+					enabled: true
+				},
+				torgTypes: {
+					values: getTorgTypes(state),
+					enabled: true
+				},
+				directions: {
+					values: getDirections(state),
+					enabled: true
+				},
+				clinicsServices: {
+					values: getClinicsServices(state),
+					enabled: true
+				},
+			},
 		};
 	},
 	{
@@ -361,7 +429,15 @@ const CompaniesList = connect(
 
 		setIsWorkingNow,
 
-        componentLeave,
+		componentLeave,
+
+		setupInitialFilterState,
+
+
+		suggestionFilterChange,
+		checkboxesBlockFilterChange,
+
+		handleSuggestionSearch
 	}
 )(CompaniesListContainer);
 

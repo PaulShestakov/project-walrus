@@ -4,6 +4,7 @@ import globalStyles from './../../style';
 export default {
 	button: {
 		width: '100%',
+		paddingLeft: '.5rem',
 		background: 'white',
 		color: `${globalStyles.DARK_GREY}`,
 
@@ -22,6 +23,6 @@ export default {
 	arrowIcon: {
 		fontSize: '1.5rem'
 	}
-}
+};
 
 
