@@ -13,6 +13,9 @@ import Phones from "./Phones";
 import WorkingTimes from "./WorkingTimes";
 import Animals from "./Animals";
 import Feedbacks from "./Feedbacks";
+import { map } from "async";
+import { Company } from './entities/Company';
+import Extensions from "./Extensions";
 
 export default class Companies extends BaseCRUD  {
 
@@ -127,11 +130,17 @@ export default class Companies extends BaseCRUD  {
 
 		const saveAnimals = Animals.saveAnimals(company.animals, company.companyId);
 
+		const saveDrugs = Extensions.saveManyToMany(company.drugs.map(drug => drug.drugId), company.companyId, Queries.SAVE_DRUGS);
+
+		const saveServices = Extensions.saveManyToMany(company.services.map(service => service.serviceId), company.companyId, Queries.SAVE_SERVICES);
+
+		const saveTradeTypes = Extensions.saveManyToMany(company.tradeTypes.map(trade => trade.tradeId), company.companyId, Queries.SAVE_TRADES);
+
 	    const saveCompany = (connection, done) => {
             connection.query(Queries.SAVE, [Companies.internalizeCompany(company)], done);
 		};
 
-        executeSeries([saveCompany, saveAnimals, saveLocations, savePhones, saveWorkingTimes], (error) => {
+        executeSeries([saveCompany, saveAnimals, saveLocations, savePhones, saveWorkingTimes, saveDrugs, saveServices, saveTradeTypes], (error) => {
             if (error) {
                 Util.handleError(error, callback);
             } else {
@@ -140,7 +149,7 @@ export default class Companies extends BaseCRUD  {
         });
 	}
 
-	static updateCompany(url_id, company, callback) {
+	static updateCompany(url_id, company: Company, callback) {
 
 		const internalizedCompany = this.internalizeCompany(company);
 		if (company.image.length === 0) {
@@ -153,6 +162,7 @@ export default class Companies extends BaseCRUD  {
 
 		const updateLocations = Locations.updateLocations(company.locations, company.companyId);
 		const updateAnimals = Animals.updateAnimals(company.animals, company.companyId);
+		const updateExtenstion = Extensions.updateExtensions([company.drugs, company.services, company.tradeTypes], company.companyId);
 
 		executeParallel([updateCompany, updateAnimals, updateLocations], (error) => {
 			if (error) {
@@ -245,6 +255,19 @@ export default class Companies extends BaseCRUD  {
 				.field('ca.COMPANY_ANIMAL_ID', 'companyAnimalId')
 				.field('ca.ANIMAL_ID', 'animalId')
 				.field('ca.BREED_ID', 'breedId')
+
+				.field('cdt.UUID', 'drugUuid')
+				.field('cdt.DRUG_ID', 'drugId')
+				.field('cv3.NAME', 'drugName')
+
+				.field('cs.UUID', 'serviceUuid')
+				.field('cs.SERVICE_ID', 'serviceId')
+				.field('cv4.NAME', 'serviceName')
+
+				.field('ctt.UUID', 'tradeUuid')
+				.field('ctt.TRADE_TYPE_ID', 'tradeId')
+				.field('cv5.NAME', 'tradeName')
+
 			.from('wikipet.companies', 'c')
 			.left_join(
 				squel.select()
@@ -255,8 +278,10 @@ export default class Companies extends BaseCRUD  {
 				.group('cf.COMPANY_ID'), 'cf1', 'cf1.COMPANY_ID = c.COMPANY_ID'
 			)
 			.left_join('wikipet.companies_location', 'l', 'l.COMPANY_ID = c.COMPANY_ID')
-			.left_join('wikipet.companies_working_time', 't', 't.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID');
-		
+			.left_join('wikipet.companies_working_time', 't', 't.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
+			.left_join('wikipet.companies_drug_type', 'cdt', 'cdt.COMPANY_ID = c.COMPANY_ID')
+			.left_join('wikipet.companies_service', 'cs', 'cs.COMPANY_ID = c.COMPANY_ID')
+			.left_join('wikipet.companies_trade_type', 'ctt', 'ctt.COMPANY_ID = c.COMPANY_ID');
 
 		if (isWorkingNow) {
 			sql = sql
@@ -274,6 +299,11 @@ export default class Companies extends BaseCRUD  {
             .left_join('wikipet.code_values', 'cv0', "cv0.ID = c.COMPANY_SUBCATEGORY_ID")
 			.left_join('wikipet.code_values', 'cv1', "cv1.ID = l.CITY_ID")
 			.left_join('wikipet.code_values', 'cv2', "cv2.ID = t.DAY_OF_WEEK")
+
+			.left_join('wikipet.code_values', 'cv3', "cv3.ID = cdt.DRUG_ID")
+			.left_join('wikipet.code_values', 'cv4', "cv4.ID = cs.SERVICE_ID")
+			.left_join('wikipet.code_values', 'cv5', "cv5.ID = ctt.TRADE_TYPE_ID")
+
 			.left_join('wikipet.companies_animals', 'ca', 'c.COMPANY_ID = ca.COMPANY_ID')
 			.left_join('wikipet.companies_phones', 'p', 'p.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
 			.where(filter)
@@ -313,6 +343,21 @@ export default class Companies extends BaseCRUD  {
 						name: 'animals',
 						idName: 'companyAnimalId',
 						map: Animals.mapCompanyAnimal
+					},
+					{
+						name: 'drugs',
+						idName: 'drugId',
+						map: Extensions.mapDrugs
+					},
+					{
+						name: 'services',
+						idName: 'serviceId',
+						map: Extensions.mapServices
+					},
+					{
+						name: 'tradeTypes',
+						idName: 'tradeId',
+						map: Extensions.mapTrades
 					}
 				]
 			};

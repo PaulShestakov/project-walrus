@@ -1,3 +1,6 @@
+import { map } from "async";
+import { exec } from "child_process";
+
 interface Company {
 	companyId: string,
 	name: string,
@@ -6,8 +9,11 @@ interface Company {
 	email: string,
 	url: string,
 	url_id: string,
-	image: object,
-    animals: Array<object>,
+	image: any,
+	animals: Array<any>,
+	drugs: Array<any>,
+	services: Array<any>,
+	tradeTypes: Array<any>,
     companyCategoryId: string,
     companySubcategoryId: string,
 	vk: string,
@@ -23,3 +29,5 @@ interface IFeedback {
 	feedback: string,
 	rating: number,
 }
+
+export { Company, IFeedback };

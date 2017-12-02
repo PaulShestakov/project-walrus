@@ -1,7 +1,7 @@
 import * as uuid from 'uuid';
 import Queries from './sql/Queries';
 import Util from "../../util/Util";
-import async from 'async';
+import * as async from 'async';
 
 export default class Animals {
 
