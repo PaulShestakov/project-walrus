@@ -6,5 +6,5 @@ export default {
 		height: '1px',
 		backgroundColor: globalStyles.LIGHT_GREY,
 		backgroundClip: 'content-box'
-    }
-}
+	}
+};

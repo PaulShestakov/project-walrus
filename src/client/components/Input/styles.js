@@ -1,5 +1,5 @@
 export default {
-    red: {
-        color: 'red'
-    }
+	red: {
+		color: 'red'
+	}
 };

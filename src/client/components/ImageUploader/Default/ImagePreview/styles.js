@@ -5,12 +5,12 @@ export default {
 		position: 'relative'
 	},
 
-    image: {
-        width: '8rem',
-        height: '6rem',
-    },
+	image: {
+		width: '8rem',
+		height: '6rem',
+	},
 
-    deleteButton: {
+	deleteButton: {
 		position: 'absolute',
 		width: '2rem',
 		height: '2rem',
@@ -31,8 +31,8 @@ export default {
 		}
 	},
 
-    deleteButtonCross: {
-        color: 'white',
-        fontSize: '1rem'
-    }
-}
+	deleteButtonCross: {
+		color: 'white',
+		fontSize: '1rem'
+	}
+};
