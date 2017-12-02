@@ -270,7 +270,9 @@ const getQueriedCountries = searchConnectedSelector('countries', getCountries);
 
 const getCities = createSelector(
 	[getCommon, getFilter], (common, filter) => {
-		const foundCountry = common.countries.find(country => country.value === filter.countries);
+		const selectedCountry = filter.sidebarFilters.countries;
+
+		const foundCountry = common.countries.find(country => country.value === selectedCountry);
 
 		if (foundCountry) {
 			return foundCountry.cities
@@ -284,19 +286,21 @@ const getQueriedCities = searchConnectedSelector('cities', getCities);
 
 const getCitiesEnabled = createSelector(
 	[getFilter], (filter) => {
-		return !!filter.countries;
+		return !!filter.sidebarFilters.countries;
 	}
 );
 
 const getSubways = createSelector(
 	[getCities, getFilter], (cities, filter) => {
-		const foundCity = cities.find(city => city.value === filter.cities);
+		const selectedCity = filter.sidebarFilters.cities;
+		const foundCity = cities.find(city => city.value === selectedCity);
+
 		return foundCity ? foundCity.subways : [];
 	}
 );
 const getSubwaysEnabled = createSelector(
 	[getFilter], (filter) => {
-		return !!filter.cities;
+		return !!filter.sidebarFilters.cities;
 	}
 );
 

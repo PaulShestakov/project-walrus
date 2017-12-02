@@ -87,7 +87,7 @@ export default class Sidebar extends React.Component {
 							const title = description[component][name].title;
 							const enabled = this.props.filterValues[name].enabled;
 
-							const value = this.props.filter[name];
+							const value = this.props.filter.sidebarFilters[name];
 							const allOptions = this.props.filterValues[name].values || [];
 
 
@@ -116,7 +116,9 @@ export default class Sidebar extends React.Component {
 										numberOfItemsToShowDefault={4}
 										items={allOptions}
 										selectedIds={value || []}
-										handleCheckboxPressed={event => this.props.checkboxesBlockFilterChange(name, event)}
+										handleCheckboxPressed={event => {
+											this.props.checkboxesBlockFilterChange(name, event.target.value, event.target.checked);
+										}}
 									/>
 								);
 							}

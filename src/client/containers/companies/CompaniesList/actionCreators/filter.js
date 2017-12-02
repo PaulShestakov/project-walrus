@@ -45,24 +45,25 @@ export const setupInitialFilterState = (filters) => {
 
 
 export const SUGGESTION_FILTER_CHANGE = 'companiesList/SUGGESTION_FILTER_CHANGE';
-export const suggestionFilterChange = (name, newValue) => {
+export const suggestionFilterChange = (name, value) => {
 	return {
 		type: SUGGESTION_FILTER_CHANGE,
 		payload: {
 			name,
-			newValue
+			value
 		}
 	};
 };
 
 
 export const CHECKBOXES_BLOCK_FILTER_CHANGE = 'companiesList/CHECKBOXES_BLOCK_FILTER_CHANGE';
-export const checkboxesBlockFilterChange = (name, event) => {
+export const checkboxesBlockFilterChange = (name, value, isChecked) => {
 	return {
 		type: CHECKBOXES_BLOCK_FILTER_CHANGE,
 		payload: {
 			name,
-			event
+			value,
+			isChecked
 		}
 	};
 };

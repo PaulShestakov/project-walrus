@@ -33,8 +33,9 @@ const defaultState = {
 	companyCategoryId: null,
 	companySubcategoryId: null,
 
-	suggestionQueries: {}
+	suggestionQueries: {},
 
+	sidebarFilters: {}
 };
 
 
@@ -52,7 +53,10 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 		return {
 			...state,
 
-			[action.payload.name]: action.payload.newValue,
+			sidebarFilters: {
+				...state.sidebarFilters,
+				[action.payload.name]: action.payload.value,
+			},
 
 			suggestionQueries: {
 				...state.suggestionQueries,
@@ -63,10 +67,26 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 	}
 
 	case CHECKBOXES_BLOCK_FILTER_CHANGE: {
-		console.log(action.payload);
+		const previousSelectedCheckboxes = state.sidebarFilters[action.payload.name];
+
+		let nextSelectedCheckboxes;
+		if (action.payload.isChecked) {
+			nextSelectedCheckboxes = previousSelectedCheckboxes.concat(action.payload.value);
+		} else {
+			const itemToDeleteIndex = previousSelectedCheckboxes.indexOf(action.payload.value);
+
+			nextSelectedCheckboxes = [
+				...nextSelectedCheckboxes.slice(0, itemToDeleteIndex),
+				...nextSelectedCheckboxes.slice(itemToDeleteIndex)
+			];
+		}
+
 		return {
 			...state,
-
+			sidebarFilters: {
+				...state.sidebarFilters,
+				[action.payload.name]: nextSelectedCheckboxes
+			}
 		};
 	}
 
