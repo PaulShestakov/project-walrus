@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import {stateDataToUrlQuery} from '../reducers/filterReducer';
-import Utils from "../../../util/index";
+import Utils from '../../../util/index';
 
 export const LOAD_COMPANIES_START = 'companiesList/LOAD_COMPANIES_START';
 export const LOAD_COMPANIES_SUCCESS = 'companiesList/LOAD_COMPANIES_SUCCESS';

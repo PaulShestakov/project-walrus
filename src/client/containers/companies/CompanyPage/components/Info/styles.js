@@ -1,5 +1,5 @@
 export default {
-    description: {
-        whiteSpace: 'pre-wrap'
-    }
-}
+	description: {
+		whiteSpace: 'pre-wrap'
+	}
+};

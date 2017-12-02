@@ -1,51 +1,51 @@
 import {
-    POST_COMPANY_SUCCESS,
-    LOAD_COMPANY_SUCCESS,
-    RESET_FORM_STATE,
+	POST_COMPANY_SUCCESS,
+	LOAD_COMPANY_SUCCESS,
+	RESET_FORM_STATE,
 	UPDATE_COMPANY_SUCCESS
 } from './actions';
 
 const defaultState = {
-    company: {
-        name: '',
-        locations: [],
-        imageObjects: []
-    }
+	company: {
+		name: '',
+		locations: [],
+		imageObjects: []
+	}
 };
 
 const newCompanyReducer = (state = defaultState, action) => {
-    switch (action.type) {
+	switch (action.type) {
 
-        case POST_COMPANY_SUCCESS: {
-            action.history.push('/company/overview');
-            return state;
-        }
+	case POST_COMPANY_SUCCESS: {
+		action.history.push('/company/overview');
+		return state;
+	}
 
-		case LOAD_COMPANY_SUCCESS: {
-			return {
-				...state,
-				company: action.payload
-			}
-        }
+	case LOAD_COMPANY_SUCCESS: {
+		return {
+			...state,
+			company: action.payload
+		};
+	}
 
-        case UPDATE_COMPANY_SUCCESS: {
-            return state;
-        }
+	case UPDATE_COMPANY_SUCCESS: {
+		return state;
+	}
         
-        case RESET_FORM_STATE: {
-            return {
-                company: {
-                    name: '',
-                    locations: [],
-                    imageObjects: []
-                }
-            }
-        }
+	case RESET_FORM_STATE: {
+		return {
+			company: {
+				name: '',
+				locations: [],
+				imageObjects: []
+			}
+		};
+	}
 
-        default: {
-            return state;
-        }
-    }
+	default: {
+		return state;
+	}
+	}
 };
 
 export default newCompanyReducer;

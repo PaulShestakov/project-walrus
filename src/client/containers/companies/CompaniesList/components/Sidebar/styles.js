@@ -44,4 +44,4 @@ export default {
 			fontFamily: globalStyles.BEBAS_FONT
 		}
 	},
-}
+};
