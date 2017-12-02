@@ -9,7 +9,7 @@ export default function configI18n() {
 		// Have a common namespace used around the full app
 		ns: ['common'],
 		defaultNS: 'common',
-		resources: require("i18next-resource-store-loader!./index.js")
+		resources: require('i18next-resource-store-loader!./index.js')
 	});
 
 	return i18n;

@@ -5,7 +5,7 @@ import './style.global.scss';
 import './assets/fonts/fonts.global.scss';
 import './assets/img/favicon.ico';
 
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from 'react-router-dom';
 import Router from './containers/RootRouter';
 
 
@@ -18,7 +18,7 @@ const i18n = configI18n();
 
 
 // ---------------------- CONFIG REDUX -----------------------//
-import { Provider as ReduxProvider } from 'react-redux'
+import { Provider as ReduxProvider } from 'react-redux';
 import configureStore from './store/configStore.js';
 
 const store = configureStore();
@@ -69,21 +69,21 @@ const theme = createMuiTheme({
 
 
 class Root extends React.Component {
-  render() {
-    return (
-		<I18nextProvider i18n={i18n}>
-			<ReduxProvider store={store}>
-				<JssProvider jss={jss}>
-					<MuiThemeProvider theme={theme}>
-						<BrowserRouter>
-							<Router />
-						</BrowserRouter>
-					</MuiThemeProvider>
-				</JssProvider>
-			</ReduxProvider>
-		</I18nextProvider>
-    );
-  }
+	render() {
+		return (
+			<I18nextProvider i18n={i18n}>
+				<ReduxProvider store={store}>
+					<JssProvider jss={jss}>
+						<MuiThemeProvider theme={theme}>
+							<BrowserRouter>
+								<Router />
+							</BrowserRouter>
+						</MuiThemeProvider>
+					</JssProvider>
+				</ReduxProvider>
+			</I18nextProvider>
+		);
+	}
 }
 
 ReactDOM.render(<Root/>, document.getElementById('root'));
