@@ -41,19 +41,24 @@ export default {
 		display: 'flex',
 		flexDirection: 'column',
 		width: '100%',
-		maxHeight: '300px',
-		overflowX: 'scroll',
-		overflowY: 'none',
 		boxSizing: 'border-box',
 		zIndex: '9999'
 	},
 
-	input: {
+	dropdownInput: {
 		flexGrow: '1',
 		flexShrink: '0',
 		display: 'flex',
 		alignItems: 'center',
 		margin: '.5rem'
+	},
+
+	dropdownSuggestions: {
+		display: 'flex',
+		flexDirection: 'column',
+		maxHeight: '300px',
+		overflowY: 'auto',
+		overflowX: 'hidden',
 	},
 
 	inputAdornment: {

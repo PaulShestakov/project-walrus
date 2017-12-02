@@ -69,7 +69,7 @@ export default class SearchSelect extends React.Component {
     		<Fade in={isPopoverOpened} transitionDuration="auto" unmountOnExit>
     			<Paper className={classes.dropdown}>
     				<Input
-    					className={classes.input}
+    					className={classes.dropdownInput}
     					value={inputValue}
     					onChange={this.handleInputChange}
     					startAdornment={
@@ -78,20 +78,20 @@ export default class SearchSelect extends React.Component {
     						</InputAdornment>
     					}
     				/>
-
-    				{
-    					suggestions.map(suggestion => (
-
-    						<MenuItem
-    							key={suggestion.value}
-    							disabled={false}
-    							selected={false}
-    							onClick={() => this.handleSuggestionClick(suggestion)}
-    							className={classes.suggestionItem}>
-    							{suggestion.label}
-    						</MenuItem>
-    					))
-    				}
+    				<div className={classes.dropdownSuggestions}>
+    					{
+    						suggestions.map(suggestion => (
+    							<MenuItem
+    								key={suggestion.value}
+    								disabled={false}
+    								selected={false}
+    								onClick={() => this.handleSuggestionClick(suggestion)}
+    								className={classes.suggestionItem}>
+    								{suggestion.label}
+    							</MenuItem>
+    						))
+    					}
+    				</div>
     			</Paper>
     		</Fade>
     	);
