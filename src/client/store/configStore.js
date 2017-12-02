@@ -1,23 +1,31 @@
 import { createStore, applyMiddleware } from 'redux';
-import rootReducer from '../reducers/index.js';
+import rootReducer from '../containers/rootReducer.js';
 import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk';
 import { loadState, saveState } from './localStorage';
 
 
-export default function configureStore(initialState) {
-  const logger = createLogger();
-  const persistedState = loadState();
+export default function configureStore() {
+	//const persistedState = loadState();
+	const persistedState = {};
 
-  const store = createStore(
-    rootReducer,
-    persistedState,
-    applyMiddleware(logger, thunk)
-  );
 
-  store.subscribe(function() {
-    saveState(store.getState())
-  });
+	const middlewares = [thunk];
 
-  return store;
+	if (process.env.NODE_ENV === 'development') {
+		const logger = createLogger();
+		middlewares.push(logger);
+	}
+
+    const store = createStore(
+		rootReducer,
+		persistedState,
+		applyMiddleware(...middlewares)
+	);
+
+	// store.subscribe(function() {
+	//   saveState(store.getState())
+	// });
+
+	return store;
 }

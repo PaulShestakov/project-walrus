@@ -2,3 +2,7 @@ dist
 node_modules
 npm-debug.log
 .idea
+config
+package-lock.json
+uploads/
+log/

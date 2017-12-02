@@ -1,0 +1,59 @@
+@import '../../style.global.scss';
+
+
+html {
+  position: relative;
+  min-height: 100%;
+  font-size: 16px;
+}
+
+body, body > div {
+  height: 100%;
+}
+
+.appWrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+
+  main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+}
+
+.mainGridWrapper,
+.breadcrumbsWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.breadcrumbsWrapper > div {
+  flex-grow: 1;
+}
+
+
+
+// Breadcrumbs
+.breadcrumbs {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border-radius: 2px;
+  background-color: white;
+  @include shadow();
+
+  .breadcrumbs__separator {
+    margin: 0 .5rem;
+    color: #585858;
+  }
+
+  a {
+    color: #585858;
+
+    &:hover {
+      color: #9d331b;
+    }
+  }
+}
