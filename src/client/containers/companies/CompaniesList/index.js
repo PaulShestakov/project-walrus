@@ -11,6 +11,10 @@ import classNames from 'classnames';
 import styles from './styles';
 import { CircularProgress } from 'material-ui';
 import { extendCodeValues } from '../selectors';
+import assignments from './settings/assignments';
+import filterDescriptions from './settings/filtersDesctiption';
+
+import Util from '../../util/index';
 
 import {
 	loadCompanies,
@@ -43,6 +47,11 @@ import {
 class CompaniesListContainer extends React.Component {
 	constructor(props) {
 		super(props);
+
+		const { companyCategoryId, companySubcategoryId } = props.match.params;
+		let filters = this.getFilters(companyCategoryId, companySubcategoryId);
+
+
 		this.state = {
 			isWorkingTimeDialogOpened: false,
 			isConfirmDialogOpened: false,
@@ -50,26 +59,43 @@ class CompaniesListContainer extends React.Component {
 			cities: [],
 			daysOfWeekWorkingTime: [],
 			company: {},
-			phones: []
+			phones: [],
+
+			componentFilters: filters
 		};
+
+
+
+
+		this.props.setupInitialFilterState(filters.map(filter => filterDescriptions[filter.name]));
+	}
+
+	getFilters(category, subcategory) {
+		let filters;
+
+		const foundCategory = assignments.find(a => a.categories.includes(category));
+		const foundAssignment = assignments.find(a => a.subcategories.includes(subcategory));
+
+		if (foundAssignment) {
+			filters = foundAssignment.filters;
+		} else if (foundCategory) {
+			filters = foundCategory.filters;
+		}
+		return filters;
 	}
 
 	componentDidMount() {
 		const { updateStateWithUrlSource, match, loadCompanies, location } = this.props;
 		const { companyCategoryId, companySubcategoryId, countryId, cityId } = match.params;
 
-		const searchParams = new URLSearchParams(location.search);
-		searchParams.append('companyCategoryId', companyCategoryId);
-		searchParams.append('companySubcategoryId', companySubcategoryId);
-		if (countryId) {
-			searchParams.append('selectedCountryId', countryId);
-		}
-		if (cityId) {
-			searchParams.append('selectedCityId', cityId);
-		}
+		const searchParams = Util.searchParamsToObject(new URLSearchParams(location.search));
+		const staticPathParams = {companyCategoryId, companySubcategoryId};
+		const dynamicPathParams = {
+			country: countryId,
+			city: cityId
+		};
 
-		this.state.companyBaseUrl = `/company/${companyCategoryId}/${companySubcategoryId}/company/`;
-		updateStateWithUrlSource(searchParams);
+		updateStateWithUrlSource(staticPathParams, dynamicPathParams, searchParams);
 		loadCompanies();
 	}
 
@@ -166,6 +192,7 @@ class CompaniesListContainer extends React.Component {
 				<Grid item xs={3}>
 					<Sidebar
 						history={this.props.history}
+						componentFilters={this.state.componentFilters}
 						filter={this.props.filter}
 						filterValues={this.props.filterValues}
 						setIsWorkingNow={this.props.setIsWorkingNow}
@@ -173,7 +200,6 @@ class CompaniesListContainer extends React.Component {
 						loadCompanies={this.props.loadCompanies}
 						category={this.props.match.params.companyCategoryId}
 						subcategory={this.props.match.params.companySubcategoryId}
-						setupInitialFilterState={this.props.setupInitialFilterState}
 
 						suggestionFilterChange={this.props.suggestionFilterChange}
 						checkboxesBlockFilterChange={this.props.checkboxesBlockFilterChange}
@@ -372,11 +398,11 @@ const CompaniesList = connect(
 			companies: getFlatCompanies(state),
 			filter: state.companiesList.filter,
 			filterValues: {
-				countries: {
+				country: {
 					values: getQueriedCountries(state),
 					enabled: true
 				},
-				cities: {
+				city: {
 					values: getQueriedCities(state),
 					enabled: getCitiesEnabled(state)
 				},

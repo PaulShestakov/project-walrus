@@ -17,7 +17,7 @@ import styles from './styles';
 import {Link} from 'react-router-dom';
 import Authorized from '../../../../Authorized';
 import assignments from '../../settings/assignments';
-import description from '../../settings/componentDescription';
+import description from '../../settings/filtersDesctiption';
 import SearchSelect from '../../../../../components/SearchSelect/index';
 
 @translate(['companiesList'])
@@ -25,30 +25,6 @@ import SearchSelect from '../../../../../components/SearchSelect/index';
 export default class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
-
-		// Find appropriate filters config
-		let filters = this.getFilters(props);
-
-		this.state = {
-			filters
-		};
-
-		this.props.setupInitialFilterState(filters.map(filter => description[filter.component][filter.name]));
-	}
-
-	getFilters(props) {
-		let filters;
-		const { category, subcategory } = props;
-
-		const foundCategory = assignments.find(a => a.categories.includes(category));
-		const foundAssignment = assignments.find(a => a.subcategories.includes(subcategory));
-
-		if (foundAssignment) {
-			filters = foundAssignment.filters;
-		} else if (foundCategory) {
-			filters = foundCategory.filters;
-		}
-		return filters;
 	}
 
     handleIsWorkingNowChange = (event, checked) => {
@@ -57,13 +33,7 @@ export default class Sidebar extends React.Component {
     	this.props.loadCompanies();
     };
 
-	handleChange = (name, value) => {
-
-	};
-
-
-
-	render() {
+    render() {
     	const {t, classes} = this.props;
 
     	return (
@@ -80,34 +50,36 @@ export default class Sidebar extends React.Component {
 
     			<Card className={classNames(classes.card, 'mb-3 p-3')}>
     				{
-    					this.state.filters.map(filter => {
+    					this.props.componentFilters.map(filter => {
     						const { component, name } = filter;
 
 
-							const title = description[component][name].title;
-							const enabled = this.props.filterValues[name].enabled;
+    						const title = description[name].title;
+    						const enabled = this.props.filterValues[name].enabled;
 
-							const value = this.props.filter.sidebarFilters[name];
-							const allOptions = this.props.filterValues[name].values || [];
+    						const value = this.props.filter.sidebarFilters[name];
+    						const allOptions = this.props.filterValues[name].values || [];
 
+    						switch (component) {
+    						case 'suggestion': {
+    							return (
+    								<SearchSelect
+    									disabled={!enabled}
+    									className="mb-3"
+    									placeholder={title}
+    									value={value}
+    									suggestions={allOptions}
+    									onChange={(option) => {
 
-
-							switch (component) {
-							case 'suggestion': {
-								return (
-									<SearchSelect
-										disabled={!enabled}
-										className="mb-3"
-										placeholder={title}
-										value={value}
-										suggestions={allOptions}
-										onChange={(option) => this.props.suggestionFilterChange(name, option.value)}
-										handleSearch={(query) => this.props.handleSuggestionSearch(name, query)}/>
-								);
-							}
-							case 'checkbox': {
-								return (
-									enabled &&
+    										this.props.suggestionFilterChange(name, option.value);
+    										this.props.updateUrlWithStateSource(this.props.history);
+    									}}
+    									handleSearch={(query) => this.props.handleSuggestionSearch(name, query)}/>
+    							);
+    						}
+    						case 'checkbox': {
+    							return (
+    								enabled &&
 									<CheckboxesBlock
 										className="mb-3"
 										formGroupName={name}
@@ -117,30 +89,32 @@ export default class Sidebar extends React.Component {
 										items={allOptions}
 										selectedIds={value || []}
 										handleCheckboxPressed={event => {
+
 											this.props.checkboxesBlockFilterChange(name, event.target.value, event.target.checked);
+											this.props.updateUrlWithStateSource(this.props.history);
 										}}
 									/>
-								);
-							}
+    							);
+    						}
 
 
-							// case 'checkbox':{
-							// 	return <CheckboxesBlock props={this.props} item={description[component][name]} />;
-							// }
-							//
-							// case 'switch': {
-							// 	return <WorkingNow {...this.props} handleIsWorkingNowChange={this.handleIsWorkingNowChange} />;
-							// }
+    						// case 'checkbox':{
+    						// 	return <CheckboxesBlock props={this.props} item={description[component][name]} />;
+    						// }
+    						//
+    						// case 'switch': {
+    						// 	return <WorkingNow {...this.props} handleIsWorkingNowChange={this.handleIsWorkingNowChange} />;
+    						// }
 
-							default:
-								return null;
+    						default:
+    							return null;
 									//throw new Error('Unsupported filter component');
-							}
+    						}
 
     					})
     				}
     			</Card>
     		</div>
     	);
-	}
+    }
 }

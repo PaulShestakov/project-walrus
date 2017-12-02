@@ -19,10 +19,14 @@ export const updateUrlWithStateSource = (history) => {
 };
 
 export const COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE = 'COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE';
-export const updateStateWithUrlSource = (searchParams) => {
+export const updateStateWithUrlSource = (staticPathParams, dynamicPathParams, searchParams) => {
 	return {
 		type: COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE,
-		payload: searchParams
+		payload: {
+			staticPathParams,
+			dynamicPathParams,
+			searchParams
+		}
 	};
 };
 

@@ -1,19 +1,7 @@
 import Util from '../../../util/index';
-import * as _ from 'lodash';
+import filtersDesctiption from '../settings/filtersDesctiption';
 
 import {
-// 	COMPANIES_LIST_ADD_CITY,
-// 	COMPANIES_LIST_REMOVE_CITY,
-
-	COMPANIES_LIST_ADD_SUBWAY,
-	COMPANIES_LIST_REMOVE_SUBWAY,
-	//
-	// COMPANIES_LIST_ADD_ANIMAL,
-	// COMPANIES_LIST_REMOVE_ANIMAL,
-
-	COMPANIES_LIST_ADD_BREED,
-	COMPANIES_LIST_REMOVE_BREED,
-
 	COMPANIES_LIST_SET_IS_WORKING_NOW,
 
 	COMPANIES_LIST_UPDATE_URL_WITH_STATE_SOURCE,
@@ -28,6 +16,7 @@ import {
 	SUGGESTION_SEARCH
 
 } from '../actionCreators/filter';
+import {URL_PARAM_TYPES} from '../settings/constants';
 
 const defaultState = {
 	companyCategoryId: null,
@@ -76,8 +65,8 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 			const itemToDeleteIndex = previousSelectedCheckboxes.indexOf(action.payload.value);
 
 			nextSelectedCheckboxes = [
-				...nextSelectedCheckboxes.slice(0, itemToDeleteIndex),
-				...nextSelectedCheckboxes.slice(itemToDeleteIndex)
+				...previousSelectedCheckboxes.slice(0, itemToDeleteIndex),
+				...previousSelectedCheckboxes.slice(itemToDeleteIndex + 1)
 			];
 		}
 
@@ -100,38 +89,6 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 		};
 	}
 
-
-
-
-
-
-
-
-	case COMPANIES_LIST_ADD_SUBWAY: {
-		return {
-			...state,
-			selectedSubwaysIds: state.selectedSubwaysIds.concat([action.payload])
-		};
-	}
-	case COMPANIES_LIST_REMOVE_SUBWAY: {
-		return {
-			...state,
-			selectedSubwaysIds: state.selectedSubwaysIds.filter(x => x !== action.payload)
-		};
-	}
-
-	case COMPANIES_LIST_ADD_BREED: {
-		return {
-			...state,
-			selectedBreedsIds: state.selectedBreedsIds.concat([action.payload])
-		};
-	}
-	case COMPANIES_LIST_REMOVE_BREED: {
-		return {
-			...state,
-			selectedBreedsIds: state.selectedBreedsIds.filter(x => x !== action.payload)
-		};
-	}
 	case COMPANIES_LIST_SET_IS_WORKING_NOW: {
 		return {
 			...state,
@@ -143,10 +100,22 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 		updateUrl(state, action.payload);
 		return state;
 	}
+
 	case COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE: {
+
+		const staticPathParams = action.payload.staticPathParams;
+		const dynamicPathParams = action.payload.dynamicPathParams;
+		const queryParams = action.payload.queryParams;
+
 		return {
 			...state,
-			...urlParamsToStateData(action.payload)
+			...staticPathParams,
+
+			sidebarFilters: {
+				...state.sidebarFilters,
+				...dynamicPathParams,
+				...queryParams
+			}
 		};
 	}
 
@@ -160,42 +129,44 @@ export function stateDataToUrlQuery(state) {
 	const filterData = {
 		companyCategoryId: state.companyCategoryId,
 		companySubcategoryId: state.companySubcategoryId,
-		countryId: state.selectedCountryId,
-		cityId: state.selectedCityId,
-		subwayId: state.selectedSubwaysIds,
-		animalId: state.selectedAnimalId,
-		breedId: state.selectedBreedsIds,
-		isWorkingNow: state.isWorkingNow
+		...state.sidebarFilters
 	};
 
 	return Util.objectToUrlQuery(filterData);
 }
 
-function updateUrl(state, history) {
-	const updatedState = {...state};
-	delete updatedState.companyCategoryId;
-	delete updatedState.companySubcategoryId;
-	delete updatedState.selectedCountryId;
-	delete updatedState.selectedCityId;
 
+function updateUrl(state, history) {
+
+	const pathParams = [
+		state.companyCategoryId,
+		state.companySubcategoryId
+	];
+	const queryParams = {};
+
+
+	const pathParamsFromFilter = [];
+
+	Object.keys(state.sidebarFilters).forEach(filterName => {
+		const urlParamConfig = filtersDesctiption[filterName].urlParamConfig;
+
+		switch (urlParamConfig.type) {
+		case URL_PARAM_TYPES.PATH:
+			pathParamsFromFilter.push({
+				sort: urlParamConfig.sort,
+				value: state.sidebarFilters[filterName]
+			});
+			break;
+		case URL_PARAM_TYPES.QUERY:
+			queryParams[filterName] = state.sidebarFilters[filterName];
+			break;
+		}
+	});
+
+	pathParams.push(...pathParamsFromFilter.sort().map(param => param.value));
 
 	history.push({
-		search: stateDataToUrlQuery(updatedState)
+		pathname: '/company/' + pathParams.join('/'),
+		search: Util.objectToUrlQuery(queryParams)
 	});
-}
-
-
-function urlParamsToStateData(searchParams) {
-	const urlData = Util.searchParamsToObject(searchParams);
-
-	return {
-		companyCategoryId: urlData.companyCategoryId || defaultState.companyCategoryId,
-		companySubcategoryId: urlData.companySubcategoryId  || defaultState.companySubcategoryId,
-		selectedCountryId: urlData.selectedCountryId || defaultState.selectedCountryId,
-		selectedCityId: urlData.selectedCityId || defaultState.selectedCityId,
-		selectedSubwaysIds: Util.ensureArray(urlData.subwayId),
-		selectedAnimalId: urlData.selectedAnimalId,
-		selectedBreedsIds: Util.ensureArray(urlData.breedId),
-		isWorkingNow: urlData.isWorkingNow === 'true'
-	};
 }
