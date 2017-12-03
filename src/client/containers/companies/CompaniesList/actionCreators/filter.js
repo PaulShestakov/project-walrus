@@ -82,30 +82,3 @@ export const handleSuggestionSearch = (name, searchQuery) => {
 		}
 	};
 };
-
-//
-// export const SUGGESTION_FILTER_CHANGE = 'companiesList/FILTER_CHANGE';
-// export const filterChange = (component, config) => {
-//
-// 	switch(component) {
-// 		case 'suggestion':
-// 		case 'switch': {
-// 			return {
-// 				type: FILTER_CHANGE,
-// 				payload: {
-// 					name: config.name,
-// 					value: config.newValue
-// 				}
-// 			};
-// 		}
-// 		case 'checkbox': {
-// 			return {
-// 				type: FILTER_CHANGE,
-// 				payload: {
-// 					type: config.type,
-// 					value: config.newValue
-// 				}
-// 			};
-// 		}
-// 	}
-// };

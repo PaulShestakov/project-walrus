@@ -39,12 +39,26 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 	}
 
 	case SUGGESTION_FILTER_CHANGE: {
+
+		const filterName = action.payload.name;
+		const filterDescription = filtersDesctiption[filterName];
+		const dependentFiltersNames = filterDescription.dependentFiltersNames;
+
+		let dependentCleanup = {};
+		if (dependentFiltersNames) {
+			dependentCleanup = dependentFiltersNames.reduce((acc, name) => {
+				acc[name] = filtersDesctiption[name].defaultValue;
+				return acc;
+			}, {});
+		}
+
 		return {
 			...state,
 
 			sidebarFilters: {
 				...state.sidebarFilters,
 				[action.payload.name]: action.payload.value,
+				...dependentCleanup
 			},
 
 			suggestionQueries: {

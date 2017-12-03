@@ -10,6 +10,7 @@ const FILTER_TYPE = {
 };
 
 export default {
+
 	subways: {
 		type: FILTER_TYPE.CHECKBOX_BLOCK,
 		defaultValue: [],
@@ -81,7 +82,10 @@ export default {
 		urlParamConfig: {
 			type: URL_PARAM_TYPES.PATH,
 			sort: 1
-		}
+		},
+		dependentFiltersNames: [
+			'city', 'subways'
+		]
 	},
 	city: {
 		type: FILTER_TYPE.SUGGESTION,
@@ -91,7 +95,10 @@ export default {
 		urlParamConfig: {
 			type: URL_PARAM_TYPES.PATH,
 			sort: 2
-		}
+		},
+		dependentFiltersNames: [
+			'subways'
+		]
 	},
 	animals: {
 		type: FILTER_TYPE.SUGGESTION,

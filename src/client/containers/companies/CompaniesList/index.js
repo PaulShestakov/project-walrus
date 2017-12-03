@@ -51,7 +51,6 @@ class CompaniesListContainer extends React.Component {
 		const { companyCategoryId, companySubcategoryId } = props.match.params;
 		let filters = this.getFilters(companyCategoryId, companySubcategoryId);
 
-
 		this.state = {
 			isWorkingTimeDialogOpened: false,
 			isConfirmDialogOpened: false,
@@ -63,9 +62,6 @@ class CompaniesListContainer extends React.Component {
 
 			componentFilters: filters
 		};
-
-
-
 
 		this.props.setupInitialFilterState(filters.map(filter => filterDescriptions[filter.name]));
 	}
@@ -147,7 +143,7 @@ class CompaniesListContainer extends React.Component {
 		const { t, companies, classes, match, main, clearFuzzySearchLoadedCompanies } = this.props;
 
 		return (
-			<Grid container className="my-3">
+			<Grid container className="mt-2 mb-4">
 				<Grid item xs={9} className={classes.companiesListBlock}>
 					<Card className={classNames(classes.searchInputWrapper)}>
 						<Finder
@@ -292,11 +288,11 @@ const mapCodeValue = (item) => ({
 const getCountries = createSelector(
 	[getCommon], (common) => common.countries
 );
-const getQueriedCountries = searchConnectedSelector('countries', getCountries);
+const getQueriedCountries = searchConnectedSelector('country', getCountries);
 
 const getCities = createSelector(
 	[getCommon, getFilter], (common, filter) => {
-		const selectedCountry = filter.sidebarFilters.countries;
+		const selectedCountry = filter.sidebarFilters.country;
 
 		const foundCountry = common.countries.find(country => country.value === selectedCountry);
 
@@ -308,25 +304,25 @@ const getCities = createSelector(
 		return [];
 	}
 );
-const getQueriedCities = searchConnectedSelector('cities', getCities);
+const getQueriedCities = searchConnectedSelector('city', getCities);
 
 const getCitiesEnabled = createSelector(
 	[getFilter], (filter) => {
-		return !!filter.sidebarFilters.countries;
+		return !!filter.sidebarFilters.country;
 	}
 );
 
 const getSubways = createSelector(
 	[getCities, getFilter], (cities, filter) => {
-		const selectedCity = filter.sidebarFilters.cities;
+		const selectedCity = filter.sidebarFilters.city;
 		const foundCity = cities.find(city => city.value === selectedCity);
 
 		return foundCity ? foundCity.subways : [];
 	}
 );
 const getSubwaysEnabled = createSelector(
-	[getFilter], (filter) => {
-		return !!filter.sidebarFilters.cities;
+	[getSubways], (subways) => {
+		return subways.length > 0;
 	}
 );
 
@@ -367,12 +363,6 @@ function searchConnectedSelector(name, getAllValuesSelector) {
 		}
 	);
 }
-
-
-
-
-
-
 
 const getBreeds = createSelector(
 	[getCommon, getFilter], (common, filter) => {
