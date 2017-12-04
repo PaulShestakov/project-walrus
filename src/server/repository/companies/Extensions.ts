@@ -1,5 +1,5 @@
 import Queries from './sql/Queries';
-import uuid from 'uuid';
+import * as uuid from 'uuid';
 import * as async from 'async';
 
 export default class Extensions {
@@ -33,32 +33,27 @@ export default class Extensions {
     }
 
     static updateExtensions(extensions, companyId) {
-        
-        // let internalizedExtenstions = [];
-        // if (extensions) {
-        //     internalizedExtenstions = animals.map(animal => {
-        //         return Animals.internalizeCompanyAnimal(animal, companyId);
-        //     });
-        // }
 
-        // const deleteExtenstions = (connection, done) => {
-        //     connection.query(Queries.DELETE_DRUGS_FOR_COMPANY, [companyId], done);
-        //     connection.query(Queries.DELETE_SERVICES_FOR_COMPANY, [companyId], done);
-        //     connection.query(Queries.DELETE_TRADES_FOR_COMPANY, [companyId], done);
-        // };
+        const queries = [];
 
-        // const insertAnimals = (connection, done) => {
-        //     if (internalizedExtenstions.length > 0) {
-        //         connection.query(Queries.SAVE, [internalizedExtenstions], done);
-        //     } else {
-        //         done(null, null);
-        //     }
-        // };
+        [
+            Queries.DELETE_DRUGS_FOR_COMPANY,
+            Queries.DELETE_SERVICES_FOR_COMPANY,
+            Queries.DELETE_TRADES_FOR_COMPANY,
+        ].forEach(deleteQuery => {
+            queries.push((connection, done) => {
+                connection.query(deleteQuery, [companyId], done);
+            });
+        });
 
-        // return (connection, done) => {
-        //     const tasks = [deleteExtenstions, insertAnimals].map(f => f.bind(null, connection));
-        //     async.series(tasks, done);
-        // };
+        extensions.forEach(ext => {
+            queries.push(Extensions.saveManyToMany(ext.ids, companyId, ext.query));
+        });
+
+        return (connection, done) => {
+            const tasks = queries.map(f => f.bind(null, connection));
+            async.series(tasks, done);
+        };
     }
 
 }

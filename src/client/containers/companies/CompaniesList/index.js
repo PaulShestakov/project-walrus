@@ -11,8 +11,8 @@ import classNames from 'classnames';
 import styles from './styles';
 import { CircularProgress } from 'material-ui';
 import { extendCodeValues } from '../selectors';
-import assignments from './settings/assignments';
-import filterDescriptions from './settings/filtersDesctiption';
+import { findFilters } from './settings/assignments';
+import filterDescriptions from './settings/filtersDescription';
 
 import Util from '../../util/index';
 
@@ -49,7 +49,7 @@ class CompaniesListContainer extends React.Component {
 		super(props);
 
 		const { companyCategoryId, companySubcategoryId } = props.match.params;
-		let filters = this.getFilters(companyCategoryId, companySubcategoryId);
+		let filters = findFilters(companyCategoryId, companySubcategoryId);
 
 
 		this.state = {
@@ -64,24 +64,7 @@ class CompaniesListContainer extends React.Component {
 			componentFilters: filters
 		};
 
-
-
-
 		this.props.setupInitialFilterState(filters.map(filter => filterDescriptions[filter.name]));
-	}
-
-	getFilters(category, subcategory) {
-		let filters;
-
-		const foundCategory = assignments.find(a => a.categories.includes(category));
-		const foundAssignment = assignments.find(a => a.subcategories.includes(subcategory));
-
-		if (foundAssignment) {
-			filters = foundAssignment.filters;
-		} else if (foundCategory) {
-			filters = foundCategory.filters;
-		}
-		return filters;
 	}
 
 	componentDidMount() {

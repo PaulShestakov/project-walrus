@@ -8,7 +8,7 @@ const FEEDBACK = 'wikipet.companies_feedback';
 const USERS = 'wikipet.dle_users';
 const COMPANIES_DRUGS = 'wikipet.companies_drug_type';
 const COMPANIES_SERVICES = 'wikipet.companies_service';
-const COMPANIES_TRADE_TYPE = 'wikipet.comapnies_trade_type';
+const COMPANIES_TRADE_TYPE = 'wikipet.companies_trade_type';
 
 export default {
 	GET: `
@@ -63,7 +63,19 @@ export default {
 			(SELECT NAME FROM wikipet.code_values WHERE ID = ca.ANIMAL_ID) as animalName,
 			(SELECT NAME FROM wikipet.code_values WHERE ID = ca.BREED_ID) as breedName,
 			ca.ANIMAL_ID as animalId,
-			ca.BREED_ID as breedId
+			ca.BREED_ID as breedId,
+
+			cdt.UUID as drugUuid,
+			cdt.DRUG_ID as drugId,
+			(SELECT NAME FROM wikipet.code_values WHERE ID = cdt.DRUG_ID) as drugName,
+
+			cs.UUID as serviceUuid,
+			cs.SERVICE_ID as serviceId,
+			(SELECT NAME FROM wikipet.code_values WHERE ID = cs.SERVICE_ID) as serviceName,
+
+			ctt.UUID as tradeUuid,
+			ctt.TRADE_TYPE_ID as tradeId,
+			(SELECT NAME FROM wikipet.code_values WHERE ID = ctt.TRADE_TYPE_ID) as tradeName
 
 		FROM ${COMPANIES_TABLE} c
 		
@@ -84,6 +96,15 @@ export default {
 			
 		LEFT JOIN ${COMPANIES_ANIMALS} ca
 			ON ca.COMPANY_ID = c.COMPANY_ID
+
+		LEFT JOIN ${COMPANIES_DRUGS} cdt
+			ON cdt.COMPANY_ID = c.COMPANY_ID
+
+		LEFT JOIN ${COMPANIES_SERVICES} cs
+			ON cs.COMPANY_ID = c.COMPANY_ID
+
+		LEFT JOIN ${COMPANIES_TRADE_TYPE} ctt
+			ON ctt.COMPANY_ID = c.COMPANY_ID
 			
 		WHERE c.URL_ID = ?
 		

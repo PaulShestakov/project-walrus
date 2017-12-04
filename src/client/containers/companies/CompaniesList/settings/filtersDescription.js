@@ -9,7 +9,7 @@ const FILTER_TYPE = {
 	SWITCH: 3
 };
 
-export default {
+const filterDescriptions = {
 	subways: {
 		type: FILTER_TYPE.CHECKBOX_BLOCK,
 		defaultValue: [],
@@ -116,4 +116,17 @@ export default {
 			sort: 0
 		}
 	}
+};
+
+export default filterDescriptions;
+
+const filterNamesToExclude = [
+	'breeds',
+	'cities',
+	'subways'
+];
+
+export function findDescriptions(filtersName) {
+	return Object.values(filterDescriptions)
+			.filter(description => filtersName.includes(description.name) && !filterNamesToExclude.includes(description.name));
 }

@@ -17,7 +17,7 @@ import styles from './styles';
 import {Link} from 'react-router-dom';
 import Authorized from '../../../../Authorized';
 import assignments from '../../settings/assignments';
-import description from '../../settings/filtersDesctiption';
+import description from '../../settings/filtersDescription';
 import SearchSelect from '../../../../../components/SearchSelect/index';
 
 @translate(['companiesList'])

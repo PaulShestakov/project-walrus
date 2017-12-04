@@ -16,6 +16,7 @@ const defaultFilters = [
 const defaultWithWorking = [
 	...defaultFilters,
 	{
+		name: 'isWorkingNow',
 		component: 'workingNow'
 	},
 ];
@@ -28,7 +29,7 @@ const defaultWithWorkingAndTorg = [
 	}
 ];
 
-export default [
+const filters = [
 	{
 		categories: [],
 		subcategories: [
@@ -131,3 +132,11 @@ export default [
 		]
 	},
 ];
+
+export default filters;
+
+export function findFilters(category, subCategory) {
+	const filterByCategory = filters.find(filter => filter.categories.includes(category.toLowerCase()));
+	const filterBySubCat = filters.find(filter => filter.subcategories.includes(subCategory.toLowerCase()));
+	return filterBySubCat ? filterBySubCat.filters : filterByCategory ? filterByCategory.filters : [];
+}

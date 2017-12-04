@@ -1,5 +1,5 @@
 import Util from '../../../util/index';
-import filtersDesctiption from '../settings/filtersDesctiption';
+import filtersDescription from '../settings/filtersDescription';
 
 import {
 	COMPANIES_LIST_SET_IS_WORKING_NOW,
@@ -148,7 +148,7 @@ function updateUrl(state, history) {
 	const pathParamsFromFilter = [];
 
 	Object.keys(state.sidebarFilters).forEach(filterName => {
-		const urlParamConfig = filtersDesctiption[filterName].urlParamConfig;
+		const urlParamConfig = filtersDescription[filterName].urlParamConfig;
 
 		switch (urlParamConfig.type) {
 		case URL_PARAM_TYPES.PATH:

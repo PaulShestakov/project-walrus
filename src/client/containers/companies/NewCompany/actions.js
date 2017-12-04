@@ -128,7 +128,12 @@ export function updateCompany(companyId, company, history) {
 
 function externalizeCompany(company) {
 	const files = [];
-	const externalizedCompany = {...company};
+	const externalizedCompany = {
+		...company,
+		drugsTypes: [],
+		clinicsServices: [],
+		torgTypes: []
+	};
 
 	if (externalizedCompany.locations) {
 		externalizedCompany.locations = externalizedCompany.locations.map(location => {
@@ -163,6 +168,13 @@ function externalizeCompany(company) {
 				breedId: animal.breedId ? animal.breedId.value : null,
 			};
 		});
+	}
+
+	if (externalizedCompany.extensions) {
+		externalizedCompany.extensions.forEach(ext => {
+			externalizedCompany[ext.name] = ext.childs.map(ch => ch.item.value);
+		});
+		delete externalizedCompany.extensions;
 	}
 
 	if (company.imageObjects.length > 0) {

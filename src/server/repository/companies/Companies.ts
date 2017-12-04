@@ -96,6 +96,21 @@ export default class Companies extends BaseCRUD  {
 								name: 'animals',
 								idName: 'companyAnimalId',
 								map: Animals.mapCompanyAnimal
+							},
+							{
+								name: 'drugsTypes',
+								idName: 'drugId',
+								map: Extensions.mapDrugs
+							},
+							{
+								name: 'clinicsServices',
+								idName: 'serviceId',
+								map: Extensions.mapServices
+							},
+							{
+								name: 'torgTypes',
+								idName: 'tradeId',
+								map: Extensions.mapTrades
 							}
 						]
 					};
@@ -130,11 +145,11 @@ export default class Companies extends BaseCRUD  {
 
 		const saveAnimals = Animals.saveAnimals(company.animals, company.companyId);
 
-		const saveDrugs = Extensions.saveManyToMany(company.drugs.map(drug => drug.drugId), company.companyId, Queries.SAVE_DRUGS);
+		const saveDrugs = Extensions.saveManyToMany(company.drugsTypes, company.companyId, Queries.SAVE_DRUGS);
 
-		const saveServices = Extensions.saveManyToMany(company.services.map(service => service.serviceId), company.companyId, Queries.SAVE_SERVICES);
+		const saveServices = Extensions.saveManyToMany(company.clinicsServices, company.companyId, Queries.SAVE_SERVICES);
 
-		const saveTradeTypes = Extensions.saveManyToMany(company.tradeTypes.map(trade => trade.tradeId), company.companyId, Queries.SAVE_TRADES);
+		const saveTradeTypes = Extensions.saveManyToMany(company.torgTypes, company.companyId, Queries.SAVE_TRADES);
 
 	    const saveCompany = (connection, done) => {
             connection.query(Queries.SAVE, [Companies.internalizeCompany(company)], done);
@@ -162,9 +177,23 @@ export default class Companies extends BaseCRUD  {
 
 		const updateLocations = Locations.updateLocations(company.locations, company.companyId);
 		const updateAnimals = Animals.updateAnimals(company.animals, company.companyId);
-		const updateExtenstion = Extensions.updateExtensions([company.drugs, company.services, company.tradeTypes], company.companyId);
+		const updateExtenstion = Extensions.updateExtensions([
+				{
+					ids: company.drugsTypes,
+					query: Queries.SAVE_DRUGS,
+				},
+				{
+					ids: company.clinicsServices,
+					query: Queries.SAVE_SERVICES,
+				},
+				{
+					ids: company.torgTypes,
+					query: Queries.SAVE_TRADES,
+				},
+			], company.companyId
+		);
 
-		executeParallel([updateCompany, updateAnimals, updateLocations], (error) => {
+		executeParallel([updateCompany, updateAnimals, updateLocations, updateExtenstion], (error) => {
 			if (error) {
 				Util.handleError(error, callback);
 			} else {
@@ -345,17 +374,17 @@ export default class Companies extends BaseCRUD  {
 						map: Animals.mapCompanyAnimal
 					},
 					{
-						name: 'drugs',
+						name: 'drugsTypes',
 						idName: 'drugId',
 						map: Extensions.mapDrugs
 					},
 					{
-						name: 'services',
+						name: 'clinicsServices',
 						idName: 'serviceId',
 						map: Extensions.mapServices
 					},
 					{
-						name: 'tradeTypes',
+						name: 'torgTypes',
 						idName: 'tradeId',
 						map: Extensions.mapTrades
 					}

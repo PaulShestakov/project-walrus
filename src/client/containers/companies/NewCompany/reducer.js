@@ -8,6 +8,7 @@ import {
 const defaultState = {
 	company: {
 		name: '',
+		extensions: [],
 		locations: [],
 		imageObjects: []
 	}
@@ -17,7 +18,6 @@ const newCompanyReducer = (state = defaultState, action) => {
 	switch (action.type) {
 
 	case POST_COMPANY_SUCCESS: {
-		action.history.push('/company/overview');
 		return state;
 	}
 
@@ -34,11 +34,7 @@ const newCompanyReducer = (state = defaultState, action) => {
         
 	case RESET_FORM_STATE: {
 		return {
-			company: {
-				name: '',
-				locations: [],
-				imageObjects: []
-			}
+			company: defaultState.company
 		};
 	}
 
