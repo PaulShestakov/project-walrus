@@ -15,11 +15,15 @@ import styles from './styles';
 import {Typography} from "material-ui";
 
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
-import Location from "./components/Location/index";
-import Animals from "./components/Animals/index";
+import Location from "./components/Location";
+import Animals from "./components/Animals";
 import { extendCodeValues } from '../selectors';
 
 import {getFormValues} from 'redux-form';
+import Extensions from './components/Extensions';
+
+import { findFilters } from '../CompaniesList/settings/assignments';
+import { findDescriptions } from '../CompaniesList/settings/filtersDescription';
 
 
 @translate(['common'])
@@ -71,8 +75,9 @@ class NewCompanyContainer extends React.Component {
 		});
 	};
 
-	handleSubcategoryChange = () => {
+	handleSubcategoryChange = (subCategory) => {
         this.props.change('animals', []);
+        this.props.change('extensions', calculateExtensions(this.props.selectedCategory, subCategory.value));
     };
 
 	onCancelPressed = () => {
@@ -84,13 +89,13 @@ class NewCompanyContainer extends React.Component {
 	};
 
 	saveAction = (values) => {
-		const { history, editMode, match, updateCompany, postCompany, initialValues } = this.props;
+        const { history, editMode, match, updateCompany, postCompany, initialValues } = this.props;
 		if (editMode) {
             values.companyId = initialValues.companyId;
 			updateCompany(match.params.url_id, values, history);
 		} else {
 			postCompany(values, history);
-		}
+        }
 	};
 
 	isAnimalAvailable = (props) => {
@@ -103,7 +108,8 @@ class NewCompanyContainer extends React.Component {
     };
 
 	render() {
-		const { t, common, handleSubmit, workingTimes, subcategories, formLocations } = this.props;
+        const { t, common, handleSubmit, workingTimes, subcategories, formLocations, extensions,
+            selectedCategory, selectedSubCategory } = this.props;
 
 		return (
             <form className="d-flex-column align-items-center my-3">
@@ -154,6 +160,14 @@ class NewCompanyContainer extends React.Component {
                                    format={value => subcategories.find(x => x.value === value)}
                                    normalize={value => value.value}
                             />
+                        </Grid>
+                        <Grid item xs={11}>
+                            <FieldArray
+                                codeValues={{...common}}
+                                name="extensions"
+                                change={this.props.change}
+                                extensions={this.props.extensions}
+                                component={Extensions}/>
                         </Grid>
                         <Grid item xs={11}>
                             <FieldArray
@@ -256,14 +270,22 @@ class NewCompanyContainer extends React.Component {
 }
 
 
-const getSelectedCategory = createSelector(
-	[getFormValues('company')],
-	formValues => {
-		return formValues && formValues.categoryId;
-	}
-);
-
-const getCategories = (state) => state.common.companiesCategories;
+const getCategories = state => state.common.companiesCategories;
+const getSelectedCategory = state => formValueSelector('company')(state, 'categoryId');
+const getSelectedSubCategory = state => formValueSelector('company')(state, 'subcategoryId');
+const getLocations = state => formValueSelector('company')(state, 'locations');
+const calculateExtensions = (category, subCategory) => {
+    if (category && subCategory) {
+        const mapper = (item) => ({
+            title: item.title,
+            name: item.name,
+            childs: []
+        });
+        const filters = findFilters(category, subCategory).map(filter => filter.name);
+        return findDescriptions(filters).filter(i => i.type === 1).map(mapper);
+    }
+    return [];
+};
 
 const getSubcategories = createSelector(
 	[getSelectedCategory, getCategories],
@@ -276,7 +298,6 @@ const getSubcategories = createSelector(
 const internalizeCompany = createSelector(
     [state => state.newCompany.company, extendCodeValues()],
 	(company, common) => {
-
         if (company.companyId) {
             company = {
                 ...company,
@@ -361,6 +382,22 @@ const internalizeCompany = createSelector(
                     }
                 ]
             }
+            if (company.categoryId && company.subcategoryId) {
+                const extensions = calculateExtensions(company.categoryId, company.subcategoryId);
+                company.extensions = extensions.map(ext => {
+                    return {
+                        name: ext.name,
+                        title: ext.title,
+                        childs: company[ext.name] && company[ext.name].map(i => ({
+                            item: {
+                                value: i.id,
+                                label: i.name
+                            },
+                            values: common[ext.name]
+                        }))
+                    };
+                });
+            }
         }
         return company;
     }
@@ -370,9 +407,9 @@ const NewCompany = connect(
     state => ({
 		common: extendCodeValues()(state),
 		initialValues: internalizeCompany(state),
-		selectedCategory: formValueSelector('company')(state, 'categoryId'),
-		selectedSubCategory: formValueSelector('company')(state, 'subcategoryId'),
-        formLocations: formValueSelector('company')(state, 'locations'),
+		selectedCategory: getSelectedCategory(state),
+		selectedSubCategory: getSelectedSubCategory(state),
+        formLocations: getLocations(state),
         subcategories: getSubcategories(state),
     }),
     {
