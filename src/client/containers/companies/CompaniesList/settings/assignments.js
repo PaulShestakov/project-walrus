@@ -1,10 +1,10 @@
 const defaultFilters = [
 	{
-		name: 'country',
+		name: 'countryId',
 		component: 'suggestion'
 	},
 	{
-		name: 'city',
+		name: 'cityId',
 		component: 'suggestion'
 	},
 	{

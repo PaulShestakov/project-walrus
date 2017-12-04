@@ -204,8 +204,11 @@ export default class Companies extends BaseCRUD  {
 
 	static getFiltered(params, callback): void {
 		const { companyCategoryId, companySubcategoryId, cityId, countryId, animalId } = params;
-		const subwaysIds = Util.ensureArray(params.subwayId);
-		const breedsIds = Util.ensureArray(params.breedId);
+		const subwaysIds = Util.ensureArray(params.subways);
+		const breedsIds = Util.ensureArray(params.breeds);
+		const drugsTypesIds = Util.ensureArray(params.drugsTypes);
+		const clinicsServicesIds = Util.ensureArray(params.clinicsServices);
+		const torgTypesIds = Util.ensureArray(params.torgTypes);
 		const isWorkingNow = params.isWorkingNow && params.isWorkingNow === 'true';
 
 		let filter = squel.expr();
@@ -230,6 +233,15 @@ export default class Companies extends BaseCRUD  {
 		}
 		if (breedsIds.length > 0) {
 			filter = filter.and('ca.BREED_ID IN ?', breedsIds);
+		}
+		if (drugsTypesIds.length > 0) {
+			filter = filter.and('cdt.DRUG_ID IN ?', drugsTypesIds);
+		}
+		if (clinicsServicesIds.length > 0) {
+			filter = filter.and('cs.SERVICE_ID IN ?', clinicsServicesIds);
+		}
+		if (torgTypesIds.length > 0) {
+			filter = filter.and('ctt.TRADE_TYPE_ID IN ?', drugsTypesIds);
 		}
 
 		let dayOfWeek, timeNow;

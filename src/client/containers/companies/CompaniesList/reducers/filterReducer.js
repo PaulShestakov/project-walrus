@@ -41,13 +41,13 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 	case SUGGESTION_FILTER_CHANGE: {
 
 		const filterName = action.payload.name;
-		const filterDescription = filtersDesctiption[filterName];
+		const filterDescription = filtersDescription[filterName];
 		const dependentFiltersNames = filterDescription.dependentFiltersNames;
 
 		let dependentCleanup = {};
 		if (dependentFiltersNames) {
 			dependentCleanup = dependentFiltersNames.reduce((acc, name) => {
-				acc[name] = filtersDesctiption[name].defaultValue;
+				acc[name] = filtersDescription[name].defaultValue;
 				return acc;
 			}, {});
 		}

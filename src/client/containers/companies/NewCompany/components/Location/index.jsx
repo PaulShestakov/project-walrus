@@ -64,10 +64,11 @@ export default class Location extends React.Component {
         const { fields, countries } = this.props;
         const foundCountry = countries.find(c => c.value === item.value);
         if (foundCountry) {
-            fields.get(index).countryId = foundCountry;
-            fields.get(index).cities = foundCountry.allCities || [];
-            fields.get(index).cityId = null;
-            fields.get(index).subwayId = null;
+            this.props.change('locations[' + index + '].countryId', foundCountry);
+            this.props.change('locations[' + index + '].cities', foundCountry.allCities || []);
+            this.props.change('locations[' + index + '].cityId', null);
+            this.props.change('locations[' + index + '].subways', []);
+            this.props.change('locations[' + index + '].subwayId', null);
         }
     };
 
@@ -75,9 +76,9 @@ export default class Location extends React.Component {
         const { fields } = this.props;
         const foundCity = fields.get(index).cities.find(city => item.value === city.value);
         if (foundCity) {
-            fields.get(index).cityId = foundCity;
-            fields.get(index).subways = foundCity.subways || [];
-            fields.get(index).subwayId = null;
+            this.props.change('locations[' + index + '].cityId', foundCity);
+            this.props.change('locations[' + index + '].subways', foundCity.subways || []);
+            this.props.change('locations[' + index + '].subwayId', null);
         }
     };
 

@@ -10,7 +10,7 @@ export default {
 	},
 
 	selectedLocation: {
-		backgroundColor: globalStyle.LIGHT_GREY,
+		backgroundColor: 'rgba(100, 100, 100, 0.08)',
 	}
 
 };

@@ -54,7 +54,7 @@ export default class Sidebar extends React.Component {
     						const { component, name } = filter;
 
 
-    						const title = description[name].title;
+    						const { title,showMoreLabel } = description[name];
     						const enabled = this.props.filterValues[name].enabled;
 
     						const value = this.props.filter.sidebarFilters[name];
@@ -72,7 +72,8 @@ export default class Sidebar extends React.Component {
     									onChange={(option) => {
 
     										this.props.suggestionFilterChange(name, option.value);
-    										this.props.updateUrlWithStateSource(this.props.history);
+											this.props.updateUrlWithStateSource(this.props.history);
+											this.props.loadCompanies();
     									}}
     									handleSearch={(query) => this.props.handleSuggestionSearch(name, query)}/>
     							);
@@ -84,7 +85,7 @@ export default class Sidebar extends React.Component {
 										className="mb-3"
 										formGroupName={name}
 										title={title}
-										showMoreLabel={'more'}
+										showMoreLabel={showMoreLabel}
 										numberOfItemsToShowDefault={4}
 										items={allOptions}
 										selectedIds={value || []}
@@ -92,6 +93,7 @@ export default class Sidebar extends React.Component {
 
 											this.props.checkboxesBlockFilterChange(name, event.target.value, event.target.checked);
 											this.props.updateUrlWithStateSource(this.props.history);
+											this.props.loadCompanies();
 										}}
 									/>
     							);

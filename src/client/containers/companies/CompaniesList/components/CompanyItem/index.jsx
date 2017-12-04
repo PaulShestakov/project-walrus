@@ -45,7 +45,7 @@ export default class CompanyItem extends React.Component {
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>
 				<Grid container justify="center" spacing={24}>
 					<Grid item xs={5} md={4}>
-						<Link to={companyBaseUrl + encodeURI(company.url_id)}>
+						<Link to={`${companyBaseUrl}/company/${encodeURI(company.url_id)}`}>
 							<Paper className="h-100 d-flex">
 								<CardMedia
 									className={classes.cardImage}
@@ -58,7 +58,7 @@ export default class CompanyItem extends React.Component {
 
 							<Grid item className={classes.headerWrapper}>
 
-								<Link to={companyBaseUrl + encodeURI(company.url_id)} className={classes.headerLink}>
+								<Link to={`${companyBaseUrl}/company/${encodeURI(company.url_id)}`} className={classes.headerLink}>
 									<Label uppercase bold fontSize="2rem">
 										{company.name}
 									</Label>
@@ -149,7 +149,7 @@ export default class CompanyItem extends React.Component {
 								</Button>
 								{
 									company.numberOfLocations > 0 &&
-									<Link to={`${match.url}/${company.url_id}/contacts`}>
+									<Link to={`${companyBaseUrl}/company/${company.url_id}/contacts`}>
 										<Button className="mr-2 mt-2 text-white" accent="white">
 											Филиалы ({ company.numberOfLocations })
 										</Button>

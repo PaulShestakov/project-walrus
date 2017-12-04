@@ -73,8 +73,8 @@ class CompaniesListContainer extends React.Component {
 		const searchParams = Util.searchParamsToObject(new URLSearchParams(location.search));
 		const staticPathParams = {companyCategoryId, companySubcategoryId};
 		const dynamicPathParams = {
-			country: countryId,
-			city: cityId
+			countryId,
+			cityId
 		};
 
 		updateStateWithUrlSource(staticPathParams, dynamicPathParams, searchParams);
@@ -140,7 +140,7 @@ class CompaniesListContainer extends React.Component {
 							handleSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
 							handleSuggestionsClearRequested={clearFuzzySearchLoadedCompanies}
 							suggestionData={{
-								getLink: company => `/company/${company.categoryId}/${company.subcategoryId}/company/${company.url_id}`,
+								getLink: company => `/company/${company.categoryId.toLowerCase()}/${company.subcategoryId.toLowerCase()}/company/${company.url_id}`,
 								getLogo: company => company.logo,
 								getTitle: company => company.name,
 								getDescription: company => company.description
@@ -157,7 +157,7 @@ class CompaniesListContainer extends React.Component {
 									return (
 										<CompanyItem
 											key={company.companyId}
-											companyBaseUrl={this.state.companyBaseUrl}
+											companyBaseUrl={`/company/${company.categoryId.toLowerCase()}/${company.subcategoryId.toLowerCase()}`}
 											company={company}
 											match={match}
 											deleteAction={this.deleteCompany}
@@ -274,11 +274,11 @@ const mapCodeValue = (item) => ({
 const getCountries = createSelector(
 	[getCommon], (common) => common.countries
 );
-const getQueriedCountries = searchConnectedSelector('country', getCountries);
+const getQueriedCountries = searchConnectedSelector('countryId', getCountries);
 
 const getCities = createSelector(
 	[getCommon, getFilter], (common, filter) => {
-		const selectedCountry = filter.sidebarFilters.country;
+		const selectedCountry = filter.sidebarFilters.countryId;
 
 		const foundCountry = common.countries.find(country => country.value === selectedCountry);
 
@@ -290,17 +290,17 @@ const getCities = createSelector(
 		return [];
 	}
 );
-const getQueriedCities = searchConnectedSelector('city', getCities);
+const getQueriedCities = searchConnectedSelector('cityId', getCities);
 
 const getCitiesEnabled = createSelector(
 	[getFilter], (filter) => {
-		return !!filter.sidebarFilters.country;
+		return !!filter.sidebarFilters.countryId;
 	}
 );
 
 const getSubways = createSelector(
 	[getCities, getFilter], (cities, filter) => {
-		const selectedCity = filter.sidebarFilters.city;
+		const selectedCity = filter.sidebarFilters.cityId;
 		const foundCity = cities.find(city => city.value === selectedCity);
 
 		return foundCity ? foundCity.subways : [];
@@ -374,11 +374,11 @@ const CompaniesList = connect(
 			companies: getFlatCompanies(state),
 			filter: state.companiesList.filter,
 			filterValues: {
-				country: {
+				countryId: {
 					values: getQueriedCountries(state),
 					enabled: true
 				},
-				city: {
+				cityId: {
 					values: getQueriedCities(state),
 					enabled: getCitiesEnabled(state)
 				},
@@ -410,6 +410,9 @@ const CompaniesList = connect(
 					values: getClinicsServices(state),
 					enabled: true
 				},
+				isWorkingNow: {
+					enabled: false
+				}
 			},
 		};
 	},

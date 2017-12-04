@@ -73,23 +73,23 @@ const filterDescriptions = {
 
 
 
-	country: {
+	countryId: {
 		type: FILTER_TYPE.SUGGESTION,
 		defaultValue: '',
-		name: 'country',
+		name: 'countryId',
 		title: 'Выбрать страну',
 		urlParamConfig: {
 			type: URL_PARAM_TYPES.PATH,
 			sort: 1
 		},
 		dependentFiltersNames: [
-			'city', 'subways'
+			'cityId', 'subways'
 		]
 	},
-	city: {
+	cityId: {
 		type: FILTER_TYPE.SUGGESTION,
 		defaultValue: '',
-		name: 'city',
+		name: 'cityId',
 		title: 'Выбрать город',
 		urlParamConfig: {
 			type: URL_PARAM_TYPES.PATH,
