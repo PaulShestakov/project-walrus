@@ -14,6 +14,7 @@ export default {
 		display: 'flex',
 		flexDirection: 'column',
 		flexGrow: '1',
+		justifyContent: 'space-between'
 	},
 
 	headerWrapper: {
@@ -67,4 +68,14 @@ export default {
 	spaceBetween: {
 		justifyContent: 'space-between'
 	},
+
+	ratingControl: {
+		'& button': {
+			width: '2rem',
+			height: '2rem'
+		},
+		'& button:first-child': {
+			marginLeft: '-0.3rem'
+		},
+	}
 };

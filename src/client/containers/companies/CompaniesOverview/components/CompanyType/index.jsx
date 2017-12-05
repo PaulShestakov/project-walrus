@@ -22,7 +22,7 @@ export default class Type extends React.Component {
                             <Grid item xs={6} md={4} lg={3} className="p-3">
                                 <Link key={index}
                                       className={classes.exactTypeLink}
-                                      to={`${match.url}/${subcategory.value.toLowerCase()}`}>
+                                      to={`${match.url}/${subcategory.value.toLowerCase()}/BY`}>
                                     <Paper>
                                         <CardMedia
                                             className={classes.cardImage}

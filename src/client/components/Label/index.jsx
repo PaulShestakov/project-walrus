@@ -6,8 +6,20 @@ import classNames from 'classnames';
 import styles from './styles';
 
 class Label extends React.Component {
+
+	getFont = (fontFamily, classes) => {
+		switch(fontFamily) {
+		case 'fontBebas':
+			return classes.fontBebas;
+		case 'fontOpenSans':
+			return classes.fontOpenSans;
+		default:
+			return '';
+		}
+	};
+
 	render() {
-		const {classes, className, ...other} = this.props;
+		const {classes, className, fontFamily, ...other} = this.props;
 
 		const style = {
 			fontSize: this.props.fontSize,
@@ -19,7 +31,8 @@ class Label extends React.Component {
 			  	className={
 					classNames(
 						classes.label,
-						className
+						className,
+						this.getFont(fontFamily, classes)
 					)
 				}>
 				{this.props.children}
@@ -32,9 +45,11 @@ export default withStyles(styles)(Label);
 
 Label.defaultProps = {
 	fontSize: '1.25rem',
+	fontFamily: 'fontBebas'
 };
 
 Label.propTypes = {
 	fontSize: PropTypes.string,
-	accent: PropTypes.string
+	accent: PropTypes.string,
+	fontFamily: PropTypes.oneOf(['fontBebas', 'fontOpenSans'])
 };
