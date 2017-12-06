@@ -70,6 +70,7 @@ class NewCompanyContainer extends React.Component {
 		});
 		this.props.change('subcategoryId', null);
         this.props.change('animals', []);
+        this.props.change('extensions', calculateExtensions(selectedCategory, null));
 		this.setState({
 			subcategories: category.subcategories,
 		});

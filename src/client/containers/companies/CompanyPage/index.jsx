@@ -10,7 +10,7 @@ import { removeCompany } from '../CompaniesList/actionCreators/companiesList';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, ConfirmDialog } from "components";
+import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, ConfirmDialog, InfoDialog } from "components";
 import styles from './styles';
 
 import { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card';
@@ -37,6 +37,7 @@ class CompanyPageContainer extends React.Component {
 		this.state = {
 			selectedTab: 0,
 			isConfirmDialogOpened: false,
+			isPhonesDialogOpened: false,
 			company: {},
 			locationToDisplay: null
 		};
@@ -72,6 +73,13 @@ class CompanyPageContainer extends React.Component {
 		}
 		this.setState({ selectedTab: index, locationToDisplay: location });
 	}
+
+	handleOpenPhonesDialog = (phones) => {
+		this.setState({
+			isPhonesDialogOpened: true,
+			phones
+		});
+	};
 
 	handleAction = (company, action) => {
 		let value = undefined;
@@ -123,7 +131,7 @@ class CompanyPageContainer extends React.Component {
 	render() {
 		const {t, classes, company, common, markers, match } = this.props;
 		const { locationToDisplay } = this.state;
-		const phonesText = locationToDisplay ? locationToDisplay.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
+		//const phonesText = locationToDisplay ? locationToDisplay.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
 		let companyName = company.name;
 		if (locationToDisplay && locationToDisplay.cityName) {
 			companyName += " г. " + locationToDisplay.cityName;
@@ -224,28 +232,26 @@ class CompanyPageContainer extends React.Component {
                                                         {locationToDisplay.address}
 													</Typography>
 												</Grid>
-                                            }
+											}
 											{
-                                                locationToDisplay && phonesText &&
-												<Grid item xs={12}
-													  className="d-flex align-items-center">
-													<Call className="mr-2"/>
-													<Typography component="p">
-                                                        {phonesText}
-													</Typography>
+												locationToDisplay &&
+												<Grid item xs={12}>
+													<Button className="mr-2 mt-2 text-white" accent="white"
+														onClick={this.handleOpenPhonesDialog.bind(null, locationToDisplay.phones)}>
+														Телефоны
+													</Button>
+												</Grid>
+											}
+											{
+												socialLinks.length > 0 &&
+												<Grid item xs={12}>
+													<Grid container>
+														{socialLinks}
+													</Grid>
 												</Grid>
 											}
 										</Grid>
 									</Grid>
-									{
-										socialLinks.length > 0 &&
-										<Grid item xs={12}>
-											<Grid container>
-                                                {socialLinks}
-											</Grid>
-										</Grid>
-									}
-
 								</Grid>
 							</Grid>
 						</Grid>
@@ -302,6 +308,19 @@ class CompanyPageContainer extends React.Component {
 					title={this.state.company.title}
 					okCallback={this.state.company.action}
 					closeCallback={() => this.setState({ isConfirmDialogOpened: false })}/>
+				<InfoDialog
+					open={this.state.isPhonesDialogOpened}
+					title="Телефоны"
+					message="Message"
+					closeCallback={() => this.setState({ isPhonesDialogOpened: false })}>
+					{
+						this.state.phones && this.state.phones.map(item => (
+							<div key={item.phoneId} className="mt-2">
+								<Label>{item.phone}</Label>
+							</div>
+						))
+					}
+				</InfoDialog>
 			</div>
 		);
 	}
