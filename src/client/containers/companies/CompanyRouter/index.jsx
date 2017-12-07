@@ -4,11 +4,14 @@ import {connect} from 'react-redux';
 import {
 	loadCompaniesCodeValues,
 	loadUserInfo,
-	closeUnauthorizedDialog
+	closeUnauthorizedDialog,
+	goToLogin,
+	goToAddCatalogs
 } from '../../common/actions';
 
 import {Switch, Redirect} from 'react-router-dom';
 
+import Authorized from '../../Authorized';
 import NewCompany from '../NewCompany/index';
 import CompaniesList from '../CompaniesList/index';
 import CompaniesOverview from '../CompaniesOverview/index';
@@ -36,12 +39,24 @@ class CompanyRouterContainer extends React.Component {
 				<Switch>
 					<CrumbRoute
 						path="/company/new"
-						component={NewCompany}
+						component={(props) => (
+							<Authorized
+								allowedRoles={[1,2,3,4]}
+								unauthorizedAction={() => this.props.goToAddCatalogs(this.props.history)}>
+								<NewCompany {...props}/>
+							</Authorized>
+						)}
 						title="Создание компании" />
 
 					<CrumbRoute
 						path="/company/edit/:url_id"
-						component={EditComponent}
+						component={(props) => (
+							<Authorized
+								allowedRoles={[1]}
+								unauthorizedAction={() => this.props.goToLogin(this.props.history)}>
+								<EditComponent {...props}/>
+							</Authorized>
+						)}
 						title="Редактирование компании" />
 
 					<CrumbRoute
@@ -81,6 +96,8 @@ const CompanyRouter = connect(
 		loadUserInfo,
 		loadCompaniesCodeValues,
 		closeUnauthorizedDialog,
+		goToLogin,
+		goToAddCatalogs
 	}
 )(CompanyRouterContainer);
 

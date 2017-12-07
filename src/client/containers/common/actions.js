@@ -139,3 +139,23 @@ export function closeUnauthorizedDialog() {
 		});
 	};
 }
+
+export const GO_TO_ADD_CATALOGS = 'GO_TO_ADD_CATALOGS';
+export function goToAddCatalogs(history) {
+	return (dispatch) => {
+		dispatch({
+			type: GO_TO_ADD_CATALOGS,
+			history
+		});
+	};
+}
+
+export const GO_TO_LOGIN_PAGE = 'GO_TO_LOGIN_PAGE';
+export function goToLogin(history) {
+	return (dispatch) => {
+		dispatch({
+			type: GO_TO_LOGIN_PAGE,
+			history
+		});
+	};
+}

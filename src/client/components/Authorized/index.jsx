@@ -11,8 +11,8 @@ export default class Authorized extends React.Component {
     };
 
     render() {
-    	const { user, allowedRoles = [], className, notAuthorized, children } = this.props;
-    	const allowed = allowedRoles.find(role => (role >= user.role));
+    	const { user, allowedRoles = [], className, notAuthorized, unauthorizedAction, children } = this.props;
+    	const allowed = allowedRoles.find(role => (role === user.role));
 
     	if (allowed) {
     		return (
@@ -28,6 +28,9 @@ export default class Authorized extends React.Component {
     			</div>
     		);
     	} else {
+			if (unauthorizedAction) {
+				unauthorizedAction();
+			}
     		return notAuthorized || null;
     	}
     }

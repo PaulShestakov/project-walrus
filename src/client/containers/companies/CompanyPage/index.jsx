@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
 import FontAwesome from 'react-fontawesome';
 
 import {loadCompany, postFeedback, deleteFeedback} from "./actions";
+import { goToLogin } from '../../common/actions';
 import { removeCompany } from '../CompaniesList/actionCreators/companiesList';
 
 import { translate } from 'react-i18next';
@@ -131,7 +132,6 @@ class CompanyPageContainer extends React.Component {
 	render() {
 		const {t, classes, company, common, markers, match } = this.props;
 		const { locationToDisplay } = this.state;
-		//const phonesText = locationToDisplay ? locationToDisplay.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
 		let companyName = company.name;
 		if (locationToDisplay && locationToDisplay.cityName) {
 			companyName += " г. " + locationToDisplay.cityName;
@@ -168,15 +168,15 @@ class CompanyPageContainer extends React.Component {
 							<Grid item xs={4}>
 								{
                                     locationToDisplay &&
-									<Authorized allowedRoles={[5]}>
-										<Link to={`${match.url}/feedback`} className={classes.link}>
-											<Button accent="red" className='w-100'>
-                                                {t('Оставить отзыв')}
-											</Button>
-										</Link>
-									</Authorized>
+									<Link to={`${match.url}/feedback`} className={classes.link}>
+										<Button accent="red" className='w-100'>
+											{t('Оставить отзыв')}
+										</Button>
+									</Link>
 								}
-								<Authorized allowedRoles={[5]} className={classes.editButtonsBlock}>
+								<Authorized
+									allowedRoles={[1]}
+									className={classes.editButtonsBlock}>
 									<Button fab className={classes.editButton}>
 										<Link to={`/company/edit/${company.url_id}`}>
 											<ModeEditIcon className={classes.editIcon} />
@@ -283,12 +283,19 @@ class CompanyPageContainer extends React.Component {
 
 
 							<CrumbRoute path={`${this.props.match.url}/feedback`}
-								   render={() => <NewFeedback user={ common.user }
-															  companyInfo={{
-                                                                  companyId: company.companyId,
-                                                                  locationId: locationToDisplay ? locationToDisplay.locationId : null
-                                                              }}
-															  onPostFeedback={this.onPostFeedback}/>}
+								   render={() => (
+									   <Authorized
+									   		allowedRoles={[1,2,3,4]}
+											unauthorizedAction={() => this.props.goToLogin(this.props.history)}>
+										   <NewFeedback
+										   		user={ common.user }
+												companyInfo={{
+													companyId: company.companyId,
+													locationId: locationToDisplay ? locationToDisplay.locationId : null
+												}}
+												onPostFeedback={this.onPostFeedback}/>
+										</Authorized>
+								   )}
 								   title="Новый отзыв"
 							/>
 
@@ -373,6 +380,7 @@ const CompanyPage = connect(
 		postFeedback,
 		deleteFeedback,
 		removeCompany,
+		goToLogin
 	}
 )(CompanyPageContainer);
 

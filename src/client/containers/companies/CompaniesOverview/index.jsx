@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
 import FontAwesome from 'react-fontawesome';
+import {Link} from 'react-router-dom';
 import {
 	Dropdown, Button, Title, Input, Grid, ImageUploader, TextField,
 	Tabs, Tab, Card, Text, Finder
@@ -83,8 +84,6 @@ class CompaniesOverviewContainer extends React.Component {
 			<Assignment className={classes.tabIcon} />,
 		];
 
-		const addCompanyLink = common.user.role === 1 ? '/company/new' : 'https://wikipet.by/catalog.html';
-
 		return (
 			<div className="my-3">
 				<Typography component="h1" className={classes.h1Style}>
@@ -112,12 +111,12 @@ class CompaniesOverviewContainer extends React.Component {
 						</Card>
 					</Grid>
 					<Grid item xs={3}>
-						<a href={addCompanyLink} className={classes.link}>
+						<Link to="/company/new" className={classes.link}>
 							<Button accent="red" disableRipple className="w-100 h-100 mb-2">
 								<FontAwesome name="plus" className="mr-1" />
 								Добавить компанию
 							</Button>
-						</a>
+						</Link>
 					</Grid>
 				</Grid>
 				<Card>

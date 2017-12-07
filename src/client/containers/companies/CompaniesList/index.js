@@ -16,6 +16,8 @@ import filterDescriptions from './settings/filtersDescription';
 
 import Util from '../../util/index';
 
+import { goToLogin } from '../../common/actions';
+
 import {
 	loadCompanies,
 	fuzzySearchLoadCompanies,
@@ -124,6 +126,10 @@ class CompaniesListContainer extends React.Component {
 	componentWillUnmount() {
 		this.props.componentLeave();
 	}
+
+	goToLogin = () => {
+		this.props.goToLogin(this.props.history);
+	};
 
 	render() {
 		const { t, companies, classes, match, main, clearFuzzySearchLoadedCompanies } = this.props;
@@ -418,6 +424,7 @@ const CompaniesList = connect(
 	},
 	{
 		loadCompanies,
+		goToLogin,
 
 		fuzzySearchLoadCompanies,
 		clearFuzzySearchLoadedCompanies,
