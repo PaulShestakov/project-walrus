@@ -3,6 +3,8 @@ export const LOAD_PROMO_CODE_VALUES_SUCCESS = 'LOAD_PROMO_CODE_VALUES_SUCCESS';
 export const LOAD_PROMO_CODE_VALUES_ERROR = 'LOAD_PROMO_CODE_VALUES_ERROR';
 export const UNAUTHORIZED_ERROR = 'UNAUTHORIZED_ERROR';
 
+import { USER_ROLES } from '../util/constants';
+
 export const unauthorizedError = () => {
 	return {
 		type: UNAUTHORIZED_ERROR
@@ -112,7 +114,7 @@ export function loadUserInfo() {
 				response => {
 					if (response.status > 400) {
 						return {
-							role: 5
+							role: USER_ROLES.ROLE_GUEST
 						};
 					} else if (response.ok) {
 						return response.json();

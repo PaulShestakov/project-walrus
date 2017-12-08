@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
 import FontAwesome from 'react-fontawesome';
+import {Link} from 'react-router-dom';
 import {
 	Dropdown, Button, Title, Input, Grid, ImageUploader, TextField,
 	Tabs, Tab, Card, Text, Finder
@@ -20,6 +21,7 @@ import {
     suggestionInputValueChange,
 } from "../CompaniesList/actionCreators/companiesList";
 import Util from "../../util/index";
+import { USER_ROLES, PAGES } from '../../util/constants';
 
 
 @translate(['common'])
@@ -58,7 +60,15 @@ class CompaniesOverviewContainer extends React.Component {
                 searchQuery: change.value,
             });
         }
-    };
+	};
+	
+	handleAddNewCompany = () => {
+		if (this.props.common.user.role === USER_ROLES.ROLE_ADMIN) {
+			this.props.history.push('/company/new');
+		} else {
+			window.location = PAGES.ADD_CATALOGS;
+		}
+	};
 
     handleChange = (event, { newValue }) => {
         this.props.suggestionInputValueChange(newValue);
@@ -82,8 +92,6 @@ class CompaniesOverviewContainer extends React.Component {
 			<Work className={classes.tabIcon} />,
 			<Assignment className={classes.tabIcon} />,
 		];
-
-		const addCompanyLink = common.user.role === 1 ? '/company/new' : 'https://wikipet.by/catalog.html';
 
 		return (
 			<div className="my-3">
@@ -112,12 +120,15 @@ class CompaniesOverviewContainer extends React.Component {
 						</Card>
 					</Grid>
 					<Grid item xs={3}>
-						<a href={addCompanyLink} className={classes.link}>
-							<Button accent="red" disableRipple className="w-100 h-100 mb-2">
-								<FontAwesome name="plus" className="mr-1" />
-								Добавить компанию
-							</Button>
-						</a>
+						<Button
+							accent="red"
+							disableRipple
+							onClick={this.handleAddNewCompany}
+							className="w-100 h-100 mb-2">
+
+							<FontAwesome name="plus" className="mr-1" /> Добавить компанию
+
+						</Button>
 					</Grid>
 				</Grid>
 				<Card>
@@ -160,8 +171,8 @@ class CompaniesOverviewContainer extends React.Component {
 const CompaniesOverview = connect(
 	state => {
 		return {
-			...state,
-            main: state.companiesList.main,
+			common: state.common,
+			main: state.companiesList.main,
 		};
 	},
 	{

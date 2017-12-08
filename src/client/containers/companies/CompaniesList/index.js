@@ -9,7 +9,7 @@ import CompanyItem from './components/CompanyItem/index';
 import Sidebar from './components/Sidebar/index';
 import classNames from 'classnames';
 import styles from './styles';
-import { CircularProgress } from 'material-ui';
+import { CircularProgress, Typography } from 'material-ui';
 import { extendCodeValues } from '../selectors';
 import { findFilters } from './settings/assignments';
 import filterDescriptions from './settings/filtersDescription';
@@ -60,6 +60,7 @@ class CompaniesListContainer extends React.Component {
 			daysOfWeekWorkingTime: [],
 			company: {},
 			phones: [],
+			currentSubCategory: {},
 
 			componentFilters: filters
 		};
@@ -68,7 +69,7 @@ class CompaniesListContainer extends React.Component {
 	}
 
 	componentDidMount() {
-		const { updateStateWithUrlSource, match, loadCompanies, location } = this.props;
+		const { updateStateWithUrlSource, match, loadCompanies, location, common: { companiesCategories } } = this.props;
 		const { companyCategoryId, companySubcategoryId, countryId, cityId } = match.params;
 
 		const searchParams = Util.searchParamsToObject(new URLSearchParams(location.search));
@@ -127,7 +128,7 @@ class CompaniesListContainer extends React.Component {
 	}
 
 	render() {
-		const { t, companies, classes, match, main, clearFuzzySearchLoadedCompanies } = this.props;
+		const { t, companies, classes, match, main, clearFuzzySearchLoadedCompanies, currentSubCategory } = this.props;
 
 		return (
 			<Grid container className="mt-2 mb-4">
@@ -153,21 +154,32 @@ class CompaniesListContainer extends React.Component {
 							main.isLoading ?
 
 								<CircularProgress className={classes.progressCircle} /> :
-
-								companies.map(company => {
-									return (
-										<CompanyItem
-											key={company.companyId}
-											companyBaseUrl={`/company/${company.categoryId.toLowerCase()}/${company.subcategoryId.toLowerCase()}`}
-											company={company}
-											match={match}
-											deleteAction={this.deleteCompany}
-											blockAction={this.blockCompany}
-											handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}
-											handleOpenPhonesDialog={this.handleOpenPhonesDialog}
-											handleAction={this.handleAction}/>
-									);
-								})
+								(
+									<div>
+										<Typography component="h1" className={classNames(classes.h1Style, 'mt-3')}>
+											{currentSubCategory.label}
+										</Typography>
+										<Text className="my-3">
+											{currentSubCategory.description}
+										</Text>
+										{
+											companies.map(company => {
+												return (
+													<CompanyItem
+														key={company.companyId}
+														companyBaseUrl={`/company/${company.categoryId.toLowerCase()}/${company.subcategoryId.toLowerCase()}`}
+														company={company}
+														match={match}
+														deleteAction={this.deleteCompany}
+														blockAction={this.blockCompany}
+														handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}
+														handleOpenPhonesDialog={this.handleOpenPhonesDialog}
+														handleAction={this.handleAction}/>
+												);
+											})
+										}
+									</div>
+								)
 						}
 					</div>
 				</Grid>
@@ -175,6 +187,7 @@ class CompaniesListContainer extends React.Component {
 				<Grid item xs={3}>
 					<Sidebar
 						history={this.props.history}
+						user={this.props.common.user}
 						componentFilters={this.state.componentFilters}
 						filter={this.props.filter}
 						filterValues={this.props.filterValues}
@@ -266,13 +279,11 @@ const getFlatCompanies = createSelector(
 	}
 );
 
-
 const mapCodeValue = (item) => ({
 	value: item.value,
 	label: item.label,
 	sort: item.sort
 });
-
 
 const getCountries = createSelector(
 	[getCommon], (common) => common.countries
@@ -368,6 +379,24 @@ const getBreedsEnabled = createSelector(
 	}
 );
 
+const getCurrentSubCategory = createSelector(
+	[getCommon, getFilter],
+	(common, filter) => {
+		let currentSubCategory = {};
+		common.companiesCategories.forEach((type, index) => {
+			if (filter.companyCategoryId && type.value.toUpperCase() === filter.companyCategoryId.toUpperCase()) {
+				for (let i = 0; i < type.subcategories.length; i++) {
+					let subCat = type.subcategories[i];
+					if (subCat.value.toUpperCase() === filter.companySubcategoryId.toUpperCase()) {
+						currentSubCategory = subCat;
+						break;
+					}
+				}
+			}
+		});
+		return currentSubCategory;
+	}
+);
 
 const CompaniesList = connect(
 	state => {
@@ -375,7 +404,8 @@ const CompaniesList = connect(
 			common: extendCodeValues()(state),
 			main: state.companiesList.main,
 			companies: getFlatCompanies(state),
-			filter: state.companiesList.filter,
+			currentSubCategory: getCurrentSubCategory(state),
+			filter: getFilter(state),
 			filterValues: {
 				countryId: {
 					values: getQueriedCountries(state),

@@ -4,16 +4,20 @@ import {connect} from 'react-redux';
 import {
 	loadCompaniesCodeValues,
 	loadUserInfo,
-	closeUnauthorizedDialog
+	closeUnauthorizedDialog,
 } from '../../common/actions';
 
 import {Switch, Redirect} from 'react-router-dom';
 
+import { Route } from 'react-router';
+
+import Authorized from '../../Authorized';
 import NewCompany from '../NewCompany/index';
 import CompaniesList from '../CompaniesList/index';
 import CompaniesOverview from '../CompaniesOverview/index';
 import CompanyPage from '../CompanyPage';
 import CrumbRoute from '../../../components/CrumbRoute';
+import { PAGES } from '../../util/constants';
 
 const EditComponent = (props) => {
 	return <NewCompany editMode {...props} />;
@@ -34,32 +38,44 @@ class CompanyRouterContainer extends React.Component {
 		return (
 			<div>
 				<Switch>
-					<CrumbRoute
+					<Route
 						path="/company/new"
-						component={NewCompany}
+						component={(props) => (
+							<Authorized
+								allowedRoles={[1]}
+								unauthorizedAction={() => window.location = PAGES.ADD_CATALOGS}>
+								<NewCompany {...props}/>
+							</Authorized>
+						)}
 						title="Создание компании" />
 
-					<CrumbRoute
+					<Route
 						path="/company/edit/:url_id"
-						component={EditComponent}
+						component={(props) => (
+							<Authorized
+								allowedRoles={[1]}
+								unauthorizedAction={() => window.location = PAGES.LOGIN_PAGE}>
+								<EditComponent {...props}/>
+							</Authorized>
+						)}
 						title="Редактирование компании" />
 
-					<CrumbRoute
+					<Route
 						path="/company/:companyCategoryId/:companySubcategoryId/company/:url_id/contacts/:filial_url_id"
 						component={CompanyPage}
 						title="Страница филиала"/>
 
-					<CrumbRoute
+					<Route
 						path="/company/:companyCategoryId/:companySubcategoryId/company/:url_id"
 						component={CompanyPage}
 						title="Описание компании" />
 
-					<CrumbRoute
+					<Route
 						path="/company/:companyCategoryId/:companySubcategoryId/:countryId?/:cityId?"
 						component={CompaniesList}
 						title="Подкатегория" />
 
-					<CrumbRoute
+					<Route
 						path="/company/:companyCategoryId"
 						component={CompaniesOverview}
 						title="Категории" />

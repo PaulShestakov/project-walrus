@@ -3,15 +3,16 @@ import {
 	LOAD_COMPANIES_CODE_VALUES_SUCCESS,
 	LOAD_USER_INFO_SUCCESS,
 	UNAUTHORIZED_ERROR,
-	CLOSE_UNAUTHORIZED_DIALOG
+	CLOSE_UNAUTHORIZED_DIALOG,
 } from './actions';
 
+import { USER_ROLES } from '../util/constants';
 
 const defaultState = {
 	animals: [],
 	animalsAreLoaded: false,
 	user: {
-		role: 5
+		role: USER_ROLES.ROLE_GUEST
 	},
 
 	countries: [],

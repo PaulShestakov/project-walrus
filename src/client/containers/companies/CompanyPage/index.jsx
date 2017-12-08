@@ -20,12 +20,14 @@ import CompanyInfo from "./components/Info/index";
 import Feedbacks from "./components/Feedback/index";
 import defaultCompanyImage from '../../../assets/img/company-default.png';
 
-import {Route, Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import {Route } from 'react-router';
 import NewFeedback from "./components/Feedback/NewFeedback/index";
 import Contacts from "./components/Contacts/index";
 import Authorized from "../../../containers/Authorized";
-import CrumbRoute from "../../../components/CrumbRoute/index"
 import Util from "../../util/index";
+
+import { PAGES, USER_ROLES } from '../../util/constants';
 
 
 @translate(['common'])
@@ -123,6 +125,14 @@ class CompanyPageContainer extends React.Component {
         postFeedback(data, history);
 	};
 
+	handleLeaveFeedback = () => {
+		if ([USER_ROLES.ROLE_USER, USER_ROLES.ROLE_ADMIN].includes(this.props.common.user.role)) {
+			this.props.history.push(`${this.props.match.url}/feedback`);
+		} else {
+			window.location = PAGES.LOGIN_PAGE;
+		}
+	};
+
 	delete = () => {
 		this.setState({ isConfirmDialogOpened: false });
 		this.props.removeCompany(this.state.company.companyId, this.props.history);
@@ -131,7 +141,6 @@ class CompanyPageContainer extends React.Component {
 	render() {
 		const {t, classes, company, common, markers, match } = this.props;
 		const { locationToDisplay } = this.state;
-		//const phonesText = locationToDisplay ? locationToDisplay.phones.map(p => (p.phone)).join(', ') : "Телефонов нет";
 		let companyName = company.name;
 		if (locationToDisplay && locationToDisplay.cityName) {
 			companyName += " г. " + locationToDisplay.cityName;
@@ -167,16 +176,14 @@ class CompanyPageContainer extends React.Component {
 							</Grid>
 							<Grid item xs={4}>
 								{
-                                    locationToDisplay &&
-									<Authorized allowedRoles={[5]}>
-										<Link to={`${match.url}/feedback`} className={classes.link}>
-											<Button accent="red" className='w-100'>
-                                                {t('Оставить отзыв')}
-											</Button>
-										</Link>
-									</Authorized>
+									locationToDisplay &&
+									<Button accent="red" className='w-100' onClick={this.handleLeaveFeedback}>
+										{t('Оставить отзыв')}
+									</Button>
 								}
-								<Authorized allowedRoles={[5]} className={classes.editButtonsBlock}>
+								<Authorized
+									allowedRoles={[1]}
+									className={classes.editButtonsBlock}>
 									<Button fab className={classes.editButton}>
 										<Link to={`/company/edit/${company.url_id}`}>
 											<ModeEditIcon className={classes.editIcon} />
@@ -270,34 +277,38 @@ class CompanyPageContainer extends React.Component {
 						</Tabs>
 						<Divider />
 						<div className={classes.context}>
-							<CrumbRoute exact path={`${this.props.match.url}`}
+							<Route exact path={`${this.props.match.url}`}
 								render={() => <CompanyInfo company={ company } />}
 								title="Информация о компании"
 							/>
 
-							<CrumbRoute exact path={`${this.props.match.url}/feedbacks`}
+							<Route exact path={`${this.props.match.url}/feedbacks`}
 								   render={() => <Feedbacks feedbacks={ locationToDisplay ? locationToDisplay.feedbacks : [] }
 															deleteFeedback={ this.deleteFeedback }/>}
-								   title="Отзывы"
 							/>
 
 
-							<CrumbRoute path={`${this.props.match.url}/feedback`}
-								   render={() => <NewFeedback user={ common.user }
-															  companyInfo={{
-                                                                  companyId: company.companyId,
-                                                                  locationId: locationToDisplay ? locationToDisplay.locationId : null
-                                                              }}
-															  onPostFeedback={this.onPostFeedback}/>}
-								   title="Новый отзыв"
+							<Route path={`${this.props.match.url}/feedback`}
+								   render={() => (
+									   <Authorized
+									   		allowedRoles={[1,2,3,4]}
+											unauthorizedAction={() => window.location = PAGES.LOGIN_PAGE}>
+										   <NewFeedback
+										   		user={ common.user }
+												companyInfo={{
+													companyId: company.companyId,
+													locationId: locationToDisplay ? locationToDisplay.locationId : null
+												}}
+												onPostFeedback={this.onPostFeedback}/>
+										</Authorized>
+								   )}
 							/>
 
-							<CrumbRoute exact path={`${this.props.match.url}/contacts`}
+							<Route exact path={`${this.props.match.url}/contacts`}
 								   render={() => <Contacts locations={ company.locations }
 														   match={match}
 														   history={this.props.history}
 														   markers={ markers }/>}
-								   title="Контакты"
 							/>
 						</div>
 					</CardContent>

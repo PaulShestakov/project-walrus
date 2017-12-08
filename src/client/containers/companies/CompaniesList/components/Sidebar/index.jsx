@@ -10,7 +10,7 @@ import {
 	Checkbox, Separator, CheckboxesBlock
 } from 'components';
 
-
+import { PAGES, USER_ROLES } from '../../../../util/constants';
 
 import classNames from 'classnames';
 import styles from './styles';
@@ -35,22 +35,29 @@ export default class Sidebar extends React.Component {
     	this.props.setIsWorkingNow(checked);
     	this.props.updateUrlWithStateSource(this.props.history);
     	this.props.loadCompanies();
-    };
+	};
+	
+	handleAddNewCompany = () => {
+		if (this.props.user.role === USER_ROLES.ROLE_ADMIN) {
+			this.props.history.push('/company/new');
+		} else {
+			window.location = PAGES.ADD_CATALOGS;
+		}
+	};
 
     render() {
     	const {t, classes} = this.props;
 
     	return (
     		<div className={classes.flexColumn}>
-    			<Authorized allowedRoles={[5]}>
-    				<Link to="/company/new" className={classes.link}>
-    					<Button accent="red" disableRipple={true} className="w-100 mb-2">
-    						<FontAwesome name="plus" className="mr-1" />
-                            Добавить компанию
-    					</Button>
-    				</Link>
-    			</Authorized>
+    			<Button
+					accent="red"
+					disableRipple
+					className="w-100 mb-2"
+					onClick={this.handleAddNewCompany}>
 
+					<FontAwesome name="plus" className="mr-1" /> Добавить компанию
+				</Button>
 
     			<Card className={classNames(classes.card, 'mb-3 p-3')}>
     				{

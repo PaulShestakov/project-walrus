@@ -64,7 +64,10 @@ export default class CompanyItem extends React.Component {
 									</Label>
 								</Link>
 
-								<Authorized allowedRoles={[5]} className={classes.editButtonsBlock}>
+								<Authorized
+									allowedRoles={[1]}
+									className={classes.editButtonsBlock}>
+
 									<Link to={`/company/edit/${encodeURI(company.url_id)}`}>
 										<Button fab className={classes.editButton}>
 											<ModeEditIcon className={classes.editIcon} />
@@ -78,6 +81,7 @@ export default class CompanyItem extends React.Component {
 										onClick={this.handleAction.bind(null, company, 'delete')}>
 										<Delete className={classes.editIcon} />
 									</Button>
+									
 								</Authorized>
 
 							</Grid>
