@@ -5,7 +5,6 @@ import { createSelector } from 'reselect';
 import FontAwesome from 'react-fontawesome';
 
 import {loadCompany, postFeedback, deleteFeedback} from "./actions";
-import { goToLogin } from '../../common/actions';
 import { removeCompany } from '../CompaniesList/actionCreators/companiesList';
 
 import { translate } from 'react-i18next';
@@ -21,12 +20,14 @@ import CompanyInfo from "./components/Info/index";
 import Feedbacks from "./components/Feedback/index";
 import defaultCompanyImage from '../../../assets/img/company-default.png';
 
-import {Route, Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import {Route } from 'react-router';
 import NewFeedback from "./components/Feedback/NewFeedback/index";
 import Contacts from "./components/Contacts/index";
 import Authorized from "../../../containers/Authorized";
-import CrumbRoute from "../../../components/CrumbRoute/index"
 import Util from "../../util/index";
+
+import { PAGES, USER_ROLES } from '../../util/constants';
 
 
 @translate(['common'])
@@ -124,6 +125,14 @@ class CompanyPageContainer extends React.Component {
         postFeedback(data, history);
 	};
 
+	handleLeaveFeedback = () => {
+		if ([USER_ROLES.ROLE_USER, USER_ROLES.ROLE_ADMIN].includes(this.props.common.user.role)) {
+			this.props.history.push(`${this.props.match.url}/feedback`);
+		} else {
+			window.location = PAGES.LOGIN_PAGE;
+		}
+	};
+
 	delete = () => {
 		this.setState({ isConfirmDialogOpened: false });
 		this.props.removeCompany(this.state.company.companyId, this.props.history);
@@ -167,12 +176,10 @@ class CompanyPageContainer extends React.Component {
 							</Grid>
 							<Grid item xs={4}>
 								{
-                                    locationToDisplay &&
-									<Link to={`${match.url}/feedback`} className={classes.link}>
-										<Button accent="red" className='w-100'>
-											{t('Оставить отзыв')}
-										</Button>
-									</Link>
+									locationToDisplay &&
+									<Button accent="red" className='w-100' onClick={this.handleLeaveFeedback}>
+										{t('Оставить отзыв')}
+									</Button>
 								}
 								<Authorized
 									allowedRoles={[1]}
@@ -270,23 +277,22 @@ class CompanyPageContainer extends React.Component {
 						</Tabs>
 						<Divider />
 						<div className={classes.context}>
-							<CrumbRoute exact path={`${this.props.match.url}`}
+							<Route exact path={`${this.props.match.url}`}
 								render={() => <CompanyInfo company={ company } />}
 								title="Информация о компании"
 							/>
 
-							<CrumbRoute exact path={`${this.props.match.url}/feedbacks`}
+							<Route exact path={`${this.props.match.url}/feedbacks`}
 								   render={() => <Feedbacks feedbacks={ locationToDisplay ? locationToDisplay.feedbacks : [] }
 															deleteFeedback={ this.deleteFeedback }/>}
-								   title="Отзывы"
 							/>
 
 
-							<CrumbRoute path={`${this.props.match.url}/feedback`}
+							<Route path={`${this.props.match.url}/feedback`}
 								   render={() => (
 									   <Authorized
 									   		allowedRoles={[1,2,3,4]}
-											unauthorizedAction={() => this.props.goToLogin(this.props.history)}>
+											unauthorizedAction={() => window.location = PAGES.LOGIN_PAGE}>
 										   <NewFeedback
 										   		user={ common.user }
 												companyInfo={{
@@ -296,15 +302,13 @@ class CompanyPageContainer extends React.Component {
 												onPostFeedback={this.onPostFeedback}/>
 										</Authorized>
 								   )}
-								   title="Новый отзыв"
 							/>
 
-							<CrumbRoute exact path={`${this.props.match.url}/contacts`}
+							<Route exact path={`${this.props.match.url}/contacts`}
 								   render={() => <Contacts locations={ company.locations }
 														   match={match}
 														   history={this.props.history}
 														   markers={ markers }/>}
-								   title="Контакты"
 							/>
 						</div>
 					</CardContent>
@@ -380,7 +384,6 @@ const CompanyPage = connect(
 		postFeedback,
 		deleteFeedback,
 		removeCompany,
-		goToLogin
 	}
 )(CompanyPageContainer);
 

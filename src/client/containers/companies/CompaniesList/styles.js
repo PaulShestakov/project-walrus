@@ -1,3 +1,5 @@
+import globalStyle from '../../../style';
+
 export default {
 
 	flexRow: {
@@ -25,5 +27,12 @@ export default {
 		transform: 'translate(-50%, -50%)',
 	},
 
-
+	h1Style: {
+		textTransform: 'uppercase',
+		color: globalStyle.ACCENT_RED,
+		fontWeight: 'bold',
+		fontFamily: globalStyle.BEBAS_FONT,
+		fontSize: '2.5rem',
+		margin: '5px 0'
+	},
 };

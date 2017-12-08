@@ -4,16 +4,15 @@ import {
 	LOAD_USER_INFO_SUCCESS,
 	UNAUTHORIZED_ERROR,
 	CLOSE_UNAUTHORIZED_DIALOG,
-	GO_TO_LOGIN_PAGE,
-	GO_TO_ADD_CATALOGS
 } from './actions';
 
+import { USER_ROLES } from '../util/constants';
 
 const defaultState = {
 	animals: [],
 	animalsAreLoaded: false,
 	user: {
-		role: 5
+		role: USER_ROLES.ROLE_GUEST
 	},
 
 	countries: [],
@@ -74,14 +73,6 @@ const commonReducer = (state = defaultState, action) => {
 			...state,
 			unauthorizedError: false
 		};
-	case GO_TO_LOGIN_PAGE:
-		action.history.goBack();
-		window.location = 'https://wikipet.by/#login';
-		return state;
-	case GO_TO_ADD_CATALOGS:
-		action.history.goBack();
-		window.location = 'https://wikipet.by/catalog.html';
-		return state;
 	default:
 		return state;
 	}
