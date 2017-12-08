@@ -67,6 +67,8 @@ const theme = createMuiTheme({
 });
 // ---------------------- CONFIG THEME -----------------------//
 
+import './assets/img/apple-icon-120.png';
+import './assets/img/apple-icon-180.png';
 
 class Root extends React.Component {
 	render() {
