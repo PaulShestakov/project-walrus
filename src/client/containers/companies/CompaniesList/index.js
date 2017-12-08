@@ -39,6 +39,7 @@ import {
 	suggestionFilterChange,
 	checkboxesBlockFilterChange,
 	handleSuggestionSearch,
+	switchFilterChange,
 } from './actionCreators/filter';
 
 
@@ -187,6 +188,8 @@ class CompaniesListContainer extends React.Component {
 						checkboxesBlockFilterChange={this.props.checkboxesBlockFilterChange}
 
 						handleSuggestionSearch={this.props.handleSuggestionSearch}
+
+						switchFilterChange = {this.props.switchFilterChange}
 					/>
 				</Grid>
 
@@ -411,7 +414,7 @@ const CompaniesList = connect(
 					enabled: true
 				},
 				isWorkingNow: {
-					enabled: false
+					enabled: true
 				}
 			},
 		};
@@ -442,7 +445,9 @@ const CompaniesList = connect(
 		suggestionFilterChange,
 		checkboxesBlockFilterChange,
 
-		handleSuggestionSearch
+		handleSuggestionSearch,
+
+		switchFilterChange
 	}
 )(CompaniesListContainer);
 

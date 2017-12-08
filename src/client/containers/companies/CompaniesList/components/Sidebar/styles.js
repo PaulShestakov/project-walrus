@@ -40,6 +40,7 @@ export default {
 
 		'& p': {
 			order: 1,
+			marginLeft: '.5rem',
 			fontSize: '1.25rem',
 			fontFamily: globalStyles.BEBAS_FONT
 		}

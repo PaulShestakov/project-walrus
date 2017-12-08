@@ -13,7 +13,9 @@ import {
 	SUGGESTION_FILTER_CHANGE,
 	CHECKBOXES_BLOCK_FILTER_CHANGE,
 
-	SUGGESTION_SEARCH
+	SUGGESTION_SEARCH,
+
+	SWITCH_FILTER_CHANGE
 
 } from '../actionCreators/filter';
 import {URL_PARAM_TYPES} from '../settings/constants';
@@ -93,6 +95,16 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 		};
 	}
 
+	case SWITCH_FILTER_CHANGE: {
+		return {
+			...state,
+			sidebarFilters: {
+				...state.sidebarFilters,
+				[action.payload.name]: action.payload.checked
+			}
+		};
+	}
+
 	case SUGGESTION_SEARCH: {
 		return {
 			...state,
@@ -100,13 +112,6 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 				...state.suggestionQueries,
 				[action.payload.name]: action.payload.searchQuery
 			}
-		};
-	}
-
-	case COMPANIES_LIST_SET_IS_WORKING_NOW: {
-		return {
-			...state,
-			isWorkingNow: action.payload
 		};
 	}
 

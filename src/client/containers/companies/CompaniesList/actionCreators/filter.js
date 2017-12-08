@@ -72,6 +72,7 @@ export const checkboxesBlockFilterChange = (name, value, isChecked) => {
 	};
 };
 
+
 export const SUGGESTION_SEARCH = 'companiesList/SUGGESTION_SEARCH';
 export const handleSuggestionSearch = (name, searchQuery) => {
 	return {
@@ -79,6 +80,18 @@ export const handleSuggestionSearch = (name, searchQuery) => {
 		payload: {
 			name,
 			searchQuery
+		}
+	};
+};
+
+
+export const SWITCH_FILTER_CHANGE = 'companiesList/SWITCH_FILTER_CHANGE';
+export const switchFilterChange = (name, checked) => {
+	return {
+		type: SWITCH_FILTER_CHANGE,
+		payload: {
+			name,
+			checked
 		}
 	};
 };

@@ -20,6 +20,10 @@ import assignments from '../../settings/assignments';
 import description from '../../settings/filtersDescription';
 import SearchSelect from '../../../../../components/SearchSelect/index';
 
+import Switch from 'material-ui/Switch';
+
+import { FormControlLabel, FormGroup } from 'material-ui/Form';
+
 @translate(['companiesList'])
 @withStyles(styles)
 export default class Sidebar extends React.Component {
@@ -72,8 +76,8 @@ export default class Sidebar extends React.Component {
     									onChange={(option) => {
 
     										this.props.suggestionFilterChange(name, option.value);
-											this.props.updateUrlWithStateSource(this.props.history);
-											this.props.loadCompanies();
+    										this.props.updateUrlWithStateSource(this.props.history);
+    										this.props.loadCompanies();
     									}}
     									handleSearch={(query) => this.props.handleSuggestionSearch(name, query)}/>
     							);
@@ -99,14 +103,26 @@ export default class Sidebar extends React.Component {
     							);
     						}
 
+    						case 'switch': {
+    							return (
+    								<FormControlLabel
+										className={classes.switchFormControlWrapper}
+    									control={
+    										<Switch
+    											checked={value}
+    											onChange={(event, checked) => {
 
-    						// case 'checkbox':{
-    						// 	return <CheckboxesBlock props={this.props} item={description[component][name]} />;
-    						// }
-    						//
-    						// case 'switch': {
-    						// 	return <WorkingNow {...this.props} handleIsWorkingNowChange={this.handleIsWorkingNowChange} />;
-    						// }
+													this.props.switchFilterChange(name, checked);
+													this.props.updateUrlWithStateSource(this.props.history);
+													this.props.loadCompanies();
+
+												}}
+    										/>
+    									}
+    									label={title}
+    								/>
+    							);
+    						}
 
     						default:
     							return null;

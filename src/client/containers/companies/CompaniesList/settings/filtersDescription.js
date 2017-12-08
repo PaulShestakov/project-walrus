@@ -119,7 +119,7 @@ const filterDescriptions = {
 		title: 'Режим работы',
 		urlParamConfig: {
 			type: URL_PARAM_TYPES.QUERY,
-			sort: 0
+			sort: 100
 		}
 	}
 };

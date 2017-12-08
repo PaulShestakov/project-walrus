@@ -1,15 +1,18 @@
 const defaultFilters = [
 	{
 		name: 'countryId',
-		component: 'suggestion'
+		component: 'suggestion',
+		sort: 0
 	},
 	{
 		name: 'cityId',
-		component: 'suggestion'
+		component: 'suggestion',
+		sort: 0
 	},
 	{
 		name: 'subways',
-		component: 'checkbox'
+		component: 'checkbox',
+		sort: 0
 	},
 ];
 
@@ -17,7 +20,8 @@ const defaultWithWorking = [
 	...defaultFilters,
 	{
 		name: 'isWorkingNow',
-		component: 'workingNow'
+		component: 'switch',
+		sort: 100
 	},
 ];
 
@@ -25,7 +29,8 @@ const defaultWithWorkingAndTorg = [
 	...defaultWithWorking,
 	{
 		name: 'torgTypes',
-		component: 'checkbox'
+		component: 'checkbox',
+		sort: 0
 	}
 ];
 
@@ -83,7 +88,8 @@ const filters = [
 			...defaultFilters,
 			{
 				name: 'drugsTypes',
-				component: 'checkbox'
+				component: 'checkbox',
+				sort: 0
 			}
 		],
 	},
@@ -96,7 +102,8 @@ const filters = [
 			...defaultFilters,
 			{
 				name: 'clinicsServices',
-				component: 'checkbox'
+				component: 'checkbox',
+				sort: 0
 			}
 		]
 	},
@@ -110,11 +117,13 @@ const filters = [
 			...defaultFilters,
 			{
 				name: 'animals',
-				component: 'suggestion'
+				component: 'suggestion',
+				sort: 0
 			},
 			{
 				name: 'breeds',
-				component: 'checkbox'
+				component: 'checkbox',
+				sort: 0
 			},
 		]
 	},
@@ -127,7 +136,8 @@ const filters = [
 			...defaultFilters,
 			{
 				name: 'breeds',
-				component: 'checkbox'
+				component: 'checkbox',
+				sort: 0
 			},
 		]
 	},
@@ -138,5 +148,12 @@ export default filters;
 export function findFilters(category, subCategory) {
 	const filterByCategory = filters.find(filter => filter.categories.includes(category.toLowerCase()));
 	const filterBySubCat = filters.find(filter => filter.subcategories.includes(subCategory.toLowerCase()));
-	return filterBySubCat ? filterBySubCat.filters : filterByCategory ? filterByCategory.filters : [];
+	const result =
+		filterBySubCat ?
+			filterBySubCat.filters :
+			filterByCategory ?
+				filterByCategory.filters :
+				[];
+
+	return result.sort((filterA, filterB) => filterA.sort - filterB.sort);
 }
