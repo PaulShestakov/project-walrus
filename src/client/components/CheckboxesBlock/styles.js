@@ -17,15 +17,16 @@ export default {
 
 	checkboxWrapper: {
 		display: 'flex',
-		justifyContent: 'space-between',
+		//justifyContent: 'space-between',
 		margin: '0',
 
 		'& > span': {
-			order: 2,
+			order: 1,
+			marginRight: '1rem'
 		},
 
 		'& p': {
-			order: 1,
+			order: 2,
 			fontSize: '1.25rem',
 			fontFamily: globalStyles.BEBAS_FONT,
 			overflow: 'hidden',

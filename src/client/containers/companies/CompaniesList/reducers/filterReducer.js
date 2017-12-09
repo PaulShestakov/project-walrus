@@ -49,8 +49,14 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 
 		let dependentCleanup = {};
 		if (dependentFiltersNames) {
+			const presentFilters = findFilters(state.companyCategoryId, state.companySubcategoryId);
+
 			dependentCleanup = dependentFiltersNames.reduce((acc, name) => {
-				acc[name] = filtersDescription[name].defaultValue;
+
+				if (presentFilters.find(filter => filter.name === name)) {
+					acc[name] = filtersDescription[name].defaultValue;
+				}
+
 				return acc;
 			}, {});
 		}
