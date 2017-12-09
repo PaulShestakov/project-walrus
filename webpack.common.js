@@ -1,16 +1,13 @@
 const webpack = require('webpack');
 const path = require('path');
-const nodeExternals = require('webpack-node-externals');
 
+const nodeExternals = require('webpack-node-externals');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const nodeEnv = process.env.NODE_ENV;
 
-let clientConfig = {
+const clientConfig = {
 	name : 'client',
-	devtool: 'source-map',
 	entry: {
 		app: './src/client/index.js',
 		vendor: [
@@ -51,10 +48,10 @@ let clientConfig = {
 			{
 				test: /\.(css|scss)$/,
 				use: ExtractTextPlugin.extract({
-					fallback: "style-loader",
+					fallback: 'style-loader',
 					use: [
-						"css-loader",
-						"sass-loader"
+						'css-loader',
+						'sass-loader'
 					]
 				})
 			},
@@ -67,16 +64,16 @@ let clientConfig = {
 				}
 			},
 			{
-				test: /\.(svg|ico|png|jpg)$/,
+				test: /\.(svg|ico|png)$/,
 				loader: 'file-loader',
 				query: {
-				 name: 'images/[name].[ext]',
+					name: 'images/[name].[ext]',
 				}
 			}
 		]
 	},
 	plugins: [
-	   new HtmlWebpackPlugin({
+		new HtmlWebpackPlugin({
 			template: 'src/client/index.html'
 		}),
 		new ExtractTextPlugin({
@@ -89,32 +86,7 @@ let clientConfig = {
 	]
 };
 
-if (nodeEnv === 'production') {
-	clientConfig.plugins.push(
-		new webpack.optimize.UglifyJsPlugin({
-			compress: {
-				warnings: false,
-			},
-			output: {
-				comments: false,
-			}
-		}),
-		new webpack.DefinePlugin({
-			'process.env': {
-				NODE_ENV: JSON.stringify('production'),
-			},
-		}),
-		new webpack.optimize.ModuleConcatenationPlugin()
-	);
-}
-
-if (nodeEnv === 'development') {
-	clientConfig.plugins.push(
-		// new BundleAnalyzerPlugin()
-	);
-}
-
-let serverConfig = {
+const serverConfig = {
 	name : 'server',
 	devtool: 'inline-source-map',
 	entry: {
@@ -147,5 +119,7 @@ let serverConfig = {
 	}
 };
 
-
-module.exports = [clientConfig, serverConfig];
+module.exports = {
+	clientConfig: clientConfig,
+	serverConfig: serverConfig
+};
