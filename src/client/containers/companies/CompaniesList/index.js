@@ -129,7 +129,7 @@ class CompaniesListContainer extends React.Component {
 	}
 
 	render() {
-		const { t, companies, classes, match, main, clearFuzzySearchLoadedCompanies, currentSubCategory } = this.props;
+		const { t, companies, classes, match, main, clearFuzzySearchLoadedCompanies, seoInfo } = this.props;
 
 		return (
 			<Grid container className="mt-2 mb-4">
@@ -158,10 +158,10 @@ class CompaniesListContainer extends React.Component {
 								(
 									<div>
 										<Typography component="h1" className={classNames(classes.h1Style, 'mt-3')}>
-											{currentSubCategory.label}
+											{seoInfo.title}
 										</Typography>
 										<Text className="my-3">
-											{currentSubCategory.description}
+											{seoInfo.description}
 										</Text>
 										{
 											companies.map(company => {
@@ -388,22 +388,40 @@ const getBreedsEnabled = createSelector(
 	}
 );
 
-const getCurrentSubCategory = createSelector(
+const getSEOInfo = createSelector(
 	[getCommon, getFilter],
 	(common, filter) => {
-		let currentSubCategory = {};
+		let information = {
+			title: '',
+			description: '',
+		};
 		common.companiesCategories.forEach((type, index) => {
 			if (filter.companyCategoryId && type.value.toUpperCase() === filter.companyCategoryId.toUpperCase()) {
 				for (let i = 0; i < type.subcategories.length; i++) {
 					let subCat = type.subcategories[i];
 					if (subCat.value.toUpperCase() === filter.companySubcategoryId.toUpperCase()) {
-						currentSubCategory = subCat;
+						information.title = subCat.label;
+						information.description = subCat.description;
 						break;
 					}
 				}
 			}
 		});
-		return currentSubCategory;
+		
+		if (filter.sidebarFilters.countryId) {
+			const foundCountry = common.countries.find(c => c.value === filter.sidebarFilters.countryId);
+			if (foundCountry) {
+				if (filter.sidebarFilters.cityId) {
+					const foundCity = foundCountry.allCities.find(city => city.value === filter.sidebarFilters.cityId);
+					if (foundCity) {
+						information.title += ' ' + foundCity.label;
+					}
+				} else {
+					information.title += ' ' + foundCountry.label;
+				}
+			}
+		}
+		return information;
 	}
 );
 
@@ -413,7 +431,7 @@ const CompaniesList = connect(
 			common: extendCodeValues()(state),
 			main: state.companiesList.main,
 			companies: getFlatCompanies(state),
-			currentSubCategory: getCurrentSubCategory(state),
+			seoInfo: getSEOInfo(state),
 			filter: getFilter(state),
 			filterValues: {
 				countryId: {
