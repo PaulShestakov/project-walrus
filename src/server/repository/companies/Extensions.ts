@@ -22,6 +22,18 @@ export default class Extensions {
         name: item.tradeName
     });
 
+    static mapOwnerType = (item) => ({
+        uuid: item.ownerTypeUuid,
+        id: item.ownerTypeId,
+        name: item.ownerTypeName
+    });
+
+    static mapJobType = (item) => ({
+        uuid: item.jobTypeUuid,
+        id: item.jobTypeId,
+        name: item.jobTypeName
+    });
+
     static saveManyToMany(ids, companyId, query) {
         return (connection, done) => {
             if (ids && ids.length > 0) {
@@ -40,6 +52,8 @@ export default class Extensions {
             Queries.DELETE_DRUGS_FOR_COMPANY,
             Queries.DELETE_SERVICES_FOR_COMPANY,
             Queries.DELETE_TRADES_FOR_COMPANY,
+            Queries.DELETE_JOB_TYPES,
+            Queries.DELETE_OWNER_TYPES
         ].forEach(deleteQuery => {
             queries.push((connection, done) => {
                 connection.query(deleteQuery, [companyId], done);

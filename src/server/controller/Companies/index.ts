@@ -29,8 +29,8 @@ class Companies extends BaseController {
 		//this.router.delete('/:companyId/feedback/:feedbackId', this.deleteFeedback.bind(this));
 
 
-		this.router.post('/',
-			passport.authenticate('jwt', { session: false }),this.saveCompany.bind(this));
+		this.router.post('/', upload.array('image', 1),
+			passport.authenticate('jwt', { session: false }), this.saveCompany.bind(this));
 		//this.router.post('/', upload.array('image', 1), this.saveCompany.bind(this));
 		
 		this.router.put('/:companyId', upload.array('image', 1),

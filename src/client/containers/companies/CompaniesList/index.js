@@ -342,6 +342,14 @@ const getClinicsServices = createSelector(
 	[getCommon], (common) => common.clinicsServices
 );
 
+const getOwnerTypes = createSelector(
+	[getCommon], common => common.ownerTypes
+);
+
+const getJobTypes = createSelector(
+	[getCommon], common => common.jobTypes
+);
+
 const getAnimals = createSelector(
 	[getCommon], (common) => common.animals
 );
@@ -441,6 +449,14 @@ const CompaniesList = connect(
 				},
 				clinicsServices: {
 					values: getClinicsServices(state),
+					enabled: true
+				},
+				ownerTypes: {
+					values: getOwnerTypes(state),
+					enabled: true
+				},
+				jobTypes: {
+					values: getJobTypes(state),
 					enabled: true
 				},
 				isWorkingNow: {

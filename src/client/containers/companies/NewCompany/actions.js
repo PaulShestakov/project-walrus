@@ -132,7 +132,9 @@ function externalizeCompany(company) {
 		...company,
 		drugsTypes: [],
 		clinicsServices: [],
-		torgTypes: []
+		torgTypes: [],
+		ownerTypes: [],
+		jobTypes: []
 	};
 
 	if (externalizedCompany.locations) {

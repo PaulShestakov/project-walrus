@@ -8,7 +8,8 @@ export default connect(
 	state => {
 		return {
 			user: state.common.user,
-			unauthorized: state.common.unauthorizedError
+			unauthorized: state.common.unauthorizedError,
+			isUserLoaded: state.common.isUserLoaded
 		};
 	},
 	{

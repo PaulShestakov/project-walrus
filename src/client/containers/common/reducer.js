@@ -4,6 +4,7 @@ import {
 	LOAD_USER_INFO_SUCCESS,
 	UNAUTHORIZED_ERROR,
 	CLOSE_UNAUTHORIZED_DIALOG,
+	USER_LOADING_STARTED
 } from './actions';
 
 import { USER_ROLES } from '../util/constants';
@@ -11,6 +12,7 @@ import { USER_ROLES } from '../util/constants';
 const defaultState = {
 	animals: [],
 	animalsAreLoaded: false,
+	isUserLoaded: false,
 	user: {
 		role: USER_ROLES.ROLE_GUEST
 	},
@@ -26,6 +28,8 @@ const defaultState = {
 	daysOfWeek: [],
 	drugsTypes: [],
 	torgTypes: [],
+	jobTypes: [],
+	ownerTypes: [],
 	clinicsServices: [],
 	specialistDirections: [],
 };
@@ -52,6 +56,8 @@ const commonReducer = (state = defaultState, action) => {
 			daysOfWeek: action.payload.DAY_OF_WEEK,
 			drugsTypes: action.payload.DRUGS_TYPE,
 			torgTypes: action.payload.TORG_TYPE,
+			jobTypes: action.payload.JOB_TYPE,
+			ownerTypes: action.payload.PETS_OWNER_TYPE,
 			specialistDirections: action.payload.SPECIALIST_DIRECTION,
 			clinicsServices: action.payload.CLINICS_SERVICES,
 			companiesCategories: action.payload.categories
@@ -60,13 +66,19 @@ const commonReducer = (state = defaultState, action) => {
 	case LOAD_USER_INFO_SUCCESS:
 		return {
 			...state,
-			user: action.payload
+			user: action.payload,
+			isUserLoaded: true,
 		};
-		
+	case USER_LOADING_STARTED:
+		return {
+			...state,
+			isUserLoaded: false,
+		};
 	case UNAUTHORIZED_ERROR:
 		return {
 			...state,
-			unauthorizedError: true
+			unauthorizedError: true,
+			isUserLoaded: true,
 		};
 	case CLOSE_UNAUTHORIZED_DIALOG:
 		return {

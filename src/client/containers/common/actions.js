@@ -71,7 +71,8 @@ export function loadCompaniesCodeValues() {
 
 		if (!companiesCategories || companiesCategories.length === 0) {
 			let codeValuesUrl = '/api/v1/codevalue?';
-			['DAY_OF_WEEK', 'DRUGS_TYPE', 'CLINICS_SERVICES', 'TORG_TYPE', 'SPECIALIST_DIRECTION'].forEach(i => {
+			['DAY_OF_WEEK', 'JOB_TYPE', 'PETS_OWNER_TYPE', 'DRUGS_TYPE', 'CLINICS_SERVICES',
+				'TORG_TYPE', 'SPECIALIST_DIRECTION'].forEach(i => {
 				codeValuesUrl += '&type[]=' + i;
 			});
 			const generalCodeValues = fetch(codeValuesUrl);
@@ -103,10 +104,14 @@ export function loadCompaniesCodeValues() {
 }
 
 export const LOAD_USER_INFO_SUCCESS = 'LOAD_USER_INFO_SUCCESS';
+export const USER_LOADING_STARTED = 'USER_LOADING_STARTED';
 export function loadUserInfo() {
 	return (dispatch, getState) => {
 		const { user } = getState();
 		if (!user) {
+			dispatch({
+				type: USER_LOADING_STARTED
+			});
 			fetch('/api/v1/user/me',{
 				method: 'GET',
 				credentials: 'include'

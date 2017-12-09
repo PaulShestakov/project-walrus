@@ -71,7 +71,31 @@ const filterDescriptions = {
 		}
 	},
 
+	ownerTypes: {
+		type: FILTER_TYPE.CHECKBOX_BLOCK,
+		defaultValue: [],
+		name: 'ownerTypes',
+		title: 'Тип владельца',
+		showMoreLabel: 'Все типы',
+		numberOfItemsToShowDefault: 2,
+		urlParamConfig: {
+			type: URL_PARAM_TYPES.QUERY,
+			sort: 0
+		}
+	},
 
+	jobTypes: {
+		type: FILTER_TYPE.CHECKBOX_BLOCK,
+		defaultValue: [],
+		name: 'jobTypes',
+		title: 'Виды объявлений',
+		showMoreLabel: 'Все виды',
+		numberOfItemsToShowDefault: 2,
+		urlParamConfig: {
+			type: URL_PARAM_TYPES.QUERY,
+			sort: 0
+		}
+	},
 
 	countryId: {
 		type: FILTER_TYPE.SUGGESTION,
@@ -109,8 +133,6 @@ const filterDescriptions = {
 			sort: 3
 		}
 	},
-
-
 
 	isWorkingNow: {
 		type: FILTER_TYPE.SWITCH,
