@@ -241,7 +241,7 @@ export default class Companies extends BaseCRUD  {
 			filter = filter.and('cs.SERVICE_ID IN ?', clinicsServicesIds);
 		}
 		if (torgTypesIds.length > 0) {
-			filter = filter.and('ctt.TRADE_TYPE_ID IN ?', drugsTypesIds);
+			filter = filter.and('ctt.TRADE_TYPE_ID IN ?', torgTypesIds);
 		}
 
 		let dayOfWeek, timeNow;

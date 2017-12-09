@@ -1,70 +1,161 @@
-const defaultFilters = [
-	{
+const FILTERS = {
+	COUNTRY: {
 		name: 'countryId',
 		component: 'suggestion',
 		sort: 0
 	},
-	{
+	CITY: {
 		name: 'cityId',
 		component: 'suggestion',
 		sort: 0
 	},
-	{
+	SUBWAYS: {
 		name: 'subways',
 		component: 'checkbox',
 		sort: 0
 	},
-];
-
-const defaultWithWorking = [
-	...defaultFilters,
-	{
+	TORG_TYPES: {
+		name: 'torgTypes',
+		component: 'checkbox',
+		sort: 0
+	},
+	DRUGS_TYPES: {
+		name: 'drugsTypes',
+		component: 'checkbox',
+		sort: 0
+	},
+	CLINICS_SERVICES: {
+		name: 'clinicsServices',
+		component: 'checkbox',
+		sort: 0
+	},
+	ANIMALS: {
+		name: 'animals',
+		component: 'suggestion',
+		sort: 0
+	},
+	BREEDS: {
+		name: 'breeds',
+		component: 'checkbox',
+		sort: 0
+	},
+	WORKING_NOW: {
 		name: 'isWorkingNow',
 		component: 'switch',
 		sort: 100
 	},
-];
+};
 
-const defaultWithWorkingAndTorg = [
-	...defaultWithWorking,
-	{
-		name: 'torgTypes',
-		component: 'checkbox',
-		sort: 0
-	}
-];
 
 const filters = [
 	{
 		categories: [],
+		subcategories: [],
+		filters: [
+			FILTERS.COUNTRY
+		]
+	},
+
+	{
+		categories: [],
+		subcategories: [
+			'goods_kulinaria',
+			'services_behaviour_correction',
+			'services_zoo_photography',
+
+			'pets_clubs_dogs',
+			'pets_clubs_cats',
+			'pets_clubs_other',
+			'pets_communities',
+
+			'other_international_organisations',
+			'other_vacancies', // New filter - вакансия и резюме, вакансия rename поиск работы
+			'other_training'
+
+
+		],
+		filters: [
+			FILTERS.COUNTRY,
+			FILTERS.CITY,
+		]
+	},
+
+	{
+		categories: [],
+		subcategories: [
+			'health_specialists',
+			'goods_ruchnie_tovary',
+			'services_walking',
+			'services_training',
+			'services_handling'
+		],
+		filters: [
+			FILTERS.COUNTRY,
+			FILTERS.CITY,
+			FILTERS.SUBWAYS
+		]
+	},
+
+	{
+		categories: [],
+		subcategories: [
+			'services_zoo_taxi',
+		],
+		filters: [
+			FILTERS.COUNTRY,
+			FILTERS.CITY,
+			FILTERS.WORKING_NOW
+		]
+	},
+
+	{
+		categories: [],
+		subcategories: [
+			'health_drugs'
+		],
+		filters: [
+			FILTERS.COUNTRY,
+			FILTERS.CITY,
+			FILTERS.DRUGS_TYPES
+		]
+	},
+
+	{
+		categories: [],
+		subcategories: [
+			'health_clinics'
+		],
+		filters: [
+			FILTERS.COUNTRY,
+			FILTERS.CITY,
+			FILTERS.SUBWAYS,
+			FILTERS.WORKING_NOW,
+			FILTERS.CLINICS_SERVICES
+		]
+	},
+
+	{
+		categories: [
+			'opt'
+		],
 		subcategories: [
 			'health_stations',
 			'health_emergency_help',
 			'goods_acsessuary',
-			'goods_acsessuary',
-			'services_zoo_taxi',
+			'services_fitness',
+			'services_usyplenie',
+			'services_photostudii',
+			'services_zoo_studio',
 			'services_pets_friendly_institutions'
 		],
-		filters: defaultWithWorking
+		filters: [
+			FILTERS.COUNTRY,
+			FILTERS.CITY,
+			FILTERS.SUBWAYS,
+			FILTERS.WORKING_NOW
+		]
 	},
-	{
-		categories: [
-			'opt',
-			'other'
-		],
-		subcategories: [
-			'goods_kulinaria',
-			'services_walking',
-			'services_training',
-			'services_behaviour_correction',
-			'services_fitness',
-			'services_handling',
-			'services_usyplenie',
-			'services_zoo_photography',
-			'services_zoo_studio',
-		],
-		filters: defaultFilters
-	},
+
 	{
 		categories: [],
 		subcategories: [
@@ -72,78 +163,98 @@ const filters = [
 			'goods_zoo_shops',
 			'goods_clothing_shops',
 			'goods_furniture_and_acsessuary',
-			'goods_pitanie_dobavki',
 			'goods_oborudovanie_fitness',
+			'goods_pitanie_dobavki',
 			'goods_professional_sredstva',
-			'goods_ruchnie_tovary',
-		],
-		filters: defaultWithWorkingAndTorg
-	},
-	{
-		categories: [],
-		subcategories: [
-			'health_drugs'
+
 		],
 		filters: [
-			...defaultFilters,
-			{
-				name: 'drugsTypes',
-				component: 'checkbox',
-				sort: 0
-			}
-		],
-	},
-	{
-		categories: [],
-		subcategories: [
-			'health_clinics'
-		],
-		filters: [
-			...defaultFilters,
-			{
-				name: 'clinicsServices',
-				component: 'checkbox',
-				sort: 0
-			}
+			FILTERS.COUNTRY,
+			FILTERS.CITY,
+			FILTERS.SUBWAYS,
+			FILTERS.WORKING_NOW,
+			FILTERS.TORG_TYPES
 		]
 	},
+
+
+
 	{
 		categories: [],
 		subcategories: [
 			'services_grooming',
-			'services_zoo_hotels'
+
 		],
 		filters: [
-			...defaultFilters,
-			{
-				name: 'animals',
-				component: 'suggestion',
-				sort: 0
-			},
-			{
-				name: 'breeds',
-				component: 'checkbox',
-				sort: 0
-			},
+			FILTERS.COUNTRY,
+			FILTERS.CITY,
+			FILTERS.SUBWAYS,
+			FILTERS.ANIMALS,
 		]
 	},
+
+
+
 	{
-		categories: [
-			'pets'
+		categories: [],
+		subcategories: [
+			'services_zoo_hotels',
+
 		],
-		subcategories: [],
 		filters: [
-			...defaultFilters,
-			{
-				name: 'breeds',
-				component: 'checkbox',
-				sort: 0
-			},
+			FILTERS.COUNTRY,
+			FILTERS.CITY,
+			FILTERS.SUBWAYS,
+			FILTERS.ANIMALS,
+			FILTERS.WORKING_NOW
 		]
 	},
+
+
+
+
+	{
+		categories: [],
+		subcategories: [
+			'pets_dog_nurseries',
+			'pets_cat_nurseries',
+			'pets_horse_nurseries',
+			'pets_rodent_nurseries',
+
+
+		],
+		filters: [
+			FILTERS.COUNTRY,
+			FILTERS.CITY,
+			FILTERS.BREEDS, // SELECT CONTROL!!!
+			// Пиомнки, заводчики дать выбор
+			// Все зав, питомики другие - удалить
+		]
+	},
+
+
+	{
+		categories: [],
+		subcategories: [
+			'pets_zoo_binding',
+
+		],
+		filters: [
+			FILTERS.COUNTRY,
+			FILTERS.CITY,
+			FILTERS.ANIMALS,
+			FILTERS.BREEDS,
+		]
+	}
 ];
 
-export default filters;
+
+
+
+
+
+
+
 
 export function findFilters(category, subCategory) {
 	const filterByCategory = filters.find(filter => filter.categories.includes(category.toLowerCase()));

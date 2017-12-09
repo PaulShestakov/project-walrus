@@ -116,7 +116,7 @@ const filterDescriptions = {
 		type: FILTER_TYPE.SWITCH,
 		defaultValue: false,
 		name: 'isWorkingNow',
-		title: 'Режим работы',
+		title: 'Работает сейчас',
 		urlParamConfig: {
 			type: URL_PARAM_TYPES.QUERY,
 			sort: 100
