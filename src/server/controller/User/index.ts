@@ -1,5 +1,4 @@
 import { Router, Request, Response } from 'express';
-import async from 'async';
 import Util from "../../util/Util";
 import repo from "../../repository/user/User";
 import * as passport from 'passport';
@@ -15,7 +14,8 @@ class User extends BaseController {
         super();
         this.router = Router();
 
-        this.router.get('/me', passport.authenticate('jwt', { session: false }), this.getCurrentUser.bind(this));
+        this.router.get('/me',
+            passport.authenticate('jwt', { session: false }), this.getCurrentUser.bind(this));
     }
 
     private getCurrentUser(req: any, res: Response) {

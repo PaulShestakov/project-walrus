@@ -6,6 +6,7 @@ import styles from './styles';
 import { Link } from 'react-router-dom';
 import { Paper, CardMedia, Typography } from 'material-ui';
 import Util from "../../../../util/index";
+import defaultImage from '../../../../../assets/img/404.jpg';
 
 @translate(['common'])
 @withStyles(styles)
@@ -13,7 +14,6 @@ export default class Type extends React.Component {
 
     render() {
         const { classes, type, match } = this.props;
-        const defaultImage = 'http://cdn4.wpbeginner.com/wp-content/uploads/2013/04/wp404error.jpg';
         return (
             <Grid container spacing={0}>
                 {

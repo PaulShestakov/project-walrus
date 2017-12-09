@@ -20,20 +20,25 @@ class Companies extends BaseController {
 		this.router.get('/filtered', this.getFiltered.bind(this));
 		this.router.get('/fuzzySearch', this.fuzzySearch.bind(this));
 
-		// this.router.post('/:companyId/feedback',
-		// 	passport.authenticate('jwt', { session: false }), this.postFeedback.bind(this));
-		this.router.post('/:companyId/feedback', this.postFeedback.bind(this));
-		// this.router.get('/:companyId/feedback', this.getFeedbacks.bind(this));
-		// this.router.delete('/:companyId/feedback/:feedbackId',
-		// 	passport.authenticate('jwt', { session: false }), this.deleteFeedback.bind(this));
-		this.router.delete('/:companyId/feedback/:feedbackId', this.deleteFeedback.bind(this));
+		this.router.post('/:companyId/feedback',
+			passport.authenticate('jwt', { session: false }), this.postFeedback.bind(this));
+		//this.router.post('/:companyId/feedback', this.postFeedback.bind(this));
+
+		this.router.delete('/:companyId/feedback/:feedbackId',
+			passport.authenticate('jwt', { session: false }), this.deleteFeedback.bind(this));
+		//this.router.delete('/:companyId/feedback/:feedbackId', this.deleteFeedback.bind(this));
 
 
-		//this.router.post('/', passport.authenticate('jwt', { session: false }), this.postCompany.bind(this));
-		this.router.post('/', upload.array('image', 1), this.saveCompany.bind(this));
-		this.router.put('/:companyId', upload.array('image', 1), this.updateCompany.bind(this));
+		this.router.post('/',
+			passport.authenticate('jwt', { session: false }),this.saveCompany.bind(this));
+		//this.router.post('/', upload.array('image', 1), this.saveCompany.bind(this));
+		
+		this.router.put('/:companyId', upload.array('image', 1),
+			passport.authenticate('jwt', { session: false }), this.updateCompany.bind(this));
+		
 		this.router.get('/:url_id', this.getCompany.bind(this));
-		this.router.delete('/:companyId', this.deleteCompany.bind(this));
+		this.router.delete('/:companyId',
+			passport.authenticate('jwt', { session: false }), this.deleteCompany.bind(this));
 	}
 
 	private getFiltered(req: Request, res: Response) {
@@ -72,18 +77,19 @@ class Companies extends BaseController {
 	}
 
 	private deleteCompany(req: Request, res: Response) {
-		CompaniesRepository.deleteCompany(req.params.companyId, (error, result) => {
-			if (error) {
-				this.errorResponse(res, 500, error);
-			} else {
-				this.okResponse(res, result);
-			}
-		});
+		if (this.checkRole(req, res, 1)) {
+			CompaniesRepository.deleteCompany(req.params.companyId, (error, result) => {
+				if (error) {
+					this.errorResponse(res, 500, error);
+				} else {
+					this.okResponse(res, result);
+				}
+			});
+		}
 	}
   
 	private saveCompany(req: Request, res: Response) {
-		//this.checkRole(req, res, 1)
-       if (true) {
+       if (this.checkRole(req, res, 1)) {
 		let company = JSON.parse(req.body.company);
 	   	company.image = req.files;
 
@@ -100,21 +106,22 @@ class Companies extends BaseController {
 	private updateCompany(req: Request, res: Response) {
 		const companyId = req.params.companyId;
 
-		let company = JSON.parse(req.body.company);
-		company.image = req.files;
-
-		CompaniesRepository.updateCompany(companyId, company, (error, result) => {
-			if (error) {
-				this.errorResponse(res, 500, error);
-			} else {
-				this.okResponse(res, result);
-			}
-		});
+		if (this.checkRole(req, res, 1)) {
+			let company = JSON.parse(req.body.company);
+			company.image = req.files;
+	
+			CompaniesRepository.updateCompany(companyId, company, (error, result) => {
+				if (error) {
+					this.errorResponse(res, 500, error);
+				} else {
+					this.okResponse(res, result);
+				}
+			});
+		}
 	}
 
 	private postFeedback(req: Request, res: Response) {
-		//this.checkRole(req, res, 1)
-		if (true) {
+		if (this.checkRole(req, res, 1)) {
 			const companyId = req.params.companyId;
 			if (companyId) {
 				const feedback = req.body;
@@ -136,16 +143,18 @@ class Companies extends BaseController {
 
 	private deleteFeedback(req: Request, res: Response) {
 		const { feedbackId } = req.params;
-		if (feedbackId) {
-			FeedbacksRepository.deleteFeedback(feedbackId, (error, result) => {
-				if (error) {
-					this.errorResponse(res, 500, error);
-				} else {
-					this.okResponse(res, result);
-				}
-			});
-		} else {
-			this.errorResponse(res, 400, 'Feedback id was not provided');
+		if (this.checkRole(req, res, 1)) {
+			if (feedbackId) {
+				FeedbacksRepository.deleteFeedback(feedbackId, (error, result) => {
+					if (error) {
+						this.errorResponse(res, 500, error);
+					} else {
+						this.okResponse(res, result);
+					}
+				});
+			} else {
+				this.errorResponse(res, 400, 'Feedback id was not provided');
+			}
 		}
 	}
 }
