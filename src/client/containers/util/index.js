@@ -8,7 +8,7 @@ export default class Util {
 
 			const property = object[key];
 
-			if (property === null || property === undefined) {
+			if (property === null || property === undefined || property === '') {
 				// Skip
 			}
 			else if (Array.isArray(property)) {

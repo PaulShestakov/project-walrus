@@ -1,58 +1,60 @@
 const FILTERS = {
 	COUNTRY: {
 		name: 'countryId',
-		component: 'suggestion',
 		sort: 0
 	},
 	CITY: {
 		name: 'cityId',
-		component: 'suggestion',
 		sort: 0
 	},
 	SUBWAYS: {
 		name: 'subways',
-		component: 'checkbox',
 		sort: 0
 	},
 	TORG_TYPES: {
 		name: 'torgTypes',
-		component: 'checkbox',
 		sort: 0
 	},
 	DRUGS_TYPES: {
 		name: 'drugsTypes',
-		component: 'checkbox',
 		sort: 0
 	},
 	CLINICS_SERVICES: {
 		name: 'clinicsServices',
-		component: 'checkbox',
 		sort: 0
 	},
 	ANIMALS: {
 		name: 'animals',
-		component: 'suggestion',
 		sort: 0
 	},
 	BREEDS: {
 		name: 'breeds',
-		component: 'checkbox',
 		sort: 0
 	},
 	JOB_TYPES: {
 		name: 'jobTypes',
-		component: 'checkbox',
 		sort: 0
 	},
 	OWNER_TYPES: {
 		name: 'ownerTypes',
-		component: 'checkbox',
 		sort: 0
 	},
 	WORKING_NOW: {
 		name: 'isWorkingNow',
-		component: 'switch',
 		sort: 100
+	},
+
+	_INVISIBLE_APPLIED_ANIMAL_DOG: {
+		name: '_invisibleAppliedAnimalDog',
+	},
+	_INVISIBLE_APPLIED_ANIMAL_CAT: {
+		name: '_invisibleAppliedAnimalCat',
+	},
+	_INVISIBLE_APPLIED_ANIMAL_HORSE: {
+		name: '_invisibleAppliedAnimalHorse',
+	},
+	_INVISIBLE_APPLIED_ANIMAL_RODENT: {
+		name: '_invisibleAppliedAnimalRodent',
 	},
 };
 
@@ -80,7 +82,6 @@ const filters = [
 
 			'other_international_organisations',
 			'other_training'
-
 		],
 		filters: [
 			FILTERS.COUNTRY,
@@ -230,25 +231,43 @@ const filters = [
 		categories: [],
 		subcategories: [
 			'pets_dog_nurseries',
-			'pets_cat_nurseries',
-			'pets_horse_nurseries',
-			'pets_rodent_nurseries',
-
 		],
 		filters: [
-			FILTERS.COUNTRY,
-			FILTERS.CITY,
-			FILTERS.BREEDS, // SELECT CONTROL!!!
-			FILTERS.OWNER_TYPES
+			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS.OWNER_TYPES, FILTERS._INVISIBLE_APPLIED_ANIMAL_DOG
 		]
 	},
-
+	{
+		categories: [],
+		subcategories: [
+			'pets_cat_nurseries',
+		],
+		filters: [
+			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS.OWNER_TYPES, FILTERS._INVISIBLE_APPLIED_ANIMAL_CAT
+		]
+	},
+	{
+		categories: [],
+		subcategories: [
+			'pets_horse_nurseries',
+		],
+		filters: [
+			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS.OWNER_TYPES, FILTERS._INVISIBLE_APPLIED_ANIMAL_HORSE
+		]
+	},
+	{
+		categories: [],
+		subcategories: [
+			'pets_rodent_nurseries',
+		],
+		filters: [
+			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS.OWNER_TYPES, FILTERS._INVISIBLE_APPLIED_ANIMAL_RODENT
+		]
+	},
 
 	{
 		categories: [],
 		subcategories: [
 			'pets_zoo_binding',
-
 		],
 		filters: [
 			FILTERS.COUNTRY,
@@ -261,14 +280,20 @@ const filters = [
 
 
 export function findFilters(category, subCategory) {
-	const filterByCategory = filters.find(filter => filter.categories.includes(category.toLowerCase()));
+	let result;
 	const filterBySubCat = filters.find(filter => filter.subcategories.includes(subCategory.toLowerCase()));
-	const result =
-		filterBySubCat ?
-			filterBySubCat.filters :
-			filterByCategory ?
-				filterByCategory.filters :
-				[];
+
+	if (filterBySubCat) {
+		result = filterBySubCat.filters;
+	} else {
+		const filterByCategory = filters.find(filter => filter.categories.includes(category.toLowerCase()));
+
+		if (filterByCategory) {
+			result = filterByCategory.filters;
+		} else {
+			result = [];
+		}
+	}
 
 	return result.sort((filterA, filterB) => filterA.sort - filterB.sort);
 }

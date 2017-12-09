@@ -1,13 +1,5 @@
-const URL_PARAM_TYPES = {
-	PATH: 1,
-	QUERY: 2
-};
+import { FILTER_TYPE, URL_PARAM_TYPES } from './constants';
 
-const FILTER_TYPE = {
-	CHECKBOX_BLOCK: 1,
-	SUGGESTION: 2,
-	SWITCH: 3
-};
 
 const filterDescriptions = {
 	subways: {
@@ -133,6 +125,22 @@ const filterDescriptions = {
 			sort: 3
 		}
 	},
+
+
+	_invisibleAppliedAnimalDog: {
+		defaultValue: 'DOG',
+		name: 'animals',
+	},
+	_invisibleAppliedAnimalCat: {
+		defaultValue: 'CAT',
+		name: 'animals',
+	},
+	_invisibleAppliedAnimalHorse: {
+		defaultValue: 'HORSE',
+		name: 'animals',
+	},
+
+
 
 	isWorkingNow: {
 		type: FILTER_TYPE.SWITCH,

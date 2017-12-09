@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
@@ -23,6 +24,8 @@ import SearchSelect from '../../../../../components/SearchSelect/index';
 import Switch from 'material-ui/Switch';
 
 import { FormControlLabel, FormGroup } from 'material-ui/Form';
+import { FILTER_TYPE } from '../../settings/constants';
+
 
 @translate(['companiesList'])
 @withStyles(styles)
@@ -61,18 +64,15 @@ export default class Sidebar extends React.Component {
 
     			<Card className={classNames(classes.card, 'mb-3 p-3')}>
     				{
-    					this.props.componentFilters.map(filter => {
-    						const { component, name } = filter;
+    					this.props.filterComponents.map(componentDescription => {
+    						const { title, showMoreLabel, name, type } = componentDescription;
 
-
-    						const { title,showMoreLabel } = description[name];
     						const enabled = this.props.filterValues[name].enabled;
-
     						const value = this.props.filter.sidebarFilters[name];
     						const allOptions = this.props.filterValues[name].values || [];
 
-    						switch (component) {
-    						case 'suggestion': {
+    						switch (type) {
+    						case FILTER_TYPE.SUGGESTION: {
     							return (
     								<SearchSelect
     									disabled={!enabled}
@@ -89,7 +89,7 @@ export default class Sidebar extends React.Component {
     									handleSearch={(query) => this.props.handleSuggestionSearch(name, query)} />
     							);
     						}
-    						case 'checkbox': {
+    						case FILTER_TYPE.CHECKBOX_BLOCK: {
     							return (
 									<CheckboxesBlock
 										isEnabled={enabled}
@@ -109,7 +109,7 @@ export default class Sidebar extends React.Component {
     							);
     						}
 
-    						case 'switch': {
+    						case FILTER_TYPE.SWITCH: {
     							return (
     								<FormControlLabel
 										className={classes.switchFormControlWrapper}
@@ -138,5 +138,9 @@ export default class Sidebar extends React.Component {
     			</Card>
     		</div>
     	);
-    }
+	}
 }
+
+Sidebar.propTypes = {
+	filterComponents: PropTypes.arrayOf(PropTypes.object)
+};

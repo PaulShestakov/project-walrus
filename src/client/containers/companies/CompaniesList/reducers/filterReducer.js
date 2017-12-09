@@ -1,5 +1,6 @@
 import Util from '../../../util/index';
 import filtersDescription from '../settings/filtersDescription';
+import { findFilters } from '../settings/assignments';
 
 import {
 	COMPANIES_LIST_SET_IS_WORKING_NOW,
@@ -166,8 +167,14 @@ function updateUrl(state, history) {
 
 	const pathParamsFromFilter = [];
 
+	// DIRTY. Accessing assignment here
+	const assignmentFilters = findFilters(state.companyCategoryId, state.companySubcategoryId);
+
 	Object.keys(state.sidebarFilters).forEach(filterName => {
-		const urlParamConfig = filtersDescription[filterName].urlParamConfig;
+		const assignmentFiltersDescriptions = assignmentFilters.map(filter => filtersDescription[filter.name]);
+		const filterDescription = assignmentFiltersDescriptions.find(filter => filter.name === filterName);
+
+		const urlParamConfig = filterDescription.urlParamConfig || {};
 
 		switch (urlParamConfig.type) {
 		case URL_PARAM_TYPES.PATH:
@@ -178,6 +185,9 @@ function updateUrl(state, history) {
 			break;
 		case URL_PARAM_TYPES.QUERY:
 			queryParams[filterName] = state.sidebarFilters[filterName];
+			break;
+		default:
+			// Skip invisible parameter, do not add to url path
 			break;
 		}
 	});

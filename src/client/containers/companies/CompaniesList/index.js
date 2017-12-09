@@ -42,6 +42,7 @@ import {
 	handleSuggestionSearch,
 	switchFilterChange,
 } from './actionCreators/filter';
+import {DEFAULT_PATH_PARAMS_TYPES} from './constants';
 
 
 @translate(['companiesList'])
@@ -51,7 +52,10 @@ class CompaniesListContainer extends React.Component {
 		super(props);
 
 		const { companyCategoryId, companySubcategoryId } = props.match.params;
-		let filters = findFilters(companyCategoryId, companySubcategoryId);
+		const filters = findFilters(companyCategoryId, companySubcategoryId);
+
+		const filterComponents = filters.map(filter => filterDescriptions[filter.name])
+			.filter(filterDescription => !!filterDescription.type);
 
 		this.state = {
 			isWorkingTimeDialogOpened: false,
@@ -63,10 +67,11 @@ class CompaniesListContainer extends React.Component {
 			phones: [],
 			currentSubCategory: {},
 
-			componentFilters: filters
+			filterComponents
 		};
 
-		this.props.setupInitialFilterState(filters.map(filter => filterDescriptions[filter.name]));
+		const initialFiltersData = filters.map(filter => filterDescriptions[filter.name]);
+		this.props.setupInitialFilterState(initialFiltersData);
 	}
 
 	componentDidMount() {
@@ -76,8 +81,8 @@ class CompaniesListContainer extends React.Component {
 		const searchParams = Util.searchParamsToObject(new URLSearchParams(location.search));
 		const staticPathParams = {companyCategoryId, companySubcategoryId};
 		const dynamicPathParams = {
-			countryId,
-			cityId
+			countryId: countryId || DEFAULT_PATH_PARAMS_TYPES.COUNTRY_ID,
+			cityId: cityId || DEFAULT_PATH_PARAMS_TYPES.CITY_ID
 		};
 
 		updateStateWithUrlSource(staticPathParams, dynamicPathParams, searchParams);
@@ -189,7 +194,7 @@ class CompaniesListContainer extends React.Component {
 					<Sidebar
 						history={this.props.history}
 						user={this.props.common.user}
-						componentFilters={this.state.componentFilters}
+						filterComponents={this.state.filterComponents}
 						filter={this.props.filter}
 						filterValues={this.props.filterValues}
 						setIsWorkingNow={this.props.setIsWorkingNow}
@@ -356,35 +361,21 @@ const getAnimals = createSelector(
 );
 const getQueriedAnimals = searchConnectedSelector('animals', getAnimals);
 
-function containsFilter(substring, option) {
-	return option.label.search(new RegExp(substring, 'i')) !== -1;
-}
-
-function searchConnectedSelector(name, getAllValuesSelector) {
-	return createSelector(
-		[getAllValuesSelector, getSuggestionQueries], (allValues, suggestionQueries) => {
-			const searchQuery = suggestionQueries[name];
-
-			if (searchQuery) {
-				return allValues.filter(containsFilter.bind(null, searchQuery));
-			}
-			return allValues;
-		}
-	);
-}
 
 const getBreeds = createSelector(
-	[getCommon, getFilter], (common, filter) => {
-		const selectedAnimal = common.animals.find(animal => animal.value === filter.selectedAnimalId);
-		if (selectedAnimal) {
-			return selectedAnimal.breeds;
+	[getAnimals, getFilter], (animals, filter) => {
+		const selectedAnimal = filter.sidebarFilters.animals;
+		const animal = animals.find(animal => animal.value === selectedAnimal);
+
+		if (animal) {
+			return animal.breeds;
 		}
 		return [];
 	}
 );
 const getBreedsEnabled = createSelector(
 	[getFilter], (filter) => {
-		return !!filter.animals;
+		return !!filter.sidebarFilters.animals;
 	}
 );
 
@@ -424,6 +415,23 @@ const getSEOInfo = createSelector(
 		return information;
 	}
 );
+
+function containsFilter(substring, option) {
+	return option.label.search(new RegExp(substring, 'i')) !== -1;
+}
+
+function searchConnectedSelector(name, getAllValuesSelector) {
+	return createSelector(
+		[getAllValuesSelector, getSuggestionQueries], (allValues, suggestionQueries) => {
+			const searchQuery = suggestionQueries[name];
+
+			if (searchQuery) {
+				return allValues.filter(containsFilter.bind(null, searchQuery));
+			}
+			return allValues;
+		}
+	);
+}
 
 const CompaniesList = connect(
 	state => {
