@@ -207,7 +207,8 @@ class CompanyPageContainer extends React.Component {
 								</Authorized>
 							</Grid>
 						</Grid>
-						<Divider className="mt-4 mb-2" />
+
+						<Divider className="mt-4 mb-4" />
 
 						<Grid container={true}>
 							<Grid item={true} xs={4}>
@@ -274,6 +275,7 @@ class CompanyPageContainer extends React.Component {
 						</Grid>
 
 						<Divider className="mt-4" />
+
 						<Tabs indicatorColor="primary"
 							  onChange={this.handleTabPress}
 							  value={this.state.selectedTab}
@@ -285,7 +287,9 @@ class CompanyPageContainer extends React.Component {
 							<Tab label={t('Отзывы')} disabled={!locationToDisplay} />
 							<Tab label={t('Адреса и контакты')} />
 						</Tabs>
+
 						<Divider />
+
 						<div className={classes.context}>
 							<Route exact={true} path={`${this.props.match.url}`}
 								   render={() => <CompanyInfo company={company} />}
