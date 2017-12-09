@@ -21,12 +21,11 @@ export default {
 		margin: '0',
 
 		'& > span': {
-			order: 1,
-			marginRight: '1rem'
+			marginRight: '0.5rem'
 		},
 
 		'& p': {
-			order: 2,
+			paddingTop: '.25rem',
 			fontSize: '1.25rem',
 			fontFamily: globalStyles.BEBAS_FONT,
 			overflow: 'hidden',

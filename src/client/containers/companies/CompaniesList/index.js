@@ -156,18 +156,19 @@ class CompaniesListContainer extends React.Component {
 						/>
 					</Card>
 					<div className={classes.companiesList}>
+						<Typography component="h1" className={classNames(classes.h1Style, 'mt-3')}>
+							{seoInfo.title}
+						</Typography>
+						<Text className="my-3">
+							{seoInfo.description}
+						</Text>
+
 						{
 							main.isLoading ?
 
 								<CircularProgress /> :
 								(
 									<div>
-										<Typography component="h1" className={classNames(classes.h1Style, 'mt-3')}>
-											{seoInfo.title}
-										</Typography>
-										<Text className="my-3">
-											{seoInfo.description}
-										</Text>
 										{
 											companies.map(company => {
 												return (

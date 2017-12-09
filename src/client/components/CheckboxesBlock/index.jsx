@@ -53,7 +53,7 @@ export default class CheckboxesBlock extends React.Component {
 							<GridListTile key={item.value} cols={1}>
 								<FormControlLabel
 									label={item.label}
-									className={classNames(classes.checkboxWrapper, 'mt-1')}
+									className={classNames(classes.checkboxWrapper, 'ml-2 mt-1')}
 									control={
 										<Checkbox name={formGroupName}
 											className="ml-3"
