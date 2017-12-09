@@ -9,6 +9,8 @@ const USERS = 'wikipet.dle_users';
 const COMPANIES_DRUGS = 'wikipet.companies_drug_type';
 const COMPANIES_SERVICES = 'wikipet.companies_service';
 const COMPANIES_TRADE_TYPE = 'wikipet.companies_trade_type';
+const COMPANIES_JOB_TYPE = 'wikipet.companies_job_type';
+const COMPANIES_OWNER_TYPE = 'wikipet.companies_owner_type';
 
 export default {
 	GET: `
@@ -75,7 +77,15 @@ export default {
 
 			ctt.UUID as tradeUuid,
 			ctt.TRADE_TYPE_ID as tradeId,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = ctt.TRADE_TYPE_ID) as tradeName
+			(SELECT NAME FROM wikipet.code_values WHERE ID = ctt.TRADE_TYPE_ID) as tradeName,
+
+			ot.UUID as ownerTypeUuid,
+			ot.OWNER_TYPE_ID as ownerTypeId,
+			(SELECT NAME FROM wikipet.code_values WHERE ID = ot.OWNER_TYPE_ID) as ownerTypeName,
+
+			jt.UUID as jobTypeUuid,
+			jt.JOB_TYPE_ID as jobTypeId,
+			(SELECT NAME FROM wikipet.code_values WHERE ID = jt.JOB_TYPE_ID) as jobTypeName
 
 		FROM ${COMPANIES_TABLE} c
 		
@@ -105,6 +115,12 @@ export default {
 
 		LEFT JOIN ${COMPANIES_TRADE_TYPE} ctt
 			ON ctt.COMPANY_ID = c.COMPANY_ID
+
+		LEFT JOIN ${COMPANIES_OWNER_TYPE} ot
+			ON ot.COMPANY_ID = c.COMPANY_ID
+
+		LEFT JOIN ${COMPANIES_JOB_TYPE} jt
+			ON jt.COMPANY_ID = c.COMPANY_ID
 			
 		WHERE c.URL_ID = ?
 		
@@ -169,4 +185,10 @@ export default {
 
 	SAVE_TRADES: `INSERT INTO ${COMPANIES_TRADE_TYPE} VALUES ?`,
 	DELETE_TRADES_FOR_COMPANY: `DELETE FROM ${COMPANIES_TRADE_TYPE} WHERE COMPANY_ID = ?`,
+
+	SAVE_JOB_TYPES: `INSERT INTO ${COMPANIES_JOB_TYPE} VALUES ?`,
+	DELETE_JOB_TYPES: `DELETE FROM ${COMPANIES_JOB_TYPE} WHERE COMPANY_ID = ?`,
+
+	SAVE_OWNER_TYPES: `INSERT INTO ${COMPANIES_OWNER_TYPE} VALUES ?`,
+	DELETE_OWNER_TYPES: `DELETE FROM ${COMPANIES_OWNER_TYPE} WHERE COMPANY_ID = ?`,
 }

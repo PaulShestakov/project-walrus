@@ -111,6 +111,16 @@ export default class Companies extends BaseCRUD  {
 								name: 'torgTypes',
 								idName: 'tradeId',
 								map: Extensions.mapTrades
+							},
+							{
+								name: 'ownerTypes',
+								idName: 'ownerTypeId',
+								map: Extensions.mapOwnerType
+							},
+							{
+								name: 'jobTypes',
+								idName: 'jobTypeId',
+								map: Extensions.mapJobType
 							}
 						]
 					};
@@ -151,11 +161,16 @@ export default class Companies extends BaseCRUD  {
 
 		const saveTradeTypes = Extensions.saveManyToMany(company.torgTypes, company.companyId, Queries.SAVE_TRADES);
 
+		const saveOwnerTypes = Extensions.saveManyToMany(company.ownerTypes, company.companyId, Queries.SAVE_OWNER_TYPES);
+
+		const saveJobTypes = Extensions.saveManyToMany(company.jobTypes, company.companyId, Queries.SAVE_JOB_TYPES);
+
 	    const saveCompany = (connection, done) => {
             connection.query(Queries.SAVE, [Companies.internalizeCompany(company)], done);
 		};
 
-        executeSeries([saveCompany, saveAnimals, saveLocations, savePhones, saveWorkingTimes, saveDrugs, saveServices, saveTradeTypes], (error) => {
+		executeSeries([saveCompany, saveAnimals, saveLocations, savePhones, saveJobTypes, saveOwnerTypes,
+			saveWorkingTimes, saveDrugs, saveServices, saveTradeTypes], (error) => {
             if (error) {
                 Util.handleError(error, callback);
             } else {
@@ -190,6 +205,14 @@ export default class Companies extends BaseCRUD  {
 					ids: company.torgTypes,
 					query: Queries.SAVE_TRADES,
 				},
+				{
+					ids: company.ownerTypes,
+					query: Queries.SAVE_OWNER_TYPES,
+				},
+				{
+					ids: company.jobTypes,
+					query: Queries.SAVE_JOB_TYPES,
+				},
 			], company.companyId
 		);
 
@@ -209,6 +232,8 @@ export default class Companies extends BaseCRUD  {
 		const drugsTypesIds = Util.ensureArray(params.drugsTypes);
 		const clinicsServicesIds = Util.ensureArray(params.clinicsServices);
 		const torgTypesIds = Util.ensureArray(params.torgTypes);
+		const ownerTypesIds = Util.ensureArray(params.ownerTypes);
+		const jobTypesIds = Util.ensureArray(params.jobTypes);
 		const isWorkingNow = params.isWorkingNow && params.isWorkingNow === 'true';
 
 		let filter = squel.expr();
@@ -242,6 +267,12 @@ export default class Companies extends BaseCRUD  {
 		}
 		if (torgTypesIds.length > 0) {
 			filter = filter.and('ctt.TRADE_TYPE_ID IN ?', torgTypesIds);
+		}
+		if (ownerTypesIds.length > 0) {
+			filter = filter.and('ot.OWNER_TYPE_ID IN ?', ownerTypesIds);
+		}
+		if (jobTypesIds.length > 0) {
+			filter = filter.and('jt.JOB_TYPE_ID IN ?', jobTypesIds);
 		}
 
 		let dayOfWeek, timeNow;
@@ -322,6 +353,8 @@ export default class Companies extends BaseCRUD  {
 			.left_join('wikipet.companies_working_time', 't', 't.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
 			.left_join('wikipet.companies_drug_type', 'cdt', 'cdt.COMPANY_ID = c.COMPANY_ID')
 			.left_join('wikipet.companies_service', 'cs', 'cs.COMPANY_ID = c.COMPANY_ID')
+			.left_join('wikipet.companies_owner_type', 'ot', 'ot.COMPANY_ID = c.COMPANY_ID')
+			.left_join('wikipet.companies_job_type', 'jt', 'jt.COMPANY_ID = c.COMPANY_ID')
 			.left_join('wikipet.companies_trade_type', 'ctt', 'ctt.COMPANY_ID = c.COMPANY_ID');
 
 		if (isWorkingNow) {

@@ -39,6 +39,16 @@ const FILTERS = {
 		component: 'checkbox',
 		sort: 0
 	},
+	JOB_TYPES: {
+		name: 'jobTypes',
+		component: 'checkbox',
+		sort: 0
+	},
+	OWNER_TYPES: {
+		name: 'ownerTypes',
+		component: 'checkbox',
+		sort: 0
+	},
 	WORKING_NOW: {
 		name: 'isWorkingNow',
 		component: 'switch',
@@ -69,9 +79,7 @@ const filters = [
 			'pets_communities',
 
 			'other_international_organisations',
-			'other_vacancies', // New filter - вакансия и резюме, вакансия rename поиск работы
 			'other_training'
-
 
 		],
 		filters: [
@@ -117,6 +125,18 @@ const filters = [
 			FILTERS.COUNTRY,
 			FILTERS.CITY,
 			FILTERS.DRUGS_TYPES
+		]
+	},
+
+	{
+		categories: [],
+		subcategories: [
+			'other_poisk_raboty'
+		],
+		filters: [
+			FILTERS.COUNTRY,
+			FILTERS.CITY,
+			FILTERS.JOB_TYPES
 		]
 	},
 
@@ -177,8 +197,6 @@ const filters = [
 		]
 	},
 
-
-
 	{
 		categories: [],
 		subcategories: [
@@ -192,8 +210,6 @@ const filters = [
 			FILTERS.ANIMALS,
 		]
 	},
-
-
 
 	{
 		categories: [],
@@ -210,9 +226,6 @@ const filters = [
 		]
 	},
 
-
-
-
 	{
 		categories: [],
 		subcategories: [
@@ -221,14 +234,12 @@ const filters = [
 			'pets_horse_nurseries',
 			'pets_rodent_nurseries',
 
-
 		],
 		filters: [
 			FILTERS.COUNTRY,
 			FILTERS.CITY,
 			FILTERS.BREEDS, // SELECT CONTROL!!!
-			// Пиомнки, заводчики дать выбор
-			// Все зав, питомики другие - удалить
+			FILTERS.OWNER_TYPES
 		]
 	},
 
@@ -247,13 +258,6 @@ const filters = [
 		]
 	}
 ];
-
-
-
-
-
-
-
 
 
 export function findFilters(category, subCategory) {

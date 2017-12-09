@@ -12,6 +12,8 @@ interface Company {
 	image: any,
 	animals: Array<any>,
 	drugsTypes: Array<any>,
+	ownerTypes: Array<any>,
+	jobTypes: Array<any>,
 	clinicsServices: Array<any>,
 	torgTypes: Array<any>,
     companyCategoryId: string,
