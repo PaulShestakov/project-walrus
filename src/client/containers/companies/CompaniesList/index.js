@@ -9,10 +9,11 @@ import CompanyItem from './components/CompanyItem/index';
 import Sidebar from './components/Sidebar/index';
 import classNames from 'classnames';
 import styles from './styles';
-import { CircularProgress, Typography } from 'material-ui';
+import {Typography } from 'material-ui';
 import { extendCodeValues } from '../selectors';
 import { findFilters } from './settings/assignments';
 import filterDescriptions from './settings/filtersDescription';
+import {CircularProgress} from 'components';
 
 import Util from '../../util/index';
 
@@ -153,7 +154,7 @@ class CompaniesListContainer extends React.Component {
 						{
 							main.isLoading ?
 
-								<CircularProgress className={classes.progressCircle} /> :
+								<CircularProgress /> :
 								(
 									<div>
 										<Typography component="h1" className={classNames(classes.h1Style, 'mt-3')}>

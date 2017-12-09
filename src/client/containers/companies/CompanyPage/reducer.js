@@ -1,8 +1,12 @@
 import {
+	LOAD_COMPANY_START,
+	LOAD_COMPANY_ERROR,
 	LOAD_COMPANY_SUCCESS,
+	ON_COMPONENT_LEAVE
 } from './actions';
 
 const defaultState = {
+	isLoading: true,
 	company: {
 		locations: [],
 	},
@@ -11,10 +15,30 @@ const defaultState = {
 const companyPageReducer = (state = defaultState, action) => {
 	switch (action.type) {
 
+	case LOAD_COMPANY_START: {
+		return {
+			...state,
+			isLoading: true
+		};
+	}
+	case LOAD_COMPANY_ERROR: {
+		return {
+			...state,
+			isLoading: false
+		};
+	}
 	case LOAD_COMPANY_SUCCESS: {
 		return {
 			...state,
-			company: action.payload
+			company: action.payload.data,
+			isLoading: false
+		};
+	}
+
+	case ON_COMPONENT_LEAVE: {
+		return {
+			...state,
+			...defaultState
 		};
 	}
 

@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 
 import FontAwesome from 'react-fontawesome';
 
-import {loadCompany, postFeedback, deleteFeedback} from './actions';
+import {loadCompany, postFeedback, deleteFeedback, onComponentLeave} from './actions';
 import { removeCompany } from '../CompaniesList/actionCreators/companiesList';
 
 import { translate } from 'react-i18next';
@@ -26,6 +26,7 @@ import NewFeedback from './components/Feedback/NewFeedback/index';
 import Contacts from './components/Contacts/index';
 import Authorized from '../../../containers/Authorized';
 import Util from '../../util/index';
+import { CircularProgress } from 'components';
 
 import { PAGES, USER_ROLES } from '../../util/constants';
 
@@ -51,6 +52,10 @@ class CompanyPageContainer extends React.Component {
 		if (url_id) {
 			this.props.loadCompany(url_id);
 		}
+	}
+
+	componentWillUnmount() {
+		this.props.onComponentLeave();
 	}
 
 	componentWillReceiveProps(newProps) {
@@ -88,7 +93,7 @@ class CompanyPageContainer extends React.Component {
 		if (action === 'delete') {
 			value = {
 				companyId: company.companyId,
-				action: this.delete,
+				action: this.handleDelete,
 				title: 'Удаление компании',
 				message: `Вы действительно хотите удалить ${company.name}?`,
 			};
@@ -133,14 +138,19 @@ class CompanyPageContainer extends React.Component {
 		}
 	};
 
-	delete = () => {
+	handleDelete = () => {
 		this.setState({ isConfirmDialogOpened: false });
 		this.props.removeCompany(this.state.company.companyId, this.props.history);
 	};
 
 	render() {
-		const {t, classes, company, common, markers, match } = this.props;
+		const {t, classes, company, common, markers, match, isLoading } = this.props;
 		const { locationToDisplay } = this.state;
+
+		if (isLoading) {
+			return <CircularProgress />;
+		}
+
 		let companyName = company.name;
 		if (locationToDisplay && locationToDisplay.cityName) {
 			companyName += ' г. ' + locationToDisplay.cityName;
@@ -161,6 +171,7 @@ class CompanyPageContainer extends React.Component {
 				);
 			}
 		});
+
 		return (
 			<div className={classes.mainCardWrapper}>
 				<Card raised={true} className={classNames(classes.mainCard, 'my-3')}>
@@ -332,6 +343,8 @@ class CompanyPageContainer extends React.Component {
 	}
 }
 
+CompanyPageContainer.displayName = 'CompanyPageContainer';
+
 const getMarkers = createSelector(
 	[(state) => state.companyPage.company],
 	(company) => {
@@ -372,6 +385,7 @@ const CompanyPage = connect(
 			common: state.common,
 			company: getCompany(state),
 			markers: getMarkers(state),
+			isLoading: state.companyPage.isLoading
 		};
 	},
 	{
@@ -379,7 +393,9 @@ const CompanyPage = connect(
 		postFeedback,
 		deleteFeedback,
 		removeCompany,
+		onComponentLeave
 	}
 )(CompanyPageContainer);
+
 
 export default CompanyPage;

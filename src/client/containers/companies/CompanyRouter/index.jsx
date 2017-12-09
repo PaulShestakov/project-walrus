@@ -36,53 +36,51 @@ class CompanyRouterContainer extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<Switch>
-					<Route
-						path="/company/new"
-						component={(props) => (
-							<Authorized
-								allowedRoles={[1]}
-								unauthorizedAction={() => window.location = PAGES.ADD_CATALOGS}>
-								<NewCompany {...props}/>
-							</Authorized>
-						)}
-						title="Создание компании" />
+			<Switch>
+				<Route
+					path="/company/new"
+					component={(props) => (
+						<Authorized
+							allowedRoles={[1]}
+							unauthorizedAction={() => window.location = PAGES.ADD_CATALOGS}>
+							<NewCompany {...props} />
+						</Authorized>
+					)}
+					title="Создание компании" />
 
-					<Route
-						path="/company/edit/:url_id"
-						component={(props) => (
-							<Authorized
-								allowedRoles={[1]}
-								unauthorizedAction={() => window.location = PAGES.LOGIN_PAGE}>
-								<EditComponent {...props}/>
-							</Authorized>
-						)}
-						title="Редактирование компании" />
+				<Route
+					path="/company/edit/:url_id"
+					component={(props) => (
+						<Authorized
+							allowedRoles={[1]}
+							unauthorizedAction={() => window.location = PAGES.LOGIN_PAGE}>
+							<EditComponent {...props} />
+						</Authorized>
+					)}
+					title="Редактирование компании" />
 
-					<Route
-						path="/company/:companyCategoryId/:companySubcategoryId/company/:url_id/contacts/:filial_url_id"
-						component={CompanyPage}
-						title="Страница филиала"/>
+				<Route
+					path="/company/:companyCategoryId/:companySubcategoryId/company/:url_id/contacts/:filial_url_id"
+					component={CompanyPage}
+					title="Страница филиала" />
 
-					<Route
-						path="/company/:companyCategoryId/:companySubcategoryId/company/:url_id"
-						component={CompanyPage}
-						title="Описание компании" />
+				<Route
+					path="/company/:companyCategoryId/:companySubcategoryId/company/:url_id"
+					component={CompanyPage}
+					title="Описание компании" />
 
-					<Route
-						path="/company/:companyCategoryId/:companySubcategoryId/:countryId?/:cityId?"
-						component={CompaniesList}
-						title="Подкатегория" />
+				<Route
+					path="/company/:companyCategoryId/:companySubcategoryId/:countryId?/:cityId?"
+					component={CompaniesList}
+					title="Подкатегория" />
 
-					<Route
-						path="/company/:companyCategoryId"
-						component={CompaniesOverview}
-						title="Категории" />
+				<Route
+					path="/company/:companyCategoryId"
+					component={CompaniesOverview}
+					title="Категории" />
 
-					<Redirect to='/company/health' />
-				</Switch>
-			</div>
+				<Redirect to="/company/health" />
+			</Switch>
 		);
 	}
 }
@@ -90,7 +88,7 @@ class CompanyRouterContainer extends React.Component {
 const CompanyRouter = connect(
 	state => {
 		return {
-			common : state.common
+			common: state.common
 		};
 	},
 	{

@@ -1,11 +1,13 @@
 import { unauthorizedError } from '../../common/actions';
 
-export const LOAD_COMPANY_SUCCESS = 'LOAD_COMPANY_SUCCESS';
-export const POST_FEEDBACK_SUCCESS = 'POST_FEEDBACK_SUCCESS';
-export const DELETE_FEEDBACK_SUCCESS = 'DELETE_FEEDBACK_SUCCESS';
-
+export const LOAD_COMPANY_START = 'companyPage/LOAD_COMPANY_START';
+export const LOAD_COMPANY_ERROR = 'companyPage/LOAD_COMPANY_ERROR';
+export const LOAD_COMPANY_SUCCESS = 'companyPage/LOAD_COMPANY_SUCCESS';
 export function loadCompany(url_id) {
 	return (dispatch) => {
+		dispatch({
+			type: LOAD_COMPANY_START
+		});
 
 		fetch('/api/v1/company/' + url_id).then(
 			response => {
@@ -19,14 +21,22 @@ export function loadCompany(url_id) {
 		).then(json => {
 			dispatch({
 				type: LOAD_COMPANY_SUCCESS,
-				payload: json,
-				isFetching: false
+				payload: {
+					data: json
+				}
+			});
+		}, error => {
+			dispatch({
+				type: LOAD_COMPANY_ERROR,
+				error: true,
+				payload: error
 			});
 		});
 
 	};
 }
 
+export const POST_FEEDBACK_SUCCESS = 'companyPage/POST_FEEDBACK_SUCCESS';
 export function postFeedback(feedback, history) {
 	return (dispatch) => {
 
@@ -60,6 +70,7 @@ export function postFeedback(feedback, history) {
 	};
 }
 
+export const DELETE_FEEDBACK_SUCCESS = 'companyPage/DELETE_FEEDBACK_SUCCESS';
 export function deleteFeedback(data, history) {
 	return (dispatch) => {
 
@@ -82,3 +93,8 @@ export function deleteFeedback(data, history) {
 
 	};
 }
+
+export const ON_COMPONENT_LEAVE = 'companyPage/ON_COMPONENT_LEAVE';
+export const onComponentLeave = () => ({
+	type: ON_COMPONENT_LEAVE
+});

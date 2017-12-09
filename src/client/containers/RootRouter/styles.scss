@@ -25,6 +25,7 @@ body, body > div {
 
 .mainGridWrapper,
 .breadcrumbsWrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex-grow: 1;

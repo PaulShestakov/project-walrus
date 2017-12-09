@@ -20,12 +20,6 @@ export default {
 	companiesList: {
 		flexGrow: '1',
 	},
-	progressCircle: {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
-	},
 
 	h1Style: {
 		textTransform: 'uppercase',
