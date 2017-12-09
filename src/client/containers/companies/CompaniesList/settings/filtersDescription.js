@@ -123,7 +123,10 @@ const filterDescriptions = {
 		urlParamConfig: {
 			type: URL_PARAM_TYPES.PATH,
 			sort: 3
-		}
+		},
+		dependentFiltersNames: [
+			'breeds'
+		]
 	},
 
 

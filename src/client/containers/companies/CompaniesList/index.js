@@ -152,8 +152,7 @@ class CompaniesListContainer extends React.Component {
 								getLogo: company => company.logo,
 								getTitle: company => company.name,
 								getDescription: company => company.description
-							}}
-						/>
+							}} />
 					</Card>
 					<div className={classes.companiesList}>
 						<Typography component="h1" className={classNames(classes.h1Style, 'mt-3')}>
