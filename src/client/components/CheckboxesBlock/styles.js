@@ -2,6 +2,14 @@ import globalStyles from '../../style';
 
 
 export default {
+	disabled: {
+		pointerEvents: 'none',
+
+		'& *': {
+			color: `${globalStyles.LIGHT_GREY} !important`,
+		}
+	},
+
 	checkboxesContainer: {
 		display: 'flex',
 		flexDirection: 'column',

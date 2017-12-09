@@ -182,7 +182,11 @@ function updateUrl(state, history) {
 		}
 	});
 
-	pathParams.push(...pathParamsFromFilter.sort().map(param => param.value));
+	pathParams.push(
+		...pathParamsFromFilter.sort((a, b) => a.sort - b.sort)
+			.map(param => param.value)
+			.filter(param => param !== '')
+	);
 
 	history.push({
 		pathname: '/company/' + pathParams.join('/'),

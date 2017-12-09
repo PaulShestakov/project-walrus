@@ -20,6 +20,12 @@ import { MenuItem } from 'material-ui/Menu';
 import Fade from 'material-ui/es/transitions/Fade';
 
 
+const NONE_SUGGESTION = {
+	value: '',
+	label: 'Не выбрано'
+};
+
+
 @withStyles(styles)
 export default class SearchSelect extends React.Component {
 
@@ -35,115 +41,121 @@ export default class SearchSelect extends React.Component {
 		};
 	}
 
-    handleOpenDropdown = () => {
-    	this.setState({
-    		isPopoverOpened: true
-    	});
-    };
+	handleOpenDropdown = () => {
+		this.setState({
+			isPopoverOpened: true
+		});
+	};
 
-    handleInputChange = (event) => {
-    	this.setState({
-    		inputValue: event.target.value
-    	});
-    	this.props.handleSearch(event.target.value);
-    };
+	handleInputChange = (event) => {
+		this.setState({
+			inputValue: event.target.value
+		});
+		this.props.handleSearch(event.target.value);
+	};
 
-    handleSuggestionClick = (suggestion) => {
-    	this.setState({
-    		isPopoverOpened: false
-    	});
-    	this.props.onChange(suggestion);
-    };
+	handleSuggestionClick = (suggestion) => {
+		this.setState({
+			isPopoverOpened: false
+		});
+		this.props.onChange(suggestion);
+	};
 
-    handleClickAway = () => {
-    	this.setState({
-    		isPopoverOpened: false
-    	});
-    };
+	handleClickAway = () => {
+		this.setState({
+			isPopoverOpened: false
+		});
+	};
 
-    renderDropdown = () => {
-    	const { classes, suggestions } = this.props;
-    	const { inputValue, isPopoverOpened  } = this.state;
+	renderDropdown = () => {
+		const { classes, suggestions } = this.props;
+		const { inputValue, isPopoverOpened  } = this.state;
 
-    	return (
-    		<Fade in={isPopoverOpened} transitionDuration="auto" unmountOnExit>
-    			<Paper className={classes.dropdown}>
-    				<Input
-    					className={classes.dropdownInput}
-    					value={inputValue}
-    					onChange={this.handleInputChange}
-    					startAdornment={
-    						<InputAdornment position="start" className={classes.inputAdornment}>
-    							<SearchIcon />
-    						</InputAdornment>
-    					}
-    				/>
-    				<div className={classes.dropdownSuggestions}>
-    					{
-    						suggestions.map(suggestion => (
-    							<MenuItem
-    								key={suggestion.value}
-    								disabled={false}
-    								selected={false}
-    								onClick={() => this.handleSuggestionClick(suggestion)}
-    								className={classes.suggestionItem}>
-    								{suggestion.label}
-    							</MenuItem>
-    						))
-    					}
-    				</div>
-    			</Paper>
-    		</Fade>
-    	);
-    };
+		return (
+			<Fade in={isPopoverOpened} transitionDuration="auto" unmountOnExit={true}>
+				<Paper className={classes.dropdown}>
+					<Input
+						className={classes.dropdownInput}
+						value={inputValue}
+						onChange={this.handleInputChange}
+						startAdornment={
+							<InputAdornment position="start" className={classes.inputAdornment}>
+								<SearchIcon />
+							</InputAdornment>
+						} />
 
-    renderButton = () => {
-    	const { classes, placeholder, value, disabled } = this.props;
+					<div className={classes.dropdownSuggestions}>
+						<MenuItem
+							value={NONE_SUGGESTION.value}
+							onClick={() => this.handleSuggestionClick(NONE_SUGGESTION)}
+							className={classes.suggestionItem}>
+							{NONE_SUGGESTION.label}
+						</MenuItem>
+						{
+							suggestions.map(suggestion => (
+								<MenuItem
+									key={suggestion.value}
+									disabled={false}
+									selected={false}
+									onClick={() => this.handleSuggestionClick(suggestion)}
+									className={classes.suggestionItem}>
+									{suggestion.label}
+								</MenuItem>
+							))
+						}
+					</div>
+				</Paper>
+			</Fade>
+		);
+	};
 
-    	let label, clickHandler;
-    	const buttonClasses = [classes.button];
+	renderButton = () => {
+		const { classes, placeholder, value, disabled } = this.props;
 
-    	if (disabled) {
-    		label = placeholder;
-    		buttonClasses.push(classes.buttonDisabled);
-    	} else {
-    		const selectedOption = this.props.suggestions.find(item => item.value === value);
-    		if (selectedOption) {
-    			label = selectedOption.label;
-    		} else {
-    			label = placeholder;
-    		}
-    		clickHandler = this.handleOpenDropdown;
-    	}
+		let label, clickHandler;
+		const buttonClasses = [classes.button];
+
+		if (disabled) {
+			label = placeholder;
+			buttonClasses.push(classes.buttonDisabled);
+		} else {
+			const selectedOption = this.props.suggestions.find(item => item.value === value);
+			if (selectedOption) {
+				label = selectedOption.label;
+			} else {
+				label = placeholder;
+			}
+			clickHandler = this.handleOpenDropdown;
+		}
 
 
-    	return (
-    		<Button
-    			disabled={disabled}
-    			accent='white'
-    			className={classNames(...buttonClasses)}
-    			onClick={clickHandler}>
-    			<span className={classes.buttonLabel}>
-    				{label}
-    			</span>
-    			<KeyboardArrowDown className={classes.buttonArrow}/>
-    		</Button>
-    	);
-    };
+		return (
+			<Button
+				disabled={disabled}
+				accent="white"
+				className={classNames(...buttonClasses)}
+				onClick={clickHandler}>
+				<span className={classes.buttonLabel}>
+					{label}
+				</span>
+				<KeyboardArrowDown className={classes.buttonArrow} />
+			</Button>
+		);
+	};
 
-    render() {
-    	const { classes, className } = this.props;
+	render() {
+		const { classes, className } = this.props;
 
-    	return (
-    		<ClickAwayListener onClickAway={this.handleClickAway}>
-    			<div className={classNames(classes.main, className)}>
-    				{
-    					[this.renderButton(), this.renderDropdown()]
-    				}
-    			</div>
-    		</ClickAwayListener>
-    	);
-    }
+		return (
+			<ClickAwayListener onClickAway={this.handleClickAway}>
+				<div className={classNames(classes.main, className)}>
+					{
+						[this.renderButton(), this.renderDropdown()]
+					}
+				</div>
+			</ClickAwayListener>
+		);
+	}
 
 }
 

@@ -322,8 +322,8 @@ const getSubways = createSelector(
 	}
 );
 const getSubwaysEnabled = createSelector(
-	[getSubways], (subways) => {
-		return subways.length > 0;
+	[getFilter], (filter) => {
+		return !!filter.sidebarFilters.cityId;
 	}
 );
 

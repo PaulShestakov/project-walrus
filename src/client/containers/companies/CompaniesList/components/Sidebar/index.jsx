@@ -86,13 +86,13 @@ export default class Sidebar extends React.Component {
     										this.props.updateUrlWithStateSource(this.props.history);
     										this.props.loadCompanies();
     									}}
-    									handleSearch={(query) => this.props.handleSuggestionSearch(name, query)}/>
+    									handleSearch={(query) => this.props.handleSuggestionSearch(name, query)} />
     							);
     						}
     						case 'checkbox': {
     							return (
-    								enabled &&
 									<CheckboxesBlock
+										isEnabled={enabled}
 										className="mb-3"
 										formGroupName={name}
 										title={title}
@@ -105,8 +105,7 @@ export default class Sidebar extends React.Component {
 											this.props.checkboxesBlockFilterChange(name, event.target.value, event.target.checked);
 											this.props.updateUrlWithStateSource(this.props.history);
 											this.props.loadCompanies();
-										}}
-									/>
+										}} />
     							);
     						}
 
@@ -123,11 +122,9 @@ export default class Sidebar extends React.Component {
 													this.props.updateUrlWithStateSource(this.props.history);
 													this.props.loadCompanies();
 
-												}}
-    										/>
+												}} />
     									}
-    									label={title}
-    								/>
+    									label={title} />
     							);
     						}
 
