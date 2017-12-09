@@ -4,28 +4,28 @@ import { createSelector } from 'reselect';
 
 import FontAwesome from 'react-fontawesome';
 
-import {loadCompany, postFeedback, deleteFeedback} from "./actions";
+import {loadCompany, postFeedback, deleteFeedback} from './actions';
 import { removeCompany } from '../CompaniesList/actionCreators/companiesList';
 
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, ConfirmDialog, InfoDialog } from "components";
+import { Dropdown, Button, Title, Label, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, ConfirmDialog, InfoDialog } from 'components';
 import styles from './styles';
 
 import { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card';
-import {Divider, Typography, Paper} from "material-ui";
+import {Divider, Typography, Paper} from 'material-ui';
 import { Pets, Call, Mail, Public, LocationOn, ModeEdit as ModeEditIcon, DeleteForever as Delete, Block } from 'material-ui-icons';
-import CompanyInfo from "./components/Info/index";
-import Feedbacks from "./components/Feedback/index";
+import CompanyInfo from './components/Info/index';
+import Feedbacks from './components/Feedback/index';
 import defaultCompanyImage from '../../../assets/img/company-default.png';
 
 import { Link } from 'react-router-dom';
 import {Route } from 'react-router';
-import NewFeedback from "./components/Feedback/NewFeedback/index";
-import Contacts from "./components/Contacts/index";
-import Authorized from "../../../containers/Authorized";
-import Util from "../../util/index";
+import NewFeedback from './components/Feedback/NewFeedback/index';
+import Contacts from './components/Contacts/index';
+import Authorized from '../../../containers/Authorized';
+import Util from '../../util/index';
 
 import { PAGES, USER_ROLES } from '../../util/constants';
 
@@ -54,7 +54,7 @@ class CompanyPageContainer extends React.Component {
 	}
 
 	componentWillReceiveProps(newProps) {
-		const lastWord = newProps.location.pathname.split("/").slice(-1)[0];
+		const lastWord = newProps.location.pathname.split('/').slice(-1)[0];
 		let index;
 		if (lastWord === 'feedbacks') {
 			index = 1;
@@ -87,11 +87,11 @@ class CompanyPageContainer extends React.Component {
 		let value = undefined;
 		if (action === 'delete') {
 			value = {
-                companyId: company.companyId,
+				companyId: company.companyId,
 				action: this.delete,
 				title: 'Удаление компании',
 				message: `Вы действительно хотите удалить ${company.name}?`,
-			}
+			};
 		}
 		this.setState({ isConfirmDialogOpened: true, company: value});
 	};
@@ -101,17 +101,17 @@ class CompanyPageContainer extends React.Component {
 		const { match, history } = this.props;
 		let url = match.url;
 		if (index === 1) {
-            url += '/feedbacks';
+			url += '/feedbacks';
 		} else if (index === 2) {
-            url += '/contacts';
+			url += '/contacts';
 		}
-        history.push(url);
+		history.push(url);
 	};
 
 	deleteFeedback = (feedbackId) => {
-        const { deleteFeedback, company, history, match } = this.props;
+		const { deleteFeedback, company, history, match } = this.props;
 		deleteFeedback({
-            redirectUrl: match.url + "/feedbacks",
+			redirectUrl: match.url + '/feedbacks',
 			companyId: company.companyId,
 			url_id: company.url_id,
 			feedbackId
@@ -120,9 +120,9 @@ class CompanyPageContainer extends React.Component {
 
 	onPostFeedback = (data) => {
 		const { postFeedback, history, match } = this.props;
-        data.redirectUrl = match.url + "/feedbacks";
-        data.url_id = match.params.url_id;
-        postFeedback(data, history);
+		data.redirectUrl = match.url + '/feedbacks';
+		data.url_id = match.params.url_id;
+		postFeedback(data, history);
 	};
 
 	handleLeaveFeedback = () => {
@@ -143,30 +143,30 @@ class CompanyPageContainer extends React.Component {
 		const { locationToDisplay } = this.state;
 		let companyName = company.name;
 		if (locationToDisplay && locationToDisplay.cityName) {
-			companyName += " г. " + locationToDisplay.cityName;
+			companyName += ' г. ' + locationToDisplay.cityName;
 		}
 		const socialLinks = [
-            {link: company.vk, image: 'vk'},
-            {link: company.facebook, image: 'facebook'},
-            {link: company.instagram,image: 'instagram'}
-        ].map(item => {
-            if (item.link) {
-                return (
-					<Grid item>
+			{link: company.vk, image: 'vk'},
+			{link: company.facebook, image: 'facebook'},
+			{link: company.instagram,image: 'instagram'}
+		].map(item => {
+			if (item.link) {
+				return (
+					<Grid item={true}>
 						<a href={item.link} target="_blank" rel="nofollow">
 							<FontAwesome name={item.image}
-										 className={classes.greyIcon} />
+								className={classes.greyIcon} />
 						</a>
 					</Grid>
-                )
-            }
-        });
+				);
+			}
+		});
 		return (
 			<div className={classes.mainCardWrapper}>
-				<Card raised className={classNames(classes.mainCard, "my-3")}>
+				<Card raised={true} className={classNames(classes.mainCard, 'my-3')}>
 					<CardContent>
-						<Grid container>
-							<Grid item xs={8}>
+						<Grid container={true}>
+							<Grid item={true} xs={8}>
 								<Typography type="headline" component="h2">
 									{companyName}
 								</Typography>
@@ -174,23 +174,23 @@ class CompanyPageContainer extends React.Component {
 									{company.subcategoryName}
 								</Typography>
 							</Grid>
-							<Grid item xs={4}>
+							<Grid item={true} xs={4}>
 								{
 									locationToDisplay &&
-									<Button accent="red" className='w-100' onClick={this.handleLeaveFeedback}>
+									<Button accent="red" className="w-100" onClick={this.handleLeaveFeedback}>
 										{t('Оставить отзыв')}
 									</Button>
 								}
 								<Authorized
 									allowedRoles={[1]}
 									className={classes.editButtonsBlock}>
-									<Button fab className={classes.editButton}>
+									<Button fab={true} className={classes.editButton}>
 										<Link to={`/company/edit/${company.url_id}`}>
 											<ModeEditIcon className={classes.editIcon} />
 										</Link>
 									</Button>
-									<Button fab className={classes.editButton}
-											onClick={this.handleAction.bind(null, company, 'delete')}>
+									<Button fab={true} className={classes.editButton}
+										onClick={this.handleAction.bind(null, company, 'delete')}>
 										<Delete className={classes.editIcon} />
 									</Button>
 								</Authorized>
@@ -198,21 +198,20 @@ class CompanyPageContainer extends React.Component {
 						</Grid>
 						<Divider className="mt-4 mb-2" />
 
-						<Grid container>
-							<Grid item xs={4}>
+						<Grid container={true}>
+							<Grid item={true} xs={4}>
 								<Paper className="mx-auto h-100">
 									<CardMedia
 										className={classes.cardImage}
-										image={Util.encodeUrl(company.logo, defaultCompanyImage)}
-									/>
+										image={Util.encodeUrl(company.logo, defaultCompanyImage)} />
 								</Paper>
 							</Grid>
-							<Grid item xs={8}>
-								<Grid container spacing={16}>
+							<Grid item={true} xs={8}>
+								<Grid container={true} spacing={16}>
 									{
 										company.email &&
-										<Grid item xs={12} className="d-flex align-items-center">
-											<Mail className="mr-2"/>
+										<Grid item={true} xs={12} className="d-flex align-items-center">
+											<Mail className="mr-2" />
 											<Typography component="p">
 												{company.email}
 											</Typography>
@@ -220,8 +219,8 @@ class CompanyPageContainer extends React.Component {
 									}
 									{
 										company.url &&
-										<Grid item xs={12} className="d-flex align-items-center">
-											<Public className="mr-2"/>
+										<Grid item={true} xs={12} className="d-flex align-items-center">
+											<Public className="mr-2" />
 											<Typography component="p">
 												<a href={company.url} target="_blank" rel="nofollow">
 													{company.url}
@@ -229,20 +228,20 @@ class CompanyPageContainer extends React.Component {
 											</Typography>
 										</Grid>
 									}
-									<Grid item xs={12}>
-										<Grid container spacing={16}>
-                                            {
-                                                locationToDisplay && locationToDisplay.address &&
-												<Grid item xs={12} className="d-flex align-items-center">
-													<LocationOn className="mr-2"/>
+									<Grid item={true} xs={12}>
+										<Grid container={true} spacing={16}>
+											{
+												locationToDisplay && locationToDisplay.address &&
+												<Grid item={true} xs={12} className="d-flex align-items-center">
+													<LocationOn className="mr-2" />
 													<Typography component="p">
-                                                        {locationToDisplay.address}
+														{locationToDisplay.address}
 													</Typography>
 												</Grid>
 											}
 											{
 												locationToDisplay &&
-												<Grid item xs={12}>
+												<Grid item={true} xs={12}>
 													<Button className="mr-2 mt-2 text-white" accent="white"
 														onClick={this.handleOpenPhonesDialog.bind(null, locationToDisplay.phones)}>
 														Телефоны
@@ -251,8 +250,8 @@ class CompanyPageContainer extends React.Component {
 											}
 											{
 												socialLinks.length > 0 &&
-												<Grid item xs={12}>
-													<Grid container>
+												<Grid item={true} xs={12}>
+													<Grid container={true}>
 														{socialLinks}
 													</Grid>
 												</Grid>
@@ -271,45 +270,41 @@ class CompanyPageContainer extends React.Component {
 							  classes={{
 								  root: classes.tabs
 							  }}>
-							<Tab label={t('Инфо')}/>
-							<Tab label={t('Отзывы')} disabled={!locationToDisplay}/>
-							<Tab label={t('Адреса и контакты')}/>
+							<Tab label={t('Инфо')} />
+							<Tab label={t('Отзывы')} disabled={!locationToDisplay} />
+							<Tab label={t('Адреса и контакты')} />
 						</Tabs>
 						<Divider />
 						<div className={classes.context}>
-							<Route exact path={`${this.props.match.url}`}
-								render={() => <CompanyInfo company={ company } />}
-								title="Информация о компании"
-							/>
+							<Route exact={true} path={`${this.props.match.url}`}
+								   render={() => <CompanyInfo company={company} />}
+								   title="Информация о компании" />
 
-							<Route exact path={`${this.props.match.url}/feedbacks`}
-								   render={() => <Feedbacks feedbacks={ locationToDisplay ? locationToDisplay.feedbacks : [] }
-															deleteFeedback={ this.deleteFeedback }/>}
-							/>
+							<Route exact={true} path={`${this.props.match.url}/feedbacks`}
+									render={() => (<Feedbacks feedbacks={locationToDisplay ? locationToDisplay.feedbacks : []}
+									deleteFeedback={this.deleteFeedback} />)} />
 
 
 							<Route path={`${this.props.match.url}/feedback`}
 								   render={() => (
 									   <Authorized
-									   		allowedRoles={[1,2,3,4]}
-											unauthorizedAction={() => window.location = PAGES.LOGIN_PAGE}>
+										   allowedRoles={[1,2,3,4]}
+										   unauthorizedAction={() => window.location = PAGES.LOGIN_PAGE}>
 										   <NewFeedback
-										   		user={ common.user }
-												companyInfo={{
-													companyId: company.companyId,
-													locationId: locationToDisplay ? locationToDisplay.locationId : null
-												}}
-												onPostFeedback={this.onPostFeedback}/>
-										</Authorized>
-								   )}
-							/>
+											   user={common.user}
+											   companyInfo={{
+												   companyId: company.companyId,
+												   locationId: locationToDisplay ? locationToDisplay.locationId : null
+											   }}
+											   onPostFeedback={this.onPostFeedback} />
+									   </Authorized>
+								   )} />
 
-							<Route exact path={`${this.props.match.url}/contacts`}
-								   render={() => <Contacts locations={ company.locations }
-														   match={match}
-														   history={this.props.history}
-														   markers={ markers }/>}
-							/>
+							<Route exact={true} path={`${this.props.match.url}/contacts`}
+								   render={() => (<Contacts locations={company.locations}
+									match={match}
+									history={this.props.history}
+									markers={markers} />)} />
 						</div>
 					</CardContent>
 				</Card>
@@ -318,7 +313,7 @@ class CompanyPageContainer extends React.Component {
 					message={this.state.company.message}
 					title={this.state.company.title}
 					okCallback={this.state.company.action}
-					closeCallback={() => this.setState({ isConfirmDialogOpened: false })}/>
+					closeCallback={() => this.setState({ isConfirmDialogOpened: false })} />
 				<InfoDialog
 					open={this.state.isPhonesDialogOpened}
 					title="Телефоны"
@@ -338,20 +333,20 @@ class CompanyPageContainer extends React.Component {
 }
 
 const getMarkers = createSelector(
-    [(state) => state.companyPage.company],
-    (company) => {
-    	const markers = [];
-        if (company.locations) {
-        	company.locations.forEach(location => {
-        		markers.push({
-                    position: location.position,
-                    isOpen: false,
-                    isMain: location.isMain,
+	[(state) => state.companyPage.company],
+	(company) => {
+		const markers = [];
+		if (company.locations) {
+			company.locations.forEach(location => {
+				markers.push({
+					position: location.position,
+					isOpen: false,
+					isMain: location.isMain,
 				});
 			});
 		}
-        return markers;
-    }
+		return markers;
+	}
 );
 
 const getCompany = createSelector(
@@ -367,7 +362,7 @@ const getCompany = createSelector(
 		return {
 			...company,
 			mainLocation,
-		}
+		};
 	}
 );
 
@@ -377,7 +372,7 @@ const CompanyPage = connect(
 			common: state.common,
 			company: getCompany(state),
 			markers: getMarkers(state),
-		}
+		};
 	},
 	{
 		loadCompany,
