@@ -20,6 +20,7 @@ import CheckboxesBlock from './CheckboxesBlock';
 import Suggestion from './Suggestion';
 import Finder from './Finder';
 import CircularProgress from './CircularProgress';
+import SearchSelect from './SearchSelect';
 
 import Header from './Header';
 import Footer from './Footer';
@@ -63,6 +64,7 @@ export {
 
 	Header,
 	Footer,
+	SearchSelect,
 
 	CircularProgress
 };

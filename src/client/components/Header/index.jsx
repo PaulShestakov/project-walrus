@@ -4,6 +4,8 @@ import FontAwesome from 'react-fontawesome';
 import { Link } from 'react-router-dom';
 import { Grid, Card } from 'components';
 import { withStyles } from 'material-ui/styles';
+import { connect } from 'react-redux';
+import { USER_ROLES } from '../../containers/util/constants';
 
 import logo from './img/Logo.svg';
 
@@ -11,7 +13,7 @@ import styles from './styles';
 
 @translate(['header'])
 @withStyles(styles)
-export default class Header extends React.Component {
+class Header extends React.Component {
 	render() {
 		const { t, classes } = this.props;
 
@@ -47,10 +49,19 @@ export default class Header extends React.Component {
 										{t('AFFICHE')}
 									</a>
 
-									<a href="/" className={classes.topLink}>
-										<FontAwesome name="sign-in" className='mr-1' />
-										{t('ENTER')}
-									</a>
+									{
+										!this.props.isAuthorized
+										?
+										<a href="https://wikipet.by/#login" className={classes.topLink}>
+											<FontAwesome name="sign-in" className='mr-1' />
+											{t('ENTER')}
+										</a>
+										:
+										<a href="https://wikipet.by/index.php?action=logout" className={classes.topLink}>
+											<FontAwesome name="paw" className='mr-1' />
+											Выйти
+										</a>
+									}
 								</Grid>
 							</Grid>
 
@@ -85,3 +96,12 @@ export default class Header extends React.Component {
 		);
 	}
 }
+
+export default connect(
+	state => {
+		isAuthorized: state.common.user.role !== USER_ROLES.ROLE_GUEST
+	},
+	{
+
+	}
+)(Header);

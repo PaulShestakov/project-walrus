@@ -48,7 +48,9 @@ export default class App {
 
 	private jwtMiddleware() {
         const opts = {
-            secretOrKey: Buffer.from('rixlgJCCQ4n94NUvKNJkZ6xWOTbTYKvCGDxWSZqrkl7yGGF3P5yh86GqF9UDGTr', 'base64'),
+			secretOrKeyProvider: (request, rawJwtToken, done) => {
+				User.getKeyForUser(rawJwtToken, done);
+			},
             jwtFromRequest: (req) => req.cookies.jwt,
             algorithms: ['HS512'],
             ignoreExpiration: true,

@@ -10,19 +10,31 @@ class User extends BaseCRUD {
         super(userSQL.TABLE_NAME);
     }
 
-    public getById(userId: string, callback) {
+    getById(userId: string, callback) {
         executeQuery(userSQL.GET_BY_ID, [userId], (error, result) => {
-            if (result) {
+            if (result && result.length > 0) {
                 return callback(error, result[0]);
             }
             callback(error, null);
         });
     }
 
-    public getByNameAndPassword(username: string, password: string, callback) {
+    getByNameAndPassword(username: string, password: string, callback) {
         password = md5(password);
         executeQuery(userSQL.GET_BY_NAME_AND_PASSWORD, [username, password], (error, result) => {
-            callback(error, result[0]);
+            if (result && result.length > 0) {
+                return callback(error, result[0]);
+            }
+            callback(error, null);
+        });
+    }
+
+    getKeyForUser(jwt: string, callback: Function) {
+        executeQuery(userSQL.GET_KEY_BY_JWT, [jwt], (error, result) => {
+            if (result && result.length > 0) {
+                return callback(error, result[0].ukey);
+            }
+            callback(error, null);
         });
     }
 }
