@@ -1,5 +1,5 @@
 import * as mysql from 'mysql';
-import async from 'async';
+import * as async from 'async';
 import * as config from 'config';
 import log from "../util/Logger";
 

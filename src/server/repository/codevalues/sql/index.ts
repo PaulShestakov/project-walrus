@@ -1,6 +1,6 @@
-const CODE_VALUE_TABLE = 'wikipet.code_values';
-const COMPANIES_TABLE = 'wikipet.companies';
-const EXTENSION = 'wikipet.companies_code_values_ext';
+const CODE_VALUE_TABLE = 'code_values';
+const COMPANIES_TABLE = 'companies';
+const EXTENSION = 'companies_code_values_ext';
 
 export default {
     TABLE_NAME: CODE_VALUE_TABLE,

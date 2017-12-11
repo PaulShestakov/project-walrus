@@ -300,7 +300,7 @@ export default class Companies extends BaseCRUD  {
 				.field('c.WEBSITE_URL', 'url')
 				.field( squel.select()
 							.field('COUNT(*)')
-							.from('wikipet.companies_location', 'cl1')
+							.from('companies_location', 'cl1')
 							.where('cl1.COMPANY_ID = c.COMPANY_ID')
 							.where('cl1.IS_MAIN = 0'), 'locationsCount'
 				)
@@ -340,29 +340,29 @@ export default class Companies extends BaseCRUD  {
 				.field('ctt.TRADE_TYPE_ID', 'tradeId')
 				.field('cv5.NAME', 'tradeName')
 
-			.from('wikipet.companies', 'c')
+			.from('companies', 'c')
 			.left_join(
 				squel.select()
 					.field('cf.COMPANY_ID')
 					.field('COUNT(cf.RATING)', 'numberOfFeedbacks')
 					.field('AVG(cf.RATING)', 'averageRating')
-				.from('wikipet.companies_feedback', 'cf')
+				.from('companies_feedback', 'cf')
 				.group('cf.COMPANY_ID'), 'cf1', 'cf1.COMPANY_ID = c.COMPANY_ID'
 			)
-			.left_join('wikipet.companies_location', 'l', 'l.COMPANY_ID = c.COMPANY_ID')
-			.left_join('wikipet.companies_working_time', 't', 't.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
-			.left_join('wikipet.companies_drug_type', 'cdt', 'cdt.COMPANY_ID = c.COMPANY_ID')
-			.left_join('wikipet.companies_service', 'cs', 'cs.COMPANY_ID = c.COMPANY_ID')
-			.left_join('wikipet.companies_owner_type', 'ot', 'ot.COMPANY_ID = c.COMPANY_ID')
-			.left_join('wikipet.companies_job_type', 'jt', 'jt.COMPANY_ID = c.COMPANY_ID')
-			.left_join('wikipet.companies_trade_type', 'ctt', 'ctt.COMPANY_ID = c.COMPANY_ID');
+			.left_join('companies_location', 'l', 'l.COMPANY_ID = c.COMPANY_ID')
+			.left_join('companies_working_time', 't', 't.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
+			.left_join('companies_drug_type', 'cdt', 'cdt.COMPANY_ID = c.COMPANY_ID')
+			.left_join('companies_service', 'cs', 'cs.COMPANY_ID = c.COMPANY_ID')
+			.left_join('companies_owner_type', 'ot', 'ot.COMPANY_ID = c.COMPANY_ID')
+			.left_join('companies_job_type', 'jt', 'jt.COMPANY_ID = c.COMPANY_ID')
+			.left_join('companies_trade_type', 'ctt', 'ctt.COMPANY_ID = c.COMPANY_ID');
 
 		if (isWorkingNow) {
 			sql = sql
 			.join(
 				squel.select()
 					.field('cwt.COMPANY_LOCATION_ID')					
-				.from('wikipet.companies_working_time', 'cwt')
+				.from('companies_working_time', 'cwt')
 					.where('cwt.DAY_OF_WEEK = ?', dayOfWeek)
 					.where('cwt.OPEN_TIME <= ?', timeNow)
 					.where('cwt.CLOSE_TIME >= ?', timeNow), 'validLocations', 'l.COMPANY_LOCATION_ID = validLocations.COMPANY_LOCATION_ID'
@@ -370,16 +370,16 @@ export default class Companies extends BaseCRUD  {
 		}
 			
 		sql = sql
-            .left_join('wikipet.code_values', 'cv0', "cv0.ID = c.COMPANY_SUBCATEGORY_ID")
-			.left_join('wikipet.code_values', 'cv1', "cv1.ID = l.CITY_ID")
-			.left_join('wikipet.code_values', 'cv2', "cv2.ID = t.DAY_OF_WEEK")
+            .left_join('code_values', 'cv0', "cv0.ID = c.COMPANY_SUBCATEGORY_ID")
+			.left_join('code_values', 'cv1', "cv1.ID = l.CITY_ID")
+			.left_join('code_values', 'cv2', "cv2.ID = t.DAY_OF_WEEK")
 
-			.left_join('wikipet.code_values', 'cv3', "cv3.ID = cdt.DRUG_ID")
-			.left_join('wikipet.code_values', 'cv4', "cv4.ID = cs.SERVICE_ID")
-			.left_join('wikipet.code_values', 'cv5', "cv5.ID = ctt.TRADE_TYPE_ID")
+			.left_join('code_values', 'cv3', "cv3.ID = cdt.DRUG_ID")
+			.left_join('code_values', 'cv4', "cv4.ID = cs.SERVICE_ID")
+			.left_join('code_values', 'cv5', "cv5.ID = ctt.TRADE_TYPE_ID")
 
-			.left_join('wikipet.companies_animals', 'ca', 'c.COMPANY_ID = ca.COMPANY_ID')
-			.left_join('wikipet.companies_phones', 'p', 'p.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
+			.left_join('companies_animals', 'ca', 'c.COMPANY_ID = ca.COMPANY_ID')
+			.left_join('companies_phones', 'p', 'p.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
 			.where(filter)
 			.order('c.NAME');
 			

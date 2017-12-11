@@ -1,16 +1,16 @@
-const COMPANIES_TABLE = 'wikipet.companies';
-const COMPANIES_PHONES = 'wikipet.companies_phones';
-const COMPANIES_LOCATION = 'wikipet.companies_location';
-const COMPANIES_ANIMALS = 'wikipet.companies_animals';
-const CODE_VALUES = 'wikipet.code_values';
-const WORKING_TIMES = 'wikipet.companies_working_time';
-const FEEDBACK = 'wikipet.companies_feedback';
-const USERS = 'wikipet.dle_users';
-const COMPANIES_DRUGS = 'wikipet.companies_drug_type';
-const COMPANIES_SERVICES = 'wikipet.companies_service';
-const COMPANIES_TRADE_TYPE = 'wikipet.companies_trade_type';
-const COMPANIES_JOB_TYPE = 'wikipet.companies_job_type';
-const COMPANIES_OWNER_TYPE = 'wikipet.companies_owner_type';
+const COMPANIES_TABLE = 'companies';
+const COMPANIES_PHONES = 'companies_phones';
+const COMPANIES_LOCATION = 'companies_location';
+const COMPANIES_ANIMALS = 'companies_animals';
+const CODE_VALUES = 'code_values';
+const WORKING_TIMES = 'companies_working_time';
+const FEEDBACK = 'companies_feedback';
+const USERS = 'dle_users';
+const COMPANIES_DRUGS = 'companies_drug_type';
+const COMPANIES_SERVICES = 'companies_service';
+const COMPANIES_TRADE_TYPE = 'companies_trade_type';
+const COMPANIES_JOB_TYPE = 'companies_job_type';
+const COMPANIES_OWNER_TYPE = 'companies_owner_type';
 
 export default {
 	GET: `
@@ -18,9 +18,9 @@ export default {
 			c.COMPANY_ID companyId,
 			c.URL_ID url_id,
 			c.COMPANY_CATEGORY_ID categoryId,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = c.COMPANY_CATEGORY_ID) as categoryName,
+			(SELECT NAME FROM code_values WHERE ID = c.COMPANY_CATEGORY_ID) as categoryName,
 			c.COMPANY_SUBCATEGORY_ID subcategoryId,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = c.COMPANY_SUBCATEGORY_ID) as subcategoryName,
+			(SELECT NAME FROM code_values WHERE ID = c.COMPANY_SUBCATEGORY_ID) as subcategoryName,
 			c.NAME name,
 			c.LOGO logo,
 			c.VK vk,
@@ -32,12 +32,12 @@ export default {
 
 			cl.COMPANY_LOCATION_ID locationId,
 			cl.COUNTRY_ID countryId,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = cl.COUNTRY_ID) as countryName,
+			(SELECT NAME FROM code_values WHERE ID = cl.COUNTRY_ID) as countryName,
 			cl.URL_ID locUrlId,
 			cl.SUBWAY_ID subwayId,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = cl.SUBWAY_ID) as subwayName,
+			(SELECT NAME FROM code_values WHERE ID = cl.SUBWAY_ID) as subwayName,
 			cl.CITY_ID cityId,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = cl.CITY_ID) as cityName,
+			(SELECT NAME FROM code_values WHERE ID = cl.CITY_ID) as cityName,
 			cl.ADDRESS address,
 			cl.IS_MAIN isMain,
 			cl.LAT lat,
@@ -62,30 +62,30 @@ export default {
 			ph.PHONE phone,
 			
 			ca.COMPANY_ANIMAL_ID as companyAnimalId,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = ca.ANIMAL_ID) as animalName,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = ca.BREED_ID) as breedName,
+			(SELECT NAME FROM code_values WHERE ID = ca.ANIMAL_ID) as animalName,
+			(SELECT NAME FROM code_values WHERE ID = ca.BREED_ID) as breedName,
 			ca.ANIMAL_ID as animalId,
 			ca.BREED_ID as breedId,
 
 			cdt.UUID as drugUuid,
 			cdt.DRUG_ID as drugId,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = cdt.DRUG_ID) as drugName,
+			(SELECT NAME FROM code_values WHERE ID = cdt.DRUG_ID) as drugName,
 
 			cs.UUID as serviceUuid,
 			cs.SERVICE_ID as serviceId,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = cs.SERVICE_ID) as serviceName,
+			(SELECT NAME FROM code_values WHERE ID = cs.SERVICE_ID) as serviceName,
 
 			ctt.UUID as tradeUuid,
 			ctt.TRADE_TYPE_ID as tradeId,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = ctt.TRADE_TYPE_ID) as tradeName,
+			(SELECT NAME FROM code_values WHERE ID = ctt.TRADE_TYPE_ID) as tradeName,
 
 			ot.UUID as ownerTypeUuid,
 			ot.OWNER_TYPE_ID as ownerTypeId,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = ot.OWNER_TYPE_ID) as ownerTypeName,
+			(SELECT NAME FROM code_values WHERE ID = ot.OWNER_TYPE_ID) as ownerTypeName,
 
 			jt.UUID as jobTypeUuid,
 			jt.JOB_TYPE_ID as jobTypeId,
-			(SELECT NAME FROM wikipet.code_values WHERE ID = jt.JOB_TYPE_ID) as jobTypeName
+			(SELECT NAME FROM code_values WHERE ID = jt.JOB_TYPE_ID) as jobTypeName
 
 		FROM ${COMPANIES_TABLE} c
 		

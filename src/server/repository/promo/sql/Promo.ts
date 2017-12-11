@@ -1,7 +1,7 @@
 import promoInfo from './PromoInfo';
 import promoImages from './PromoImages';
 
-const PROMO_TABLE = 'wikipet.promo';
+const PROMO_TABLE = 'promo';
 const PROMO_INFO_TABLE = promoInfo.TABLE_NAME;
 const PROMO_IMAGES_TABLE = promoImages.TABLE_NAME;
 

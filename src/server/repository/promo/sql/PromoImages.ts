@@ -1,4 +1,4 @@
-const TABLE_NAME = 'wikipet.promo_images';
+const TABLE_NAME = 'promo_images';
 
 export default {
     TABLE_NAME,

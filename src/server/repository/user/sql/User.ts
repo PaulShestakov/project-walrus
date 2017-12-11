@@ -1,5 +1,5 @@
-const USERS_TABLE = 'wikipet.dle_users';
-const USER_KEY = 'wikipet.user_key';
+const USERS_TABLE = 'dle_users';
+const USER_KEY = 'user_key';
 
 export default {
     TABLE_NAME: USERS_TABLE,

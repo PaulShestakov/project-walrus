@@ -1,4 +1,4 @@
-const TABLE_NAME = 'wikipet.promo_info';
+const TABLE_NAME = 'promo_info';
 
 export default {
     TABLE_NAME,

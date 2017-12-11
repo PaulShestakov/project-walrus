@@ -171,7 +171,7 @@ class Promo extends BaseCRUD {
 
 		const sql = squel
 			.select()
-			.from('wikipet.promo', 'p')
+			.from('promo', 'p')
 			.where(filter)
 			.order('p.CREATION_DATE', false)
 			.toParam();
