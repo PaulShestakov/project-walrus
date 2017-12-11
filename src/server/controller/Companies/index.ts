@@ -126,8 +126,7 @@ class Companies extends BaseController {
 			if (companyId) {
 				const feedback = req.body;
 				feedback.companyId = companyId;
-				// feedback.user = req.user.id;
-				feedback.user = 38;
+				feedback.user = req.user.id;
 				FeedbacksRepository.postFeedback(req.body, (error) => {
 					if (error) {
 						this.errorResponse(res, 500, error);

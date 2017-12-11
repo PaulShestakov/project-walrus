@@ -44,7 +44,7 @@ export default class CompanyItem extends React.Component {
 		return (
 			<Card className={classNames(classes.card, 'mt-3', 'p-4')}>
 				<Grid container justify="center" spacing={24}>
-					<Grid item xs={5} md={4}>
+					<Grid item xs={12} md={4} style={{ minHeight: '200px' }}>
 						<Link to={`${companyBaseUrl}/company/${encodeURI(company.url_id)}`}>
 							<Paper className="h-100 d-flex">
 								<CardMedia
@@ -53,7 +53,7 @@ export default class CompanyItem extends React.Component {
 							</Paper>
 						</Link>
 					</Grid>
-					<Grid item xs={7} md={8}>
+					<Grid item xs={12} md={8}>
 						<Grid container spacing={0} className={classNames(classes.cardContent, 'p-0')}>
 
 							<Grid item className={classNames(classes.headerWrapper, 'mb-2')}>
@@ -65,8 +65,7 @@ export default class CompanyItem extends React.Component {
 								</Link>
 
 								<Authorized
-									allowedRoles={[1]}
-									className={classes.editButtonsBlock}>
+									allowedRoles={[1]}>
 
 									<Link to={`/company/edit/${encodeURI(company.url_id)}`}>
 										<Button fab className={classes.editButton}>
@@ -86,7 +85,7 @@ export default class CompanyItem extends React.Component {
 
 							</Grid>
 
-							<Grid item className={classNames(classes.flexRow, 'mb-1')}>
+							<Grid item className={classNames(classes.flexRow, 'mb-2')}>
 								<Link to={`${companyBaseUrl + encodeURI(company.url_id)}/feedbacks`}>
 									<div className={classes.flexRow}>
 										<div className={classes.ratingControl}>
@@ -101,18 +100,20 @@ export default class CompanyItem extends React.Component {
 								</Link>
 							</Grid>
 
-							<Grid item className={classNames(classes.flexRow, 'mb-1')}>
+							<Grid item className={classNames(classes.flexRow, 'mb-2')}>
 								<FontAwesome name="map-marker" className={classes.icon} />
 								<Text>{ company.mainLocation.cityName + ': ' + company.mainLocation.address } </Text>
 							</Grid>
 							{
 								company.url &&
-								<Grid item className={classNames(classes.flexRow, 'mb-1')}>
+								<Grid item className={classNames(classes.flexRow, 'mb-2')}>
 									<FontAwesome name="globe" className={classes.icon} />
-									<Text>{company.url}</Text>
+									<a href={company.url} target="_blank" rel="nofollow">
+										{company.url}
+									</a>
 								</Grid>
 							}
-							<Grid item className={classNames(classes.buttonsBlock, 'mb-1')}>
+							<Grid item className={classNames(classes.buttonsBlock, 'mb-2')}>
 								<Grid container>
 									{
 										[
@@ -144,7 +145,7 @@ export default class CompanyItem extends React.Component {
 								</Grid>
 							</Grid>
 
-							<Grid item className={classNames(classes.flexRow)}>
+							<Grid item>
 								<Button className="mr-2 mt-2 text-white" accent="white"
 									onClick={this.props.handleOpenWorkingTimeDialog.bind(null, company.mainLocation.workingTimes)}>
 									{t('WORKING_TIME')}

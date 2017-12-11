@@ -25,14 +25,11 @@ class Header extends React.Component {
 							<Grid container className='my-2'>
 								<Grid item xs={2}>
 									<a href="https://wikipet.by/">
-										<img src={logo} alt="Logo" style={{width: '100%'}} />
+										<img src={logo} alt="Logo" className="w-100" />
 									</a>
 								</Grid>
-								<Grid item xs={10} className='d-flex align-items-center justify-content-between'>
-									<a href="/" className={classes.topLink}>
-										<FontAwesome name="search" className='mr-1' />
-										{t('SEARCH')}
-									</a>
+								<Grid item xs={2}></Grid>
+								<Grid item xs={8} className='d-flex align-items-center justify-content-between'>
 
 									<a href="https://wikipet.by/developing.html" className={classes.topLink}>
 										<FontAwesome name="bullhorn" className='mr-1' />
@@ -99,7 +96,9 @@ class Header extends React.Component {
 
 export default connect(
 	state => {
-		isAuthorized: state.common.user.role !== USER_ROLES.ROLE_GUEST
+		return {
+			isAuthorized: state.common.user.role !== USER_ROLES.ROLE_GUEST
+		};
 	},
 	{
 

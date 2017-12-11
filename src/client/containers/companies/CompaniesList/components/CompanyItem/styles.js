@@ -22,10 +22,6 @@ export default {
 		justifyContent: 'space-between',
 		alignItems: 'flex-start'
 	},
-	editButtonsBlock: {
-		flexShrink: 0,
-		display: 'flex',
-	},
 
 	editButton: {
 		flexShrink: 0,
