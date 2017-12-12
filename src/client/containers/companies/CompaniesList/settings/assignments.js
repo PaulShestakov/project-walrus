@@ -72,7 +72,8 @@ const filters = [
 		categories: [],
 		subcategories: [
 			'goods_kulinaria',
-			'services_behaviour_correction',
+
+			'services_sportivnaua_dressirovka',
 			'services_zoo_photography',
 
 			'pets_clubs_dogs',
@@ -132,7 +133,7 @@ const filters = [
 	{
 		categories: [],
 		subcategories: [
-			'other_poisk_raboty'
+			'other_work'
 		],
 		filters: [
 			FILTERS.COUNTRY,
@@ -162,9 +163,8 @@ const filters = [
 		subcategories: [
 			'health_stations',
 			'health_emergency_help',
-			'goods_acsessuary',
 			'services_fitness',
-			'services_usyplenie',
+			'services_evtanasia',
 			'services_photostudii',
 			'services_zoo_studio',
 			'services_pets_friendly_institutions'
@@ -209,6 +209,7 @@ const filters = [
 			FILTERS.CITY,
 			FILTERS.SUBWAYS,
 			FILTERS.ANIMALS,
+			FILTERS.WORKING_NOW
 		]
 	},
 
@@ -233,7 +234,7 @@ const filters = [
 			'pets_dog_nurseries',
 		],
 		filters: [
-			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS.OWNER_TYPES, FILTERS._INVISIBLE_APPLIED_ANIMAL_DOG
+			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS._INVISIBLE_APPLIED_ANIMAL_DOG
 		]
 	},
 	{
@@ -242,7 +243,7 @@ const filters = [
 			'pets_cat_nurseries',
 		],
 		filters: [
-			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS.OWNER_TYPES, FILTERS._INVISIBLE_APPLIED_ANIMAL_CAT
+			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS._INVISIBLE_APPLIED_ANIMAL_CAT
 		]
 	},
 	{
@@ -251,7 +252,7 @@ const filters = [
 			'pets_horse_nurseries',
 		],
 		filters: [
-			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS.OWNER_TYPES, FILTERS._INVISIBLE_APPLIED_ANIMAL_HORSE
+			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS._INVISIBLE_APPLIED_ANIMAL_HORSE
 		]
 	},
 	{
@@ -260,7 +261,7 @@ const filters = [
 			'pets_rodent_nurseries',
 		],
 		filters: [
-			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS.OWNER_TYPES, FILTERS._INVISIBLE_APPLIED_ANIMAL_RODENT
+			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS._INVISIBLE_APPLIED_ANIMAL_RODENT
 		]
 	},
 
