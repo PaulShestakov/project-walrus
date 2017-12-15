@@ -45,6 +45,7 @@ export default {
             ON cv2.ID = t0.COMPANY_SUBCATEGORY_ID
 
         WHERE cv1.GROUP = 'COMPANY_CATEGORY'
+            ORDER BY cv1.SORT, cv2.SORT
     `,
 
     GET_COUNTIRES: `
@@ -77,6 +78,7 @@ export default {
             ON cv3.GROUP LIKE CONCAT('SUBWAY.', cv1.ID, '%')
 
         WHERE cv0.GROUP = 'COUNTRY'
+            ORDER BY cv0.SORT, cv1.SORT, cv2.SORT, cv3.SORT
     `,
 
     GET_ANIMALS: `
@@ -93,5 +95,6 @@ export default {
         LEFT JOIN ${CODE_VALUE_TABLE} AS cv2
             ON cv2.GROUP LIKE CONCAT('BREED.', cv1.ID, '%')
         WHERE cv1.GROUP = 'ANIMAL'
+            ORDER BY cv1.SORT, cv2.SORT
     `,
 };

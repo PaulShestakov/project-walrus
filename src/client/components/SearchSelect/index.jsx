@@ -56,7 +56,8 @@ export default class SearchSelect extends React.Component {
 
 	handleSuggestionClick = (suggestion) => {
 		this.setState({
-			isPopoverOpened: false
+			isPopoverOpened: false,
+			inputValue: ''
 		});
 		this.props.onChange(suggestion);
 	};
@@ -75,6 +76,7 @@ export default class SearchSelect extends React.Component {
 			<Fade in={isPopoverOpened} transitionDuration="auto" unmountOnExit={true}>
 				<Paper className={classes.dropdown}>
 					<Input
+						autoFocus
 						className={classes.dropdownInput}
 						value={inputValue}
 						onChange={this.handleInputChange}
@@ -85,12 +87,15 @@ export default class SearchSelect extends React.Component {
 						} />
 
 					<div className={classes.dropdownSuggestions}>
-						<MenuItem
-							value={NONE_SUGGESTION.value}
-							onClick={() => this.handleSuggestionClick(NONE_SUGGESTION)}
-							className={classes.suggestionItem}>
-							{NONE_SUGGESTION.label}
-						</MenuItem>
+						{
+							!this.state.inputValue &&
+							<MenuItem
+								value={NONE_SUGGESTION.value}
+								onClick={() => this.handleSuggestionClick(NONE_SUGGESTION)}
+								className={classes.suggestionItem}>
+								{NONE_SUGGESTION.label}
+							</MenuItem>
+						}
 						{
 							suggestions.map(suggestion => (
 								<MenuItem

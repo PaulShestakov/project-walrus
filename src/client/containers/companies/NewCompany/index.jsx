@@ -24,6 +24,7 @@ import Extensions from './components/Extensions';
 
 import { findFilters } from '../CompaniesList/settings/assignments';
 import { findDescriptions } from '../CompaniesList/settings/filtersDescription';
+import { FILTER_TYPE } from '../CompaniesList/settings/constants';
 
 
 @translate(['common'])
@@ -283,7 +284,7 @@ const calculateExtensions = (category, subCategory) => {
             childs: []
         });
         const filters = findFilters(category, subCategory).map(filter => filter.name);
-        return findDescriptions(filters).filter(i => i.type === 1).map(mapper);
+        return findDescriptions(filters).filter(i => i.type === FILTER_TYPE.CHECKBOX_BLOCK).map(mapper);
     }
     return [];
 };

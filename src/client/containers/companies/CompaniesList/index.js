@@ -305,7 +305,7 @@ const getCities = createSelector(
 		if (foundCountry) {
 			return foundCountry.cities
 				.reduce((acc, item) => acc.concat(item, item.subCities), [])
-				.sort((a, b) => a.sort - b.sort);
+				.sort((a, b) => a.label.localeCompare(b.label));
 		}
 		return [];
 	}

@@ -138,6 +138,7 @@ const filters = [
 		filters: [
 			FILTERS.COUNTRY,
 			FILTERS.CITY,
+			FILTERS.SUBWAYS,
 			FILTERS.JOB_TYPES
 		]
 	},
@@ -164,7 +165,7 @@ const filters = [
 			'health_stations',
 			'health_emergency_help',
 			'services_fitness',
-			'services_evtanasia',
+			'services_ritualnie_uslugi',
 			'services_photostudii',
 			'services_zoo_studio',
 			'services_pets_friendly_institutions'
