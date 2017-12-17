@@ -1,5 +1,10 @@
 import globalStyles from './../../style';
 
+const TEXT_ELLIPSIS = {
+	whiteSpace: 'nowrap',
+	overflow: 'hidden',
+	textOverflow: 'ellipsis',
+};
 
 export default {
 	main: {
@@ -22,7 +27,8 @@ export default {
 		alignSelf: 'flex-end',
 		fontSize: '1.25rem',
 		fontFamily: globalStyles.BEBAS_FONT,
-		color: globalStyles.DARK_GREY
+		color: globalStyles.DARK_GREY,
+		...TEXT_ELLIPSIS,
 	},
 
 	buttonDisabled: {
@@ -71,8 +77,16 @@ export default {
 	},
 
 	suggestionItem: {
+		height: '24px',
 		flexShrink: '0',
-		padding: '.5rem 1rem'
+		padding: '.5rem 1rem',
+		...TEXT_ELLIPSIS,
+
+		cursor: 'pointer',
+
+		'&:hover': {
+			backgroundColor: 'rgba(0, 0, 0, 0.12)',
+		}
 	},
 };
 

@@ -13,11 +13,11 @@ export default {
 	},
 
 	companiesListBlock: {
-		position: 'relative',
 		display: 'flex',
 		flexDirection: 'column',
 	},
 	companiesList: {
+		position: 'relative',
 		flexGrow: '1',
 	},
 

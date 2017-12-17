@@ -98,14 +98,11 @@ export default class SearchSelect extends React.Component {
 						}
 						{
 							suggestions.map(suggestion => (
-								<MenuItem
-									key={suggestion.value}
-									disabled={false}
-									selected={false}
+								<div key={suggestion.value}
 									onClick={() => this.handleSuggestionClick(suggestion)}
 									className={classes.suggestionItem}>
 									{suggestion.label}
-								</MenuItem>
+								</div>
 							))
 						}
 					</div>

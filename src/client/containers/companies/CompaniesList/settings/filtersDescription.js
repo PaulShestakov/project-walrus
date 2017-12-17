@@ -14,18 +14,6 @@ const filterDescriptions = {
 			sort: 0
 		}
 	},
-	breeds: {
-		type: FILTER_TYPE.CHECKBOX_BLOCK,
-		defaultValue: [],
-		name: 'breeds',
-		title: 'Породы',
-		showMoreLabel: 'Все породы',
-		numberOfItemsToShowDefault: 4,
-		urlParamConfig: {
-			type: URL_PARAM_TYPES.QUERY,
-			sort: 0
-		}
-	},
 	drugsTypes: {
 		type: FILTER_TYPE.CHECKBOX_BLOCK,
 		defaultValue: [],
@@ -62,7 +50,6 @@ const filterDescriptions = {
 			sort: 0
 		}
 	},
-
 	ownerTypes: {
 		type: FILTER_TYPE.CHECKBOX_BLOCK,
 		defaultValue: [],
@@ -75,7 +62,6 @@ const filterDescriptions = {
 			sort: 0
 		}
 	},
-
 	jobTypes: {
 		type: FILTER_TYPE.CHECKBOX_BLOCK,
 		defaultValue: [],
@@ -89,6 +75,17 @@ const filterDescriptions = {
 		}
 	},
 
+
+	breeds: {
+		type: FILTER_TYPE.SUGGESTION,
+		defaultValue: '',
+		name: 'breeds',
+		title: 'Выбрать породу',
+		urlParamConfig: {
+			type: URL_PARAM_TYPES.QUERY,
+			sort: 0
+		}
+	},
 	countryId: {
 		type: FILTER_TYPE.SUGGESTION,
 		defaultValue: '',

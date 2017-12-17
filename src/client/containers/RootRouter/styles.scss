@@ -12,14 +12,23 @@ body, body > div {
 }
 
 .appWrapper {
+  z-index: 1;
   display: flex;
   min-height: 100vh;
   flex-direction: column;
 
+  header: {
+    z-index: 3;
+  }
+
   main {
+    z-index: 2;
     display: flex;
     flex: 1;
-    overflow: hidden;
+  }
+
+  footer: {
+    z-index: 1;
   }
 }
 

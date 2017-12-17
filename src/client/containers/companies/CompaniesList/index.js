@@ -154,17 +154,17 @@ class CompaniesListContainer extends React.Component {
 								getDescription: company => company.description
 							}} />
 					</Card>
-					<div className={classes.companiesList}>
+					<div>
 						<Typography component="h1" className={classNames(classes.h1Style, 'mt-3')}>
 							{seoInfo.title}
 						</Typography>
 						<Text className="my-3">
 							{seoInfo.description}
 						</Text>
-
+					</div>
+					<div className={classes.companiesList}>
 						{
 							main.isLoading ?
-
 								<CircularProgress /> :
 								(
 									<div>
@@ -180,7 +180,7 @@ class CompaniesListContainer extends React.Component {
 														blockAction={this.blockCompany}
 														handleOpenWorkingTimeDialog={this.handleOpenWorkingTimeDialog}
 														handleOpenPhonesDialog={this.handleOpenPhonesDialog}
-														handleAction={this.handleAction}/>
+														handleAction={this.handleAction} />
 												);
 											})
 										}
@@ -208,8 +208,7 @@ class CompaniesListContainer extends React.Component {
 
 						handleSuggestionSearch={this.props.handleSuggestionSearch}
 
-						switchFilterChange = {this.props.switchFilterChange}
-					/>
+						switchFilterChange={this.props.switchFilterChange} />
 				</Grid>
 
 				<InfoDialog
@@ -373,6 +372,7 @@ const getBreeds = createSelector(
 		return [];
 	}
 );
+const getQueriedBreeds = searchConnectedSelector('breeds', getBreeds);
 const getBreedsEnabled = createSelector(
 	[getFilter], (filter) => {
 		return !!filter.sidebarFilters.animals;
@@ -459,7 +459,7 @@ const CompaniesList = connect(
 					enabled: true
 				},
 				breeds: {
-					values: getBreeds(state),
+					values: getQueriedBreeds(state),
 					enabled: getBreedsEnabled(state)
 				},
 				drugsTypes: {

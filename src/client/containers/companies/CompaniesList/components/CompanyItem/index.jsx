@@ -16,7 +16,7 @@ import Util from '../../../../util/index';
 
 @translate(['companiesList'])
 @withStyles(styles)
-export default class CompanyItem extends React.Component {
+export default class CompanyItem extends React.PureComponent {
 
 	handleAction = (company, action) => {
 		let value = undefined;
