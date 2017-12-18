@@ -1,4 +1,4 @@
-const FILTERS = {
+export const FILTERS = {
 	COUNTRY: {
 		name: 'countryId',
 		sort: 0
@@ -283,19 +283,27 @@ const filters = [
 
 export function findFilters(category, subCategory) {
 	let result;
-	const filterBySubCat = filters.find(filter => filter.subcategories.includes(subCategory.toLowerCase()));
+	let filterBySubCat = {};
+	if (subCategory) {
+		filterBySubCat = filters.find(filter => filter.subcategories.includes(subCategory.toLowerCase()));
+	}
 
-	if (filterBySubCat) {
+	if (filterBySubCat && filterBySubCat.filters) {
 		result = filterBySubCat.filters;
 	} else {
-		const filterByCategory = filters.find(filter => filter.categories.includes(category.toLowerCase()));
+		let filterByCategory = {};
+		if (category) {
+			filterByCategory = filters.find(filter => filter.categories.includes(category.toLowerCase()));
+		}
 
-		if (filterByCategory) {
+		if (filterByCategory && filterByCategory.filters) {
 			result = filterByCategory.filters;
 		} else {
 			result = [];
 		}
 	}
+
+	console.log(result);
 
 	return result.sort((filterA, filterB) => filterA.sort - filterB.sort);
 }

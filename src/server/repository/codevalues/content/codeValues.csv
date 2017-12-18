@@ -1,9 +1,9 @@
-FISH,ANIMAL,Аквариумные,10
-RODENT,ANIMAL,Грызуны,20
-CAT,ANIMAL,Кошки,30
-HORSE,ANIMAL,Лошади,40
+DOG,ANIMAL,Собаки,10
+CAT,ANIMAL,Кошки,20
+HORSE,ANIMAL,Лошади,30
+RODENT,ANIMAL,Грызуны,40
 BIRD,ANIMAL,Птицы,50
-DOG,ANIMAL,Собаки,60
+FISH,ANIMAL,Аквариумные,60
 PANGALION,ANIMAL,Террариумные,70
 ABISSINSKAJA_KOSHKA,BREED.CAT,"Абиссинская кошка",10
 AVSTRALIJSKAJA_KOSHKA_MIST,BREED.CAT,"Австралийская кошка Мист",20
@@ -377,7 +377,6 @@ SUSSEKS_SPANIEL,BREED.DOG,Суссекс-спаниель,2560
 TAZY,BREED.DOG,Тазы,2570
 TAJSKIJ_RIDZHBEK,BREED.DOG,"Тайский риджбек",2580
 TAKSA,BREED.DOG,Такса,2590
-TECHICHI,BREED.DOG,Течичи,2600
 TIBETSKIJ_MASTIF,BREED.DOG,"Тибетский мастиф",2610
 TIBETSKIJ_SPANIEL,BREED.DOG,"Тибетский спаниель",2620
 TIBETSKIJ_TERER,BREED.DOG,"Тибетский терьер",2630
@@ -493,12 +492,12 @@ HEALTH_CLINICS_TERAPIA,CLINICS_SERVICES,Терапия,110
 HEALTH_CLINICS_HIRURGIA,CLINICS_SERVICES,Хирургия,120
 HEALTH_CLINICS_CHIPIROVANIE,CLINICS_SERVICES,Чипирование,130
 HEALTH_CLINICS_EVTANAZIA,CLINICS_SERVICES,Эвтаназия,140
-OTHER,COMPANY_CATEGORY,Другое,10
-HEALTH,COMPANY_CATEGORY,Здоровье,20
-OPT,COMPANY_CATEGORY,Опт,30
+OTHER,COMPANY_CATEGORY,Другое,60
+HEALTH,COMPANY_CATEGORY,Здоровье,10
+OPT,COMPANY_CATEGORY,Опт,50
 PETS,COMPANY_CATEGORY,Питомцы,40
-GOODS,COMPANY_CATEGORY,Товары,50
-SERVICES,COMPANY_CATEGORY,Услуги,60
+GOODS,COMPANY_CATEGORY,Товары,20
+SERVICES,COMPANY_CATEGORY,Услуги,30
 GOODS_ZOO_SHOPS,COMPANY_SUBCATEGORY.GOODS,"Зоомагазины и интернет магазины",10
 GOODS_KULINARIA,COMPANY_SUBCATEGORY.GOODS,Кулинария,20
 GOODS_CLOTHING_SHOPS,COMPANY_SUBCATEGORY.GOODS,"Магазины одежды",30
@@ -521,11 +520,11 @@ OPT_OBORUDOVANIE_AMUNICIA,COMPANY_SUBCATEGORY.OPT,"Оборудование и �
 OPT_SREDSTVA_PO_UHODY,COMPANY_SUBCATEGORY.OPT,"Средства по уходу ОПТ",60
 OTHER_INTERNATIONAL_ORGANISATIONS,COMPANY_SUBCATEGORY.OTHER,"Международные организации",10
 OTHER_TRAINING,COMPANY_SUBCATEGORY.OTHER,"Обучение профессии",20
-OTHER_WORK,COMPANY_SUBCATEGORY.OTHER,Работа,30
+OTHER_WORK,COMPANY_SUBCATEGORY.OTHER,Поиск/предложение работы,30
 OTHER_GLOSSARY,COMPANY_SUBCATEGORY.OTHER,"Словарь терминов",40
-PETS_CLUBS_OTHER,COMPANY_SUBCATEGORY.PETS,"Клубы другие",10
+PETS_CLUBS_OTHER,COMPANY_SUBCATEGORY.PETS,"Клубы другие животные",30
 PETS_CLUBS_CATS,COMPANY_SUBCATEGORY.PETS,"Клубы кошки",20
-PETS_CLUBS_DOGS,COMPANY_SUBCATEGORY.PETS,"Клубы собаки",30
+PETS_CLUBS_DOGS,COMPANY_SUBCATEGORY.PETS,"Клубы собаки",10
 PETS_RODENT_NURSERIES,COMPANY_SUBCATEGORY.PETS,"Питомники и заводчики грызунов",40
 PETS_CAT_NURSERIES,COMPANY_SUBCATEGORY.PETS,"Питомники и заводчики кошек",50
 PETS_HORSE_NURSERIES,COMPANY_SUBCATEGORY.PETS,"Питомники и заводчики лошадей",60
@@ -538,12 +537,12 @@ SERVICES_GROOMING,COMPANY_SUBCATEGORY.SERVICES,Груминг,40
 SERVICES_TRAINING,COMPANY_SUBCATEGORY.SERVICES,Дрессировка,50
 SERVICES_ZOO_HOTELS,COMPANY_SUBCATEGORY.SERVICES,Зоогостиницы,60
 SERVICES_ZOO_TAXI,COMPANY_SUBCATEGORY.SERVICES,Зоотакси,70
-SERVICES_RITUALNIE_USLUGI,COMPANY_SUBCATEGORY.SERVICES,"Ритуальные услуги",80
 SERVICES_SPORTIVNAUA_DRESSIROVKA,COMPANY_SUBCATEGORY.SERVICES,"Спортивная дрессировка",90
 SERVICES_FITNESS,COMPANY_SUBCATEGORY.SERVICES,"Фитнес для животных",100
 SERVICES_PHOTOSTUDII,COMPANY_SUBCATEGORY.SERVICES,Фотостудии,110
 SERVICES_ZOO_PHOTOGRAPHY,COMPANY_SUBCATEGORY.SERVICES,Фотосъёмка,120
 SERVICES_HANDLING,COMPANY_SUBCATEGORY.SERVICES,Хэндлинг,130
+SERVICES_RITUALNIE_USLUGI,COMPANY_SUBCATEGORY.SERVICES,"Ритуальные услуги",140
 BY,COUNTRY,Беларусь,10
 KZ,COUNTRY,Казахстан,20
 RU,COUNTRY,Россия,30

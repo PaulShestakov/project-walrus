@@ -22,7 +22,7 @@ import { extendCodeValues } from '../selectors';
 import {getFormValues} from 'redux-form';
 import Extensions from './components/Extensions';
 
-import { findFilters } from '../CompaniesList/settings/assignments';
+import { findFilters, FILTERS } from '../CompaniesList/settings/assignments';
 import { findDescriptions } from '../CompaniesList/settings/filtersDescription';
 import { FILTER_TYPE } from '../CompaniesList/settings/constants';
 
@@ -37,8 +37,6 @@ class NewCompanyContainer extends React.Component {
 		super(props);
 		this.state = {
 			subcategories: [],
-			renderAnimals: false,
-			renderBreeds: false,
 			selectedAddress: 0,
 			showConfirm: false,
             required: value => (value ? undefined : 'Поле обязательно для заполнения')
@@ -56,8 +54,6 @@ class NewCompanyContainer extends React.Component {
 		this.setState({
 			categories: nextProps.common.companiesCategories,
 			cities: nextProps.common.cities,
-            renderAnimals: this.isAnimalAvailable(nextProps),
-            renderBreeds: this.isBreedAvailable(nextProps)
 		});
     }
 
@@ -99,15 +95,6 @@ class NewCompanyContainer extends React.Component {
 			postCompany(values, history);
         }
 	};
-
-	isAnimalAvailable = (props) => {
-	    return ['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(props.selectedSubCategory)
-            || ['SERVICES'].includes(props.selectedCategory);
-    };
-
-	isBreedAvailable = (props) => {
-	    return ['ZOO_NURSERIES', 'ZOO_SHOPS'].includes(props.selectedSubCategory);
-    };
 
 	render() {
         const { t, common, handleSubmit, workingTimes, subcategories, formLocations, extensions,
@@ -175,8 +162,8 @@ class NewCompanyContainer extends React.Component {
                             <FieldArray
                                 name="animals"
                                 animals={common.animals}
-                                renderAnimals={this.state.renderAnimals}
-                                renderBreeds={this.state.renderBreeds}
+                                renderAnimals={findFilters(selectedCategory, selectedSubCategory).includes(FILTERS.ANIMALS)}
+                                renderBreeds={findFilters(selectedCategory, selectedSubCategory).includes(FILTERS.BREEDS)}
                                 component={Animals}/>
                         </Grid>
                         <Grid item xs={11}>

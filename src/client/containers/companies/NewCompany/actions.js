@@ -179,7 +179,7 @@ function externalizeCompany(company) {
 		delete externalizedCompany.extensions;
 	}
 
-	if (company.imageObjects.length > 0) {
+	if (company.imageObjects && company.imageObjects.length > 0) {
 		const file = company.imageObjects[0].file;
 
 		if (file) {

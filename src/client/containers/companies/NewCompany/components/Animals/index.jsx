@@ -62,7 +62,7 @@ export default class Animals extends React.Component {
         return (
             <div>
                 {
-                    renderAnimals &&
+                    (renderAnimals || renderBreeds) &&
                     <div>
                         <Grid item xs={8}>
                             <Grid item className="d-flex align-items-center">

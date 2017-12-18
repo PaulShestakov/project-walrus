@@ -6,7 +6,7 @@ import styles from './styles';
 import { Link } from 'react-router-dom';
 import { Paper, CardMedia, Typography } from 'material-ui';
 import Util from "../../../../util/index";
-import defaultImage from '../../../../../assets/img/404.jpg';
+import defaultImage from '../../../../../assets/img/404.png';
 
 @translate(['common'])
 @withStyles(styles)
@@ -18,15 +18,16 @@ export default class Type extends React.Component {
             <Grid container spacing={0}>
                 {
                     type.subcategories.map((subcategory, index) => {
+                        const renderImage = subcategory.value.toLowerCase() !== 'services_ritualnie_uslugi';
                         return (
-                            <Grid item xs={6} md={4} lg={3} className="p-3">
+                            <Grid item xs={12} sm={6} md={4} lg={3} className="p-3">
                                 <Link key={index}
                                       className={classes.exactTypeLink}
                                       to={`${match.url}/${subcategory.value.toLowerCase()}/BY`}>
                                     <Paper>
                                         <CardMedia
                                             className={classes.cardImage}
-                                            image={Util.encodeUrl(subcategory.imageUrl, defaultImage)}
+                                            image={renderImage ? Util.encodeUrl(subcategory.imageUrl, defaultImage) : ''}
                                         />
                                         <div className="d-flex justify-content-between p-2">
                                             <Typography component="h2">
