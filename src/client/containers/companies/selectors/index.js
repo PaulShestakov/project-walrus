@@ -19,7 +19,7 @@ export const extendCodeValues = () => {
 						});
 					});
 				});
-				item.allCities = allCities;
+				item.allCities = allCities.sort((a, b) => a.label.localeCompare(b.label));
 			});
 			return common;
 		}

@@ -303,7 +303,5 @@ export function findFilters(category, subCategory) {
 		}
 	}
 
-	console.log(result);
-
 	return result.sort((filterA, filterB) => filterA.sort - filterB.sort);
 }

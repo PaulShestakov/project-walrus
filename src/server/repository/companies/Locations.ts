@@ -45,6 +45,7 @@ export default class Locations {
 		return {
 			SUBWAY_ID: location.subway,
 			URL_ID: location.url_id,
+			COUNTRY_ID: location.country,
 			COMPANY_ID: companyId,
 			IS_MAIN: !!location.isMain,
 			CITY_ID: location.city,
