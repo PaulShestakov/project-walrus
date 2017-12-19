@@ -358,13 +358,13 @@ const getJobTypes = createSelector(
 const getAnimals = createSelector(
 	[getCommon], (common) => common.animals
 );
-const getQueriedAnimals = searchConnectedSelector('animals', getAnimals);
+const getQueriedAnimals = searchConnectedSelector('animalId', getAnimals);
 
 
 const getBreeds = createSelector(
 	[getAnimals, getFilter], (animals, filter) => {
-		const selectedAnimal = filter.sidebarFilters.animals;
-		const animal = animals.find(animal => animal.value === selectedAnimal);
+		const selectedAnimalId = filter.sidebarFilters.animalId;
+		const animal = animals.find(animal => animal.value === selectedAnimalId);
 
 		if (animal) {
 			return animal.breeds;
@@ -372,10 +372,10 @@ const getBreeds = createSelector(
 		return [];
 	}
 );
-const getQueriedBreeds = searchConnectedSelector('breeds', getBreeds);
+const getQueriedBreeds = searchConnectedSelector('breedId', getBreeds);
 const getBreedsEnabled = createSelector(
 	[getFilter], (filter) => {
-		return !!filter.sidebarFilters.animals;
+		return !!filter.sidebarFilters.animalId;
 	}
 );
 
@@ -454,11 +454,11 @@ const CompaniesList = connect(
 					values: getSubways(state),
 					enabled: getSubwaysEnabled(state)
 				},
-				animals: {
+				animalId: {
 					values: getQueriedAnimals(state),
 					enabled: true
 				},
-				breeds: {
+				breedId: {
 					values: getQueriedBreeds(state),
 					enabled: getBreedsEnabled(state)
 				},

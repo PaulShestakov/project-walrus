@@ -226,9 +226,8 @@ export default class Companies extends BaseCRUD  {
 	}
 
 	static getFiltered(params, callback): void {
-		const { companyCategoryId, companySubcategoryId, cityId, countryId, animalId } = params;
+		const { companyCategoryId, companySubcategoryId, cityId, countryId, animalId, breedId } = params;
 		const subwaysIds = Util.ensureArray(params.subways);
-		const breedsIds = Util.ensureArray(params.breeds);
 		const drugsTypesIds = Util.ensureArray(params.drugsTypes);
 		const clinicsServicesIds = Util.ensureArray(params.clinicsServices);
 		const torgTypesIds = Util.ensureArray(params.torgTypes);
@@ -256,8 +255,8 @@ export default class Companies extends BaseCRUD  {
 		if (animalId) {
 			filter = filter.and('ca.ANIMAL_ID = ?', animalId);
 		}
-		if (breedsIds.length > 0) {
-			filter = filter.and('ca.BREED_ID IN ?', breedsIds);
+		if (breedId) {
+			filter = filter.and('ca.BREED_ID = ?', breedId);
 		}
 		if (drugsTypesIds.length > 0) {
 			filter = filter.and('cdt.DRUG_ID IN ?', drugsTypesIds);
@@ -435,6 +434,7 @@ export default class Companies extends BaseCRUD  {
 					}
 				]
 			};
+
 			const companies = Util.reduceFlatData(rows, shape).companies;
 			callback(null, Util.ensureArray(companies));
 		});

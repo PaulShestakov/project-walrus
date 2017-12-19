@@ -19,8 +19,7 @@ export default {
 			'animalId': {
 				'type': 'string'
 			}
-		}
-		,
+		},
     
 		'required': ['companyCategoryId', 'companySubcategoryId']
 	}

@@ -76,10 +76,10 @@ const filterDescriptions = {
 	},
 
 
-	breeds: {
+	breedId: {
 		type: FILTER_TYPE.SUGGESTION,
 		defaultValue: '',
-		name: 'breeds',
+		name: 'breedId',
 		title: 'Выбрать породу',
 		urlParamConfig: {
 			type: URL_PARAM_TYPES.QUERY,
@@ -112,14 +112,14 @@ const filterDescriptions = {
 			'subways'
 		]
 	},
-	animals: {
+	animalId: {
 		type: FILTER_TYPE.SUGGESTION,
 		defaultValue: '',
-		name: 'animals',
+		name: 'animalId',
 		title: 'Выбрать животное',
 		urlParamConfig: {
-			type: URL_PARAM_TYPES.PATH,
-			sort: 3
+			type: URL_PARAM_TYPES.QUERY,
+			sort: 0
 		},
 		dependentFiltersNames: [
 			'breeds'
@@ -129,15 +129,15 @@ const filterDescriptions = {
 
 	_invisibleAppliedAnimalDog: {
 		defaultValue: 'DOG',
-		name: 'animals',
+		name: 'animalId',
 	},
 	_invisibleAppliedAnimalCat: {
 		defaultValue: 'CAT',
-		name: 'animals',
+		name: 'animalId',
 	},
 	_invisibleAppliedAnimalHorse: {
 		defaultValue: 'HORSE',
-		name: 'animals',
+		name: 'animalId',
 	},
 
 

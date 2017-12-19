@@ -23,12 +23,12 @@ export const FILTERS = {
 		name: 'clinicsServices',
 		sort: 0
 	},
-	ANIMALS: {
-		name: 'animals',
+	ANIMAL: {
+		name: 'animalId',
 		sort: 0
 	},
-	BREEDS: {
-		name: 'breeds',
+	BREED: {
+		name: 'breedId',
 		sort: 0
 	},
 	JOB_TYPES: {
@@ -209,7 +209,7 @@ const filters = [
 			FILTERS.COUNTRY,
 			FILTERS.CITY,
 			FILTERS.SUBWAYS,
-			FILTERS.ANIMALS,
+			FILTERS.ANIMAL,
 			FILTERS.WORKING_NOW
 		]
 	},
@@ -224,7 +224,7 @@ const filters = [
 			FILTERS.COUNTRY,
 			FILTERS.CITY,
 			FILTERS.SUBWAYS,
-			FILTERS.ANIMALS,
+			FILTERS.ANIMAL,
 			FILTERS.WORKING_NOW
 		]
 	},
@@ -235,7 +235,7 @@ const filters = [
 			'pets_dog_nurseries',
 		],
 		filters: [
-			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS._INVISIBLE_APPLIED_ANIMAL_DOG
+			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREED, FILTERS._INVISIBLE_APPLIED_ANIMAL_DOG
 		]
 	},
 	{
@@ -244,7 +244,7 @@ const filters = [
 			'pets_cat_nurseries',
 		],
 		filters: [
-			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS._INVISIBLE_APPLIED_ANIMAL_CAT
+			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREED, FILTERS._INVISIBLE_APPLIED_ANIMAL_CAT
 		]
 	},
 	{
@@ -253,7 +253,7 @@ const filters = [
 			'pets_horse_nurseries',
 		],
 		filters: [
-			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS._INVISIBLE_APPLIED_ANIMAL_HORSE
+			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREED, FILTERS._INVISIBLE_APPLIED_ANIMAL_HORSE
 		]
 	},
 	{
@@ -262,7 +262,7 @@ const filters = [
 			'pets_rodent_nurseries',
 		],
 		filters: [
-			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREEDS, FILTERS._INVISIBLE_APPLIED_ANIMAL_RODENT
+			FILTERS.COUNTRY, FILTERS.CITY, FILTERS.BREED, FILTERS._INVISIBLE_APPLIED_ANIMAL_RODENT
 		]
 	},
 
@@ -274,8 +274,8 @@ const filters = [
 		filters: [
 			FILTERS.COUNTRY,
 			FILTERS.CITY,
-			FILTERS.ANIMALS,
-			FILTERS.BREEDS,
+			FILTERS.ANIMAL,
+			FILTERS.BREED,
 		]
 	}
 ];

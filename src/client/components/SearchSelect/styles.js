@@ -26,6 +26,7 @@ export default {
 	buttonLabel: {
 		alignSelf: 'flex-end',
 		fontSize: '1.25rem',
+		lineHeight: '1.25rem',
 		fontFamily: globalStyles.BEBAS_FONT,
 		color: globalStyles.DARK_GREY,
 		...TEXT_ELLIPSIS,
