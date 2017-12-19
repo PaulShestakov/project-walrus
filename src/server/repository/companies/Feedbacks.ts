@@ -78,7 +78,9 @@ export default class Feedbacks extends BaseCRUD {
 			COMPANY_LOCATION_ID: feedback.locationId,
 			USER_ID: feedback.user,
 			FEEDBACK: feedback.feedback,
-			RATING: feedback.rating
+			RATING: feedback.rating,
+			CREATION_DATE: new Date(),
+			MODIFICATION_DATE: new Date(),
 		}
 	}
 }

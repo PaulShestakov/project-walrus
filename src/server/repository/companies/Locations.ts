@@ -36,8 +36,8 @@ export default class Locations {
 			location.location ? location.location.lat : 0,
 			location.location ? location.location.lng : 0,
 			!!location.isMain,
-			null,
-			null
+			new Date(),
+			new Date()
 		]
 	}
 

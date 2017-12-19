@@ -121,22 +121,21 @@ class Companies extends BaseController {
 	}
 
 	private postFeedback(req: Request, res: Response) {
-		if (this.checkRole(req, res, 1)) {
-			const companyId = req.params.companyId;
-			if (companyId) {
-				const feedback = req.body;
-				feedback.companyId = companyId;
-				feedback.user = req.user.id;
-				FeedbacksRepository.postFeedback(req.body, (error) => {
-					if (error) {
-						this.errorResponse(res, 500, error);
-					} else {
-						this.okResponse(res, { result: 'Success' });
-					}
-				});
-			} else {
-				this.errorResponse(res, 400, 'Company id was not provided');
-			}
+		// add validation
+		const companyId = req.params.companyId;
+		if (companyId) {
+			const feedback = req.body;
+			feedback.companyId = companyId;
+			feedback.user = req.user.user_id;
+			FeedbacksRepository.postFeedback(req.body, (error) => {
+				if (error) {
+					this.errorResponse(res, 500, error);
+				} else {
+					this.okResponse(res, { result: 'Success' });
+				}
+			});
+		} else {
+			this.errorResponse(res, 400, 'Company id was not provided');
 		}
 	}
 

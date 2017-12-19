@@ -21,7 +21,7 @@ class Codevalues extends BaseController {
     getByTypes(req: Request, res: Response) {
     	const types = Util.ensureArray(req.query.type);
 
-		const validGroups = ['DAY_OF_WEEK', 'JOB_TYPE', 'PETS_OWNER_TYPE',
+		const validGroups = ['DAY_OF_WEEK', 'JOB_TYPE', 'PETS_OWNER_TYPE', '',
 		 'DRUGS_TYPE', 'CLINICS_SERVICES', 'TORG_TYPE', 'SPECIALIST_DIRECTION'];
 
 		const validationPassed: boolean = types.every(type => {
