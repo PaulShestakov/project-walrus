@@ -115,7 +115,7 @@ export default class Sidebar extends React.Component {
 											className={classes.switchFormControlWrapper}
 											control={
 												<Switch
-													checked={value}
+													checked={value === "true"}
 													onChange={(event, checked) => {
 
 														this.props.switchFilterChange(name, checked);

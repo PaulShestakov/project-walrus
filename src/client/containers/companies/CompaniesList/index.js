@@ -75,7 +75,17 @@ class CompaniesListContainer extends React.Component {
 	}
 
 	componentDidMount() {
-		const { updateStateWithUrlSource, match, loadCompanies, location, common: { companiesCategories } } = this.props;
+		this.updateAndLoad(this.props);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.match !== this.props.match && nextProps.location !== this.props.location) {
+			this.updateAndLoad(nextProps);
+		}
+	}
+
+	updateAndLoad (props) {
+		const { updateStateWithUrlSource, match, loadCompanies, location, common: { companiesCategories } } = props;
 		const { companyCategoryId, companySubcategoryId, countryId, cityId } = match.params;
 
 		const searchParams = Util.searchParamsToObject(new URLSearchParams(location.search));
@@ -87,6 +97,10 @@ class CompaniesListContainer extends React.Component {
 
 		updateStateWithUrlSource(staticPathParams, dynamicPathParams, searchParams);
 		loadCompanies();
+	}
+
+	componentWillUnmount() {
+		this.props.componentLeave();
 	}
 
 	handleSuggestionsFetchRequested = (change) => {
@@ -128,10 +142,6 @@ class CompaniesListContainer extends React.Component {
 	blockCompany = () => {
 		// action to block company
 	};
-
-	componentWillUnmount() {
-		this.props.componentLeave();
-	}
 
 	render() {
 		const { t, companies, classes, match, main, clearFuzzySearchLoadedCompanies, seoInfo } = this.props;
