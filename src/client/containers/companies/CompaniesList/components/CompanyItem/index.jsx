@@ -108,7 +108,7 @@ export default class CompanyItem extends React.PureComponent {
 								company.url &&
 								<Grid item className={classNames(classes.flexRow, 'mb-2')}>
 									<FontAwesome name="globe" className={classes.icon} />
-									<a href={company.url} target="_blank" rel="nofollow">
+									<a href={company.url} target="_blank" rel="nofollow" className={classes.companyUrl}>
 										{company.url}
 									</a>
 								</Grid>

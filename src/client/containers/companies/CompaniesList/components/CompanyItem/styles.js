@@ -44,6 +44,9 @@ export default {
 		color: 'grey',
 		marginRight: '0.5rem'
 	},
+	companyUrl: {
+		color: globalStyles.ACCENT_RED
+	},
 	buttonsBlock: {
 		// flexGrow: '1',
 		display: 'block',
