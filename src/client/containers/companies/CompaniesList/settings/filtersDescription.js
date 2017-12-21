@@ -139,6 +139,10 @@ const filterDescriptions = {
 		defaultValue: 'HORSE',
 		name: 'animalId',
 	},
+	_invisibleAppliedAnimalRodent: {
+		defaultValue: 'RODENT',
+		name: 'animalId',
+	},
 
 
 
