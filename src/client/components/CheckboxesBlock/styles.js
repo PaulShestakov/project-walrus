@@ -15,9 +15,13 @@ export default {
 		flexDirection: 'column',
 	},
 
+	gridListTile: {
+		display: 'flex',
+		alignItems: 'center',
+	},
+
 	checkboxWrapper: {
 		display: 'flex',
-		//justifyContent: 'space-between',
 		margin: '0',
 
 		'& > span': {
@@ -25,12 +29,15 @@ export default {
 		},
 
 		'& p': {
+			display: '-webkit-box',
+			'-webkit-line-clamp': '3',
+			'-webkit-box-orient': 'vertical',
+			overflow: 'hidden',
+			textOverflow: 'ellipsis',
+
 			paddingTop: '.25rem',
 			fontSize: '1.25rem',
 			fontFamily: globalStyles.BEBAS_FONT,
-			overflow: 'hidden',
-			textOverflow: 'ellipsis',
-			whiteSpace: 'nowrap'
 		},
 	},
 

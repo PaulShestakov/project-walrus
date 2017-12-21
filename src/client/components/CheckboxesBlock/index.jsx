@@ -47,10 +47,10 @@ export default class CheckboxesBlock extends React.Component {
 
 		const otherItemsPopover = (
 			<Card className={classes.popoverCard}>
-				<GridList cellHeight={36} cols={Math.min(cols, 4)}>
+				<GridList cellHeight="auto" cols={Math.min(cols, 4)}>
 					{
 						items && items.map(item => (
-							<GridListTile key={item.value} cols={1}>
+							<GridListTile key={item.value} cols={1} classes={{tile: classes.gridListTile}}>
 								<FormControlLabel
 									label={item.label}
 									className={classNames(classes.checkboxWrapper, 'ml-2 mt-1')}
