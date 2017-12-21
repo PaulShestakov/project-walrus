@@ -1,5 +1,6 @@
 export default {
 	description: {
-		whiteSpace: 'pre-wrap'
+		whiteSpace: 'pre-wrap',
+		fontSize: '1rem',
 	}
 };

@@ -35,5 +35,9 @@ export default {
 		alignItems: 'center',
 		justifyContent: 'center',
 		flexShrink: 0
-	}
+	},
+
+	categoryLabel: {
+		fontSize: '1rem',
+	},
 };
