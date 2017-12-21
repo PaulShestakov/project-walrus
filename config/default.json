@@ -1,9 +1,0 @@
-{
-  "mysql" : {
-    "db" : "wikipetby",
-    "user" : "remoteAccessUser",
-    "password" : "84047623JRVPSIGL",
-    "host" : "91.149.189.26",
-    "port" : "3306"
-  }
-}
