@@ -28,21 +28,17 @@ export default {
 		flexDirection: 'column'
 	},
 
-
 	switchFormControlWrapper: {
-		display: 'flex',
-		justifyContent: 'space-between',
 		margin: '0',
 
 		'& > div': {
 			order: 2
 		},
-
-		'& p': {
-			order: 1,
-			marginLeft: '.5rem',
-			fontSize: '1.25rem',
-			fontFamily: globalStyles.BEBAS_FONT
-		}
 	},
+	switchFormControlLabel: {
+		order: 1,
+		marginLeft: '.5rem',
+		fontSize: '1.25rem',
+		fontFamily: globalStyles.BEBAS_FONT
+	}
 };

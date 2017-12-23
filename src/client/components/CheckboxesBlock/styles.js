@@ -23,22 +23,17 @@ export default {
 	checkboxWrapper: {
 		display: 'flex',
 		margin: '0',
+	},
+	checkboxLabel: {
+		display: '-webkit-box',
+		'-webkit-line-clamp': '3',
+		'-webkit-box-orient': 'vertical',
+		overflow: 'hidden',
+		textOverflow: 'ellipsis',
 
-		'& > span': {
-			marginRight: '0.5rem'
-		},
-
-		'& p': {
-			display: '-webkit-box',
-			'-webkit-line-clamp': '3',
-			'-webkit-box-orient': 'vertical',
-			overflow: 'hidden',
-			textOverflow: 'ellipsis',
-
-			paddingTop: '.25rem',
-			fontSize: '1.25rem',
-			fontFamily: globalStyles.BEBAS_FONT,
-		},
+		paddingTop: '.25rem',
+		fontSize: '1.25rem',
+		fontFamily: globalStyles.BEBAS_FONT,
 	},
 
 	popoverCard: {

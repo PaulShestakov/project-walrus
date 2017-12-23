@@ -55,7 +55,7 @@ export default class Sidebar extends React.Component {
 			<div className={classes.flexColumn}>
 				<Button
 					accent="red"
-					disableRipple
+					disableRipple={true}
 					className="w-100 mb-2"
 					onClick={this.handleAddNewCompany}>
 
@@ -72,64 +72,67 @@ export default class Sidebar extends React.Component {
 							const allOptions = this.props.filterValues[name].values || [];
 
 							switch (type) {
-								case FILTER_TYPE.SUGGESTION: {
-									return (
-										<SearchSelect
-											disabled={!enabled}
-											className="mb-3"
-											placeholder={title}
-											value={value}
-											suggestions={allOptions}
-											onChange={(option) => {
+							case FILTER_TYPE.SUGGESTION: {
+								return (
+									<SearchSelect
+										disabled={!enabled}
+										className="mb-3"
+										placeholder={title}
+										value={value}
+										suggestions={allOptions}
+										onChange={(option) => {
 
-												this.props.suggestionFilterChange(name, option.value);
-												this.props.updateUrlWithStateSource(this.props.history);
-												this.props.loadCompanies();
-											}}
-											handleSearch={(query) => this.props.handleSuggestionSearch(name, query)} />
-									);
-								}
-								case FILTER_TYPE.CHECKBOX_BLOCK: {
-									return (
-										<CheckboxesBlock
-											isEnabled={enabled}
-											className="mb-3"
-											formGroupName={name}
-											title={title}
-											showMoreLabel={showMoreLabel}
-											numberOfItemsToShowDefault={4}
-											items={allOptions}
-											selectedIds={value || []}
-											handleCheckboxPressed={event => {
+											this.props.suggestionFilterChange(name, option.value);
+											this.props.updateUrlWithStateSource(this.props.history);
+											this.props.loadCompanies();
+										}}
+										handleSearch={(query) => this.props.handleSuggestionSearch(name, query)} />
+								);
+							}
+							case FILTER_TYPE.CHECKBOX_BLOCK: {
+								return (
+									<CheckboxesBlock
+										isEnabled={enabled}
+										className="mb-3"
+										formGroupName={name}
+										title={title}
+										showMoreLabel={showMoreLabel}
+										numberOfItemsToShowDefault={4}
+										items={allOptions}
+										selectedIds={value || []}
+										handleCheckboxPressed={event => {
 
-												this.props.checkboxesBlockFilterChange(name, event.target.value, event.target.checked);
-												this.props.updateUrlWithStateSource(this.props.history);
-												this.props.loadCompanies();
-											}} />
-									);
-								}
+											this.props.checkboxesBlockFilterChange(name, event.target.value, event.target.checked);
+											this.props.updateUrlWithStateSource(this.props.history);
+											this.props.loadCompanies();
+										}} />
+								);
+							}
 
-								case FILTER_TYPE.SWITCH: {
-									return (
-										<FormControlLabel
-											className={classes.switchFormControlWrapper}
-											control={
-												<Switch
-													checked={value === "true"}
-													onChange={(event, checked) => {
+							case FILTER_TYPE.SWITCH: {
+								return (
+									<FormControlLabel
+										classes={{
+											label: classes.switchFormControlLabel
+										}}
+										className={classes.switchFormControlWrapper}
+										control={
+											<Switch
+												checked={value === 'true'}
+												onChange={(event, checked) => {
 
-														this.props.switchFilterChange(name, checked);
-														this.props.updateUrlWithStateSource(this.props.history);
-														this.props.loadCompanies();
+													this.props.switchFilterChange(name, checked);
+													this.props.updateUrlWithStateSource(this.props.history);
+													this.props.loadCompanies();
 
-													}} />
-											}
-											label={title} />
-									);
-								}
+												}} />
+										}
+										label={title} />
+								);
+							}
 
-								default:
-									return null;
+							default:
+								return null;
 								//throw new Error('Unsupported filter component');
 							}
 

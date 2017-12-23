@@ -1,6 +1,6 @@
 import React from 'react';
 import MaterialCheckbox from 'material-ui/Checkbox';
-
+import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 
 const styleSheet = {
@@ -21,10 +21,10 @@ const styleSheet = {
 @withStyles(styleSheet)
 class Checkbox extends React.Component {
 	render() {
-		const { classes, ...other } = this.props;
+		const { classes, className, ...other } = this.props;
 
 		return (
-			<MaterialCheckbox {...other} className={classes.main}/>
+			<MaterialCheckbox {...other} className={classNames(classes.main, className)} />
 		);
 	}
 }

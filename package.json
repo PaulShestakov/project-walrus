@@ -10,7 +10,7 @@
     "pm2-stop-dev-server": "pm2 stop ./pm2.dev.config.json",
     "pm2-start-prod-server": "pm2 startOrReload ./pm2.prod.config.json --update-env",
     "pm2-stop-prod-server": "pm2 stop ./pm2.prod.config.json",
-    "nodemon-start-server": "nodemon --inspect dist/server/index.js",
+    "server": "nodemon --inspect dist/server/index.js",
     "eslint": "./node_modules/.bin/eslint ./src/client/**"
   },
   "author": "",
@@ -33,7 +33,7 @@
     "isomorphic-fetch": "^2.2.1",
     "jss-nested": "^6.0.1",
     "lodash": "^4.17.4",
-    "material-ui": "^1.0.0-beta.21",
+    "material-ui": "^1.0.0-beta.25",
     "material-ui-icons": "^1.0.0-beta.10",
     "md5": "^2.2.1",
     "mkdirp": "^0.5.1",
@@ -70,7 +70,7 @@
     "winston": "^2.3.1"
   },
   "devDependencies": {
-    "@types/async": "^2.0.45",
+    "@types/async": "^2.0.46",
     "@types/body-parser": "^1.16.8",
     "@types/config": "0.0.32",
     "@types/debug": "0.0.29",
@@ -99,7 +99,7 @@
     "file-loader": "^0.11.2",
     "html-webpack-plugin": "^2.28.0",
     "node-sass": "^4.7.1",
-    "nodemon": "^1.11.0",
+    "nodemon": "^1.14.3",
     "pm2": "^2.6.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
