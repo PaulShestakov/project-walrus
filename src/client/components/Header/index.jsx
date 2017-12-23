@@ -20,9 +20,9 @@ class Header extends React.Component {
 		return (
 			<header className={this.props.className} itemType="http://schema.org/Header" itemScope>
 				<Card>
-					<Grid container justify="center" className="py-3" spacing={0}>
+					<Grid container justify="center" className="py-3 pb-4" spacing={0}>
 						<Grid item xs={11} md={9}>
-							<Grid container className='my-2'>
+							<Grid container className="mb-1">
 								<Grid item xs={2}>
 									<a href="https://wikipet.by/">
 										<img src={logo} alt="Logo" className="w-100" />
@@ -48,21 +48,21 @@ class Header extends React.Component {
 
 									{
 										!this.props.isAuthorized
-										?
-										<a href="https://wikipet.by/#login" className={classes.topLink}>
-											<FontAwesome name="sign-in" className='mr-1' />
-											{t('ENTER')}
-										</a>
-										:
-										<a href="https://wikipet.by/index.php?action=logout" className={classes.topLink}>
-											<FontAwesome name="paw" className='mr-1' />
-											Выйти
-										</a>
+											?
+											<a href="https://wikipet.by/#login" className={classes.topLink}>
+												<FontAwesome name="sign-in" className='mr-1' />
+												{t('ENTER')}
+											</a>
+											:
+											<a href="https://wikipet.by/index.php?action=logout" className={classes.topLink}>
+												<FontAwesome name="paw" className='mr-1' />
+												Выйти
+											</a>
 									}
 								</Grid>
 							</Grid>
 
-							<Grid container className='mb-2'>
+							<Grid container>
 								<Grid item xs={12} className='d-flex align-items-center justify-content-between'>
 									<a href='https://wikipet.by/enciklopediya/' className={classes.bottomLink}>
 										{t('GUIDE')}
