@@ -13,7 +13,7 @@ import styles from './styles';
 
 @translate(['header'])
 @withStyles(styles)
-class Header extends React.Component {
+class Header extends React.PureComponent {
 	render() {
 		const { t, classes } = this.props;
 

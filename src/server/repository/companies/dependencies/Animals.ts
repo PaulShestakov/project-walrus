@@ -1,5 +1,5 @@
 import * as uuid from 'uuid';
-import Queries from './sql/Queries';
+import Queries from '../sql/Queries';
 import Util from "../../util/Util";
 import * as async from 'async';
 

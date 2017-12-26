@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import { Paper, CardMedia, Typography } from 'material-ui';
 import Util from '../../../../util/index';
 import defaultImage from '../../../../../assets/img/404.png';
+import Chip from 'material-ui/Chip';
+import classNames from 'classnames';
 
 @translate(['common'])
 @withStyles(styles)
@@ -20,21 +22,18 @@ export default class Type extends React.Component {
 					type.subcategories.map((subcategory, index) => {
 						const renderImage = subcategory.value.toLowerCase() !== 'services_ritualnie_uslugi';
 						return (
-							<Grid item={true} sm={12} md={6} lg={4} className="p-3">
-								<Link key={index}
-									className={classes.exactTypeLink}
+							<Grid key={subcategory.value} item={true} xs={12} sm={6} md={4} lg={3} className="p-3">
+								<Link className={classes.exactTypeLink}
 									to={`${match.url}/${subcategory.value.toLowerCase()}/BY`}>
 									<Paper>
 										<CardMedia
 											className={classes.cardImage}
 											image={renderImage ? Util.encodeUrl(subcategory.imageUrl, defaultImage) : ''} />
-										<div className="d-flex justify-content-between align-items-center p-2">
+										<div className={classNames("p-2", classes.cardContent)}>
 											<Typography component="h2" className={classes.categoryLabel}>
 												{subcategory.label}
 											</Typography>
-											<div className={classes.numberWrapper}>
-												{subcategory.count}
-											</div>
+											<Chip label={subcategory.count} />
 										</div>
 									</Paper>
 								</Link>

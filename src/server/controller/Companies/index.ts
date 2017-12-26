@@ -3,7 +3,7 @@ import { Router, Request, Response } from 'express';
 import BaseController from '../BaseController';
 import upload from '../../util/Upload';
 import CompaniesRepository from '../../repository/companies/Companies';
-import FeedbacksRepository from '../../repository/companies/Feedbacks';
+import FeedbacksRepository from '../../repository/companies/dependencies/Feedbacks';
 import * as passport from 'passport';
 import validators from './validators.js';
 

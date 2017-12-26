@@ -1,4 +1,4 @@
-import Queries from './sql/Queries';
+import Queries from '../sql/Queries';
 import * as uuid from 'uuid';
 import * as async from 'async';
 

@@ -3,8 +3,6 @@ import filtersDescription from '../settings/filtersDescription';
 import { findFilters } from '../settings/assignments';
 
 import {
-	COMPANIES_LIST_SET_IS_WORKING_NOW,
-
 	COMPANIES_LIST_UPDATE_URL_WITH_STATE_SOURCE,
 	COMPANIES_LIST_UPDATE_FILTER_STATE_WITH_URL_SOURCE,
 
@@ -17,7 +15,6 @@ import {
 	SUGGESTION_SEARCH,
 
 	SWITCH_FILTER_CHANGE
-
 } from '../actionCreators/filter';
 import {URL_PARAM_TYPES} from '../settings/constants';
 
@@ -153,8 +150,12 @@ export const companiesFilterReducer = (state = defaultState, action) => {
 
 export function stateDataToUrlQuery(state) {
 	const filterData = {
+		offset: state.offset,
+		limit: state.limit,
+
 		companyCategoryId: state.companyCategoryId,
 		companySubcategoryId: state.companySubcategoryId,
+
 		...state.sidebarFilters
 	};
 

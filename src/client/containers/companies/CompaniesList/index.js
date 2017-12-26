@@ -4,7 +4,7 @@ import {createSelector} from 'reselect';
 
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
-import {Title, Grid, Card, Label, Text, TextField, Button, ConfirmDialog, InfoDialog, Finder } from 'components';
+import {Title, Grid, Card, Label, Text, TextField, Button, ConfirmDialog, InfoDialog, Finder, Pagination } from 'components';
 import CompanyItem from './components/CompanyItem/index';
 import Sidebar from './components/Sidebar/index';
 import classNames from 'classnames';
@@ -24,6 +24,7 @@ import {
 	suggestionInputValueChange,
 	removeCompany,
 	componentLeave,
+	updatePaginationData
 } from './actionCreators/companiesList';
 
 import {
@@ -84,7 +85,7 @@ class CompaniesListContainer extends React.Component {
 		}
 	}
 
-	updateAndLoad (props) {
+	updateAndLoad(props) {
 		const { updateStateWithUrlSource, match, loadCompanies, location, common: { companiesCategories } } = props;
 		const { companyCategoryId, companySubcategoryId, countryId, cityId } = match.params;
 
@@ -143,8 +144,14 @@ class CompaniesListContainer extends React.Component {
 		// action to block company
 	};
 
+	handlePageChange = (nextPage) => {
+		this.props.updatePaginationData(nextPage);
+		this.props.loadCompanies();
+	};
+
 	render() {
 		const { t, companies, classes, match, main, clearFuzzySearchLoadedCompanies, seoInfo } = this.props;
+		const { metadata = {} } = main;
 
 		return (
 			<Grid container className="mt-2 mb-4">
@@ -194,6 +201,12 @@ class CompaniesListContainer extends React.Component {
 												);
 											})
 										}
+
+										<Pagination
+											className="mt-4"
+											pagesCount={metadata.pagesCount}
+											currentPage={metadata.page}
+											onChange={this.handlePageChange} />
 									</div>
 								)
 						}
@@ -530,7 +543,9 @@ const CompaniesList = connect(
 
 		handleSuggestionSearch,
 
-		switchFilterChange
+		switchFilterChange,
+
+		updatePaginationData
 	}
 )(CompaniesListContainer);
 

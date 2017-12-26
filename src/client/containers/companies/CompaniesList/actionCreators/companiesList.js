@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import {stateDataToUrlQuery} from '../reducers/filterReducer';
-import Utils from '../../../util/index';
+import Util from '../../../util/index';
 
 export const LOAD_COMPANIES_START = 'companiesList/LOAD_COMPANIES_START';
 export const LOAD_COMPANIES_SUCCESS = 'companiesList/LOAD_COMPANIES_SUCCESS';
@@ -26,8 +26,19 @@ export const loadCompanies = () => {
 		dispatch(loadCompaniesStart());
 
 		const filterState = getState().companiesList.filter;
+		const metadata = getState().companiesList.main.metadata;
 
-		return fetch(baseUrl + '/company/filtered' + stateDataToUrlQuery(filterState)).then(
+		const filterData = {
+			limit: metadata.limit,
+			offset: metadata.offset,
+
+			companyCategoryId: filterState.companyCategoryId,
+			companySubcategoryId: filterState.companySubcategoryId,
+
+			...filterState.sidebarFilters
+		};
+
+		return fetch(baseUrl + '/company/filtered' + Util.objectToUrlQuery(filterData)).then(
 			response => {
 				if (response.ok) {
 					return response.json();
@@ -79,7 +90,6 @@ export const removeCompany = (companyId, history) => {
 
 
 export const FUZZY_SEARCH_LOAD_COMPANIES_SUCCESS = 'companiesList/FUZZY_SEARCH_LOAD_COMPANIES_SUCCESS';
-
 const fuzzySearchLoadCompaniesSuccess = (data) => ({
 	type: FUZZY_SEARCH_LOAD_COMPANIES_SUCCESS,
 	payload: data
@@ -87,7 +97,7 @@ const fuzzySearchLoadCompaniesSuccess = (data) => ({
 
 export const fuzzySearchLoadCompanies = (searchData) => {
 	return (dispatch) => {
-		return fetch(`${baseUrl}/company/fuzzySearch${Utils.objectToUrlQuery(searchData)}`).then(
+		return fetch(`${baseUrl}/company/fuzzySearch${Util.objectToUrlQuery(searchData)}`).then(
 			response => {
 				if (response.ok) {
 					return response.json();
@@ -97,6 +107,25 @@ export const fuzzySearchLoadCompanies = (searchData) => {
 			}
 		).then(json => {
 			dispatch(fuzzySearchLoadCompaniesSuccess(json));
+		});
+	};
+};
+
+
+export const UPDATE_PAGINATION_DATA = 'companiesList/UPDATE_PAGINATION_DATA';
+export const updatePaginationData = (nextPage) => {
+	return (dispatch, getState) => {
+		const previousMetadata = getState().companiesList.main.metadata;
+
+		const nextMetadata = {
+			...previousMetadata,
+			offset: previousMetadata.limit * (nextPage - 1),
+			page: nextPage
+		};
+
+		dispatch({
+			type: UPDATE_PAGINATION_DATA,
+			payload: nextMetadata
 		});
 	};
 };

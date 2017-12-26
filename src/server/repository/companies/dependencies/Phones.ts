@@ -1,5 +1,5 @@
 import * as uuid from 'uuid';
-import Queries from './sql/Queries';
+import Queries from '../sql/Queries';
 import async from 'async';
 
 export default class Phones {

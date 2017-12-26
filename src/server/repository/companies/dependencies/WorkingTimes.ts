@@ -1,5 +1,5 @@
-import Util from "../../util/Util";
-import Queries from './sql/Queries';
+import Util from "../../../util/Util";
+import Queries from '../sql/Queries';
 import async from 'async';
 
 export default class WorkingTimes {

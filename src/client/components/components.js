@@ -32,6 +32,8 @@ import Card from  			'material-ui/Card';
 import Popover from 		'material-ui/Popover';
 import Map from	'./Map';
 
+import Pagination from './Pagination';
+
 export {
 	Button,
 	ButtonMore,
@@ -66,5 +68,7 @@ export {
 	Footer,
 	SearchSelect,
 
-	CircularProgress
+	CircularProgress,
+
+	Pagination
 };

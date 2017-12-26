@@ -1,5 +1,5 @@
 import * as uuid from 'uuid';
-import Queries from "./sql/Queries";
+import Queries from "../sql/Queries";
 import * as _ from 'lodash';
 import Phones from "./Phones";
 import WorkingTimes from "./WorkingTimes";
@@ -161,7 +161,7 @@ export default class Locations {
 						tasks.push(...updateDependenciesTasks);
 					}
 
-					async.series(tasks.map(task => task.bind(null, connection)), done);
+                    async.series(tasks.map(task => task.bind(null, connection)), done);
 				}
 			});
 		}

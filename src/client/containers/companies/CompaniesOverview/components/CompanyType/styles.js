@@ -25,16 +25,10 @@ export default {
 		color: globalStyle.DARK_GREY,
 	},
 
-	numberWrapper: {
-		borderRadius: '50%',
-		backgroundColor: 'grey',
-		color: 'white',
-		width: '2rem',
-		height: '2rem',
+	cardContent: {
 		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-		flexShrink: 0
+		justifyContent: 'space-between',
+		alignItems: 'center'
 	},
 
 	categoryLabel: {

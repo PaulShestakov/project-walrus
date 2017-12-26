@@ -1,0 +1,9 @@
+{
+  "mysql" : {
+    "db" : "wikipetby",
+    "user" : "root",
+    "password" : "2623314q",
+    "host" : "localhost",
+    "port" : "3306"
+  }
+}

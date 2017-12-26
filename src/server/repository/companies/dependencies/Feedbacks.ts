@@ -1,6 +1,6 @@
-import BaseCRUD from "../BaseCRUD";
-import { executeQuery } from "../../database/DBHelper";
-import Queries from "./sql/Queries";
+import BaseCRUD from "../../BaseCRUD";
+import { executeQuery } from "../../../database/DBHelper";
+import Queries from "../sql/Queries";
 import * as uuid from 'uuid';
 
 export default class Feedbacks extends BaseCRUD {

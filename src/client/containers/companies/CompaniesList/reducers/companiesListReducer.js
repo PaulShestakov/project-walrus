@@ -6,15 +6,18 @@ import {
 	CLEAR_FUZZY_SEARCH_LOADED_COMPANIES,
 	COMPANIES_SUGGESTION_INPUT_VALUE_CHANGE,
 	COMPONENT_LEAVE,
-
+	UPDATE_PAGINATION_DATA
 } from '../actionCreators/companiesList';
+import { INITIAL_METADATA } from '../constants.js';
 
 const defaultState = {
 	companies: [],
 	suggestionInputValue: '',
 	fuzzySearchCompanies: [],
 
-	isLoading: false
+	isLoading: false,
+
+	metadata: INITIAL_METADATA
 };
 
 const companiesListReducer = (state = defaultState, action) => {
@@ -36,7 +39,8 @@ const companiesListReducer = (state = defaultState, action) => {
 	case LOAD_COMPANIES_SUCCESS: {
 		return {
 			...state,
-			companies: action.payload,
+			companies: action.payload.companies,
+			metadata: action.payload.metadata,
 			isLoading: false
 		};
 	}
@@ -65,6 +69,16 @@ const companiesListReducer = (state = defaultState, action) => {
 	case COMPONENT_LEAVE: {
 		return {
 			...defaultState
+		};
+	}
+
+	case UPDATE_PAGINATION_DATA: {
+		return {
+			...state,
+			metadata: {
+				...state.metadata,
+				...action.payload
+			}
 		};
 	}
 
