@@ -274,7 +274,7 @@ const getFlatCompanies = createSelector(
 		return companies.map(company => {
 			let mainLocation = company.locations.find(location => (location.isMain === 1));
 			if (!mainLocation) {
-				if (company.locations.length > 0) {
+				if (company.locations && company.locations.length > 0) {
 					mainLocation = company.locations[0];
 				} else {
 					mainLocation = {

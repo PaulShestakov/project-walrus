@@ -20,8 +20,7 @@ export default class Type extends React.Component {
 					type.subcategories.map((subcategory, index) => {
 						const renderImage = subcategory.value.toLowerCase() !== 'services_ritualnie_uslugi';
 						return (
-							<Grid item={true} xs={12} sm={6}
-								md={4} lg={3} className="p-3">
+							<Grid item={true} sm={12} md={6} lg={4} className="p-3">
 								<Link key={index}
 									className={classes.exactTypeLink}
 									to={`${match.url}/${subcategory.value.toLowerCase()}/BY`}>
@@ -29,7 +28,7 @@ export default class Type extends React.Component {
 										<CardMedia
 											className={classes.cardImage}
 											image={renderImage ? Util.encodeUrl(subcategory.imageUrl, defaultImage) : ''} />
-										<div className="d-flex justify-content-between p-2">
+										<div className="d-flex justify-content-between align-items-center p-2">
 											<Typography component="h2" className={classes.categoryLabel}>
 												{subcategory.label}
 											</Typography>

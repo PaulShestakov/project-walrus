@@ -25,7 +25,7 @@ class ImageUploader extends React.Component {
 		event.preventDefault();
 		const images = this.props.value;
 
-		if (images.length >= this.props.imageObjectsMaxLimit) {
+		if (images && images.length >= this.props.imageObjectsMaxLimit) {
 			// Show warning message
 			this.toggleImagesMaxLimitExceededDialog(true);
 

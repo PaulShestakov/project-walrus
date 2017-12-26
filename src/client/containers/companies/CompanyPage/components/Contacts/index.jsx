@@ -58,7 +58,7 @@ export default class Contacts extends React.Component {
         return (
             <div className="mt-3">
             {
-                locations.length > 0 && (
+                (locations && locations.length > 0) && (
                     <Paper>
                         <Grid container spacing={0}>
                             <Grid item xs={4}>

@@ -51,7 +51,7 @@ const MapWithASearchBox = compose(
           }
         },
         onTilesLoaded: () => {
-          if (!this.state.fitted && this.props.extMarkers.length > 0) {
+          if (!this.state.fitted && this.props.extMarkers && this.props.extMarkers.length > 0) {
             this.state.fitMapBounds();
             this.state.fitted = true;
           }

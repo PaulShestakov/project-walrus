@@ -80,7 +80,7 @@ export default class Feedbacks extends React.Component {
                 })
             }
             {
-                feedbacks.length === 0 &&
+                (feedbacks && feedbacks.length) === 0 &&
                 <Grid container>
                     <Grid item xs={12} className={classes.emptyFeedbacks}>
                         У данного местоположения компании пока что нет отзывов

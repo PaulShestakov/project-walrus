@@ -261,7 +261,7 @@ class CompanyPageContainer extends React.Component {
 												</Grid>
 											}
 											{
-												socialLinks.length > 0 &&
+												(socialLinks && socialLinks.length > 0) &&
 												<Grid item={true} xs={12}>
 													<Grid container={true}>
 														{socialLinks}

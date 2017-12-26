@@ -37,7 +37,6 @@ export default class Sidebar extends React.Component {
 	handleIsWorkingNowChange = (event, checked) => {
 		this.props.setIsWorkingNow(checked);
 		this.props.updateUrlWithStateSource(this.props.history);
-		this.props.loadCompanies();
 	};
 
 	handleAddNewCompany = () => {
@@ -84,7 +83,6 @@ export default class Sidebar extends React.Component {
 
 											this.props.suggestionFilterChange(name, option.value);
 											this.props.updateUrlWithStateSource(this.props.history);
-											this.props.loadCompanies();
 										}}
 										handleSearch={(query) => this.props.handleSuggestionSearch(name, query)} />
 								);
@@ -104,7 +102,6 @@ export default class Sidebar extends React.Component {
 
 											this.props.checkboxesBlockFilterChange(name, event.target.value, event.target.checked);
 											this.props.updateUrlWithStateSource(this.props.history);
-											this.props.loadCompanies();
 										}} />
 								);
 							}
@@ -123,7 +120,6 @@ export default class Sidebar extends React.Component {
 
 													this.props.switchFilterChange(name, checked);
 													this.props.updateUrlWithStateSource(this.props.history);
-													this.props.loadCompanies();
 
 												}} />
 										}
