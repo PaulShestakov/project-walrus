@@ -132,14 +132,12 @@ export const updatePaginationData = (nextPage) => {
 
 
 export const CLEAR_FUZZY_SEARCH_LOADED_COMPANIES = 'companiesList/CLEAR_FUZZY_SEARCH_LOADED_COMPANIES';
-
 export const clearFuzzySearchLoadedCompanies = () => ({
 	type: CLEAR_FUZZY_SEARCH_LOADED_COMPANIES
 });
 
 
 export const COMPANIES_SUGGESTION_INPUT_VALUE_CHANGE = 'companiesList/COMPANIES_SUGGESTION_INPUT_VALUE_CHANGE';
-
 export const suggestionInputValueChange = (data) => ({
 	type: COMPANIES_SUGGESTION_INPUT_VALUE_CHANGE,
 	payload: data
@@ -147,7 +145,12 @@ export const suggestionInputValueChange = (data) => ({
 
 
 export const COMPONENT_LEAVE = 'companiesList/COMPONENT_LEAVE';
-
 export const componentLeave = () => ({
 	type: COMPONENT_LEAVE
+});
+
+
+export const SETUP_INITIAL_METADATA = 'companiesList/SETUP_INITIAL_METADATA';
+export const setupInitialMetadata = () => ({
+	type: SETUP_INITIAL_METADATA
 });

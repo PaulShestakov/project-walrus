@@ -6,7 +6,8 @@ import {
 	CLEAR_FUZZY_SEARCH_LOADED_COMPANIES,
 	COMPANIES_SUGGESTION_INPUT_VALUE_CHANGE,
 	COMPONENT_LEAVE,
-	UPDATE_PAGINATION_DATA
+	UPDATE_PAGINATION_DATA,
+	SETUP_INITIAL_METADATA
 } from '../actionCreators/companiesList';
 import { INITIAL_METADATA } from '../constants.js';
 
@@ -23,6 +24,12 @@ const defaultState = {
 const companiesListReducer = (state = defaultState, action) => {
 	switch (action.type) {
 
+	case SETUP_INITIAL_METADATA: {
+		return {
+			...state,
+			matadata: INITIAL_METADATA
+		};
+	}
 
 	case LOAD_COMPANIES_START: {
 		return {

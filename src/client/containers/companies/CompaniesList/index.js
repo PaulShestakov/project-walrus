@@ -24,7 +24,8 @@ import {
 	suggestionInputValueChange,
 	removeCompany,
 	componentLeave,
-	updatePaginationData
+	updatePaginationData,
+	setupInitialMetadata
 } from './actionCreators/companiesList';
 
 import {
@@ -73,6 +74,7 @@ class CompaniesListContainer extends React.Component {
 
 		const initialFiltersData = filters.map(filter => filterDescriptions[filter.name]);
 		this.props.setupInitialFilterState(initialFiltersData);
+		this.props.setupInitialMetadata();
 	}
 
 	componentDidMount() {
@@ -545,7 +547,8 @@ const CompaniesList = connect(
 
 		switchFilterChange,
 
-		updatePaginationData
+		updatePaginationData,
+		setupInitialMetadata
 	}
 )(CompaniesListContainer);
 
