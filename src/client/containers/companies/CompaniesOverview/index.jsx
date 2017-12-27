@@ -7,20 +7,20 @@ import {Link} from 'react-router-dom';
 import {
 	Dropdown, Button, Title, Input, Grid, ImageUploader, TextField,
 	Tabs, Tab, Card, Text, Finder
-} from "components";
+} from 'components';
 import defaultImage from '../../../assets/img/company-default.png';
 import { Pets, ShoppingCart, Healing, Favorite, Work, Assignment } from 'material-ui-icons';
 import SwipeableViews from 'react-swipeable-views';
 import styles from './styles';
-import Category from "./components/CompanyType/index";
-import {Paper, Typography} from "material-ui";
+import Category from './components/CompanyType/index';
+import {Paper, Typography} from 'material-ui';
 
 import {
-    fuzzySearchLoadCompanies,
-    clearFuzzySearchLoadedCompanies,
-    suggestionInputValueChange,
-} from "../CompaniesList/actionCreators/companiesList";
-import Util from "../../util/index";
+	fuzzySearchLoadCompanies,
+	clearFuzzySearchLoadedCompanies,
+	suggestionInputValueChange,
+} from '../CompaniesList/actionCreators/companiesList';
+import Util from '../../util/index';
 import { USER_ROLES, PAGES } from '../../util/constants';
 
 
@@ -32,7 +32,7 @@ class CompaniesOverviewContainer extends React.Component {
 		this.state = {
 			selectedCategory: {},
 			selectedTabIndex: 0,
-		}
+		};
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -44,23 +44,23 @@ class CompaniesOverviewContainer extends React.Component {
 			companiesCategories.forEach((type, index) => {
 				if (type.value.toUpperCase() === category.toUpperCase()) {
 					categoryIndex = index;
-                    foundCategory = type;
+					foundCategory = type;
 				}
 			});
 		}
 		this.setState({
 			selectedTabIndex: categoryIndex,
-            selectedCategory: foundCategory
+			selectedCategory: foundCategory
 		});
 	}
 
     handleSuggestionsFetchRequested = (change) => {
-        if (this.props.main.suggestionInputValue !== change.value) {
-            this.props.fuzzySearchLoadCompanies({
-                searchQuery: change.value,
-            });
-        }
-	};
+    	if (this.props.main.suggestionInputValue !== change.value) {
+    		this.props.fuzzySearchLoadCompanies({
+    			searchQuery: change.value,
+    		});
+    	}
+    };
 	
 	handleAddNewCompany = () => {
 		if (this.props.common.user.role === USER_ROLES.ROLE_ADMIN) {
@@ -71,11 +71,11 @@ class CompaniesOverviewContainer extends React.Component {
 	};
 
     handleChange = (event, { newValue }) => {
-        this.props.suggestionInputValueChange(newValue);
+    	this.props.suggestionInputValueChange(newValue);
     };
 
 	handleTabPress = (event, index) => {
-		const { history, common : { companiesCategories } } = this.props;
+		const { history, common: { companiesCategories } } = this.props;
 		const category = companiesCategories[index];
 		this.setState({ selectedCategory: category });
 		history.push('/company/' + category.value.toLowerCase());
@@ -85,24 +85,24 @@ class CompaniesOverviewContainer extends React.Component {
 		const { classes, common, match, clearFuzzySearchLoadedCompanies } = this.props;
 
 		const icons = [
-			<Healing className={classes.tabIcon} />,
-			<ShoppingCart className={classes.tabIcon} />,
-			<Favorite className={classes.tabIcon} />,
-			<Pets className={classes.tabIcon} />,
-			<Work className={classes.tabIcon} />,
-			<Assignment className={classes.tabIcon} />,
+			<Healing key={1} className={classes.tabIcon} />,
+			<ShoppingCart key={2} className={classes.tabIcon} />,
+			<Favorite key={3} className={classes.tabIcon} />,
+			<Pets key={4} className={classes.tabIcon} />,
+			<Work key={5} className={classes.tabIcon} />,
+			<Assignment key={6} className={classes.tabIcon} />,
 		];
 
 		return (
-			<div className="my-3">
+			<div className="my-3 mb-5">
 				<Typography component="h1" className={classes.h1Style}>
-                    {this.state.selectedCategory.label}
+					{this.state.selectedCategory.label}
 				</Typography>
 				<Text className="my-3">
 					{this.state.selectedCategory.description}
 				</Text>
-				<Grid container spacing={8} className="my-3">
-					<Grid item xs={9} className={classes.searchInputWrapper}>
+				<Grid container={true} spacing={8} className="my-3">
+					<Grid item={true} xs={9} className={classes.searchInputWrapper}>
 						<Card>
 							<Finder
 								values={this.props.main.fuzzySearchCompanies}
@@ -112,17 +112,17 @@ class CompaniesOverviewContainer extends React.Component {
 								handleSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
 								handleSuggestionsClearRequested={clearFuzzySearchLoadedCompanies}
 								suggestionData={{
-                                    getLink: company => `/company/${company.categoryId.toLowerCase()}/${company.subcategoryId.toLowerCase()}/company/${company.url_id}`,
-                                    getLogo: company => Util.encodeUrl(company.logo, defaultImage),
-                                    getTitle: company => company.name,
-                                    getDescription: company => company.description
-                                }}/>
+									getLink: company => `/company/${company.categoryId.toLowerCase()}/${company.subcategoryId.toLowerCase()}/company/${company.url_id}`,
+									getLogo: company => Util.encodeUrl(company.logo, defaultImage),
+									getTitle: company => company.name,
+									getDescription: company => company.description
+								}} />
 						</Card>
 					</Grid>
-					<Grid item xs={3}>
+					<Grid item={true} xs={3}>
 						<Button
 							accent="red"
-							disableRipple
+							disableRipple={true}
 							onClick={this.handleAddNewCompany}
 							className="w-100 h-100 mb-2">
 
@@ -135,32 +135,34 @@ class CompaniesOverviewContainer extends React.Component {
 					<Paper>
 						<Tabs indicatorColor="primary"
 							  textColor="primary"
-							  scrollable
+							  scrollable={true}
 							  value={this.state.selectedTabIndex}
 							  onChange={this.handleTabPress}
-							  fullWidth>
-                            {
-                                common.companiesCategories.map((category, index) => (
+							  fullWidth={true}>
+							{
+								common.companiesCategories.map((category, index) => (
 									<Tab key={category.value}
-										 className={classes.tab}
-										 classes={{label: classes.tabLabel, labelContainer: classes.tabLabelContainer}}
-										 label={category.label}
-										 icon={icons[index]} />
-                                ))
-                            }
+										className={classes.tab}
+										classes={{label: classes.tabLabel, labelContainer: classes.tabLabelContainer}}
+										label={category.label}
+										icon={icons[index]} />
+								))
+							}
 						</Tabs>
 					</Paper>
-					<SwipeableViews index={this.state.selectedTabIndex}
-									onChangeIndex={this.handleTabPress}>
-                        {
-                            common.companiesCategories.map(category => {
-                                return (
+					<SwipeableViews
+						animateHeight={true}
+						index={this.state.selectedTabIndex}
+						onChangeIndex={this.handleTabPress}>
+						{
+							common.companiesCategories.map(category => {
+								return (
 									<Category key={category.value}
-											  type={category}
-											  match={match}/>
-                                );
-                            })
-                        }
+										type={category}
+										match={match} />
+								);
+							})
+						}
 					</SwipeableViews>
 				</Card>
 			</div>
@@ -176,9 +178,9 @@ const CompaniesOverview = connect(
 		};
 	},
 	{
-        suggestionInputValueChange,
-        fuzzySearchLoadCompanies,
-        clearFuzzySearchLoadedCompanies,
+		suggestionInputValueChange,
+		fuzzySearchLoadCompanies,
+		clearFuzzySearchLoadedCompanies,
 	}
 )(CompaniesOverviewContainer);
 
