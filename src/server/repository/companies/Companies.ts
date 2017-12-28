@@ -401,7 +401,8 @@ export default class Companies extends BaseCRUD  {
 
 			.left_join('companies_animals', 'ca', 'c.COMPANY_ID = ca.COMPANY_ID')
 			.left_join('companies_phones', 'p', 'p.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
-			.where(filter);
+			.where(filter)
+			.order('cv2.SORT');
 
 
 		const withOffset =
