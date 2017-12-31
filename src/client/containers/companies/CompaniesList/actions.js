@@ -243,8 +243,3 @@ export const updatePaginationData = (nextPage) => ({
 	type: UPDATE_PAGINATION_DATA,
 	payload: nextPage
 });
-
-export const SETUP_INITIAL_METADATA = 'companiesList/SETUP_INITIAL_METADATA';
-export const setupInitialMetadata = () => ({
-	type: SETUP_INITIAL_METADATA
-});

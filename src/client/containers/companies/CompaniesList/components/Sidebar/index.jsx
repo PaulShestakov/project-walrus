@@ -74,6 +74,7 @@ export default class Sidebar extends React.Component {
 											onChange={(option) => {
 
 												this.props.suggestionFilterChange(name, option.value);
+												this.props.updatePaginationData(1);
 												this.props.updateUrlWithStateSource(this.props.history);
 											}}
 											handleSearch={(query) => this.props.handleSuggestionSearch(name, query)} />
@@ -93,6 +94,7 @@ export default class Sidebar extends React.Component {
 											handleCheckboxPressed={event => {
 
 												this.props.checkboxesBlockFilterChange(name, event.target.value, event.target.checked);
+												this.props.updatePaginationData(1);
 												this.props.updateUrlWithStateSource(this.props.history);
 											}} />
 									);
@@ -111,6 +113,7 @@ export default class Sidebar extends React.Component {
 													onChange={(event, checked) => {
 
 														this.props.switchFilterChange(name, checked);
+														this.props.updatePaginationData(1);
 														this.props.updateUrlWithStateSource(this.props.history);
 
 													}} />

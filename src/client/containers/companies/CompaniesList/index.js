@@ -38,7 +38,6 @@ import {
 	handleSuggestionSearch,
 	switchFilterChange,
 
-	setupInitialMetadata,
 	updatePaginationData
 } from './actions';
 import {DEFAULT_PATH_PARAMS_TYPES} from './constants';
@@ -79,7 +78,6 @@ class CompaniesListContainer extends React.Component {
 
 	componentDidMount() {
 		this.updateAndLoad(this.props);
-		// this.props.updateUrlWithStateSource(this.props.history);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -243,7 +241,9 @@ class CompaniesListContainer extends React.Component {
 
 						handleSuggestionSearch={this.props.handleSuggestionSearch}
 
-						switchFilterChange={this.props.switchFilterChange} />
+						switchFilterChange={this.props.switchFilterChange}
+
+						updatePaginationData={this.props.updatePaginationData} />
 				</Grid>
 
 				<InfoDialog
@@ -535,7 +535,6 @@ export default connect(
 
 		switchFilterChange,
 
-		updatePaginationData,
-		setupInitialMetadata
+		updatePaginationData
 	}
 )(CompaniesListContainer);
