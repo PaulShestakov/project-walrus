@@ -288,8 +288,10 @@ export default class Companies extends BaseCRUD  {
 
 	static _getFiltered(params, callback): void {
         const isWorkingNow = params.isWorkingNow && params.isWorkingNow === 'true';
-        const offset = +params.offset;
+        const page = +params.page;
         const limit = +params.limit;
+
+        const offset = (page - 1) * limit;
 
 		const filter = Companies._buildFilter(params);
 
@@ -484,8 +486,9 @@ export default class Companies extends BaseCRUD  {
 
     static _getFilteredMetadata(params, callback): void {
         const isWorkingNow = params.isWorkingNow && params.isWorkingNow === 'true';
+        const page = +params.page;
         const limit = +params.limit;
-        const offset = +params.offset;
+        const offset = (page - 1) * limit;
 
         const filter = Companies._buildFilter(params);
 

@@ -1,9 +1,9 @@
-import { FILTER_TYPE, URL_PARAM_TYPES } from './constants';
+import { FILTER_COMPONENT, URL_PARAM_TYPES } from './constants';
 
 
-const filterDescriptions = {
+const FILTERS_CONFIGURATIONS = {
 	subways: {
-		type: FILTER_TYPE.CHECKBOX_BLOCK,
+		component: FILTER_COMPONENT.CHECKBOX_BLOCK,
 		defaultValue: [],
 		name: 'subways',
 		title: 'Метро',
@@ -15,7 +15,7 @@ const filterDescriptions = {
 		}
 	},
 	drugsTypes: {
-		type: FILTER_TYPE.CHECKBOX_BLOCK,
+		component: FILTER_COMPONENT.CHECKBOX_BLOCK,
 		defaultValue: [],
 		name: 'drugsTypes',
 		title: 'Тип препарата',
@@ -27,7 +27,7 @@ const filterDescriptions = {
 		}
 	},
 	clinicsServices: {
-		type: FILTER_TYPE.CHECKBOX_BLOCK,
+		component: FILTER_COMPONENT.CHECKBOX_BLOCK,
 		defaultValue: [],
 		name: 'clinicsServices',
 		title: 'Услуги',
@@ -39,7 +39,7 @@ const filterDescriptions = {
 		}
 	},
 	torgTypes: {
-		type: FILTER_TYPE.CHECKBOX_BLOCK,
+		component: FILTER_COMPONENT.CHECKBOX_BLOCK,
 		defaultValue: [],
 		name: 'torgTypes',
 		title: 'Торговые площадки',
@@ -51,7 +51,7 @@ const filterDescriptions = {
 		}
 	},
 	ownerTypes: {
-		type: FILTER_TYPE.CHECKBOX_BLOCK,
+		component: FILTER_COMPONENT.CHECKBOX_BLOCK,
 		defaultValue: [],
 		name: 'ownerTypes',
 		title: 'Тип владельца',
@@ -63,7 +63,7 @@ const filterDescriptions = {
 		}
 	},
 	jobTypes: {
-		type: FILTER_TYPE.CHECKBOX_BLOCK,
+		component: FILTER_COMPONENT.CHECKBOX_BLOCK,
 		defaultValue: [],
 		name: 'jobTypes',
 		title: 'Виды объявлений',
@@ -77,7 +77,7 @@ const filterDescriptions = {
 
 
 	breedId: {
-		type: FILTER_TYPE.SUGGESTION,
+		component: FILTER_COMPONENT.SUGGESTION,
 		defaultValue: '',
 		name: 'breedId',
 		title: 'Выбрать породу',
@@ -87,7 +87,7 @@ const filterDescriptions = {
 		}
 	},
 	countryId: {
-		type: FILTER_TYPE.SUGGESTION,
+		component: FILTER_COMPONENT.SUGGESTION,
 		defaultValue: '',
 		name: 'countryId',
 		title: 'Выбрать страну',
@@ -100,7 +100,7 @@ const filterDescriptions = {
 		]
 	},
 	cityId: {
-		type: FILTER_TYPE.SUGGESTION,
+		component: FILTER_COMPONENT.SUGGESTION,
 		defaultValue: '',
 		name: 'cityId',
 		title: 'Выбрать город',
@@ -113,7 +113,7 @@ const filterDescriptions = {
 		]
 	},
 	animalId: {
-		type: FILTER_TYPE.SUGGESTION,
+		component: FILTER_COMPONENT.SUGGESTION,
 		defaultValue: '',
 		name: 'animalId',
 		title: 'Выбрать животное',
@@ -145,9 +145,8 @@ const filterDescriptions = {
 	},
 
 
-
 	isWorkingNow: {
-		type: FILTER_TYPE.SWITCH,
+		component: FILTER_COMPONENT.SWITCH,
 		defaultValue: false,
 		name: 'isWorkingNow',
 		title: 'Работает сейчас',
@@ -158,15 +157,4 @@ const filterDescriptions = {
 	}
 };
 
-export default filterDescriptions;
-
-const filterNamesToExclude = [
-	'breeds',
-	'cities',
-	'subways'
-];
-
-export function findDescriptions(filtersName) {
-	return Object.values(filterDescriptions)
-			.filter(description => filtersName.includes(description.name) && !filterNamesToExclude.includes(description.name));
-}
+export default FILTERS_CONFIGURATIONS;

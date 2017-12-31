@@ -3,7 +3,7 @@ export const URL_PARAM_TYPES = {
 	QUERY: 'QUERY'
 };
 
-export const FILTER_TYPE = {
+export const FILTER_COMPONENT = {
 	CHECKBOX_BLOCK: 'CHECKBOX_BLOCK',
 	SUGGESTION: 'SUGGESTION',
 	SWITCH: 'SWITCH'

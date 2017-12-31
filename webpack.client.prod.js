@@ -1,9 +1,9 @@
 const merge = require('webpack-merge');
-const common = require('./webpack.common.js');
+const commonClientConfig = require('./webpack.client.common.js');
 const webpack = require('webpack');
 
 
-const clientConfig = merge(common.clientConfig, {
+module.exports = merge(commonClientConfig, {
 	devtool: 'source-map',
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin({
@@ -23,5 +23,3 @@ const clientConfig = merge(common.clientConfig, {
 		new webpack.optimize.ModuleConcatenationPlugin()
 	]
 });
-
-module.exports = [clientConfig, common.serverConfig];

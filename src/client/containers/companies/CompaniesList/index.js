@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {createSelector} from 'reselect';
-
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
 import {Title, Grid, Card, Label, Text, TextField, Button, ConfirmDialog, InfoDialog, Finder, Pagination } from 'components';
@@ -12,9 +11,8 @@ import styles from './styles';
 import {Typography } from 'material-ui';
 import { extendCodeValues } from '../selectors';
 import { findFilters } from './settings/assignments';
-import filterDescriptions from './settings/filtersDescription';
+import FILTERS_CONFIGURATIONS from './settings/filtersConfigurations';
 import {CircularProgress} from 'components';
-
 import Util from '../../util/index';
 
 import {
@@ -24,11 +22,7 @@ import {
 	suggestionInputValueChange,
 	removeCompany,
 	componentLeave,
-	updatePaginationData,
-	setupInitialMetadata
-} from './actionCreators/companiesList';
 
-import {
 	updateStateWithUrlSource,
 	updateUrlWithStateSource,
 	addSubway,
@@ -37,13 +31,16 @@ import {
 	removeBreed,
 	setIsWorkingNow,
 
-	setupInitialFilterState,
+	setDefaultFiltersValues,
 
 	suggestionFilterChange,
 	checkboxesBlockFilterChange,
 	handleSuggestionSearch,
 	switchFilterChange,
-} from './actionCreators/filter';
+
+	setupInitialMetadata,
+	updatePaginationData
+} from './actions';
 import {DEFAULT_PATH_PARAMS_TYPES} from './constants';
 
 
@@ -52,33 +49,37 @@ import {DEFAULT_PATH_PARAMS_TYPES} from './constants';
 class CompaniesListContainer extends React.Component {
 	constructor(props) {
 		super(props);
-
 		const { companyCategoryId, companySubcategoryId } = props.match.params;
+
 		const filters = findFilters(companyCategoryId, companySubcategoryId);
 
-		const filterComponents = filters.map(filter => filterDescriptions[filter.name])
-			.filter(filterDescription => !!filterDescription.type);
+		const filtersConfigurations = filters
+			.map(filter => FILTERS_CONFIGURATIONS[filter.name])
+			.filter(filterConfiguration => !!filterConfiguration.component);
+
+		const defaultFiltersValues = filters.map(filter => FILTERS_CONFIGURATIONS[filter.name])
+			.reduce((acc, filterConfiguration) => {
+				acc[filterConfiguration.name] = filterConfiguration.defaultValue;
+				return acc;
+			}, {});
 
 		this.state = {
 			isWorkingTimeDialogOpened: false,
 			isConfirmDialogOpened: false,
 			isPhonesDialogOpened: false,
-			cities: [],
 			daysOfWeekWorkingTime: [],
 			company: {},
 			phones: [],
-			currentSubCategory: {},
 
-			filterComponents
+			filtersConfigurations
 		};
 
-		const initialFiltersData = filters.map(filter => filterDescriptions[filter.name]);
-		this.props.setupInitialFilterState(initialFiltersData);
-		this.props.setupInitialMetadata();
+		props.setDefaultFiltersValues(defaultFiltersValues);
 	}
 
 	componentDidMount() {
 		this.updateAndLoad(this.props);
+		// this.props.updateUrlWithStateSource(this.props.history);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -88,15 +89,15 @@ class CompaniesListContainer extends React.Component {
 	}
 
 	updateAndLoad(props) {
-		const { updateStateWithUrlSource, match, loadCompanies, location, common: { companiesCategories } } = props;
+		const { updateStateWithUrlSource, match, loadCompanies, location } = props;
 		const { companyCategoryId, companySubcategoryId, countryId, cityId } = match.params;
 
-		const searchParams = Util.searchParamsToObject(new URLSearchParams(location.search));
 		const staticPathParams = {companyCategoryId, companySubcategoryId};
 		const dynamicPathParams = {
 			countryId: countryId || DEFAULT_PATH_PARAMS_TYPES.COUNTRY_ID,
 			cityId: cityId || DEFAULT_PATH_PARAMS_TYPES.CITY_ID
 		};
+		const searchParams = Util.searchParamsToObject(new URLSearchParams(location.search));
 
 		updateStateWithUrlSource(staticPathParams, dynamicPathParams, searchParams);
 		loadCompanies();
@@ -107,7 +108,7 @@ class CompaniesListContainer extends React.Component {
 	}
 
 	handleSuggestionsFetchRequested = (change) => {
-		if (this.props.main.suggestionInputValue !== change.value) {
+		if (this.props.suggestionInputValue !== change.value) {
 			this.props.fuzzySearchLoadCompanies({
 				searchQuery: change.value,
 				subcategoryId: this.props.match.params.companySubcategoryId,
@@ -148,30 +149,33 @@ class CompaniesListContainer extends React.Component {
 
 	handlePageChange = (nextPage) => {
 		this.props.updatePaginationData(nextPage);
-		this.props.loadCompanies();
+		this.props.updateUrlWithStateSource(this.props.history);
 	};
 
 	render() {
-		const { t, companies, classes, match, main, clearFuzzySearchLoadedCompanies, seoInfo } = this.props;
-		const { metadata = {} } = main;
+		const { t, companies, classes, match, clearFuzzySearchLoadedCompanies, seoInfo,
+
+			fuzzySearchCompanies, suggestionInputValue, isLoading, companiesMetadata } = this.props;
+
 
 		return (
-			<Grid container className="mt-2 mb-4">
-				<Grid item xs={9} className={classes.companiesListBlock}>
+			<Grid container={true} className="mt-2 mb-4">
+				<Grid item={true} xs={9} className={classes.companiesListBlock}>
 					<Card className={classNames(classes.searchInputWrapper)}>
-						<Finder
-							values={main.fuzzySearchCompanies}
-							placeholder={t('SECTION_SEARCH')}
-							value={main.suggestionInputValue}
-							onChange={this.handleChange}
-							handleSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-							handleSuggestionsClearRequested={clearFuzzySearchLoadedCompanies}
-							suggestionData={{
-								getLink: company => `/company/${company.categoryId.toLowerCase()}/${company.subcategoryId.toLowerCase()}/company/${company.url_id}`,
-								getLogo: company => company.logo,
-								getTitle: company => company.name,
-								getDescription: company => company.description
-							}} />
+
+						{/*<Finder*/}
+							{/*values={fuzzySearchCompanies}*/}
+							{/*placeholder={t('SECTION_SEARCH')}*/}
+							{/*value={suggestionInputValue}*/}
+							{/*onChange={this.handleChange}*/}
+							{/*handleSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}*/}
+							{/*handleSuggestionsClearRequested={clearFuzzySearchLoadedCompanies}*/}
+							{/*suggestionData={{*/}
+								{/*getLink: company => `/company/${company.categoryId.toLowerCase()}/${company.subcategoryId.toLowerCase()}/company/${company.url_id}`,*/}
+								{/*getLogo: company => company.logo,*/}
+								{/*getTitle: company => company.name,*/}
+								{/*getDescription: company => company.description*/}
+							{/*}} />*/}
 					</Card>
 					<div>
 						<Typography component="h1" className={classNames(classes.h1Style, 'mt-3')}>
@@ -183,7 +187,7 @@ class CompaniesListContainer extends React.Component {
 					</div>
 					<div className={classes.companiesList}>
 						{
-							main.isLoading ?
+							isLoading ?
 								<CircularProgress /> :
 								(
 									<div>
@@ -204,23 +208,29 @@ class CompaniesListContainer extends React.Component {
 											})
 										}
 
-										<Pagination
-											className="mt-4"
-											pagesCount={metadata.pagesCount}
-											currentPage={metadata.page}
-											onChange={this.handlePageChange} />
+										{
+											companiesMetadata ?
+												<Pagination
+													className="mt-4"
+													pagesCount={companiesMetadata.pagesCount}
+													currentPage={companiesMetadata.page}
+													onChange={this.handlePageChange} />
+												: null
+										}
+
+
 									</div>
 								)
 						}
 					</div>
 				</Grid>
 
-				<Grid item xs={3}>
+				<Grid item={true} xs={3}>
 					<Sidebar
 						history={this.props.history}
 						user={this.props.common.user}
-						filterComponents={this.state.filterComponents}
-						filter={this.props.filter}
+						filtersConfigurations={this.state.filtersConfigurations}
+						filters={this.props.filters}
 						filterValues={this.props.filterValues}
 						setIsWorkingNow={this.props.setIsWorkingNow}
 						updateUrlWithStateSource={this.props.updateUrlWithStateSource}
@@ -279,9 +289,11 @@ class CompaniesListContainer extends React.Component {
 }
 
 const getCommon = (state) => state.common;
-const getFilter = (state) => state.companiesList.filter;
-const getSuggestionQueries = (state) => state.companiesList.filter.suggestionQueries;
-const getCompanies = (state) => state.companiesList.main.companies;
+const getState = (state) => state.companiesList;
+const getFilter = (state) => state.companiesList.filters;
+const getSuggestionQueries = (state) => state.companiesList.suggestionQueries;
+const getCompanies = (state) => state.companiesList.companies;
+
 
 const getFlatCompanies = createSelector(
 	[getCompanies],
@@ -309,20 +321,14 @@ const getFlatCompanies = createSelector(
 	}
 );
 
-const mapCodeValue = (item) => ({
-	value: item.value,
-	label: item.label,
-	sort: item.sort
-});
-
 const getCountries = createSelector(
 	[getCommon], (common) => common.countries
 );
 const getQueriedCountries = searchConnectedSelector('countryId', getCountries);
 
 const getCities = createSelector(
-	[getCommon, getFilter], (common, filter) => {
-		const selectedCountry = filter.sidebarFilters.countryId;
+	[getCommon, getFilter], (common, filters) => {
+		const selectedCountry = filters.countryId;
 
 		const foundCountry = common.countries.find(country => country.value === selectedCountry);
 
@@ -337,48 +343,26 @@ const getCities = createSelector(
 const getQueriedCities = searchConnectedSelector('cityId', getCities);
 
 const getCitiesEnabled = createSelector(
-	[getFilter], (filter) => {
-		return !!filter.sidebarFilters.countryId;
+	[getFilter], (filters) => {
+		return !!filters.countryId;
 	}
 );
 
 const getSubways = createSelector(
-	[getCities, getFilter], (cities, filter) => {
-		const selectedCity = filter.sidebarFilters.cityId;
+	[getCities, getFilter], (cities, filters) => {
+		const selectedCity = filters.cityId;
 		const foundCity = cities.find(city => city.value === selectedCity);
 
 		return foundCity ? foundCity.subways : [];
 	}
 );
 const getSubwaysEnabled = createSelector(
-	[getFilter], (filter) => {
-		return !!filter.sidebarFilters.cityId;
+	[getFilter], (filters) => {
+		return !!filters.cityId;
 	}
 );
 
-const getDrugsTypes = createSelector(
-	[getCommon], (common) => common.drugsTypes
-);
 
-const getTorgTypes = createSelector(
-	[getCommon], (common) => common.torgTypes
-);
-
-const getDirections = createSelector(
-	[getCommon], (common) => common.specialistDirections
-);
-
-const getClinicsServices = createSelector(
-	[getCommon], (common) => common.clinicsServices
-);
-
-const getOwnerTypes = createSelector(
-	[getCommon], common => common.ownerTypes
-);
-
-const getJobTypes = createSelector(
-	[getCommon], common => common.jobTypes
-);
 
 const getAnimals = createSelector(
 	[getCommon], (common) => common.animals
@@ -387,8 +371,8 @@ const getQueriedAnimals = searchConnectedSelector('animalId', getAnimals);
 
 
 const getBreeds = createSelector(
-	[getAnimals, getFilter], (animals, filter) => {
-		const selectedAnimalId = filter.sidebarFilters.animalId;
+	[getAnimals, getFilter], (animals, filters) => {
+		const selectedAnimalId = filters.animalId;
 		const animal = animals.find(animal => animal.value === selectedAnimalId);
 
 		if (animal) {
@@ -399,23 +383,23 @@ const getBreeds = createSelector(
 );
 const getQueriedBreeds = searchConnectedSelector('breedId', getBreeds);
 const getBreedsEnabled = createSelector(
-	[getFilter], (filter) => {
-		return !!filter.sidebarFilters.animalId;
+	[getFilter], (filters) => {
+		return !!filters.animalId;
 	}
 );
 
 const getSEOInfo = createSelector(
-	[getCommon, getFilter],
-	(common, filter) => {
+	[getCommon, getState],
+	(common, state) => {
 		let information = {
 			title: '',
 			description: '',
 		};
-		common.companiesCategories.forEach((type, index) => {
-			if (filter.companyCategoryId && type.value.toUpperCase() === filter.companyCategoryId.toUpperCase()) {
+		common.companiesCategories.forEach(type => {
+			if (state.companyCategoryId && type.value.toUpperCase() === state.companyCategoryId.toUpperCase()) {
 				for (let i = 0; i < type.subcategories.length; i++) {
 					let subCat = type.subcategories[i];
-					if (subCat.value.toUpperCase() === filter.companySubcategoryId.toUpperCase()) {
+					if (subCat.value.toUpperCase() === state.companySubcategoryId.toUpperCase()) {
 						information.title = subCat.label;
 						information.description = subCat.description;
 						break;
@@ -424,11 +408,11 @@ const getSEOInfo = createSelector(
 			}
 		});
 		
-		if (filter.sidebarFilters.countryId) {
-			const foundCountry = common.countries.find(c => c.value === filter.sidebarFilters.countryId);
+		if (state.filters.countryId) {
+			const foundCountry = common.countries.find(c => c.value === state.filters.countryId);
 			if (foundCountry) {
-				if (filter.sidebarFilters.cityId) {
-					const foundCity = foundCountry.allCities.find(city => city.value === filter.sidebarFilters.cityId);
+				if (state.filters.cityId) {
+					const foundCity = foundCountry.allCities.find(city => city.value === state.filters.cityId);
 					if (foundCity) {
 						information.title += ' ' + foundCity.label;
 					}
@@ -458,14 +442,16 @@ function searchConnectedSelector(name, getAllValuesSelector) {
 	);
 }
 
-const CompaniesList = connect(
+export default connect(
 	state => {
 		return {
+			...state.companiesList,
+
 			common: extendCodeValues()(state),
-			main: state.companiesList.main,
+
 			companies: getFlatCompanies(state),
 			seoInfo: getSEOInfo(state),
-			filter: getFilter(state),
+
 			filterValues: {
 				countryId: {
 					values: getQueriedCountries(state),
@@ -487,28 +473,30 @@ const CompaniesList = connect(
 					values: getQueriedBreeds(state),
 					enabled: getBreedsEnabled(state)
 				},
+
+
 				drugsTypes: {
-					values: getDrugsTypes(state),
+					values: state.common.drugsTypes,
 					enabled: true
 				},
 				torgTypes: {
-					values: getTorgTypes(state),
+					values: state.common.torgTypes,
 					enabled: true
 				},
 				directions: {
-					values: getDirections(state),
+					values: state.common.specialistDirections,
 					enabled: true
 				},
 				clinicsServices: {
-					values: getClinicsServices(state),
+					values: state.common.clinicsServices,
 					enabled: true
 				},
 				ownerTypes: {
-					values: getOwnerTypes(state),
+					values: state.common.ownerTypes,
 					enabled: true
 				},
 				jobTypes: {
-					values: getJobTypes(state),
+					values: state.common.jobTypes,
 					enabled: true
 				},
 				isWorkingNow: {
@@ -518,6 +506,8 @@ const CompaniesList = connect(
 		};
 	},
 	{
+		setDefaultFiltersValues,
+
 		loadCompanies,
 
 		fuzzySearchLoadCompanies,
@@ -537,8 +527,6 @@ const CompaniesList = connect(
 
 		componentLeave,
 
-		setupInitialFilterState,
-
 
 		suggestionFilterChange,
 		checkboxesBlockFilterChange,
@@ -551,5 +539,3 @@ const CompaniesList = connect(
 		setupInitialMetadata
 	}
 )(CompaniesListContainer);
-
-export default CompaniesList;

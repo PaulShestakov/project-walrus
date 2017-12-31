@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 import FontAwesome from 'react-fontawesome';
 
 import {loadCompany, postFeedback, deleteFeedback, onComponentLeave} from './actions';
-import { removeCompany } from '../CompaniesList/actionCreators/companiesList';
+import { removeCompany } from '../CompaniesList/actions';
 
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';

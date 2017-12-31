@@ -4,27 +4,19 @@ import FontAwesome from 'react-fontawesome';
 import {translate} from 'react-i18next';
 import {withStyles} from 'material-ui/styles';
 
-import {
-	Dropdown, Button,
-	Label, Grid, ImageUploader,
-	TextField, Tabs, Tab, Card, Popover,
-	Checkbox, Separator, CheckboxesBlock
+import { Dropdown, Button, Label, Grid, ImageUploader, TextField, Tabs, Tab, Card, Popover, Checkbox, Separator, CheckboxesBlock
 } from 'components';
 
 import { PAGES, USER_ROLES } from '../../../../util/constants';
 
 import classNames from 'classnames';
 import styles from './styles';
-import {Link} from 'react-router-dom';
-import Authorized from '../../../../Authorized';
-import assignments from '../../settings/assignments';
-import description from '../../settings/filtersDescription';
 import SearchSelect from '../../../../../components/SearchSelect/index';
 
 import Switch from 'material-ui/Switch';
 
 import { FormControlLabel, FormGroup } from 'material-ui/Form';
-import { FILTER_TYPE } from '../../settings/constants';
+import { FILTER_COMPONENT } from '../../settings/constants';
 
 
 @translate(['companiesList'])
@@ -63,72 +55,72 @@ export default class Sidebar extends React.Component {
 
 				<Card className={classNames(classes.card, 'mb-3 p-3')}>
 					{
-						this.props.filterComponents.map(componentDescription => {
-							const { title, showMoreLabel, name, type } = componentDescription;
+						this.props.filtersConfigurations.map(componentDescription => {
+							const { title, showMoreLabel, name, component } = componentDescription;
 
 							const enabled = this.props.filterValues[name].enabled;
-							const value = this.props.filter.sidebarFilters[name];
+							const value = this.props.filters[name];
 							const allOptions = this.props.filterValues[name].values || [];
 
-							switch (type) {
-							case FILTER_TYPE.SUGGESTION: {
-								return (
-									<SearchSelect
-										disabled={!enabled}
-										className="mb-3"
-										placeholder={title}
-										value={value}
-										suggestions={allOptions}
-										onChange={(option) => {
+							switch (component) {
+								case FILTER_COMPONENT.SUGGESTION: {
+									return (
+										<SearchSelect
+											disabled={!enabled}
+											className="mb-3"
+											placeholder={title}
+											value={value}
+											suggestions={allOptions}
+											onChange={(option) => {
 
-											this.props.suggestionFilterChange(name, option.value);
-											this.props.updateUrlWithStateSource(this.props.history);
-										}}
-										handleSearch={(query) => this.props.handleSuggestionSearch(name, query)} />
-								);
-							}
-							case FILTER_TYPE.CHECKBOX_BLOCK: {
-								return (
-									<CheckboxesBlock
-										isEnabled={enabled}
-										className="mb-3"
-										formGroupName={name}
-										title={title}
-										showMoreLabel={showMoreLabel}
-										numberOfItemsToShowDefault={4}
-										items={allOptions}
-										selectedIds={value || []}
-										handleCheckboxPressed={event => {
+												this.props.suggestionFilterChange(name, option.value);
+												this.props.updateUrlWithStateSource(this.props.history);
+											}}
+											handleSearch={(query) => this.props.handleSuggestionSearch(name, query)} />
+									);
+								}
+								case FILTER_COMPONENT.CHECKBOX_BLOCK: {
+									return (
+										<CheckboxesBlock
+											isEnabled={enabled}
+											className="mb-3"
+											formGroupName={name}
+											title={title}
+											showMoreLabel={showMoreLabel}
+											numberOfItemsToShowDefault={4}
+											items={allOptions}
+											selectedIds={value || []}
+											handleCheckboxPressed={event => {
 
-											this.props.checkboxesBlockFilterChange(name, event.target.value, event.target.checked);
-											this.props.updateUrlWithStateSource(this.props.history);
-										}} />
-								);
-							}
+												this.props.checkboxesBlockFilterChange(name, event.target.value, event.target.checked);
+												this.props.updateUrlWithStateSource(this.props.history);
+											}} />
+									);
+								}
 
-							case FILTER_TYPE.SWITCH: {
-								return (
-									<FormControlLabel
-										classes={{
-											label: classes.switchFormControlLabel
-										}}
-										className={classes.switchFormControlWrapper}
-										control={
-											<Switch
-												checked={value === 'true'}
-												onChange={(event, checked) => {
+								case FILTER_COMPONENT.SWITCH: {
+									return (
+										<FormControlLabel
+											classes={{
+												label: classes.switchFormControlLabel
+											}}
+											className={classes.switchFormControlWrapper}
+											control={
+												<Switch
+													checked={value === 'true'}
+													onChange={(event, checked) => {
 
-													this.props.switchFilterChange(name, checked);
-													this.props.updateUrlWithStateSource(this.props.history);
+														this.props.switchFilterChange(name, checked);
+														this.props.updateUrlWithStateSource(this.props.history);
 
-												}} />
-										}
-										label={title} />
-								);
-							}
+													}} />
+											}
+											label={title} />
+									);
+								}
 
-							default:
-								return null;
+								default:
+									return null;
 								//throw new Error('Unsupported filter component');
 							}
 

@@ -3,9 +3,7 @@ export const DEFAULT_PATH_PARAMS_TYPES = {
 	CITY_ID: ''
 };
 
-export const INITIAL_METADATA = {
-	limit: 30,
-	offset: 0,
-
+export const DEFAULT_PAGING_DATA = {
 	page: 1,
+	limit: 20
 };

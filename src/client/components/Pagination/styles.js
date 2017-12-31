@@ -1,3 +1,4 @@
+import globalStyles from './../../style';
 
 export default {
 	pageContainer: {
@@ -10,5 +11,13 @@ export default {
 
 		lineHeight: '3rem',
 		textAlign: 'center'
-	}
+	},
+	activeButton: {
+		backgroundColor: globalStyles.ACCENT_RED,
+		color: 'white',
+
+		'&:hover': {
+			backgroundColor: globalStyles.ACCENT_RED,
+		}
+	},
 };

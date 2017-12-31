@@ -17,18 +17,26 @@ export default class Pagination extends React.Component {
 		return (
 			<div className={classNames(className, classes.pageContainer)}>
 				{
-					pages.map(page => (
-						<Button
-							className="mx-1"
-							key={page}
-							fab={true}
-							mini={true}
-							// color="accent"
-							aria-label="edit"
-							onClick={() => onChange(page)}>
-							{page}
-						</Button>
-					))
+					pages.map(page => {
+
+						return (
+							<Button
+								className={classNames(
+									'mx-1',
+									{
+										[classes.activeButton]: page === currentPage
+									}
+								)}
+								key={page}
+								fab={true}
+								mini={true}
+								// color="accent"
+								aria-label="edit"
+								onClick={() => onChange(page)}>
+								{page}
+							</Button>
+						)
+					})
 				}
 			</div>
 		);

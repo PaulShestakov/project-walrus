@@ -4,8 +4,10 @@
   "description": "wikipet",
   "main": "./dist/server/index.js",
   "scripts": {
-    "build-dev": "cross-env NODE_ENV=development webpack --profile --progress --colors --watch",
-    "build-prod": "cross-env NODE_ENV=production webpack --profile --progress --colors",
+    "build-server-dev": "cross-env NODE_ENV=production webpack --config webpack.server --profile --progress --colors --watch",
+    "build-server-prod": "cross-env NODE_ENV=production webpack --config webpack.server --profile --progress --colors",
+    "build-client-dev": "cross-env NODE_ENV=development webpack --config webpack.client.dev --profile --progress --colors --watch",
+    "build-client-prod": "cross-env NODE_ENV=production webpack --config webpack.client.prod --profile --progress --colors",
     "pm2-start-dev-server": "pm2 startOrReload ./pm2.dev.config.json --update-env",
     "pm2-stop-dev-server": "pm2 stop ./pm2.dev.config.json",
     "pm2-start-prod-server": "pm2 startOrReload ./pm2.prod.config.json --update-env",

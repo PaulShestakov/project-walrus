@@ -23,7 +23,7 @@ import {getFormValues} from 'redux-form';
 import Extensions from './components/Extensions';
 
 import { findFilters, FILTERS } from '../CompaniesList/settings/assignments';
-import { findDescriptions } from '../CompaniesList/settings/filtersDescription';
+import FILTERS_CONFIGURATIONS from '../CompaniesList/settings/filtersConfigurations';
 import { FILTER_TYPE } from '../CompaniesList/settings/constants';
 
 
@@ -268,8 +268,19 @@ const calculateExtensions = (category, subCategory) => {
 			name: item.name,
 			childs: []
 		});
-		const filters = findFilters(category, subCategory).map(filter => filter.name);
-		return findDescriptions(filters).filter(i => i.type === FILTER_TYPE.CHECKBOX_BLOCK).map(mapper);
+		const filtersNames = findFilters(category, subCategory).map(filter => filter.name);
+
+
+		// TODO: REFACTOR
+		const filterNamesToExclude = [
+			'breeds',
+			'cities',
+			'subways'
+		];
+
+		return Object.values(FILTERS_CONFIGURATIONS)
+			.filter(description => filtersNames.includes(description.name) && !filterNamesToExclude.includes(description.name))
+			.filter(i => i.type === FILTER_TYPE.CHECKBOX_BLOCK).map(mapper);
 	}
 	return [];
 };

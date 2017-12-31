@@ -3,10 +3,8 @@ import {connect} from 'react-redux';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
 import FontAwesome from 'react-fontawesome';
-import {Link} from 'react-router-dom';
 import {
-	Dropdown, Button, Title, Input, Grid, ImageUploader, TextField,
-	Tabs, Tab, Card, Text, Finder
+	Dropdown, Button, Title, Input, Grid, ImageUploader, TextField, Tabs, Tab, Card, Text, Finder
 } from 'components';
 import defaultImage from '../../../assets/img/company-default.png';
 import { Pets, ShoppingCart, Healing, Favorite, Work, Assignment } from 'material-ui-icons';
@@ -19,7 +17,7 @@ import {
 	fuzzySearchLoadCompanies,
 	clearFuzzySearchLoadedCompanies,
 	suggestionInputValueChange,
-} from '../CompaniesList/actionCreators/companiesList';
+} from '../CompaniesList/actions';
 import Util from '../../util/index';
 import { USER_ROLES, PAGES } from '../../util/constants';
 
@@ -174,7 +172,7 @@ const CompaniesOverview = connect(
 	state => {
 		return {
 			common: state.common,
-			main: state.companiesList.main,
+			main: state.companiesList,
 		};
 	},
 	{

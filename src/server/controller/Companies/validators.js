@@ -18,9 +18,22 @@ export default {
 			},
 			'animalId': {
 				'type': 'string'
+			},
+
+			'page': {
+				'type': 'string'
+			},
+			'limit': {
+				'type': 'string'
 			}
 		},
     
-		'required': ['companyCategoryId', 'companySubcategoryId']
+		'required': [
+			'companyCategoryId',
+			'companySubcategoryId',
+
+			'page',
+			'limit'
+		]
 	}
 };

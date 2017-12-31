@@ -1,12 +1,11 @@
 const webpack = require('webpack');
 const path = require('path');
 
-const nodeExternals = require('webpack-node-externals');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 
-const clientConfig = {
+module.exports = {
 	name : 'client',
 	entry: {
 		app: './src/client/index.js',
@@ -84,42 +83,4 @@ const clientConfig = {
 			name: 'vendor'
 		}),
 	]
-};
-
-const serverConfig = {
-	name : 'server',
-	devtool: 'inline-source-map',
-	entry: {
-		index: './src/server'
-	},
-	target: 'node',
-	node: {
-		__dirname: false
-	},
-	output: {
-		path: path.resolve(__dirname, 'dist', 'server'),
-		filename: '[name].js'
-	},
-	externals: [nodeExternals()],
-	resolve: {
-		extensions: ['.js', '.ts'],
-		modules: [
-			'./src/server/*',
-			'node_modules',
-		]
-	},
-	module: {
-		rules: [
-			{
-				test: /.ts$/,
-				exclude: /node_modules/,
-				loader: 'awesome-typescript-loader'
-			}
-		]
-	}
-};
-
-module.exports = {
-	clientConfig: clientConfig,
-	serverConfig: serverConfig
 };

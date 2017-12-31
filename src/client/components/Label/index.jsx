@@ -8,13 +8,13 @@ import styles from './styles';
 class Label extends React.Component {
 
 	getFont = (fontFamily, classes) => {
-		switch(fontFamily) {
-		case 'fontBebas':
-			return classes.fontBebas;
-		case 'fontOpenSans':
-			return classes.fontOpenSans;
-		default:
-			return '';
+		switch (fontFamily) {
+			case 'fontBebas':
+				return classes.fontBebas;
+			case 'fontOpenSans':
+				return classes.fontOpenSans;
+			default:
+				return '';
 		}
 	};
 
