@@ -43,11 +43,11 @@ export default class Sidebar extends React.Component {
 		const {t, classes} = this.props;
 
 		return (
-			<div className={classes.flexColumn}>
+			<div className={classes.main}>
 				<Button
 					accent="red"
 					disableRipple={true}
-					className="w-100 mb-2"
+					className="w-100 mb-3"
 					onClick={this.handleAddNewCompany}>
 
 					<FontAwesome name="plus" className="mr-1" /> Добавить компанию

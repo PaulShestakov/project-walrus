@@ -2,6 +2,14 @@ import globalStyles from '../../../../../style';
 
 
 export default {
+	main: {
+		position: 'sticky',
+		top: '1rem',
+
+		display: 'flex',
+		flexDirection: 'column',
+	},
+
 	card: {
 		// Collapsing margin fix
 		// TODO: Check again this thing
@@ -21,11 +29,6 @@ export default {
 		flexGrow: '1',
 		color: 'white',
 		textDecoration: 'none'
-	},
-
-	flexColumn: {
-		display: 'flex',
-		flexDirection: 'column'
 	},
 
 	switchFormControlWrapper: {
