@@ -41,8 +41,11 @@ import {
 	updatePaginationData
 } from './actions';
 import {DEFAULT_PATH_PARAMS_TYPES} from './constants';
+import withScrollToTop from '../../../hocs/WithScrollToTop';
+import WindowScrollService from '../../../services/windowScrollService';
 
 
+@withScrollToTop()
 @translate(['companiesList'])
 @withStyles(styles)
 class CompaniesListContainer extends React.Component {
@@ -146,6 +149,7 @@ class CompaniesListContainer extends React.Component {
 	};
 
 	handlePageChange = (nextPage) => {
+		WindowScrollService.scrollToTop(false);
 		this.props.updatePaginationData(nextPage);
 		this.props.updateUrlWithStateSource(this.props.history);
 	};

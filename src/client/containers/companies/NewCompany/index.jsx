@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {createSelector} from 'reselect';
 
-import withErrorHandling from '../../../components/decorators/withErrorHandling';
+import withErrorHandling from '../../../hocs/WithErrorHandling';
 
 import {postCompany, updateCompany, loadCompany, resetFormState, removeLocation} from './actions';
 
