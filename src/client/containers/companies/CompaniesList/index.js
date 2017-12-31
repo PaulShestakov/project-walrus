@@ -77,6 +77,8 @@ class CompaniesListContainer extends React.Component {
 		};
 
 		props.setDefaultFiltersValues(defaultFiltersValues);
+
+		WindowScrollService.scrollToTop(false);
 	}
 
 	componentDidMount() {
