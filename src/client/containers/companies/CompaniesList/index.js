@@ -43,6 +43,8 @@ import {
 import {DEFAULT_PATH_PARAMS_TYPES} from './constants';
 import withScrollToTop from '../../../hocs/WithScrollToTop';
 import WindowScrollService from '../../../services/windowScrollService';
+import FuzzySearchDialog from './components/FuzzySearchDialog';
+
 
 
 @withScrollToTop()
@@ -110,17 +112,20 @@ class CompaniesListContainer extends React.Component {
 		this.props.componentLeave();
 	}
 
-	handleSuggestionsFetchRequested = (change) => {
-		if (this.props.suggestionInputValue !== change.value) {
+
+
+	handleFuzzySearchChange = (event) => {
+		const newValue = event.target.value;
+		const companySubcategoryId = this.props.match.params.companySubcategoryId;
+
+		this.props.suggestionInputValueChange(newValue);
+
+		if (this.props.suggestionInputValue !== newValue) {
 			this.props.fuzzySearchLoadCompanies({
-				searchQuery: change.value,
-				subcategoryId: this.props.match.params.companySubcategoryId,
+				searchQuery: newValue,
+				subcategoryId: companySubcategoryId
 			});
 		}
-	};
-
-	handleChange = (event, { newValue }) => {
-		this.props.suggestionInputValueChange(newValue);
 	};
 
 	handleOpenWorkingTimeDialog = (daysOfWeekWorkingTime) => {
@@ -158,7 +163,6 @@ class CompaniesListContainer extends React.Component {
 
 	render() {
 		const { t, companies, classes, match, clearFuzzySearchLoadedCompanies, seoInfo,
-
 			fuzzySearchCompanies, suggestionInputValue, isLoading, companiesMetadata } = this.props;
 
 
@@ -167,19 +171,11 @@ class CompaniesListContainer extends React.Component {
 				<Grid item={true} xs={9} className={classes.companiesListBlock}>
 					<Card className={classNames(classes.searchInputWrapper)}>
 
-						{/*<Finder*/}
-							{/*values={fuzzySearchCompanies}*/}
-							{/*placeholder={t('SECTION_SEARCH')}*/}
-							{/*value={suggestionInputValue}*/}
-							{/*onChange={this.handleChange}*/}
-							{/*handleSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}*/}
-							{/*handleSuggestionsClearRequested={clearFuzzySearchLoadedCompanies}*/}
-							{/*suggestionData={{*/}
-								{/*getLink: company => `/company/${company.categoryId.toLowerCase()}/${company.subcategoryId.toLowerCase()}/company/${company.url_id}`,*/}
-								{/*getLogo: company => company.logo,*/}
-								{/*getTitle: company => company.name,*/}
-								{/*getDescription: company => company.description*/}
-							{/*}} />*/}
+						<FuzzySearchDialog
+							inputValue={suggestionInputValue}
+							onChange={this.handleFuzzySearchChange}
+							companies={fuzzySearchCompanies} />
+
 					</Card>
 					<div>
 						<Typography component="h1" className={classNames(classes.h1Style, 'mt-3')}>
