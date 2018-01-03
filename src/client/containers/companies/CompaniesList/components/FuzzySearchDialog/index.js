@@ -53,7 +53,7 @@ export default class FyzzySearchDialog extends React.PureComponent {
 				<Button onClick={this.handleOpen} className={classes.searchButton}>
 					<SearchIcon />
 					<span className={classes.searchButtonText}>
-						Search
+						Поиск
 					</span>
 				</Button>
 

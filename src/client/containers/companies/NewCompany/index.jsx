@@ -24,7 +24,7 @@ import Extensions from './components/Extensions';
 
 import { findFilters, FILTERS } from '../CompaniesList/settings/assignments';
 import FILTERS_CONFIGURATIONS from '../CompaniesList/settings/filtersConfigurations';
-import { FILTER_TYPE } from '../CompaniesList/settings/constants';
+import { FILTER_COMPONENT } from '../CompaniesList/settings/constants';
 
 
 @translate(['common'])
@@ -280,7 +280,7 @@ const calculateExtensions = (category, subCategory) => {
 
 		return Object.values(FILTERS_CONFIGURATIONS)
 			.filter(description => filtersNames.includes(description.name) && !filterNamesToExclude.includes(description.name))
-			.filter(i => i.type === FILTER_TYPE.CHECKBOX_BLOCK).map(mapper);
+			.filter(i => i.type === FILTER_COMPONENT.CHECKBOX_BLOCK).map(mapper);
 	}
 	return [];
 };
