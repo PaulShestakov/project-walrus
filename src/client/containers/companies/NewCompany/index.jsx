@@ -280,7 +280,7 @@ const calculateExtensions = (category, subCategory) => {
 
 		return Object.values(FILTERS_CONFIGURATIONS)
 			.filter(description => filtersNames.includes(description.name) && !filterNamesToExclude.includes(description.name))
-			.filter(i => i.type === FILTER_COMPONENT.CHECKBOX_BLOCK).map(mapper);
+			.filter(i => i.component === FILTER_COMPONENT.CHECKBOX_BLOCK).map(mapper);
 	}
 	return [];
 };
