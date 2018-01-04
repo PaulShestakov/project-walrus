@@ -266,6 +266,9 @@ class CompaniesListContainer extends React.Component {
 					title="Время работы"
 					closeCallback={() => this.setState({ isWorkingTimeDialogOpened: false })}>
 					{
+						this.state.daysOfWeekWorkingTime.every(item => {
+							return item.open === '00:00:00' && item.close === '00:00:00';
+						}) ? "Работает круглосуточно" :
 						this.state.daysOfWeekWorkingTime.map(time => {
 							const open = time.open.substring(0, time.open.lastIndexOf(':'));
 							const close = time.close.substring(0, time.close.lastIndexOf(':'));

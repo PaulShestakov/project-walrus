@@ -228,10 +228,12 @@ export default class Location extends React.Component {
                                         component={Phones}
                                         fullWidth/>
 
-                                    <Grid item xs={12} className="my-2">
+                                    <Grid item xs={12} className="my-2 d-flex justify-content-between">
                                         <Typography type="headline" component="h1" className="mt-4">
                                             Время работы
                                         </Typography>
+                                        <Button fab className={classes.addButton}
+                                            onClick={() => this.props.fillRoundTheClock(member, curField)}>24/7</Button>
                                     </Grid>
 
                                     <FieldArray

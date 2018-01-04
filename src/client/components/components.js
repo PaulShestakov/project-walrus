@@ -25,7 +25,7 @@ import SearchSelect from './SearchSelect';
 import Header from './Header';
 import Footer from './Footer';
 
-import TextField from 		'material-ui/TextField';
+import TextField from 		'./TextField';
 import Grid from 			'material-ui/Grid';
 import Card from  			'material-ui/Card';
 

@@ -96,6 +96,16 @@ class NewCompanyContainer extends React.Component {
 		}
 	};
 
+	fillRoundTheClock = (member, location) => {
+		if (location.workingTimes) {
+			location.workingTimes.forEach(time => {
+				time.open = "00:00";
+				time.close = "00:00";
+			});
+		}
+		this.props.change(member, location);
+	}
+
 	render() {
 		const { t, common, handleSubmit, workingTimes, subcategories, formLocations, extensions,
 			selectedCategory, selectedSubCategory } = this.props;
@@ -194,8 +204,9 @@ class NewCompanyContainer extends React.Component {
 						<Grid item={true} xs={11}>
 							<Title>Описание</Title>
 							<Field name="description"
-								component={Input}
+								component={TextField}
 								multiline={true}
+								rows="5"
 								rowsMax="20"
 								placeholder="Специализация, ассортимент"
 								fullWidth={true} />
@@ -223,6 +234,7 @@ class NewCompanyContainer extends React.Component {
 								change={this.props.change}
 								formLocations={formLocations}
 								removeLocation={this.props.removeLocation}
+								fillRoundTheClock={this.fillRoundTheClock}
 								component={Location} />
 						</Grid>
 
