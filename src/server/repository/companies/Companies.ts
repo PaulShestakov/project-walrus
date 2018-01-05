@@ -366,18 +366,12 @@ export default class Companies extends BaseCRUD  {
 				.from('companies_feedback', 'cf')
 				.group('cf.COMPANY_ID'), 'cf1', 'cf1.COMPANY_ID = c.COMPANY_ID'
 			)
-			.left_join('companies_location', 'l', 'l.COMPANY_ID = c.COMPANY_ID')
-			.left_join('companies_working_time', 't', 't.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
-			.left_join('companies_drug_type', 'cdt', 'cdt.COMPANY_ID = c.COMPANY_ID')
-			.left_join('companies_service', 'cs', 'cs.COMPANY_ID = c.COMPANY_ID')
-			.left_join('companies_owner_type', 'ot', 'ot.COMPANY_ID = c.COMPANY_ID')
-			.left_join('companies_job_type', 'jt', 'jt.COMPANY_ID = c.COMPANY_ID')
-			.left_join('companies_trade_type', 'ctt', 'ctt.COMPANY_ID = c.COMPANY_ID');
+			.left_join('companies_location', 'l', 'l.COMPANY_ID = c.COMPANY_ID');
 
 		if (isWorkingNow) {
 			// Belarus timezone is UTC+3
 			const momentNow = moment().utcOffset(3);
-			const dayOfWeek = momentNow.day() - 1;
+			const dayOfWeek = moment().format('dddd').toUpperCase();
 			const timeNow = momentNow.format('HH:mm:ss');
 
 			sql = sql
@@ -390,9 +384,15 @@ export default class Companies extends BaseCRUD  {
 						.where('cwt.CLOSE_TIME >= ?', timeNow), 'workingLocations', 'l.COMPANY_LOCATION_ID = workingLocations.COMPANY_LOCATION_ID'
 				)
 		}
-			
+
 		sql = sql
 			// TODO: make codevalues formatter on client, get rid of this joins
+			.left_join('companies_working_time', 't', 't.COMPANY_LOCATION_ID = l.COMPANY_LOCATION_ID')
+			.left_join('companies_drug_type', 'cdt', 'cdt.COMPANY_ID = c.COMPANY_ID')
+			.left_join('companies_service', 'cs', 'cs.COMPANY_ID = c.COMPANY_ID')
+			.left_join('companies_owner_type', 'ot', 'ot.COMPANY_ID = c.COMPANY_ID')
+			.left_join('companies_job_type', 'jt', 'jt.COMPANY_ID = c.COMPANY_ID')
+			.left_join('companies_trade_type', 'ctt', 'ctt.COMPANY_ID = c.COMPANY_ID')
             .left_join('code_values', 'cv0', "cv0.ID = c.COMPANY_SUBCATEGORY_ID")
 			.left_join('code_values', 'cv1', "cv1.ID = l.CITY_ID")
 			.left_join('code_values', 'cv2', "cv2.ID = t.DAY_OF_WEEK")
