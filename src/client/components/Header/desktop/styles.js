@@ -1,4 +1,4 @@
-import globalStyle from '../../style';
+import globalStyle from '../../../style';
 
 const linkStyle = {
 	color: globalStyle.DARK_GREY,

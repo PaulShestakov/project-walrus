@@ -74,7 +74,7 @@
     "react/sort-comp": "warn",
 
     // JSX:
-    "react/jsx-boolean-value": ["error", "always"],
+//    "react/jsx-boolean-value": ["error", "always"],
     "react/jsx-closing-bracket-location": ["warn", {
       "nonEmpty": "after-props",
       "selfClosing": "after-props"
