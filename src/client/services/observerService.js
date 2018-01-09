@@ -24,6 +24,8 @@ export default class ObserverService {
 	}
 
 	notifyAll(event, ...data) {
-		this._handlers[event].forEach(callback => callback.apply(null, data));
+		if (this._handlers[event] && this._handlers[event].length > 0) {
+			this._handlers[event].forEach(callback => callback.apply(null, data));
+		}
 	}
 }

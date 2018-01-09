@@ -1,48 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import classNames from 'classnames';
-import Button from 'material-ui/Button';
+import Device from '../../core/device.js';
+import DesktopPagination from './desktop';
+import MobilePagination from './mobile';
 
-import styles from './styles';
 
-@withStyles(styles)
-export default class Pagination extends React.Component {
+export default class Pagination extends React.PureComponent {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			isMobile: Device.mobile
+		};
+	}
 
 	render() {
-		const {classes, className, pagesCount, currentPage, onChange, ...other} = this.props;
-
-		const pages = new Array(pagesCount).fill(0).map((_, i) => i + 1);
+		const {className} = this.props;
 
 		return (
-			<div className={classNames(className, classes.pageContainer)}>
+			<div className={className}>
 				{
-					pages.map(page => {
+					this.state.isMobile ?
+						<MobilePagination {...this.props} /> :
+						<DesktopPagination {...this.props} />
 
-						return (
-							<Button
-								className={classNames(
-									'mx-1',
-									{
-										[classes.activeButton]: page === currentPage
-									}
-								)}
-								key={page}
-								fab={true}
-								mini={true}
-								// color="accent"
-								aria-label="edit"
-								onClick={() => onChange(page)}>
-								{page}
-							</Button>
-						)
-					})
 				}
 			</div>
 		);
 	}
 }
-
 
 Pagination.propTypes = {
 	pagesNumber: PropTypes.number.isRequired,

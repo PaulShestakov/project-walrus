@@ -57,7 +57,7 @@ export default class MobileHeader extends React.PureComponent {
 
 				<Drawer open={isDrawerOpened}
 					onClose={this.handleCloseDrawer}>
-					<div>
+					<div onClick={this.handleCloseDrawer}>
 						<List>
 							{
 								!this.props.isAuthorized ?

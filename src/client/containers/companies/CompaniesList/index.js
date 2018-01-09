@@ -14,6 +14,7 @@ import { findFilters } from './settings/assignments';
 import FILTERS_CONFIGURATIONS from './settings/filtersConfigurations';
 import {CircularProgress} from 'components';
 import Util from '../../util/index';
+import Device from '../../../core/device.js';
 
 import {
 	loadCompanies,
@@ -68,6 +69,7 @@ class CompaniesListContainer extends React.Component {
 			}, {});
 
 		this.state = {
+			isMobile: Device.mobile,
 			isWorkingTimeDialogOpened: false,
 			isConfirmDialogOpened: false,
 			isPhonesDialogOpened: false,
@@ -164,11 +166,12 @@ class CompaniesListContainer extends React.Component {
 	render() {
 		const { t, companies, classes, match, clearFuzzySearchLoadedCompanies, seoInfo,
 			fuzzySearchCompanies, suggestionInputValue, isLoading, companiesMetadata } = this.props;
+		const { isMobile } = this.state;
 
 
 		return (
 			<Grid container={true} className="mt-2 mb-4">
-				<Grid item={true} xs={9} className={classes.companiesListBlock}>
+				<Grid item={true} xs={isMobile ? 12 : 9} className={classes.companiesListBlock}>
 					<Card className={classNames(classes.searchInputWrapper)}>
 
 						<FuzzySearchDialog
@@ -225,28 +228,31 @@ class CompaniesListContainer extends React.Component {
 					</div>
 				</Grid>
 
-				<Grid item={true} xs={3}>
-					<Sidebar
-						history={this.props.history}
-						user={this.props.common.user}
-						filtersConfigurations={this.state.filtersConfigurations}
-						filters={this.props.filters}
-						filterValues={this.props.filterValues}
-						setIsWorkingNow={this.props.setIsWorkingNow}
-						updateUrlWithStateSource={this.props.updateUrlWithStateSource}
-						loadCompanies={this.props.loadCompanies}
-						category={this.props.match.params.companyCategoryId}
-						subcategory={this.props.match.params.companySubcategoryId}
+				{
+					!isMobile &&
+						<Grid item={true} xs={3}>
+							<Sidebar
+								history={this.props.history}
+								user={this.props.common.user}
+								filtersConfigurations={this.state.filtersConfigurations}
+								filters={this.props.filters}
+								filterValues={this.props.filterValues}
+								setIsWorkingNow={this.props.setIsWorkingNow}
+								updateUrlWithStateSource={this.props.updateUrlWithStateSource}
+								loadCompanies={this.props.loadCompanies}
+								category={this.props.match.params.companyCategoryId}
+								subcategory={this.props.match.params.companySubcategoryId}
 
-						suggestionFilterChange={this.props.suggestionFilterChange}
-						checkboxesBlockFilterChange={this.props.checkboxesBlockFilterChange}
+								suggestionFilterChange={this.props.suggestionFilterChange}
+								checkboxesBlockFilterChange={this.props.checkboxesBlockFilterChange}
 
-						handleSuggestionSearch={this.props.handleSuggestionSearch}
+								handleSuggestionSearch={this.props.handleSuggestionSearch}
 
-						switchFilterChange={this.props.switchFilterChange}
+								switchFilterChange={this.props.switchFilterChange}
 
-						updatePaginationData={this.props.updatePaginationData} />
-				</Grid>
+								updatePaginationData={this.props.updatePaginationData} />
+						</Grid>
+				}
 
 				<InfoDialog
 					open={this.state.isPhonesDialogOpened}
