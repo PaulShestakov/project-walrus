@@ -2,6 +2,7 @@ import BaseCRUD from "../../BaseCRUD";
 import { executeQuery } from "../../../database/DBHelper";
 import Queries from "../sql/Queries";
 import * as uuid from 'uuid';
+import Mailer from '../../../util/Mailer';
 
 export default class Feedbacks extends BaseCRUD {
 
@@ -28,38 +29,27 @@ export default class Feedbacks extends BaseCRUD {
 				callback(error);
 				return;
 			}
+			executeQuery(Queries.GET_FOR_FEEDBACK_BY_PK, [feedback.companyId], (error, rows) => {
+				if (error) {
+					console.log('Error in getting company ' + error);
+					return;
+				}
+				rows = rows[0];
+				const link = `http://catalogi.wikipet.by/company/${rows["categoryId"]}/${rows["subcategoryId"]}/company/${rows["urlId"]}/feedbacks`;
+				const message = feedback.feedback;
+				Mailer.sendEmail({
+					from: "wikipet.by@gmail.com",
+					to: "wikipet.by@gmail.com",
+					subject: "Был оставлен комментарий",
+					html: `
+						<div>Сообщение : ${message}</div>
+						<div>Ссылка : ${link}</div>
+				 	 `
+				});
+			});
 			callback(null, 'Success');
 		});
 	}
-
-	// static getFeedbacks(companyId: string, callback) {
-	// 	executeQuery(Queries.GET_FEEDBACKS, [companyId], (error, result) => {
-	// 		if (error) {
-	// 			callback(error);
-	// 			return;
-    //
-	// 		}
-	// 		const feedbacks = result.reduce((acc, row) => {
-	// 			const feedback = {
-	// 				feedbackId: row.feedbackId,
-	// 				companyId: row.companyId,
-	// 				locationId: row.locId,
-	// 				feedback: row.feedback,
-	// 				rating: row.rating,
-	// 				createDate: row.createDate,
-	// 				modificateDate: row.modificateDate,
-	// 				user: {
-	// 					id: row.userId,
-	// 					photo: row.photo,
-	// 					name: row.userName
-	// 				}
-	// 			};
-	// 			acc.push(feedback);
-	// 			return acc;
-	// 		}, []);
-	// 		callback(null, feedbacks);
-	// 	});
-	// }
 
 	static deleteFeedback(feedbackId, callback) {
 		executeQuery(Queries.DELETE_FEEDBACK, [feedbackId], (error, result) => {

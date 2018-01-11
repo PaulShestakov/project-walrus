@@ -141,6 +141,15 @@ export default {
 		FROM ${COMPANIES_TABLE} c
 		WHERE c.NAME LIKE ? AND c.COMPANY_SUBCATEGORY_ID = ?
 	`,
+	GET_FOR_FEEDBACK_BY_PK: `
+		SELECT
+			c.COMPANY_CATEGORY_ID categoryId,
+			c.COMPANY_SUBCATEGORY_ID subcategoryId,
+			c.URL_ID urlId
+
+		FROM ${COMPANIES_TABLE} c
+		WHERE c.COMPANY_ID = ?
+	`,
 	GET_BY_NAME: `
 		SELECT
 			c.COMPANY_ID companyId,
