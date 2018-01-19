@@ -22,9 +22,9 @@ import { extendCodeValues } from '../selectors';
 import {getFormValues} from 'redux-form';
 import Extensions from './components/Extensions';
 
-import { findFilters, FILTERS } from '../CompaniesList/settings/assignments';
-import FILTERS_CONFIGURATIONS from '../CompaniesList/settings/filtersConfigurations';
-import { FILTER_COMPONENT } from '../CompaniesList/settings/constants';
+import { findFilters, FILTERS } from '../../../metadata/settings/assignments';
+import FILTERS_CONFIGURATIONS from '../../../metadata/settings/filtersConfigurations';
+import { FILTER_COMPONENT } from '../../../metadata/settings/constants';
 
 
 @translate(['common'])

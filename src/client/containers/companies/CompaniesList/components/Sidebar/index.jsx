@@ -16,7 +16,7 @@ import SearchSelect from '../../../../../components/SearchSelect/index';
 import Switch from 'material-ui/Switch';
 
 import { FormControlLabel, FormGroup } from 'material-ui/Form';
-import { FILTER_COMPONENT } from '../../settings/constants';
+import { FILTER_COMPONENT } from '../../../../../metadata/settings/constants';
 
 
 @translate(['companiesList'])

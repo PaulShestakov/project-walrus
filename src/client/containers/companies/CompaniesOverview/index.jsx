@@ -10,7 +10,7 @@ import defaultImage from '../../../assets/img/company-default.png';
 import { Pets, ShoppingCart, Healing, Favorite, Work, Assignment } from 'material-ui-icons';
 import SwipeableViews from 'react-swipeable-views';
 import styles from './styles';
-import Category from './components/CompanyType/index';
+import SubcategoriesView from './components/SubcategoriesView';
 import {Paper, Typography} from 'material-ui';
 
 import {
@@ -132,11 +132,11 @@ class CompaniesOverviewContainer extends React.Component {
 				<Card>
 					<Paper>
 						<Tabs indicatorColor="primary"
-							  textColor="primary"
-							  scrollable={true}
-							  value={this.state.selectedTabIndex}
-							  onChange={this.handleTabPress}
-							  fullWidth={true}>
+							textColor="primary"
+							scrollable={true}
+							value={this.state.selectedTabIndex}
+							onChange={this.handleTabPress}
+							fullWidth={true}>
 							{
 								common.companiesCategories.map((category, index) => (
 									<Tab key={category.value}
@@ -155,8 +155,8 @@ class CompaniesOverviewContainer extends React.Component {
 						{
 							common.companiesCategories.map(category => {
 								return (
-									<Category key={category.value}
-										type={category}
+									<SubcategoriesView key={category.value}
+										subcategories={category.subcategories}
 										match={match} />
 								);
 							})

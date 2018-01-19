@@ -9,8 +9,7 @@ export default {
 
 	cardImage: {
 		width: '100%',
-		height: '200px',
-		backgroundSize: 'contain',
+		height: '240px'
 	},
 
 	exactTypeLinkWrapper: {

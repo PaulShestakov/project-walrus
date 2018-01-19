@@ -63,11 +63,37 @@ module.exports = {
 				}
 			},
 			{
-				test: /\.(svg|ico|png)$/,
-				loader: 'file-loader',
-				query: {
-					name: 'images/[name].[ext]',
-				}
+				test: /\.(gif|png|jpe?g|svg|ico)$/i,
+				loaders: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: 'images/[name].[ext]',
+						}
+					},
+					{
+						loader: 'image-webpack-loader',
+						options: {
+							gifsicle: {
+								interlaced: false,
+							},
+							optipng: {
+								optimizationLevel: 7,
+							},
+							pngquant: {
+								quality: '65-90',
+								speed: 4
+							},
+							mozjpeg: {
+								progressive: true,
+								quality: 65
+							},
+							webp: {
+								quality: 75
+							}
+						}
+					}
+				]
 			}
 		]
 	},
@@ -81,6 +107,6 @@ module.exports = {
 		}),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: 'vendor'
-		}),
+		})
 	]
 };

@@ -24,9 +24,9 @@ import {
 	COMPONENT_LEAVE
 } from './actions.js';
 import Util from '../../util/index';
-import FILTERS_CONFIGURATIONS from './settings/filtersConfigurations';
-import { findFilters } from './settings/assignments';
-import {URL_PARAM_TYPES} from './settings/constants';
+import FILTERS_CONFIGURATIONS from '../../../metadata/settings/filtersConfigurations';
+import { findFilters } from '../../../metadata/settings/assignments';
+import {URL_PARAM_TYPES} from '../../../metadata/settings/constants';
 
 
 import { DEFAULT_PAGING_DATA } from './constants';
