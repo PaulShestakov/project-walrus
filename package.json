@@ -13,7 +13,8 @@
     "pm2-start-prod-server": "pm2 startOrReload ./pm2.prod.config.json --update-env",
     "pm2-stop-prod-server": "pm2 stop ./pm2.prod.config.json",
     "server": "nodemon --inspect dist/server/index.js",
-    "eslint": "./node_modules/.bin/eslint ./src/client/**"
+    "eslint": "./node_modules/.bin/eslint ./src/client/**",
+    "build-prod": "npm i ; npm run build-server-prod ; npm run build-client-prod"
   },
   "author": "",
   "license": "ISC",
