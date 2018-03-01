@@ -34,5 +34,40 @@ export default [
 	{
 		subcategoryId: 'HEALTH_DRUGS',
 		image: 'vetpreparaty.png'
-	}
+	},
+
+
+	{
+		subcategoryId: 'GOODS_CLOTHING_SHOPS',
+		image: 'goods_clothing_shops.png'
+	},
+	{
+		subcategoryId: 'PETS_HORSE_NURSERIES',
+		image: 'pets_horse_nurseries.png'
+	},
+	{
+		subcategoryId: 'SERVICES_ZOO_PHOTOGRAPHY',
+		image: 'services_zoo_photography.png'
+	},
+	{
+		subcategoryId: 'HEALTH_SPECIALISTS',
+		image: 'health_specialists.png'
+	},
+	{
+		subcategoryId: 'SERVICES_ZOO_TAXI',
+		image: 'services_zoo_taxi.png'
+	},
+	{
+		subcategoryId: 'SERVICES_PHOTOSTUDII',
+		image: 'services_photostudii.png'
+	},
+	{
+		subcategoryId: 'SERVICES_ZOO_STUDIO',
+		image: 'services_zoo_studio.png'
+	},
+	{
+		subcategoryId: 'GOODS_OBORUDOVANIE_FITNESS',
+		image: 'goods_oborudovanie_fitness.png'
+	},
+
 ];

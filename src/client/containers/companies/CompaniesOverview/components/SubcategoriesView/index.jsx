@@ -21,6 +21,17 @@ import '../../../../../assets/img/subcategoriesImages/vetkliniki.png';
 import '../../../../../assets/img/subcategoriesImages/vetpreparaty.png';
 
 
+import '../../../../../assets/img/subcategoriesImages/goods_clothing_shops.png';
+import '../../../../../assets/img/subcategoriesImages/pets_horse_nurseries.png';
+import '../../../../../assets/img/subcategoriesImages/services_zoo_photography.png';
+import '../../../../../assets/img/subcategoriesImages/health_specialists.png';
+import '../../../../../assets/img/subcategoriesImages/services_zoo_taxi.png';
+import '../../../../../assets/img/subcategoriesImages/services_photostudii.png';
+import '../../../../../assets/img/subcategoriesImages/services_zoo_studio.png';
+import '../../../../../assets/img/subcategoriesImages/goods_oborudovanie_fitness.png';
+
+
+
 @translate(['common'])
 @withStyles(styles)
 export default class SubcategoriesView extends React.Component {
