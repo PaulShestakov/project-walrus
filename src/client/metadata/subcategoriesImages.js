@@ -70,4 +70,34 @@ export default [
 		image: 'goods_oborudovanie_fitness.png'
 	},
 
+
+	{
+		subcategoryId: 'goods_ruchnie_tovary',
+		image: 'goods_ruchnie_tovary.png'
+	},
+	{
+		subcategoryId: 'services_handling',
+		image: 'services_handling.png'
+	},
+	{
+		subcategoryId: 'services_fitness',
+		image: 'services_fitness.png'
+	},
+	{
+		subcategoryId: 'services_sportivnaua_dressirovka',
+		image: 'services_sportivnaua_dressirovka.png'
+	},
+	{
+		subcategoryId: 'pets_rodent_nurseries',
+		image: 'pets_rodent_nurseries.png'
+	},
+	{
+		subcategoryId: 'pets_clubs_cats',
+		image: 'pets_clubs_cats.png'
+	},
+	{
+		subcategoryId: 'services_walking',
+		image: 'services_walking.png'
+	},
+
 ];

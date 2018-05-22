@@ -31,6 +31,9 @@ import '../../../../../assets/img/subcategoriesImages/services_zoo_studio.png';
 import '../../../../../assets/img/subcategoriesImages/goods_oborudovanie_fitness.png';
 
 
+import '../../../../../assets/img/subcategoriesImages/goods_oborudovanie_fitness.png';
+
+
 
 @translate(['common'])
 @withStyles(styles)
