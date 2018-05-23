@@ -95,6 +95,10 @@ class CompaniesListContainer extends React.Component {
 		}
 	}
 
+	componentWillUnmount() {
+		this.props.componentLeave();
+	}
+
 	updateAndLoad(props) {
 		const { updateStateWithUrlSource, match, loadCompanies, location } = props;
 		const { companyCategoryId, companySubcategoryId, countryId, cityId } = match.params;
@@ -109,12 +113,6 @@ class CompaniesListContainer extends React.Component {
 		updateStateWithUrlSource(staticPathParams, dynamicPathParams, searchParams);
 		loadCompanies();
 	}
-
-	componentWillUnmount() {
-		this.props.componentLeave();
-	}
-
-
 
 	handleFuzzySearchChange = (event) => {
 		const newValue = event.target.value;
@@ -170,7 +168,7 @@ class CompaniesListContainer extends React.Component {
 
 
 		return (
-			<Grid container={true} className="mt-2 mb-4">
+			<Grid container={true} spacing={16} className="mt-2 mb-4">
 				<Grid item={true} xs={isMobile ? 12 : 9} className={classes.companiesListBlock}>
 					<Card className={classNames(classes.searchInputWrapper)}>
 
@@ -275,16 +273,16 @@ class CompaniesListContainer extends React.Component {
 						this.state.daysOfWeekWorkingTime.every(item => {
 							return item.open === '00:00:00' && item.close === '00:00:00';
 						}) ? "Работает круглосуточно" :
-						this.state.daysOfWeekWorkingTime.map(time => {
-							const open = time.open.substring(0, time.open.lastIndexOf(':'));
-							const close = time.close.substring(0, time.close.lastIndexOf(':'));
-							return (
-								<div key={time.dayOfWeek} className={classNames(classes.flexRow, 'mt-2')}>
-									<Label>{time.dayOfWeekName}</Label>
-									<Label className="ml-3">{`${open} - ${close}`}</Label>
-								</div>
-							);
-						})
+							this.state.daysOfWeekWorkingTime.map(time => {
+								const open = time.open.substring(0, time.open.lastIndexOf(':'));
+								const close = time.close.substring(0, time.close.lastIndexOf(':'));
+								return (
+									<div key={time.dayOfWeek} className={classNames(classes.flexRow, 'mt-2')}>
+										<Label>{time.dayOfWeekName}</Label>
+										<Label className="ml-3">{`${open} - ${close}`}</Label>
+									</div>
+								);
+							})
 					}
 				</InfoDialog>
 
@@ -418,7 +416,7 @@ const getSEOInfo = createSelector(
 				}
 			}
 		});
-		
+
 		if (state.filters.countryId) {
 			const foundCountry = common.countries.find(c => c.value === state.filters.countryId);
 			if (foundCountry) {

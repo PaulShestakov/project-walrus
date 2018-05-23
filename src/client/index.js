@@ -62,6 +62,25 @@ const theme = createMuiTheme({
 			A700: '#a73131',
 
 			contrastDefaultColor: 'light'
+		},
+		secondary: {
+			50: '#f3e2e2',
+			100: '#e0b6b6',
+			200: '#cc8686',
+			300: '#b75656',
+			400: '#a73131',
+			500: '#980d0d',
+			600: '#900b0b',
+			700: '#850909',
+			800: '#7b0707',
+			900: '#6a0303',
+
+			A100: '#e0b6b6',
+			A200: '#cc8686',
+			A400: '#b75656',
+			A700: '#a73131',
+
+			contrastDefaultColor: 'light'
 		}
 	}
 });

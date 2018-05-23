@@ -7,7 +7,7 @@ import {Button, Title, Label, Grid, Card, Popover, Checkbox, Separator, ButtonMo
 import {FormControlLabel} from 'material-ui/Form';
 import classNames from 'classnames';
 import styles from './styles';
-import {GridList, GridListTile} from 'material-ui/GridList';
+import GridList, {GridListTile} from 'material-ui/GridList';
 
 
 @translate(['companiesList'])
@@ -134,7 +134,7 @@ export default class CheckboxesBlock extends React.PureComponent {
 															label={item.label}
 															className={classNames(classes.checkboxWrapper, 'ml-2 mt-1')}
 															control={
-																<Checkbox name={formGroupName}
+																<Checkbox name={formGroupName} color="default"
 																	className="mr-2"
 																	value={item.value}
 																	checked={selectedIds.indexOf(item.value) !== -1}

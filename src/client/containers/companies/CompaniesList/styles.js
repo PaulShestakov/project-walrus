@@ -16,6 +16,7 @@ export default {
 		display: 'flex',
 		flexDirection: 'column',
 	},
+
 	companiesList: {
 		position: 'relative',
 		flexGrow: '1',

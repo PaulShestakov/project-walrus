@@ -35,7 +35,6 @@ export default class MobileHeader extends React.PureComponent {
 		});
 	};
 
-
 	render() {
 		const { t, classes } = this.props;
 		const { isDrawerOpened } = this.state;
@@ -53,7 +52,6 @@ export default class MobileHeader extends React.PureComponent {
 						<img src={logo} alt="Logo" className={classes.logo} />
 					</div>
 				</Card>
-
 
 				<Drawer open={isDrawerOpened}
 					onClose={this.handleCloseDrawer}>

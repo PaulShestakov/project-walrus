@@ -3,11 +3,15 @@ import globalStyle from '../../../style';
 
 export default {
 	cardWrapper: {
+		position: 'relative',
 		height: '4rem',
 		display: 'flex'
 	},
 
 	menuButton: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
 		width: '4rem',
 		height: '4rem',
 	},
