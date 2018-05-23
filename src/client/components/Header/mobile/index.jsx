@@ -68,7 +68,7 @@ export default class MobileHeader extends React.PureComponent {
 										<ListItemIcon>
 											<PowerSettingsNew />
 										</ListItemIcon>
-										<ListItemText primary={Выйти} />
+										<ListItemText primary={'Выйти'} />
 									</ListItem>
 							}
 
