@@ -68,19 +68,19 @@ export default class CompanyItem extends React.PureComponent {
 									allowedRoles={[1]}>
 
 									<Link to={`/company/edit/${encodeURI(company.url_id)}`}>
-										<Button fab className={classes.editButton}>
+										<Button variant="fab" className={classes.editButton}>
 											<ModeEditIcon className={classes.editIcon} />
 										</Button>
 									</Link>
-									<Button fab className={classes.editButton}
+									<Button variant="fab" className={classes.editButton}
 										onClick={this.handleAction.bind(null, company, 'block')}>
 										<Block className={classes.editIcon} />
 									</Button>
-									<Button fab className={classes.editButton}
+									<Button variant="fab" className={classes.editButton}
 										onClick={this.handleAction.bind(null, company, 'delete')}>
 										<Delete className={classes.editIcon} />
 									</Button>
-									
+
 								</Authorized>
 
 							</Grid>
@@ -167,7 +167,7 @@ export default class CompanyItem extends React.PureComponent {
 						</Grid>
 					</Grid>
 
-				</Grid>				
+				</Grid>
 			</Card>
 		);
 	}

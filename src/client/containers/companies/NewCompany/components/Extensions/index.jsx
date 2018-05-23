@@ -48,7 +48,7 @@ export default class Extensions extends React.Component {
                                 <Grid container>
                                     <Grid item className="d-flex align-items-center">
                                         <Title className="mr-3">{ curField.title }</Title>
-                                        <Button fab onClick={() => this.addChild(outerIndex, curField.name)}
+                                        <Button variant="fab" onClick={() => this.addChild(outerIndex, curField.name)}
                                                 className={classes.addButton}
                                                 color="primary" aria-label="add">
                                             <Add />
@@ -93,7 +93,7 @@ class Inner extends React.Component {
                                         name={`${member}.item`}/>
                                 </Grid>
                                 <Grid item xs={2}>
-                                    <Button fab className={classes.editButton}
+                                    <Button variant="fab" className={classes.editButton}
                                             onClick={() => deleteChild(elementIndex, index)}>
                                         <Delete className={classes.editIcon} />
                                     </Button>

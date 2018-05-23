@@ -28,7 +28,7 @@ export default class Pagination extends React.Component {
 
 		return (
 			<div className={classNames(className, classes.pageContainer)}>
-				<Button fab mini
+				<Button variant="fab" mini
 					color="primary"
 					className="mr-1"
 					aria-label="toPrevious"
@@ -36,14 +36,14 @@ export default class Pagination extends React.Component {
 					onClick={this.handleGoToPrevious}>
 					<ArrowBack />
 				</Button>
-				<Button fab mini disabled
+				<Button variant="fab" mini disabled
 					className="mx-1"
 					key={currentPage}
 					aria-label="pageNumber"
 					onClick={() => this.props.onChange(page)}>
 					{currentPage}
 				</Button>
-				<Button fab mini
+				<Button variant="fab" mini
 					color="primary"
 					className="ml-1"
 					aria-label="toNext"

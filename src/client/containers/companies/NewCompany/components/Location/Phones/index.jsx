@@ -25,7 +25,7 @@ export default class Phones extends React.Component {
                 <Grid container>
                     <Grid item className="d-flex align-items-center">
                         <Title className="mr-3">Телефоны</Title>
-                        <Button fab onClick={() => fields.push({})}
+                        <Button variant="fab" onClick={() => fields.push({})}
                                 className={classes.addButton}
                                 color="primary" aria-label="add">
                             <Add />
@@ -43,7 +43,7 @@ export default class Phones extends React.Component {
                                     placeholder="Телефон"/>
                             </Grid>
                             <Grid item xs={2}>
-                                <Button fab className={classes.editButton}
+                                <Button variant="fab" className={classes.editButton}
                                         onClick={() => fields.remove(index)}>
                                     <Delete className={classes.editIcon} />
                                 </Button>

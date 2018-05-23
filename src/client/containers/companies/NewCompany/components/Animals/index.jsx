@@ -73,14 +73,14 @@ export default class Animals extends React.Component {
                                         </Typography>
                                     </Grid>
                                     <Grid item>
-                                        <Button fab onClick={this.handleOnAddAddressPress}
+                                        <Button variant="fab" onClick={this.handleOnAddAddressPress}
                                                 className={classes.addButton}
                                                 color="primary" aria-label="add">
                                             <Add />
                                         </Button>
                                     </Grid>
                                 </Grid>
-                                
+
                             </Grid>
                         </Grid>
                         <Tabs
@@ -116,7 +116,7 @@ export default class Animals extends React.Component {
                                               spacing={16}
                                               className="p-2">
                                         <Grid item xs={12} className="text-right">
-                                            <Button fab className={classes.editButton}
+                                            <Button variant="fab" className={classes.editButton}
                                                     onClick={() => this.handleDeleteAnimal(index)}>
                                                 <Delete className={classes.editIcon} />
                                             </Button>

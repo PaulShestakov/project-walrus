@@ -53,7 +53,7 @@ export default function withScrollToTop() {
 									[classes.buttonVisible]: isButtonShown
 								}
 							)}
-							fab={true}
+							variant="fab"
 							aria-label="edit"
 							onClick={this.handleScrollToTop}>
 							<ArrowUpward />

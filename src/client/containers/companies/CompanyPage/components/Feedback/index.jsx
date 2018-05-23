@@ -47,7 +47,7 @@ export default class Feedbacks extends React.Component {
                                             <Typography type="title" className="ml-3 text-wrap" component="p" >
                                                 {feedback.user.name}
                                             </Typography>
-                                            <Rating 
+                                            <Rating
                                                 readOnly
                                                 value={feedback.rating}/>
                                         </div>
@@ -58,7 +58,7 @@ export default class Feedbacks extends React.Component {
                                         </div>
                                         <div className="mt-4">
                                             <Authorized allowedRoles={[1]}>
-                                                <Button fab
+                                                <Button variant="fab"
                                                         onClick={() => this.setState({ isConfirmDialogOpened: true, feedback })}>
                                                     <Delete />
                                                 </Button>

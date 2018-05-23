@@ -22,7 +22,7 @@ export default class Pagination extends React.Component {
 
 	renderPageNumer = (page) => {
 		return (
-			<Button fab mini
+			<Button variant="fab" mini
 				className="mx-1"
 				key={page}
 				color={page === this.props.currentPage ? 'primary' : undefined}
@@ -67,7 +67,7 @@ export default class Pagination extends React.Component {
 
 		return (
 			<div className={classNames(className, classes.pageContainer)}>
-				<Button fab mini color="primary"
+				<Button variant="fab" mini color="primary"
 					className="mr-3"
 					aria-label="toPrevious"
 					disabled={currentPage <= 1}
@@ -75,7 +75,7 @@ export default class Pagination extends React.Component {
 					<ArrowBack />
 				</Button>
 				{itemsToRender}
-				<Button fab mini color="primary"
+				<Button variant="fab" mini color="primary"
 					className="ml-3"
 					aria-label="toNext"
 					disabled={currentPage >= pagesCount}

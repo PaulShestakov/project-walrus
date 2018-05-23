@@ -195,12 +195,12 @@ class CompanyPageContainer extends React.Component {
 								<Authorized
 									allowedRoles={[1]}
 									className={classes.editButtonsBlock}>
-									<Button fab={true} className={classes.editButton}>
+									<Button variant="fab" className={classes.editButton}>
 										<Link to={`/company/edit/${company.url_id}`}>
 											<ModeEditIcon className={classes.editIcon} />
 										</Link>
 									</Button>
-									<Button fab={true} className={classes.editButton}
+									<Button variant="fab" className={classes.editButton}
 										onClick={this.handleAction.bind(null, company, 'delete')}>
 										<Delete className={classes.editIcon} />
 									</Button>

@@ -117,7 +117,7 @@ export default class Location extends React.Component {
                                 </Typography>
                             </Grid>
                             <Grid item>
-                                <Button fab onClick={this.handleOnAddAddressPress}
+                                <Button variant="fab" onClick={this.handleOnAddAddressPress}
                                         className={classes.addButton}
                                         color="primary" aria-label="add">
                                     <Add />
@@ -154,7 +154,7 @@ export default class Location extends React.Component {
                             return (
                                 <Grid container spacing={0} className="p-2">
                                     <Grid item xs={12} className="my-2 text-right">
-                                        <Button fab className={classes.editButton}
+                                        <Button variant="fab" className={classes.editButton}
                                                 onClick={() => this.confirmDeleteLocation(index)}>
                                             <Delete className={classes.editIcon} />
                                         </Button>
@@ -232,7 +232,7 @@ export default class Location extends React.Component {
                                         <Typography type="headline" component="h1" className="mt-4">
                                             Время работы
                                         </Typography>
-                                        <Button fab className={classes.addButton}
+                                        <Button variant="fab" className={classes.addButton}
                                             onClick={() => this.props.fillRoundTheClock(member, curField)}>24/7</Button>
                                     </Grid>
 
