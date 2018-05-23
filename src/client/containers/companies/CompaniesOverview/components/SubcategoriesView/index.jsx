@@ -20,7 +20,6 @@ import '../../../../../assets/img/subcategoriesImages/vetapteka.png';
 import '../../../../../assets/img/subcategoriesImages/vetkliniki.png';
 import '../../../../../assets/img/subcategoriesImages/vetpreparaty.png';
 
-
 import '../../../../../assets/img/subcategoriesImages/goods_clothing_shops.png';
 import '../../../../../assets/img/subcategoriesImages/pets_horse_nurseries.png';
 import '../../../../../assets/img/subcategoriesImages/services_zoo_photography.png';
@@ -30,9 +29,13 @@ import '../../../../../assets/img/subcategoriesImages/services_photostudii.png';
 import '../../../../../assets/img/subcategoriesImages/services_zoo_studio.png';
 import '../../../../../assets/img/subcategoriesImages/goods_oborudovanie_fitness.png';
 
-
-import '../../../../../assets/img/subcategoriesImages/goods_oborudovanie_fitness.png';
-
+import '../../../../../assets/img/subcategoriesImages/goods_ruchnie_tovary.png';
+import '../../../../../assets/img/subcategoriesImages/services_handling.png';
+import '../../../../../assets/img/subcategoriesImages/services_fitness.png';
+import '../../../../../assets/img/subcategoriesImages/services_sportivnaua_dressirovka.png';
+import '../../../../../assets/img/subcategoriesImages/pets_rodent_nurseries.png';
+import '../../../../../assets/img/subcategoriesImages/pets_clubs_cats.png';
+import '../../../../../assets/img/subcategoriesImages/services_walking.png';
 
 
 @translate(['common'])
@@ -46,7 +49,7 @@ export default class SubcategoriesView extends React.Component {
 				{
 					subcategories.map((subcategory, index) => {
 						const subcategoryId = subcategory.value.toUpperCase();
-						const imageData = subcategoriesImages.find(x => x.subcategoryId === subcategoryId);
+						const imageData = subcategoriesImages.find(x => x.subcategoryId.toUpperCase() === subcategoryId.toUpperCase());
 
 						const imagePath = imageData ?
 							`/images/${imageData.image}` :
