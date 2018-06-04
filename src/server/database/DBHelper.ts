@@ -3,31 +3,40 @@ import * as async from 'async';
 import * as config from 'config';
 import log from "../util/Logger";
 
-
-const pool = mysql.createPool({
-	connectionLimit : 100,
-	host     :  config.get('mysql.host'),
-	port     :  config.get('mysql.port'),
-	user     :  config.get('mysql.user'),
-	password :  config.get('mysql.password'),
-	database :  config.get('mysql.db')
-});
-
-
-// Test connection
-pool.getConnection(function(err, connection) {
-	if (!err) {
-		log.info('DB is connected');
-	} else {
-		console.log('DB is not connected, error : ' + err);
-	}
-	connection.release();
-});
+// const MYSQL_CONNECTION_LIMIT = 100;
+//
+// const MYSQL_HOST = config.get('mysql.host');
+// const MYSQL_PORT = config.get('mysql.port');
+// const MYSQL_DATABASE = config.get('mysql.database');
+// const MYSQL_USER = config.get('mysql.user');
+// const MYSQL_PASSWORD = config.get('mysql.password');
+//
+//
+// const pool = mysql.createPool({
+// 	connectionLimit: MYSQL_CONNECTION_LIMIT,
+//
+// 	host: MYSQL_HOST,
+// 	port: MYSQL_PORT,
+//     database: MYSQL_DATABASE,
+// 	user: MYSQL_USER,
+// 	password: MYSQL_PASSWORD,
+// });
+//
+//
+// // Test connection
+// pool.getConnection(function(err, connection) {
+// 	if (!err) {
+// 		log.info('DB is connected');
+// 	} else {
+// 		console.log('DB is not connected, error : ' + err);
+// 	}
+// 	connection.release();
+// });
 
 
 const _performInTransaction = (functionToPerform, callback) => {
 
-	pool.getConnection(function (err, connection) {
+	global.pool.getConnection(function (err, connection) {
 		if (err) {
 			console.log(err);
 			callback(err);
@@ -123,4 +132,4 @@ const executeSeries = _executeFunctions.bind(null, 'series');
 const executeParallel = _executeFunctions.bind(null, 'parallel');
 
 
-export { executeQuery, executeSeries, executeParallel, pool };
+export { executeQuery, executeSeries, executeParallel, global.pool as pool };

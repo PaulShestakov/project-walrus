@@ -11,6 +11,7 @@ const COMPANIES_SERVICES = 'companies_service';
 const COMPANIES_TRADE_TYPE = 'companies_trade_type';
 const COMPANIES_JOB_TYPE = 'companies_job_type';
 const COMPANIES_OWNER_TYPE = 'companies_owner_type';
+const COMPANIES_PAYMENTS = 'companies_payments';
 
 export default {
 	GET: `
@@ -200,4 +201,6 @@ export default {
 
 	SAVE_OWNER_TYPES: `INSERT INTO ${COMPANIES_OWNER_TYPE} VALUES ?`,
 	DELETE_OWNER_TYPES: `DELETE FROM ${COMPANIES_OWNER_TYPE} WHERE COMPANY_ID = ?`,
+
+	GET_COMPANY_PAYMENTS: `SELECT * FROM ${COMPANIES_PAYMENTS} WHERE COMPANY_ID = ?`,
 }
