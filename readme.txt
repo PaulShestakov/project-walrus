@@ -1,8 +1,23 @@
-The application uses two different docker containers.
-
-To start MySQL server you have to go to database folder and run start.sh script.
-
-To start NodeJS server you have to execute the following commands:
-1. To build the images : "docker build -t wikipet ."
-2. To run the image : "docker run -it -d -p 8090:8090 --link db:db -e DATABASE_HOST=db wikipet"
-Probably we also need to run "docker-machine ssh default" before the previous command
+1) Use 'dev' branch
+2) Install nodejs > 6
+3) In ./config folder create a file default.json with next configuration (this points to production DB clone on a separate server)
+{
+  "dbClone": {
+    "database": "wikipetby",
+    "user": "root",
+    "password": "mypassword",
+    "host": "159.65.206.88",
+    "port": "3307"
+  },
+  "mail": {
+    "senderEmail": "dumbEmail",
+    "senderPassword": "dumbPassw"
+  }
+}
+3) Build a client
+> npm run build-client-dev
+4) Build a server
+> npm run build-server-dev
+5) Start server
+> npm run server
+6) Open http://localhost:3000/
