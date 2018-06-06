@@ -21,3 +21,7 @@
 5) Start server
 > npm run server
 6) Open http://localhost:3000/
+
+* Use
+> npm run server-stop
+to stop server

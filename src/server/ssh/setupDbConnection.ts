@@ -1,5 +1,5 @@
 const config = require('config');
-const mysql = require('mysql2');
+const mysql = require('mysql');
 
 
 const MYSQL_CONNECTION_LIMIT = 100;

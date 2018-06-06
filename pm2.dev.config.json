@@ -7,8 +7,8 @@
   "detached": true,
 
   "autorestart": true,
-  "max_restarts": 5,
-  "restart_delay": 5000,
+  "max_restarts": 100,
+  "restart_delay": 1000,
 
   "out_file": "./dist/devLog/log.txt",
 
